@@ -8,10 +8,16 @@
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 	
+	<scm>
+	    <connection>scm:hg:https://bitbucket.org/m2m/cumulocity-dependencies</connection>
+	</scm>
+	
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
+        
+        <nexus.port>443</nexus.port>
     </properties>
 	
 	<modules>
@@ -94,5 +100,16 @@
             </plugins>
         </pluginManagement>
     </build>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshot</id>
+            <url>https://nexus.cumulocity.com:${nexus.port}/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>release</id>
+            <url>https://nexus.cumulocity.com:${nexus.port}/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 	
 </project>
