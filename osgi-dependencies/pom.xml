@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>cumulocity-dependencies</artifactId>
+		<groupId>com.nsn.cumulocity.dependencies</groupId>
+		<version>0.7.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	
+	<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+	<artifactId>osgi-dependencies</artifactId>
+	<packaging>pom</packaging>
+	<name>Cumulocity Dependencies :: OSGi Dependencies</name>
+	
+    <modules>
+        <module>commons-logging</module>
+        <module>antlr</module>
+        <module>stringtemplate</module>
+        <module>antlr-runtime</module>
+        <module>cglib-nodep</module>
+        <module>esper</module>
+        <module>svenson</module>
+    </modules>
+    
+    <build>
+        <sourceDirectory>${project.build.directory}/sources</sourceDirectory>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-dependencies</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <excludes>META-INF/MANIFEST.MF</excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-dependencies-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>sources</classifier>
+                            <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
+                            <outputDirectory>${project.build.directory}/sources</outputDirectory>
+                            <excludes>META-INF/MANIFEST.MF</excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>  
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive> 
+                </configuration>
+            </plugin>
+                    
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                        <configuration>
+                            <excludeResources>true</excludeResources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+	</build>
+	
+</project>

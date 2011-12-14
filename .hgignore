@@ -1,0 +1,17 @@
+# Maven build foler
+target
+bin
+.maven
+
+# Eclipse IDE
+.project
+.settings
+.classpath
+/build/
+.loadpath
+
+#Cucumber output
+cucumber.html
+
+#Mac
+.DS_Store
