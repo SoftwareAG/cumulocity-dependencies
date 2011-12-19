@@ -22,6 +22,7 @@
         <module>cglib-nodep</module>
         <module>esper</module>
         <module>svenson</module>
+	<module>jersey-couch-client</module>
     </modules>
     
     <build>
