@@ -15,14 +15,23 @@
 	<name>Cumulocity Dependencies :: OSGi Dependencies</name>
 	
     <modules>
+        <module>activation</module>
+        <module>mail</module>
+        <module>asm</module>
+        <module>stax-api</module>
+        <module>jaxb-api</module>
         <module>commons-logging</module>
+        <module>commons-httpclient</module>
         <module>antlr</module>
         <module>stringtemplate</module>
         <module>antlr-runtime</module>
         <module>cglib-nodep</module>
         <module>esper</module>
         <module>svenson</module>
-	<module>jersey-couch-client</module>
+        <module>jersey-core</module>
+        <module>jersey-server</module>
+        <module>jersey-client</module>
+        <module>jersey-apache-client</module>
     </modules>
     
     <build>

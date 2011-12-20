@@ -91,6 +91,7 @@
                     <instructions>
                         <Import-Package>
                             !com.espertech.esper.*,
+                            com.sun.org.apache.xerces.internal.*;resolution:=optional,
                             *
                         </Import-Package>
                     </instructions>
