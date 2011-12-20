@@ -63,6 +63,10 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <Export-Package>
+                            com.sun.jersey.*,
+                            !*
+                        </Export-Package>
                         <Import-Package>
                             !com.sun.jersey.*,
                             !javax.ws.rs.*,
