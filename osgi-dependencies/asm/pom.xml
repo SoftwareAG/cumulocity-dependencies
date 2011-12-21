@@ -4,12 +4,12 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.7.0</version>
+		<version>0.7.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	
 	<artifactId>asm</artifactId>
-	<version>3.1.0</version>
+	<version>3.1.1-SNAPSHOT</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: ASM</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

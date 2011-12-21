@@ -4,12 +4,12 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.7.0</version>
+		<version>0.7.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	
 	<artifactId>stax-api</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax XML Stream</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
