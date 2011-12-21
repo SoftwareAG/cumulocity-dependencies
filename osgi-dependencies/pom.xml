@@ -41,6 +41,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <excludes>META-INF/MANIFEST.MF</excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>unpack-dependencies</id>
@@ -50,7 +53,6 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                            <excludes>META-INF/MANIFEST.MF</excludes>
                         </configuration>
                     </execution>
                     <execution>
@@ -63,7 +65,6 @@
                             <classifier>sources</classifier>
                             <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
                             <outputDirectory>${project.build.directory}/sources</outputDirectory>
-                            <excludes>META-INF/MANIFEST.MF</excludes>
                         </configuration>
                     </execution>
                 </executions>
