@@ -4,12 +4,12 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.7.1-SNAPSHOT</version>
+		<version>0.7.0</version>
 		<relativePath>..</relativePath>
 	</parent>
 	
 	<artifactId>jaxb-api</artifactId>
-	<version>2.1.1-SNAPSHOT</version>
+	<version>2.1.0</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JAXB XML API</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -34,12 +34,12 @@
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
             <artifactId>stax-api</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
             <artifactId>activation</artifactId>
-            <version>1.1.1-SNAPSHOT</version>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 	
