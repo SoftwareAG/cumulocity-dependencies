@@ -32,6 +32,7 @@
 		<module>aspectjrt</module>
 		<module>aspectjweaver</module>
 		<module>log4j-extras</module>
+		<module>postgresql-connector</module>
 	</modules>
 	<build>
 		<sourceDirectory>${project.build.directory}/sources</sourceDirectory>

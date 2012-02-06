@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>osgi-dependencies</artifactId>
+		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+		<version>0.7.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	
+	<artifactId>postgresql-connector</artifactId>
+	<version>2.7.7</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: POSTGRESQL CONNECTOR</name>
+	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+	<dependencies>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901-1.jdbc4</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>	  
+	    <plugins>
+	      <plugin>
+		    <groupId>org.apache.felix</groupId>
+		    <artifactId>maven-bundle-plugin</artifactId>
+		    <extensions>true</extensions>
+		    <configuration>
+			<instructions>
+			    <!-- explicit upstream license -->
+			    <Bundle-License>http://jdbc.postgresql.org/license.html</Bundle-License>
+			    <Bundle-DocURL>http://jdbc.postgresql.org/</Bundle-DocURL>
+			    <Export-Package>
+				org.postgresql*
+			    </Export-Package>
+			    <Include-Resource>
+				META-INF=${project.build.outputDirectory}/META-INF
+			    </Include-Resource>
+			</instructions>
+		    </configuration>
+		</plugin>
+	    </plugins>
+	</build>
+	
+</project>
