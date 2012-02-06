@@ -9,7 +9,7 @@
 	</parent>
 	
 	<artifactId>postgresql</artifactId>
-	<version>9.1-901-1.jdbc4</version>
+	<version>9.1-901.jdbc4</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: POSTGRESQL CONNECTOR</name>
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -30,12 +30,8 @@
 		    <extensions>true</extensions>
 		    <configuration>
 			<instructions>
-			    <!-- explicit upstream license -->
 			    <Bundle-License>http://jdbc.postgresql.org/license.html</Bundle-License>
 			    <Bundle-DocURL>http://jdbc.postgresql.org/</Bundle-DocURL>
-			    <Export-Package>
-				org.postgresql*
-			    </Export-Package>
 			    <Include-Resource>
 				META-INF=${project.build.outputDirectory}/META-INF
 			    </Include-Resource>
