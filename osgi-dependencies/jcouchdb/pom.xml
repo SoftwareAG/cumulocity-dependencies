@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <artifactId>osgi-dependencies</artifactId>
+        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+		<version>0.7.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	
+	<artifactId>jcouchdb</artifactId>
+	<version>1.0.1-1-patch</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: JCouchDB</name>
+    <url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+    <dependencies>
+        <dependency>
+		    <groupId>com.google.code.jcouchdb</groupId>
+		    <artifactId>jcouchdb</artifactId>
+		    <version>1.0.1-1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+	
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <includeGroupIds>com.google.code.jcouchdb</includeGroupIds>
+                    <includeArtifactIds>jcouchdb</includeArtifactIds>
+					<excludes>
+						org/jcouchdb/document/ChangeNotification.class
+					</excludes>
+                </configuration>
+            </plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/sources</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/main/java</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>anythingButJCouchDB</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Import-Package>
+                            !com.google.code.jcouchdb.*,
+                            *
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
