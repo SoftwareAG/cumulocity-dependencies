@@ -8,59 +8,58 @@
 		<relativePath>..</relativePath>
 	</parent>
 	
-	<artifactId>jersey-core</artifactId>
-	<version>1.8.0</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Jersey Core</name>
+	<artifactId>ektorp</artifactId>
+	<version>1.1.1</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Ektrop</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-core</artifactId>
-            <version>1.8</version>
+            <groupId>org.ektorp</groupId>
+            <artifactId>org.ektorp</artifactId>
+            <version>1.1.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>javax.ws.rs</groupId>
-                    <artifactId>jsr311-api</artifactId>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>javax.mail</groupId>
-                    <artifactId>mail</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.osgi</groupId>
-                    <artifactId>osgi_R4_core</artifactId>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore-osgi</artifactId>
+            <version>4.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient-osgi</artifactId>
+            <version>4.1.1</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4.0</version>
-            <scope>provided</scope>
+            <artifactId>commons-io</artifactId>
+            <version>2.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>osgi_R4_core</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version>
         </dependency>
     </dependencies>
 	
@@ -70,10 +69,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <includeGroupIds>com.sun.jersey</includeGroupIds>
-                    <includeArtifactIds>jersey-core</includeArtifactIds>
-                    <!-- We exlude JAXWS-RS, to use the one from dependencies -->
-                    <excludes>META-INF/MANIFEST.MF,**/javax/**</excludes>
+                    <includeGroupIds>org.ektorp</includeGroupIds>
+                    <includeArtifactIds>org.ektorp</includeArtifactIds>
                 </configuration>
             </plugin>
             <plugin>
@@ -81,8 +78,12 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <Export-Package>
+                            org.ektorp.*,
+                            org.ektorp.impl.*
+                        </Export-Package>
                         <Import-Package>
-                            !com.sun.jersey.*,
+                            !org.ektorp.*,
                             *
                         </Import-Package>
                     </instructions>
