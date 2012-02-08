@@ -5,11 +5,10 @@
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
 		<version>0.7.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
 	</parent>
 	
 	<artifactId>activation</artifactId>
-	<version>1.1.0</version>
+	<version>${osgi.activation.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Activation</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -17,7 +16,7 @@
         <dependency>
             <groupId>javax.activation</groupId>
             <artifactId>activation</artifactId>
-            <version>1.1</version>
+            <version>${activation.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

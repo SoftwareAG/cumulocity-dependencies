@@ -5,11 +5,10 @@
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
 		<version>0.7.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
 	</parent>
 	
 	<artifactId>jcouchdb</artifactId>
-	<version>1.0.1-1-patch</version>
+	<version>${osgi.jcouchdb.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JCouchDB</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -17,7 +16,7 @@
         <dependency>
 		    <groupId>com.google.code.jcouchdb</groupId>
 		    <artifactId>jcouchdb</artifactId>
-		    <version>1.0.1-1</version>
+		    <version>${jcouchdb.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
