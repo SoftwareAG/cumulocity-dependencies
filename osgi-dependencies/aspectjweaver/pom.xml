@@ -4,12 +4,10 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.11.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>aspectjweaver</artifactId>
-	<version>1.6.8</version>
+	<artifactId>aspectjweaver-${aspectj.version}</artifactId>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: AspectJ Weaver</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -17,7 +15,7 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
-            <version>1.6.8</version>
+            <version>${aspectj.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
