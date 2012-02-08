@@ -4,8 +4,7 @@
 	<parent>
 		<artifactId>cumulocity-dependencies</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
-		<version>0.7.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 	<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
 	<artifactId>osgi-dependencies</artifactId>
@@ -65,7 +64,7 @@
 		<osgi.commons-httpclient.version>${commons-httpclient.version}-${project.parent.version}</osgi.commons-httpclient.version>
 		
 		<esper.version>4.4.0</esper.version>
-		<osgi.esper.version>${esper.version}${project.parent.version}</osgi.esper.version>
+		<osgi.esper.version>${esper.version}-${project.parent.version}</osgi.esper.version>
 		
 		<stax-api.version>1.0-2</stax-api.version>
 		<osgi.stax-api.version>${stax-api.version}-${project.parent.version}</osgi.stax-api.version>
