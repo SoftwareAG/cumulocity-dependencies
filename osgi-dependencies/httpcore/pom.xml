@@ -4,12 +4,10 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.11.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>httpcore</artifactId>
-	<version>4.1.4</version>
+	<artifactId>httpcore-${httpcore.version}</artifactId>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: HTTP Core</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
     
@@ -17,7 +15,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>4.1.4</version>
+            <version>${httpcore.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

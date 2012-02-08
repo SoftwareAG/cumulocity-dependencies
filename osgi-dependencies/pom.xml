@@ -44,21 +44,28 @@
 	<properties>
 		<activation.version>1.1</activation.version>
 		<antlr.version>2.7.7</antlr.version>
-		<antlr-runtime.version>3.2</antlr-runtime.version>
-		<stringtemplate.version>3.2</stringtemplate.version>
-		<asm.version>3.1</asm.version>
-		<aspectj.version>1.6.8</aspectj.version>
-		<cglib-nodep.version>2.2</cglib-nodep.version>
-		<commons-logging.version>1.1.1</commons-logging.version>
-		<commons-httpclient.version>3.1</commons-httpclient.version>
-		<esper.version>4.4.0</esper.version>
-		<stax-api.version>1.0-2</stax-api.version>
-		<jaxb-api.version>2.1</jaxb-api.version>
-		<jcouchdb.version>1.0.1-1</jcouchdb.version>
-		<jersey.version>1.8</jersey.version>
-		<mail.version>1.4</mail.version>
-		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
-		<svenson.version>1.3.8</svenson.version>
+        <antlr-runtime.version>3.2</antlr-runtime.version>
+        <apache-log4j-extras.version>1.1</apache-log4j-extras.version>
+        <asm.version>3.1</asm.version>
+        <aspectj.version>1.6.8</aspectj.version>
+        <cglib-nodep.version>2.2</cglib-nodep.version>
+        <commons-codec.version>1.3</commons-codec.version>
+        <commons-configuration.version>1.7</commons-configuration.version>
+        <commons-httpclient.version>3.1</commons-httpclient.version>
+        <commons-io.version>2.0.1</commons-io.version>
+        <commons-logging.version>1.1.1</commons-logging.version>
+        <ektorp.version>1.1.1</ektorp.version>
+        <esper.version>4.4.0</esper.version>
+        <httpclient.version>4.1.2</httpclient.version>
+        <httpcore.version>4.1.4</httpcore.version>
+        <jaxb-api.version>2.1</jaxb-api.version>
+        <jcouchdb.version>1.0.1-1</jcouchdb.version>
+        <jersey.version>1.8</jersey.version>
+        <liquibase.version>1.9.5</liquibase.version>
+        <mail.version>1.4</mail.version>
+        <stringtemplate.version>3.2</stringtemplate.version>
+        <stax-api.version>1.0-2</stax-api.version>
+        <svenson.version>1.3.8</svenson.version>
 	</properties>
 	
 	<build>
