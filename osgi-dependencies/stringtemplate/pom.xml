@@ -7,8 +7,7 @@
 		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>stringtemplate</artifactId>
-	<version>${osgi.stringtemplate.version}</version>
+	<artifactId>stringtemplate-${stringtemplate.version}</artifactId>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: ANTLR String Template</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -28,8 +27,8 @@
 		
 		<dependency>
 		    <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		    <artifactId>antlr</artifactId>
-		    <version>${osgi.antlr.version}</version>
+		    <artifactId>antlr-${antlr.version}</artifactId>
+		    <version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

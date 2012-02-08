@@ -7,8 +7,7 @@
 		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>commons-httpclient</artifactId>
-	<version>${osgi.commons-httpclient.version}</version>
+	<artifactId>commons-httpclient-${commons-httpclient.version}</artifactId>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons HTTP Client</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -32,8 +31,8 @@
 
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>${osgi.commons-logging.version}</version>
+            <artifactId>commons-logging-${commons-logging.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>

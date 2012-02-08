@@ -7,8 +7,7 @@
 		<version>0.8.0-SNAPSHOT</version>
 	</parent>
 	
-    <artifactId>esper</artifactId>
-	<version>${osgi.esper.version}</version>
+    <artifactId>esper-${esper.version}</artifactId>
     <name>Cumulocity Dependencies :: OSGi Dependencies :: Esper</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
     
@@ -55,18 +54,18 @@
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>${osgi.commons-logging.version}</version>
+            <artifactId>commons-logging-${commons-logging.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>antlr-runtime</artifactId>
-            <version>${osgi.antlr-runtime.version}</version>
+            <artifactId>antlr-runtime-${antlr-runtime.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>cglib-nodep</artifactId>
-            <version>${osgi.cglib-nodep.version}</version>
+            <artifactId>cglib-nodep-${cglib-nodep.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
