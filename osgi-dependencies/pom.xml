@@ -36,56 +36,22 @@
 	
 	<properties>
 		<activation.version>1.1</activation.version>
-		<osgi.activation.version>${activation.version}-${project.parent.version}</osgi.activation.version>
-		
 		<antlr.version>2.7.7</antlr.version>
-		<osgi.antlr.version>${antlr.version}-${project.parent.version}</osgi.antlr.version>
-		
 		<antlr-runtime.version>3.2</antlr-runtime.version>
-		<osgi.antlr-runtime.version>${antlr-runtime.version}-${project.parent.version}</osgi.antlr-runtime.version>
-		
 		<stringtemplate.version>3.2</stringtemplate.version>
-		<osgi.stringtemplate.version>${stringtemplate.version}-${project.parent.version}</osgi.stringtemplate.version>
-		
 		<asm.version>3.1</asm.version>
-		<osgi.asm.version>${asm.version}-${project.parent.version}</osgi.asm.version>
-	
-		
 		<aspectj.version>1.6.8</aspectj.version>
-		<osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
-		
 		<cglib-nodep.version>2.2</cglib-nodep.version>
-		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
-		
 		<commons-logging.version>1.1.1</commons-logging.version>
-		<osgi.commons-logging.version>${commons-logging.version}-${project.parent.version}</osgi.commons-logging.version>
-		
 		<commons-httpclient.version>3.1</commons-httpclient.version>
-		<osgi.commons-httpclient.version>${commons-httpclient.version}-${project.parent.version}</osgi.commons-httpclient.version>
-		
 		<esper.version>4.4.0</esper.version>
-		<osgi.esper.version>${esper.version}-${project.parent.version}</osgi.esper.version>
-		
 		<stax-api.version>1.0-2</stax-api.version>
-		<osgi.stax-api.version>${stax-api.version}-${project.parent.version}</osgi.stax-api.version>
-		
 		<jaxb-api.version>2.1</jaxb-api.version>
-		<osgi.jaxb-api.version>${jaxb-api.version}-${project.parent.version}</osgi.jaxb-api.version>
-		
 		<jcouchdb.version>1.0.1-1</jcouchdb.version>
-		<osgi.jcouchdb.version>${jcouchdb.version}-${project.parent.version}</osgi.jcouchdb.version>
-		
 		<jersey.version>1.8</jersey.version>
-		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-		
 		<mail.version>1.4</mail.version>
-		<osgi.mail.version>${mail.version}-${project.parent.version}</osgi.mail.version>
-		
 		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
-		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
-
 		<svenson.version>1.3.8</svenson.version>
-		<osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
 	</properties>
 	
 	<build>
