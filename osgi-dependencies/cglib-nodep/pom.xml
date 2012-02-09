@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>cglib-nodep-${cglib-nodep.version}</artifactId>
+	<artifactId>cglib-nodep</artifactId>
+	<version>${osgi.cglib-nodep.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: CGLib (nodep)</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	

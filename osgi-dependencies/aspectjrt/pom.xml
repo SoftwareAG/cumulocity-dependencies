@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>aspectjrt</artifactId>
-	<version>${aspectj.version}-1-SNAPSHOT</version>
+	<version>${osgi.aspectj.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: AspectJ Runtime</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

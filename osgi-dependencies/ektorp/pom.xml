@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>ektorp-${ektorp.version}</artifactId>
+	<artifactId>ektorp</artifactId>
+	<version>${osgi.ektorp.version}</version>
     <name>Cumulocity Dependencies :: OSGi Dependencies :: Ektorp</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -41,13 +42,13 @@
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpcore-${httpcore.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>httpcore</artifactId>
+            <version>${osgi.httpcore.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpclient-${httpclient.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>httpclient</artifactId>
+            <version>${osgi.httpclient.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>commons-httpclient-${commons-httpclient.version}</artifactId>
+	<artifactId>commons-httpclient</artifactId>
+	<version>${osgi.commons-httpclient.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons HTTP Client</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
