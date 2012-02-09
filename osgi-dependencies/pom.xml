@@ -40,7 +40,7 @@
 	</modules>
 	
 	<properties>
-		<release.version>1-SNAPSHOT</release.version>
+		<release.version>${project.parent.version}</release.version>
 		<activation.version>1.1</activation.version>
 		<osgi.activation.version>${activation.version}-${release.version}</osgi.activation.version>
 		<antlr.version>2.7.7</antlr.version>
