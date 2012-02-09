@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>commons-configuration-${commons-configuration.version}</artifactId>
+	<artifactId>commons-configuration</artifactId>
+	<version>${osgi.commons-configuration.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons Configuration</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

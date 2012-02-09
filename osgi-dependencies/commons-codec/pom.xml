@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>commons-codec-${commons-codec.version}</artifactId>
+	<artifactId>commons-codec</artifactId>
+	<version>${osgi.commons-codec.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons Codec</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
     

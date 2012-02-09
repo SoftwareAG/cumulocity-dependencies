@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>httpclient-${httpclient.version}</artifactId>
+	<artifactId>httpclient</artifactId>
+	<version>${osgi.httpclient.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: HTTP Client</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
     
@@ -35,8 +36,8 @@
         
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpcore-${httpcore.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>httpcore</artifactId>
+            <version>${osgi.httpcore.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -45,8 +46,8 @@
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>commons-codec-${commons-codec.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>commons-codec</artifactId>
+            <version>${osgi.commons-codec.version}</version>
         </dependency>
     </dependencies>
 	

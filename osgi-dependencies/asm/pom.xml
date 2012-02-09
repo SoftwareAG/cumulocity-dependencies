@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>asm-${asm.version}</artifactId>
+	<artifactId>asm</artifactId>
+	<version>${osgi.asm.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: ASM</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
