@@ -18,7 +18,6 @@
 		<module>jaxb-api</module>
 		<module>commons-logging</module>
 		<module>commons-codec</module>
-		<module>commons-io</module>
 		<module>commons-httpclient</module>
 		<module>commons-configuration</module>
 		<module>antlr</module>
@@ -49,10 +48,9 @@
         <asm.version>3.1</asm.version>
         <aspectj.version>1.6.8</aspectj.version>
         <cglib-nodep.version>2.2</cglib-nodep.version>
-        <commons-codec.version>1.3</commons-codec.version>
+        <commons-codec.version>1.4</commons-codec.version>
         <commons-configuration.version>1.7</commons-configuration.version>
         <commons-httpclient.version>3.1</commons-httpclient.version>
-        <commons-io.version>2.0.1</commons-io.version>
         <commons-logging.version>1.1.1</commons-logging.version>
         <ektorp.version>1.1.1</ektorp.version>
         <esper.version>4.4.0</esper.version>

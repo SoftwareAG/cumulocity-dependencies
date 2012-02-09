@@ -54,19 +54,9 @@
         </dependency>
 
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>logkit</groupId>
-                    <artifactId>logkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>avalon-framework</groupId>
-                    <artifactId>avalon-framework</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>commons-logging-${commons-logging.version}</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
