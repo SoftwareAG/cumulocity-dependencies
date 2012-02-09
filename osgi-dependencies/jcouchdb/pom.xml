@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>jcouchdb-${jcouchdb.version}</artifactId>
+	<artifactId>jcouchdb</artifactId>
+	<version>${osgi.jcouchdb.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JCouchDB</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

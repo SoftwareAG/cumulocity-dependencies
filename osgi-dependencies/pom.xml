@@ -57,15 +57,25 @@
         <ektorp.version>1.1.1</ektorp.version>
         <esper.version>4.4.0</esper.version>
         <httpclient.version>4.1.2</httpclient.version>
+
         <httpcore.version>4.1.4</httpcore.version>
+		<osgi.httpcore.version>${httpcore.version}-${release.version}</osgi.httpcore.version>
         <jaxb-api.version>2.1</jaxb-api.version>
+        <osgi.jaxb-api.version>${jaxb-api.version}-${release.version}</osgi.jaxb-api.version>
         <jcouchdb.version>1.0.1-1</jcouchdb.version>
+        <osgi.jcouchdb.version>${jcouchdb.version}-${release.version}</osgi.jcouchdb.version>
         <jersey.version>1.8</jersey.version>
+        <osgi.jersey.version>${jersey.version}-${release.version}</osgi.jersey.version>
         <liquibase.version>1.9.5</liquibase.version>
+        <osgi.liquibase.version>${liquibase.version}-${release.version}</osgi.liquibase.version>
         <mail.version>1.4</mail.version>
+        <osgi.mail.version>${mail.version}-${release.version}</osgi.mail.version>
         <stringtemplate.version>3.2</stringtemplate.version>
+        <osgi.stringtemplate.version>${stringtemplate.version}-${release.version}</osgi.stringtemplate.version>
         <stax-api.version>1.0-2</stax-api.version>
+        <osgi.stax-api.version>${stax-api.version}-${release.version}</osgi.stax-api.version>
         <svenson.version>1.3.8</svenson.version>
+        <osgi.svenson.version>${svenson.version}-${release.version}</osgi.svenson.version>
 	</properties>
 	
 	<build>

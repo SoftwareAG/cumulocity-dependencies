@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>httpcore-${httpcore.version}</artifactId>
+	<artifactId>httpcore</artifactId>
+	<version>${osgi.httpcore.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: HTTP Core</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
     

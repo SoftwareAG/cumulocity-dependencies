@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>mail-${mail.version}</artifactId>
+	<artifactId>mail</artifactId>
+	<version>${osgi.mail.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Mail</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

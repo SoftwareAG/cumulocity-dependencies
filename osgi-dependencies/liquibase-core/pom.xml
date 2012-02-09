@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>liquibase-core-${liquibase.version}</artifactId>
+	<artifactId>liquibase-core</artifactId>
+	<version>${osgi.liquibase.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Liquibase Core</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

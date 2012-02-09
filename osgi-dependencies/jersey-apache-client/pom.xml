@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>jersey-apache-client-${jersey.version}</artifactId>
+	<artifactId>jersey-apache-client</artifactId>
+	<version>${osgi.jersey.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Jersey Apache Client</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

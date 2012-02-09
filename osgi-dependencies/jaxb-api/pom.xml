@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>jaxb-api-${jaxb-api.version}</artifactId>
+	<artifactId>jaxb-api</artifactId>
+	<version>${osgi.jaxb-api.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JAXB XML API</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
