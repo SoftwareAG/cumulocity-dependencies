@@ -39,9 +39,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>commons-logging-${commons-logging.version}</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>

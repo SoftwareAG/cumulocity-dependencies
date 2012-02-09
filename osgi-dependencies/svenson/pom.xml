@@ -17,13 +17,19 @@
 			<artifactId>svenson</artifactId>
 			<version>${svenson.version}</version>
 			<scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		
-		<dependency>
-		    <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-	        <artifactId>commons-logging-${commons-logging.version}</artifactId>
-	        <version>${project.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
 		<dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
