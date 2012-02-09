@@ -17,6 +17,81 @@
 		    <artifactId>jcouchdb</artifactId>
 		    <version>${jcouchdb.version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.httpcomponents</groupId>
+                    <artifactId>httpcore</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.code.svenson</groupId>
+                    <artifactId>svenson</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>commons-codec-${commons-codec.version}</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>commons-io-${commons-io.version}</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>httpclient-${httpclient.version}</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>httpcore-${httpcore.version}</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>svenson-${svenson.version}</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.1</version>
         </dependency>
     </dependencies>
 	

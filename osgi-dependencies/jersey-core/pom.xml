@@ -42,18 +42,18 @@
             <artifactId>jsr311-api</artifactId>
             <version>1.1.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>mail-${mail.version}</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>jaxb-api-${jaxb-api.version}</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
+<!--         <dependency> -->
+<!--             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId> -->
+<!--             <artifactId>mail-${mail.version}</artifactId> -->
+<!--             <version>${project.version}</version> -->
+<!--             <scope>provided</scope> -->
+<!--         </dependency> -->
+<!--         <dependency> -->
+<!--             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId> -->
+<!--             <artifactId>jaxb-api-${jaxb-api.version}</artifactId> -->
+<!--             <version>${project.version}</version> -->
+<!--             <scope>provided</scope> -->
+<!--         </dependency> -->
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>osgi_R4_core</artifactId>
