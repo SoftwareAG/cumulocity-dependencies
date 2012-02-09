@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>stringtemplate</artifactId>
-	<version>${osgi.stringtemplate.version}</version>
+	<version>3.2-0.8.5-SNAPSHOT</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: ANTLR String Template</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
