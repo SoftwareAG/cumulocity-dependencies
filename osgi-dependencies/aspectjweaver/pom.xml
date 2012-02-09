@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>aspectjweaver-${aspectj.version}</artifactId>
+	<artifactId>aspectjweaver</artifactId>
+	<version>${aspectj.version}-1-SNAPSHOT</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: AspectJ Weaver</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
