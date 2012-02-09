@@ -28,8 +28,8 @@
         
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>stringtemplate-${stringtemplate.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>stringtemplate</artifactId>
+            <version>${osgi.stringtemplate.version}</version>
         </dependency>
     </dependencies>
     

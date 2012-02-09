@@ -7,7 +7,8 @@
 		<version>0.8.5-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>svenson-${svenson.version}</artifactId>
+	<artifactId>svenson</artifactId>
+	<version>${osgi.svenson.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Svenson</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
