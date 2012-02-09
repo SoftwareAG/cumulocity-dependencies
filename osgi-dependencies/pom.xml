@@ -47,7 +47,9 @@
 		<osgi.antlr.version>${antlr.version}-${release.version}</osgi.antlr.version>
         <antlr-runtime.version>3.2</antlr-runtime.version>
 		<osgi.antlr-runtime.version>${antlr-runtime.version}-${release.version}</osgi.antlr-runtime.version>
-        <asm.version>3.1</asm.version>
+        <apache-log4j-extras.version></apache-log4j-extras.version>
+		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${release.version}</osgi.apache-log4j-extras.version>
+		<asm.version>3.1</asm.version>
 		<osgi.asm.version>${asm.version}-${release.version}</osgi.asm.version>
         <aspectj.version>1.6.8</aspectj.version>
         <osgi.aspectj.version>${aspectj.version}-${release.version}</osgi.aspectj.version>
