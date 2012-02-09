@@ -28,8 +28,8 @@
         
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>jersey-core-${jersey.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>jersey-core</artifactId>
+            <version>${osgi.jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>

@@ -32,24 +32,24 @@
         
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>jersey-core-${jersey.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>jersey-core</artifactId>
+            <version>${osgi.jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>asm-${asm.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>asm</artifactId>
+            <version>${osgi.asm.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>mail-${mail.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>mail</artifactId>
+            <version>${osgi.mail.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>jaxb-api-${jaxb-api.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>jaxb-api</artifactId>
+            <version>${osgi.jaxb-api.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

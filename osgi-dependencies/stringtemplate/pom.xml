@@ -28,8 +28,8 @@
 		
 		<dependency>
 		    <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		    <artifactId>antlr-${antlr.version}</artifactId>
-		    <version>${project.version}</version>
+		    <artifactId>antlr</artifactId>
+		    <version>${osgi.antlr.version}</version>
 		</dependency>
 	</dependencies>
 

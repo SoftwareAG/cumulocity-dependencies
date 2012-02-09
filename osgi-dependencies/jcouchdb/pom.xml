@@ -61,8 +61,8 @@
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>commons-codec-${commons-codec.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>commons-codec</artifactId>
+            <version>${osgi.commons-codec.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -71,18 +71,18 @@
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpclient-${httpclient.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>httpclient</artifactId>
+            <version>${osgi.httpclient.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpcore-${httpcore.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>httpcore</artifactId>
+            <version>${osgi.httpcore.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>svenson-${svenson.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>svenson</artifactId>
+            <version>${osgi.svenson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
