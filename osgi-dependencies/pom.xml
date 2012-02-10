@@ -83,14 +83,14 @@
         <osgi.liquibase.version>${liquibase.version}-${release.version}</osgi.liquibase.version>
         <mail.version>1.4</mail.version>
         <osgi.mail.version>${mail.version}-${release.version}</osgi.mail.version>
+        <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
+        <osgi.postgresql.version>${postgresql.version}-${release.version}</osgi.postgresql.version>
         <stringtemplate.version>3.2</stringtemplate.version>
         <osgi.stringtemplate.version>${stringtemplate.version}-${release.version}</osgi.stringtemplate.version>
         <stax-api.version>1.0-2</stax-api.version>
         <osgi.stax-api.version>${stax-api.version}-${release.version}</osgi.stax-api.version>
         <svenson.version>1.3.8</svenson.version>
         <osgi.svenson.version>${svenson.version}-${release.version}</osgi.svenson.version>
-        <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
-        <osgi.postgresql.version>${postgresql.version}-${release.version}</osgi.postgresql.version>
 	</properties>
 	
 	<build>
