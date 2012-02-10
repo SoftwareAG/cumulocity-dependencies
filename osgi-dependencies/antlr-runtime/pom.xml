@@ -4,10 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.9.0</version>
 	</parent>
 	
-	<artifactId>antlr-runtime-${antlr-runtime.version}</artifactId>
+	<artifactId>antlr-runtime</artifactId>
+	<version>${osgi.antlr-runtime.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: ANTLR Runtime</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	
@@ -27,8 +28,8 @@
         
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>stringtemplate-${stringtemplate.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>stringtemplate</artifactId>
+            <version>${osgi.stringtemplate.version}</version>
         </dependency>
     </dependencies>
     

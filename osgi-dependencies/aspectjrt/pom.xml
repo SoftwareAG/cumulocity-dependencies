@@ -4,10 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.9.0</version>
 	</parent>
 	
-	<artifactId>aspectjrt-${aspectj.version}</artifactId>
+	<artifactId>aspectjrt</artifactId>
+	<version>${osgi.aspectj.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: AspectJ Runtime</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

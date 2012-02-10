@@ -4,10 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.9.0</version>
 	</parent>
 	
-	<artifactId>jersey-client-${jersey.version}</artifactId>
+	<artifactId>jersey-client</artifactId>
+	<version>${osgi.jersey.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Jersey Client</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -27,8 +28,8 @@
         
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>jersey-core-${jersey.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>jersey-core</artifactId>
+            <version>${osgi.jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>

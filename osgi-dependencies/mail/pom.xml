@@ -4,10 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.8.0-SNAPSHOT</version>
+		<version>0.9.0</version>
 	</parent>
 	
-	<artifactId>mail-${mail.version}</artifactId>
+	<artifactId>mail</artifactId>
+	<version>${osgi.mail.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Mail</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -27,8 +28,8 @@
         
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>activation-${activation.version}</artifactId>
-            <version>${project.version}</version>
+            <artifactId>activation</artifactId>
+            <version>${osgi.activation.version}</version>
         </dependency>
     </dependencies>
 	
