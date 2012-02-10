@@ -4,20 +4,19 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.7.0-SNAPSHOT</version>
-		<relativePath>..</relativePath>
+		<version>0.9.0</version>
 	</parent>
 	
-	<artifactId>commons-logging</artifactId>
-	<version>1.1.1</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons Logging</name>
+	<artifactId>commons-codec</artifactId>
+	<version>${osgi.commons-codec.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons Codec</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
     
     <dependencies>
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -30,8 +29,8 @@
                 <configuration>
                     <instructions>
                         <Import-Package>
-                            !org.apache.commons.logging.*,
-                            *;resolution:=optional
+                            !org.apache.commons.codec.*,
+                            *
                         </Import-Package>
                     </instructions>
                 </configuration>
