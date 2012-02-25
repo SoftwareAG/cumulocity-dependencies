@@ -67,6 +67,7 @@
                     <includeGroupIds>com.mysema.querydsl</includeGroupIds>
                     <includeArtifactIds>querydsl-jpa</includeArtifactIds>
                 </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
