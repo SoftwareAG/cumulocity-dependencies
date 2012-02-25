@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.9.0</version>
+		<version>0.12.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>cglib-nodep</artifactId>
@@ -28,6 +28,10 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <Export-Package>
+                            net.sf.cglib.transform.impl.*,
+                            net.sf.cglib.*
+                        </Export-Package>
                         <Import-Package>
                             !net.sf.cglib.*,
                             org.apache.tools.ant.*;resolution:=optional,

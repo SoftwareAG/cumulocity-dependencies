@@ -7,16 +7,16 @@
 		<version>0.12.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>aspectjrt</artifactId>
-	<version>${osgi.aspectj.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: AspectJ Runtime</name>
+	<artifactId>inject</artifactId>
+	<version>${osgi.inject.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Inject</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectj.version}</version>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>${inject.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -24,24 +24,12 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <includeGroupIds>org.aspectj</includeGroupIds>
-                    <includeArtifactIds>aspectjrt</includeArtifactIds>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
-                        <Export-package>
-                            org.aspectj.*,
-                            !*
-                        </Export-package>
                         <Import-Package>
-                            !org.aspectj.*,
+                            !javax.inject.*,
                             *
                         </Import-Package>
                     </instructions>
