@@ -7,39 +7,33 @@
 		<version>0.12.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>antlr</artifactId>
-	<version>${osgi.antlr.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: ANTLR</name>
-    <url>http://startups.jira.com/wiki/display/MTM/Home</url>
+	<artifactId>postgresql</artifactId>
+	<version>${osgi.postgresql.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: PostgreSQL Connector</name>
+	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
 	<dependencies>
 		<dependency>
-			<groupId>antlr</groupId>
-			<artifactId>antlr</artifactId>
-			<version>${antlr.version}</version>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	
-	<build>
+
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
-                        <Export-Package>
-                            antlr.*
-                        </Export-Package>
-                        <Import-Package>
-                            !antlr.*,
-                            javax.swing.*;resolution:=optional,
-                            *
-                        </Import-Package>
+                        <Bundle-License>http://jdbc.postgresql.org/license.html</Bundle-License>
+                        <Bundle-DocURL>http://jdbc.postgresql.org/</Bundle-DocURL>
                     </instructions>
                 </configuration>
             </plugin>
         </plugins>
-	</build>
+    </build>
 	
 </project>
