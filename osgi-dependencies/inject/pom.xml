@@ -7,16 +7,16 @@
 		<version>0.12.0</version>
 	</parent>
 	
-	<artifactId>activation</artifactId>
-	<version>${osgi.activation.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Activation</name>
+	<artifactId>inject</artifactId>
+	<version>${osgi.inject.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Inject</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>${activation.version}</version>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>${inject.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -24,20 +24,12 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <includeGroupIds>javax.activation</includeGroupIds>
-                    <includeArtifactIds>activation</includeArtifactIds>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
                         <Import-Package>
-                            !javax.activation.*,
+                            !javax.inject.*,
                             *
                         </Import-Package>
                     </instructions>

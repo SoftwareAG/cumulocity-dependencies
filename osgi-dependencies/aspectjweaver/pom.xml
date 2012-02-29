@@ -7,16 +7,16 @@
 		<version>0.12.0</version>
 	</parent>
 	
-	<artifactId>activation</artifactId>
-	<version>${osgi.activation.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Activation</name>
+	<artifactId>aspectjweaver</artifactId>
+	<version>${osgi.aspectj.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: AspectJ Weaver</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>${activation.version}</version>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -27,8 +27,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <includeGroupIds>javax.activation</includeGroupIds>
-                    <includeArtifactIds>activation</includeArtifactIds>
+                    <includeGroupIds>org.aspectj</includeGroupIds>
+                    <includeArtifactIds>aspectjweaver</includeArtifactIds>
                 </configuration>
             </plugin>
             <plugin>
@@ -36,8 +36,14 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <Export-package>
+                            org.aspectj.*,
+                            !*
+                        </Export-package>
                         <Import-Package>
-                            !javax.activation.*,
+                            !org.aspectj.*,
+                            com.bea.*;resolution:="optional",
+                            org.objectweb.*;resolution:="optional",
                             *
                         </Import-Package>
                     </instructions>

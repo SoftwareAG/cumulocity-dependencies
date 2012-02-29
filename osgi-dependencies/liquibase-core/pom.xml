@@ -7,18 +7,19 @@
 		<version>0.12.0</version>
 	</parent>
 	
-	<artifactId>activation</artifactId>
-	<version>${osgi.activation.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Activation</name>
+	<artifactId>liquibase-core</artifactId>
+	<version>${osgi.liquibase.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Liquibase Core</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>${activation.version}</version>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
             <scope>provided</scope>
         </dependency>
+
     </dependencies>
 	
     <build>
@@ -27,8 +28,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <includeGroupIds>javax.activation</includeGroupIds>
-                    <includeArtifactIds>activation</includeArtifactIds>
+                    <includeGroupIds>org.liquibase</includeGroupIds>
+                    <includeArtifactIds>liquibase-core</includeArtifactIds>
                 </configuration>
             </plugin>
             <plugin>
@@ -37,8 +38,8 @@
                 <configuration>
                     <instructions>
                         <Import-Package>
-                            !javax.activation.*,
-                            *
+                            !liquibase.*,
+                            *;resolution:="optional"
                         </Import-Package>
                     </instructions>
                 </configuration>

@@ -4,13 +4,11 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.7.0</version>
-		<relativePath>..</relativePath>
+		<version>0.12.0</version>
 	</parent>
 	
-	<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
     <artifactId>esper</artifactId>
-	<version>4.4.0</version>
+	<version>${osgi.esper.version}</version>
     <name>Cumulocity Dependencies :: OSGi Dependencies :: Esper</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
     
@@ -18,58 +16,58 @@
         <dependency>
             <groupId>com.espertech</groupId>
             <artifactId>esper</artifactId>
-            <version>4.4.0</version>
+            <version>${esper.version}</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<groupId>commons-logging</groupId>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
-            	</exclusion>
-            	<exclusion>
-            	    <groupId>org.antlr</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.antlr</groupId>
                     <artifactId>antlr-runtime</artifactId>
-            	</exclusion>
-            	<exclusion>
-            	    <groupId>cglib</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>cglib</groupId>
                     <artifactId>cglib-nodep</artifactId>
-            	</exclusion>
+                </exclusion>
             </exclusions>
         </dependency>
 
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.jms</groupId>
-					<artifactId>jms</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jdmk</groupId>
-					<artifactId>jmxtools</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jmx</groupId>
-					<artifactId>jmxri</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
+            <artifactId>antlr-runtime</artifactId>
+            <version>${osgi.antlr-runtime.version}</version>
         </dependency>
-		<dependency>
-			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-			<artifactId>antlr-runtime</artifactId>
-			<version>3.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-			<artifactId>cglib-nodep</artifactId>
-			<version>2.2.0</version>
-		</dependency>
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>${osgi.cglib-nodep.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -90,8 +88,8 @@
                     <instructions>
                         <Import-Package>
                             !com.espertech.esper.*,
-                            net.sf.cglib.*;version="[2.0.0,3.0.0)",
                             com.sun.org.apache.xerces.internal.*;resolution:=optional,
+                            net.sf.cglib.*;version="[2.0.0,3.0.0)",
                             *
                         </Import-Package>
                     </instructions>

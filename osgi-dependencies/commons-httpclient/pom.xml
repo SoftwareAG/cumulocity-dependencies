@@ -4,12 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.7.0</version>
-		<relativePath>..</relativePath>
+		<version>0.12.0</version>
 	</parent>
 	
 	<artifactId>commons-httpclient</artifactId>
-	<version>3.1.0</version>
+	<version>${osgi.commons-httpclient.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons HTTP Client</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -17,7 +16,7 @@
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
+            <version>${commons-httpclient.version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -32,14 +31,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version> <!-- Managed from: 1.0.4 -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.4</version> <!-- Managed from: 1.2 -->
+            <version>1.4</version>
         </dependency>
     </dependencies>
 	

@@ -7,16 +7,16 @@
 		<version>0.12.0</version>
 	</parent>
 	
-	<artifactId>activation</artifactId>
-	<version>${osgi.activation.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Activation</name>
+	<artifactId>findbugs-annotations</artifactId>
+	<version>${osgi.findbugs.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Findbugs Annotations</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>${activation.version}</version>
+            <groupId>net.sourceforge.findbugs</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${findbugs.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -26,18 +26,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <includeGroupIds>javax.activation</includeGroupIds>
-                    <includeArtifactIds>activation</includeArtifactIds>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <Export-Package>
+                            edu.umd.cs.findbugs.annotations.*;version="0",
+                            net.jcip.annotations.*;version="0",
+                        </Export-Package>
                         <Import-Package>
-                            !javax.activation.*,
+                            !edu.umd.cs.findbugs.annotations.*,
+                            !net.jcip.annotations.*,
                             *
                         </Import-Package>
                     </instructions>

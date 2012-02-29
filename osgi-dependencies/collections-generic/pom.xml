@@ -4,20 +4,19 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.7.0</version>
-		<relativePath>..</relativePath>
+		<version>0.12.0</version>
 	</parent>
 	
-	<artifactId>commons-logging</artifactId>
-	<version>1.1.1</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons Logging</name>
+	<artifactId>collections-generic</artifactId>
+	<version>${osgi.collections-generic.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Collections Generic</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
-    
+
     <dependencies>
         <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
+            <groupId>net.sourceforge.collections</groupId>
+            <artifactId>collections-generic</artifactId>
+            <version>${collections-generic.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -25,13 +24,21 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <includeGroupIds>net.sourceforge.collections</includeGroupIds>
+                    <includeArtifactIds>collections-generic</includeArtifactIds>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
                         <Import-Package>
-                            !org.apache.commons.logging.*,
-                            *;resolution:=optional
+                            !org.apache.commons.collections15.*,
+                            *
                         </Import-Package>
                     </instructions>
                 </configuration>
