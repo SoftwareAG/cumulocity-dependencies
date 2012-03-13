@@ -21,6 +21,7 @@
 	
 	<modules>
 	    <module>osgi-dependencies</module>
+	    <module>osgi-fragments</module>
 	</modules>
 	
     <build>

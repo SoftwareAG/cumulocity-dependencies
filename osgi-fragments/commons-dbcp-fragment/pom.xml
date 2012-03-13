@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.nsn.cumulocity.dependencies.osgi-fragments</groupId>
+        	<artifactId>osgi-fragments</artifactId>
+		<version>0.13.0</version>
+	</parent>
+
+	<artifactId>commons-dbcp-fragment</artifactId>
+	<packaging>jar</packaging>
+
+	<name>Cumulocity Dependencies :: OSGi Fragments :: Commons DBCP Fragment</name>
+	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Fragment-Host>org.apache.commons.dbcp</Fragment-Host>
+						<DynamicImport-Package>*</DynamicImport-Package>
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>osgi-bundle</id>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
