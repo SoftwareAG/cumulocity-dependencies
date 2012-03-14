@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.nsn.cumulocity.dependencies</groupId>
+		<artifactId>cumulocity-dependencies</artifactId>
+		<version>0.13.1</version>
+	</parent>
+
+	<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+	<artifactId>osgi-fragments</artifactId>
+	<packaging>pom</packaging>
+
+	<name>Cumulocity Dependencies :: OSGi Fragments</name>
+	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+	<modules>
+		<module>commons-dbcp-fragment</module>
+		<module>spring-jdbc-fragment</module>
+	</modules>
+	
+</project>

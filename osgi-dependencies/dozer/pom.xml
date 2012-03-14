@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.12.0</version>
+		<version>0.13.1</version>
 	</parent>
 	
 	<artifactId>dozer</artifactId>
@@ -58,6 +58,28 @@
                     <includeArtifactIds>dozer-osgi</includeArtifactIds>
 					<excludes>org/dozer/MappingProcessor.class</excludes>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>alt-unpack-dependencies-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>net.sf.dozer</groupId>
+                                    <artifactId>dozer</artifactId>
+                                    <version>${dozer.version}</version>
+                                    <type>jar</type>
+                                    <classifier>sources</classifier>
+                                </artifactItem>
+                            </artifactItems>
+                            <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
+                            <outputDirectory>${project.build.directory}/sources</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>

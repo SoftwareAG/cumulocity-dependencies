@@ -1,26 +1,19 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
-		<artifactId>osgi-dependencies</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+        	<artifactId>osgi-fragments</artifactId>
 		<version>0.13.1</version>
 	</parent>
 
-	<artifactId>apache-log4j-extras</artifactId>
-	<version>${osgi.apache-log4j-extras.version}</version>
+	<artifactId>commons-dbcp-fragment</artifactId>
 	<packaging>jar</packaging>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Log4j Extras Fragment</name>
+
+	<name>Cumulocity Dependencies :: OSGi Fragments :: Commons DBCP Fragment</name>
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
-	<dependencies>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>apache-log4j-extras</artifactId>
-			<version>${apache-log4j-extras.version}</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -28,13 +21,18 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<configuration>
 					<instructions>
-						<Import-Package>
-							!*
-						</Import-Package>
-						<Fragment-Host>org.ops4j.pax.logging.pax-logging-service</Fragment-Host>
-						<Embed-Dependency>*;inline=true</Embed-Dependency>
+						<Fragment-Host>org.apache.commons.dbcp</Fragment-Host>
+						<DynamicImport-Package>*</DynamicImport-Package>
 					</instructions>
 				</configuration>
+				<executions>
+					<execution>
+						<id>osgi-bundle</id>
+						<goals>
+							<goal>bundle</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

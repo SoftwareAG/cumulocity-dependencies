@@ -3,7 +3,7 @@
 	
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>0.12.0</version>
+	<version>0.13.1</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 	
@@ -21,6 +21,7 @@
 	
 	<modules>
 	    <module>osgi-dependencies</module>
+	    <module>osgi-fragments</module>
 	</modules>
 	
     <build>
