@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>0.13.0</version>
+        <version>0.13.1</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -53,7 +53,7 @@
     </modules>
 
     <properties>
-        <release.version>3</release.version>
+        <release.version>4</release.version>
         <activation.version>1.1</activation.version>
         <osgi.activation.version>${activation.version}-${release.version}</osgi.activation.version>
         <antlr.version>2.7.7</antlr.version>
