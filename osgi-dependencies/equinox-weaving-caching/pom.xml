@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <artifactId>osgi-dependencies</artifactId>
+        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+		<version>0.13.0</version>
+	</parent>
+	
+	<artifactId>equinox-weaving-caching</artifactId>
+	<version>${osgi.equinox-weaving.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Equinox Weaving Caching</name>
+    <url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.equinox.weaving</groupId>
+            <artifactId>equinox-weaving-caching</artifactId>
+            <version>${equinox-weaving.version}</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/org.eclipse.equinox.weaving.caching_1.0.100.v20110502.jar</systemPath>
+        </dependency>
+    </dependencies>
+	
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <includeGroupIds>org.eclipse.equinox.weaving</includeGroupIds>
+                    <includeArtifactIds>equinox-weaving-caching</includeArtifactIds>
+                    <excludes>META-INF/MANIFEST.MF,META-INF/ECLIPSE*</excludes>
+<!--                     <excludes>nothing</excludes> -->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+<!--                     <manifestLocation>${project.build.directory}/notNeeded</manifestLocation> -->
+                    <instructions>
+                        <Bundle-Activator>
+                            org.eclipse.equinox.weaving.internal.caching.Activator
+                        </Bundle-Activator>
+                        <Bundle-RequiredExecutionEnvironment>
+                            J2SE-1.5
+                        </Bundle-RequiredExecutionEnvironment>
+                        <Export-package>
+                            org.eclipse.equinox.*,
+                            !*
+                        </Export-package>
+                        <Import-Package>
+                            com.ibm.oti.shared;resolution:="optional",
+                            org.eclipse.osgi.service.datalocation;version="[1.0,2)",
+                            org.eclipse.osgi.service.*;version="[1.0,2)",
+                            org.osgi.framework.*;version="[1.4,2]",
+                            *
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+	
+</project>

@@ -112,12 +112,12 @@
 				<executions>
 					<execution>
 						<id>copy-resources</id>
-						<phase>generate-sources</phase>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/sources</outputDirectory>
+							<outputDirectory>${unpack.source.directory}</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/src/main/java</directory>
@@ -150,4 +150,5 @@
             </plugin>
         </plugins>
     </build>
+    
 </project>
