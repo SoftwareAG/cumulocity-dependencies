@@ -36,10 +36,15 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
-                        <Export-package>
+                        <Export-Package>
+                            org.aspectj.asm.internal.*,
+                            org.aspectj.internal.*,
+                            org.aspectj.lang.internal.*,
+                            org.aspectj.runtime.internal.*,
+                            org.aspectj.weaver.internal.*,
                             org.aspectj.*,
                             !*
-                        </Export-package>
+                        </Export-Package>
                         <Import-Package>
                             !org.aspectj.*,
                             com.bea.*;resolution:="optional",

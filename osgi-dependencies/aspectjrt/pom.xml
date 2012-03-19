@@ -36,10 +36,10 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
-                        <Export-package>
+                        <Export-Package>
                             org.aspectj.*,
                             !*
-                        </Export-package>
+                        </Export-Package>
                         <Import-Package>
                             !org.aspectj.*,
                             *
