@@ -56,7 +56,7 @@
 				<dependency>
 					<groupId>com.nsn.cumulocity.dependencies.kpi</groupId>
 					<artifactId>kpi-logger</artifactId>
-					<version>0.13.0</version>
+					<version>${parent.version}</version>
 				</dependency>
                 <dependency>
 		            <groupId>org.aspectj</groupId>
