@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.13.1</version>
+		<version>0.13.2-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>liquibase-core</artifactId>
