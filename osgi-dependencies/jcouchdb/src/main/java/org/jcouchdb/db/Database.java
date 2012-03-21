@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jcouchdb.document.AbstractViewResult;
 import org.jcouchdb.document.BaseDocument;
@@ -346,7 +348,96 @@ public class Database
                 documentHelper.getRevision(doc) + " )");
         }
 
-        createOrUpdateDocument(doc);
+        // FIXME : createOrUpdateDocument inlined and simplified so that special handling can be added for the
+        // 409 response during creation. This is expected to be a TEMPORARY FIX until BigCouch is fixed
+        // See MTM-3599
+        Response resp = null;
+        try
+        {
+            for (DatabaseEventHandler eventHandler : eventHandlers)
+            {
+                try
+                {
+                    eventHandler.creatingDocument(this, doc);
+                }
+                catch (Exception e)
+                {
+                    throw new DatabaseEventException(e);
+                }
+            }
+
+            final String json = jsonGenerator.forValue(doc);
+            resp = server.post("/" + name + "/", json);
+
+            for (DatabaseEventHandler eventHandler : eventHandlers)
+            {
+                try
+                {
+                    // MTM-3599 - if we got a 409 from the post, above, then resp will
+                    // not be what is expected. In C8y we don't use the eventHandlers (right?)
+                    eventHandler.createdDocument(this, doc, resp);
+                }
+                catch (Exception e)
+                {
+                    throw new DatabaseEventException(e);
+                }
+            }
+
+            if (resp.getCode() == 409)
+            {
+                if(documentHelper.getId(doc) != null){
+                    // document was created despite getting the 409 -
+                    // this is the BigCouch bug we are trying to "hide"
+                    // if the doc was created then we return success
+                    resp = server.get("/" + name + "/" + encodeURL(documentHelper.getId(doc)));
+
+                    Pattern r = Pattern.compile("\"_rev\"\\s*:\\s*\"(.*?)\"");
+
+                    Matcher m = r.matcher(resp.getContentAsString());
+
+                    if(resp.isOk() && m.find()){
+                        String revision = m.group(1);
+                        documentHelper.setRevision(doc, revision);
+                        return;
+                    }
+                    else {
+                        throw new UpdateConflictException("error creating document "+ json + "in database '" + name + "'", resp);
+                    }
+                }
+                else {
+                    throw new UpdateConflictException("error creating document "+ json + "in database '" + name + "'", resp);
+                }
+            }
+            else if (resp.getCode() == 403)
+            {
+                throw new DocumentValidationException(resp);
+            }
+            else if (!resp.isOk())
+            {
+                throw new DataAccessException("error creating document " + json + "in database '" + name + "'", resp);
+            }
+            DocumentInfo info = null;
+            try {
+            	info = resp.getContentAsBean(DocumentInfo.class);
+            } catch (RuntimeException e) {
+                log.error("Error parsing DocumentInfo. Response from couch as bytes: " + 
+            		Arrays.toString(resp.getContent()));
+                log.error("Response from couch as String: " +
+            		new String(resp.getContent()));
+                throw e;
+            }
+
+            documentHelper.setId(doc, info.getId());
+            documentHelper.setRevision(doc, info.getRevision());
+
+        }
+        finally
+        {
+            if (resp != null)
+            {
+                resp.destroy();
+            }
+        }
     }
 
     /**
