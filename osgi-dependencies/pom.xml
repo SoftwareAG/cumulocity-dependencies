@@ -53,7 +53,7 @@
     </modules>
 
     <properties>
-        <release.version>4.2</release.version>
+        <release.version>4</release.version>
         <activation.version>1.1</activation.version>
         <osgi.activation.version>${activation.version}-${release.version}</osgi.activation.version>
         <antlr.version>2.7.7</antlr.version>

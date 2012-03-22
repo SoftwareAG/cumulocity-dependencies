@@ -104,7 +104,7 @@
                 <configuration>
                     <includeGroupIds>com.google.code.jcouchdb</includeGroupIds>
                     <includeArtifactIds>jcouchdb</includeArtifactIds>
-					<excludes>META-INF/MANIFEST.MF,org/jcouchdb/document/ChangeNotification.class</excludes>
+					<excludes>META-INF/MANIFEST.MF,org/jcouchdb/document/ChangeNotification.class,org/jcouchdb/db/Database.class</excludes>
                 </configuration>
             </plugin>
 			<plugin>

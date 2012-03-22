@@ -2,15 +2,15 @@ package org.jcouchdb.db;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import org.jcouchdb.db.Response;
 import org.jcouchdb.document.AbstractViewResult;
 import org.jcouchdb.document.BaseDocument;
 import org.jcouchdb.document.ChangeListener;
@@ -20,6 +20,7 @@ import org.jcouchdb.document.DocumentHelper;
 import org.jcouchdb.document.DocumentInfo;
 import org.jcouchdb.document.DocumentPropertyHandler;
 import org.jcouchdb.document.PollingResults;
+import org.jcouchdb.document.ValueRow;
 import org.jcouchdb.document.ViewAndDocumentsResult;
 import org.jcouchdb.document.ViewResult;
 import org.jcouchdb.exception.DataAccessException;
@@ -338,30 +339,22 @@ public class Database
      * @throws IllegalStateException if the document already had a revision set
      * @throws UpdateConflictException  if there's an update conflict while updating the document
      */
-    public void createDocument(Object doc)
-    {
+    public void createDocument(Object doc) {
         Assert.notNull(doc, "document cannot be null");
 
-        if (documentHelper.getRevision(doc) != null)
-        {
-            throw new IllegalStateException("Newly created docs can't have a revision ( is = " +
-                documentHelper.getRevision(doc) + " )");
+        if (documentHelper.getRevision(doc) != null) {
+            throw new IllegalStateException("Newly created docs can't have a revision ( is = " + documentHelper.getRevision(doc) + " )");
         }
 
         // FIXME : createOrUpdateDocument inlined and simplified so that special handling can be added for the
         // 409 response during creation. This is expected to be a TEMPORARY FIX until BigCouch is fixed
         // See MTM-3599
         Response resp = null;
-        try
-        {
-            for (DatabaseEventHandler eventHandler : eventHandlers)
-            {
-                try
-                {
+        try {
+            for (DatabaseEventHandler eventHandler : eventHandlers) {
+                try {
                     eventHandler.creatingDocument(this, doc);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     throw new DatabaseEventException(e);
                 }
             }
@@ -369,75 +362,99 @@ public class Database
             final String json = jsonGenerator.forValue(doc);
             resp = server.post("/" + name + "/", json);
 
-            for (DatabaseEventHandler eventHandler : eventHandlers)
-            {
-                try
-                {
+            for (DatabaseEventHandler eventHandler : eventHandlers) {
+                try {
                     // MTM-3599 - if we got a 409 from the post, above, then resp will
                     // not be what is expected. In C8y we don't use the eventHandlers (right?)
                     eventHandler.createdDocument(this, doc, resp);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     throw new DatabaseEventException(e);
                 }
             }
 
-            if (resp.getCode() == 409)
-            {
-                if(documentHelper.getId(doc) != null){
-                    // document was created despite getting the 409 -
-                    // this is the BigCouch bug we are trying to "hide"
-                    // if the doc was created then we return success
-                    resp = server.get("/" + name + "/" + encodeURL(documentHelper.getId(doc)));
-
-                    Pattern r = Pattern.compile("\"_rev\"\\s*:\\s*\"(.*?)\"");
-
-                    Matcher m = r.matcher(resp.getContentAsString());
-
-                    if(resp.isOk() && m.find()){
-                        String revision = m.group(1);
-                        documentHelper.setRevision(doc, revision);
-                        return;
-                    }
-                    else {
-                        throw new UpdateConflictException("error creating document "+ json + "in database '" + name + "'", resp);
-                    }
-                }
-                else {
-                    throw new UpdateConflictException("error creating document "+ json + "in database '" + name + "'", resp);
-                }
-            }
-            else if (resp.getCode() == 403)
-            {
+            if (resp.getCode() == 409) {
+                handleConflictError(doc, resp, json);
+                return;
+            } else if (resp.getCode() == 403) {
                 throw new DocumentValidationException(resp);
-            }
-            else if (!resp.isOk())
-            {
+            } else if (!resp.isOk()) {
                 throw new DataAccessException("error creating document " + json + "in database '" + name + "'", resp);
             }
             DocumentInfo info = null;
             try {
-            	info = resp.getContentAsBean(DocumentInfo.class);
+                info = resp.getContentAsBean(DocumentInfo.class);
             } catch (RuntimeException e) {
-                log.error("Error parsing DocumentInfo. Response from couch as bytes: " + 
-            		Arrays.toString(resp.getContent()));
-                log.error("Response from couch as String: " +
-            		new String(resp.getContent()));
+                log.error("Error parsing DocumentInfo. Response from couch as bytes: " + Arrays.toString(resp.getContent()));
+                log.error("Response from couch as String: " + new String(resp.getContent()));
                 throw e;
             }
 
             documentHelper.setId(doc, info.getId());
             documentHelper.setRevision(doc, info.getRevision());
 
-        }
-        finally
-        {
-            if (resp != null)
-            {
+        } finally {
+            if (resp != null) {
                 resp.destroy();
             }
         }
+    }
+
+    private void handleConflictError(Object doc, Response resp, final String json) {
+        log.error("!!! Retrieved 409 from BigCouch");
+
+        ViewResult<Object> viewResult = queryViewByKeys("measurements/measurementsById", Object.class, Arrays.asList(getFieldValue(doc, "id")), null,
+                null);
+
+        if (viewResult != null) {
+            verifyRetrievedDocument(doc, resp, json, viewResult);
+        } else {
+            throw new UpdateConflictException("error creating document " + json + "in database '" + name + "'", resp);
+        }
+    }
+
+    private void verifyRetrievedDocument(Object doc, Response resp, final String json, ViewResult<Object> viewResult) {
+        Object result = null;
+        for (ValueRow<Object> row : viewResult.getRows()) {
+            result = row.getValue();
+            log.info("!!! Result " + result);
+        }
+        if (hasIdAndRev(result)) {
+                documentHelper.setId(doc, documentHelper.getId(result));
+                documentHelper.setRevision(doc, documentHelper.getRevision(result));
+        } else {
+            throw new UpdateConflictException("error creating document " + json + "in database '" + name + "'", resp);
+        }
+    }
+
+    private boolean hasIdAndRev(Object result) {
+        return result != null && documentHelper.getId(result) != null && documentHelper.getRevision(result) != null;
+    }
+
+    private Object getFieldValue(Object target, String fieldName) {
+        try {
+            Assert.notNull(target, "Object must not be null");
+            Field field = findField(target.getClass(), fieldName);
+            if (field != null) {
+                field.setAccessible(true);
+            }
+            return field.get(target);
+        } catch (Exception e) {
+            throw new RuntimeException("Error while getting field Value via reflection");
+        }
+    }
+    
+    private Field findField(Class<?> clazz, String name) {
+        Class<?> searchType = clazz;
+        while (!Object.class.equals(searchType) && searchType != null) {
+            Field[] fields = searchType.getDeclaredFields();
+            for (Field field : fields) {
+                if (name.equals(field.getName())) {
+                    return field;
+                }
+            }
+            searchType = searchType.getSuperclass();
+        }
+        return null;
     }
 
     /**
