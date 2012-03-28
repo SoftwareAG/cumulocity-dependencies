@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>0.13.2-SNAPSHOT</version>
+        <version>0.14.0</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -53,7 +53,7 @@
     </modules>
 
     <properties>
-        <release.version>4.1</release.version>
+        <release.version>6</release.version>
         <activation.version>1.1</activation.version>
         <osgi.activation.version>${activation.version}-${release.version}</osgi.activation.version>
         <antlr.version>2.7.7</antlr.version>
@@ -64,7 +64,6 @@
         <osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${release.version}</osgi.apache-log4j-extras.version>
         <asm.version>3.1</asm.version>
         <osgi.asm.version>${asm.version}-${release.version}</osgi.asm.version>
-        <aspectj.version>1.6.8</aspectj.version>
         <osgi.aspectj.version>${aspectj.version}-${release.version}</osgi.aspectj.version>
         <cglib-nodep.version>2.2</cglib-nodep.version>
         <osgi.cglib-nodep.version>${cglib-nodep.version}-${release.version}</osgi.cglib-nodep.version>
@@ -112,16 +111,20 @@
         <osgi.stax-api.version>${stax-api.version}-${release.version}</osgi.stax-api.version>
         <svenson.version>1.3.8</svenson.version>
         <osgi.svenson.version>${svenson.version}-${release.version}</osgi.svenson.version>
+        
+        <unpack.source.directory>${project.build.directory}/sources</unpack.source.directory>
+        <unpack.target.directory>${project.build.outputDirectory}</unpack.target.directory>
+        <unpack.excludes>META-INF/MANIFEST.MF</unpack.excludes>
     </properties>
 
     <build>
-        <sourceDirectory>${project.build.directory}/sources</sourceDirectory>
+        <sourceDirectory>${unpack.source.directory}</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <excludes>META-INF/MANIFEST.MF</excludes>
+                    <excludes>${unpack.excludes}</excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -131,19 +134,19 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <outputDirectory>${unpack.target.directory}</outputDirectory>
                         </configuration>
                     </execution>
                     <execution>
                         <id>unpack-dependencies-sources</id>
-                        <phase>generate-sources</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
                             <classifier>sources</classifier>
                             <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
-                            <outputDirectory>${project.build.directory}/sources</outputDirectory>
+                            <outputDirectory>${unpack.source.directory}</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
