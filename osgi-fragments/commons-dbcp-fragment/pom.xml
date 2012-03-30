@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        	<artifactId>osgi-fragments</artifactId>
+		<artifactId>osgi-fragments</artifactId>
 		<version>0.14.0-SNAPSHOT</version>
 	</parent>
 
@@ -25,15 +25,8 @@
 						<DynamicImport-Package>*</DynamicImport-Package>
 					</instructions>
 				</configuration>
-				<executions>
-					<execution>
-						<id>osgi-bundle</id>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>

@@ -18,6 +18,7 @@
 	<modules>
 		<module>commons-dbcp-fragment</module>
 		<module>spring-jdbc-fragment</module>
+		<module>spring-aop-fragment</module>
 	</modules>
 	
 </project>
