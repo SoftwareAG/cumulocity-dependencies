@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
 		<artifactId>cumulocity-dependencies</artifactId>
-		<version>0.14.0-SNAPSHOT</version>
+		<version>0.15.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -18,7 +18,6 @@
 	<modules>
 		<module>commons-dbcp-fragment</module>
 		<module>spring-jdbc-fragment</module>
-		<module>spring-aop-fragment</module>
 	</modules>
 	
 </project>
