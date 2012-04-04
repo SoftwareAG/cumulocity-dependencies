@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Arrays;
 
 import org.jcouchdb.db.Response;
+import org.jcouchdb.db.Server;
 import org.jcouchdb.document.AbstractViewResult;
 import org.jcouchdb.document.BaseDocument;
 import org.jcouchdb.document.ChangeListener;
@@ -659,6 +660,29 @@ public class Database
                 }
             }
 
+            // double check if documents was sucessfully stored
+            Database d = (Database)doc;
+            String databaseName = d.getName();
+            
+            String serverURI = "http://localhost:5984";
+       	 	String id = "2"; 
+            
+//            d.getServer().getServerURI();
+//            zrobic d.getServerURI();
+            
+            //pobrac ID
+            
+            String viewUri = viewHelper.findUriForView(databaseName, serverURI, id);
+            
+            //MOZE SERVER URI NIEPOTRZEBNE 
+            resp = server.get(uri);
+            
+//            process resp
+            
+            
+            ///////////
+            
+            
             final String json = jsonGenerator.forValue(doc);
             if (isCreate)
             {
@@ -1465,5 +1489,40 @@ public class Database
         {
             log.error("Interrupted while waiting for ContinuousChangesDriver to start", e);
         }
+    }
+    
+    private class ViewHelper {
+
+    	private final Map<String, String> Views = new HashMap<String, String>();
+    	
+    	ViewHelper(){
+    		Views.put("pmdata", "-pmdata/_design/measurements/_view/measurementsById?key=");
+    		Views.put("cmdata", "-cmdata/_design/cm/_view/getMOById");
+    		Views.put("audits", "-audits/_design/auditRecords/_view/auditRecordsById");
+    		Views.put("alarms", "-alarms/_design/alarms/_view/alarmsById");
+    		Views.put("events", "-events/_design/events/_view/eventsById");
+    		Views.put("operations", "-operations/_design/operations/_view/operationsById");
+    		Views.put("fmdata", "-fmdata/_design/fm/_view/fmById");
+    	}
+    	
+    	private String findViewName(String databaseName) {
+    		return Views.get(extractDatabaseName(databaseName));
+    	}
+    	
+    	private String extractDatabaseName(String databaseName){
+    		return databaseName.substring(databaseName.indexOf('-')+1);
+    	}
+    	
+    	private String extractTenantName(String databaseName){
+    		return databaseName.substring(0, databaseName.indexOf('-'));
+    	}
+
+    	public String findUriForView(String databaseName, String serverURI, String id) {
+    		String tenantName = extractTenantName(databaseName);
+    		String viewName = findViewName(databaseName);
+    		
+    		//we should return URI in the form of http://127.0.0.1:5984/<tenant-name>-pmdata/_design/measurements/_view/measurementsById?key='"1"'
+    		return serverURI + '/' + tenantName + viewName + "'\"" + id + "\"'";
+    	}
     }
 }
