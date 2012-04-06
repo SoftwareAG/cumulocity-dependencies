@@ -403,7 +403,7 @@ public class Database
     private void handleConflictError(Object doc, Response resp, final String json) {
         log.error("!!! Retrieved 409 from BigCouch");
 
-        ViewResult<Object> viewResult = queryViewByKeys("measurements/measurementsById", Object.class, Arrays.asList(getFieldValue(doc, "id")), null,
+        ViewResult<Object> viewResult = queryViewByKeys(ViewHelper.findViewName(this.getName()), Object.class, Arrays.asList(getFieldValue(doc, "id")), null,
                 null);
 
         if (viewResult != null) {
@@ -660,29 +660,6 @@ public class Database
                 }
             }
 
-            // double check if documents was sucessfully stored
-            Database d = (Database)doc;
-            String databaseName = d.getName();
-            
-            String serverURI = "http://localhost:5984";
-       	 	String id = "2"; 
-            
-//            d.getServer().getServerURI();
-//            zrobic d.getServerURI();
-            
-            //pobrac ID
-            
-            String viewUri = viewHelper.findUriForView(databaseName, serverURI, id);
-            
-            //MOZE SERVER URI NIEPOTRZEBNE 
-            resp = server.get(uri);
-            
-//            process resp
-            
-            
-            ///////////
-            
-            
             final String json = jsonGenerator.forValue(doc);
             if (isCreate)
             {
@@ -1033,6 +1010,9 @@ public class Database
      */
     public <V> ViewResult<V> queryViewByKeys(String viewName, Class<V> cls, List<?> keys, Options options, JSONParser parser)
     {
+    	if (viewName == null) {
+    		return null;
+    	}
         Map<String, Object> m = new HashMap<String, Object>();
         m.put("keys", keys);
         return (ViewResult<V>)queryViewInternal(viewURIFromName(viewName), cls, null, options, parser, m);
@@ -1491,38 +1471,26 @@ public class Database
         }
     }
     
-    private class ViewHelper {
+    private static class ViewHelper {
 
-    	private final Map<String, String> Views = new HashMap<String, String>();
+    	private static final Map<String, String> Views = new HashMap<String, String>();
     	
-    	ViewHelper(){
-    		Views.put("pmdata", "-pmdata/_design/measurements/_view/measurementsById?key=");
-    		Views.put("cmdata", "-cmdata/_design/cm/_view/getMOById");
-    		Views.put("audits", "-audits/_design/auditRecords/_view/auditRecordsById");
-    		Views.put("alarms", "-alarms/_design/alarms/_view/alarmsById");
-    		Views.put("events", "-events/_design/events/_view/eventsById");
-    		Views.put("operations", "-operations/_design/operations/_view/operationsById");
-    		Views.put("fmdata", "-fmdata/_design/fm/_view/fmById");
+    	static {
+    		Views.put("pmdata", "measurementsById/measurementsById");
+    		Views.put("cmdata", "getMOById/getMOById");
+    		Views.put("audits", "auditRecords/auditRecordsById");
+    		Views.put("alarms", "alarmsById/alarmsById");
+    		Views.put("events", "eventsById/eventsById");
+    		Views.put("operations", "operations/operationsById");
+    		Views.put("fmdata", "fm/fmById");
     	}
     	
-    	private String findViewName(String databaseName) {
+    	public static String findViewName(String databaseName) {
     		return Views.get(extractDatabaseName(databaseName));
     	}
     	
-    	private String extractDatabaseName(String databaseName){
+    	private static String extractDatabaseName(String databaseName){
     		return databaseName.substring(databaseName.indexOf('-')+1);
-    	}
-    	
-    	private String extractTenantName(String databaseName){
-    		return databaseName.substring(0, databaseName.indexOf('-'));
-    	}
-
-    	public String findUriForView(String databaseName, String serverURI, String id) {
-    		String tenantName = extractTenantName(databaseName);
-    		String viewName = findViewName(databaseName);
-    		
-    		//we should return URI in the form of http://127.0.0.1:5984/<tenant-name>-pmdata/_design/measurements/_view/measurementsById?key='"1"'
-    		return serverURI + '/' + tenantName + viewName + "'\"" + id + "\"'";
     	}
     }
 }
