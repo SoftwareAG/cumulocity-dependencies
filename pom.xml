@@ -3,7 +3,7 @@
 	
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>0.13.2-SNAPSHOT</version>
+	<version>0.15.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 	
@@ -17,20 +17,119 @@
         <maven.compiler.target>1.6</maven.compiler.target>
         
         <nexus.port>443</nexus.port>
+        
+        <aspectj.version>1.6.12</aspectj.version>
+        <slf4j.version>1.6.1</slf4j.version>
+        <spring.version>3.0.5.RELEASE</spring.version>
+        
+        <hamcrest.version>1.1</hamcrest.version>
+        <junit.version>4.8.2</junit.version>
+        <mockito.version>1.8.5</mockito.version>
+        <powermock.version>1.4.9</powermock.version>
     </properties>
 	
 	<modules>
+	    <module>kpi-logger</module>
 	    <module>osgi-dependencies</module>
 	    <module>osgi-fragments</module>
 	</modules>
 	
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-all</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-api-mockito</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${powermock.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>            
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>            
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+                <exclusions>
+                    <!-- Exclude Commons Logging in favor of SLF4j -->
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+	
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+            </plugin>
+        </plugins>
+        
         <pluginManagement>
             <plugins>
+	            
 	            <plugin>
-	                <groupId>org.apache.maven.plugins</groupId>
-	                <artifactId>maven-resources-plugin</artifactId>
-	                <version>2.5</version>
+	                <groupId>org.apache.felix</groupId>
+	                <artifactId>maven-bundle-plugin</artifactId>
+	                <version>2.3.5</version>
+                    <executions>
+                        <execution>
+                            <id>bundle-manifest</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>manifest</goal>
+                            </goals>
+                        </execution>
+                    </executions>
 	            </plugin>
 	            
 	            <plugin>
@@ -44,17 +143,22 @@
 	                <artifactId>maven-compiler-plugin</artifactId>
 	                <version>2.3.2</version>
 	            </plugin>
-	            
-	            <plugin>
-	                <groupId>org.apache.felix</groupId>
-	                <artifactId>maven-bundle-plugin</artifactId>
-	                <version>2.3.5</version>
-	            </plugin>
 	
 	            <plugin>
 	                <groupId>org.apache.maven.plugins</groupId>
 	                <artifactId>maven-jar-plugin</artifactId>
 	                <version>2.3.1</version>
+                    <configuration>
+                        <archive>
+                            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
+	            </plugin>
+            
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-resources-plugin</artifactId>
+	                <version>2.5</version>
 	            </plugin>
 	                    
 	            <plugin>
@@ -62,6 +166,33 @@
 	                <artifactId>maven-source-plugin</artifactId>
 	                <version>2.1.2</version>
 	            </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>aspectj-maven-plugin</artifactId>
+                    <version>1.4</version>
+                    <executions>
+                        <execution>
+                            <id>kpi-weaver</id>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                            <configuration>
+                                <complianceLevel>1.6</complianceLevel>
+                                <showWeaveInfo>true</showWeaveInfo>
+                                <verbose>true</verbose>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.aspectj</groupId>
+                            <artifactId>aspectjtools</artifactId>
+                            <version>${aspectj.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
             
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>

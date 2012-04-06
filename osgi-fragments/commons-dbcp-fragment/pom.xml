@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
         	<artifactId>osgi-fragments</artifactId>
-		<version>0.13.2-SNAPSHOT</version>
+		<version>0.15.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>commons-dbcp-fragment</artifactId>
@@ -25,15 +25,8 @@
 						<DynamicImport-Package>*</DynamicImport-Package>
 					</instructions>
 				</configuration>
-				<executions>
-					<execution>
-						<id>osgi-bundle</id>
-						<goals>
-							<goal>bundle</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>
