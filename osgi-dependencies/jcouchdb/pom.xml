@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.14.2</version>
+		<version>0.15.0</version>
 	</parent>
 	
 	<artifactId>jcouchdb</artifactId>
@@ -143,7 +143,7 @@
                 <configuration>
                     <includeGroupIds>com.google.code.jcouchdb</includeGroupIds>
                     <includeArtifactIds>jcouchdb</includeArtifactIds>
-					<excludes>META-INF/MANIFEST.MF,org/jcouchdb/document/ChangeNotification.class,org/jcouchdb/document/DocumentInfo.class</excludes>
+					<excludes>META-INF/MANIFEST.MF,org/jcouchdb/document/ChangeNotification.class,org/jcouchdb/document/DocumentInfo.class,org/jcouchdb/db/Database.class</excludes>
                 </configuration>
             </plugin>
 			<plugin>

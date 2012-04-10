@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.14.2</version>
+		<version>0.15.0</version>
 	</parent>
 	
 	<artifactId>aspectjweaver</artifactId>
@@ -51,6 +51,7 @@
                             org.objectweb.*;resolution:="optional",
                             *
                         </Import-Package>
+                        <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
                 </configuration>
             </plugin>

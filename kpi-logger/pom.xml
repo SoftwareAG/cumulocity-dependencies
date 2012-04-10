@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>cumulocity-dependencies</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
-		<version>0.14.2</version>
+		<version>0.15.0</version>
 	</parent>
 	
 	<groupId>com.nsn.cumulocity.dependencies.kpi</groupId>
@@ -82,14 +82,6 @@
                         </Import-Package>
                     </instructions>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>osgi-bundle</id>
-                        <goals>
-                            <goal>bundle</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
