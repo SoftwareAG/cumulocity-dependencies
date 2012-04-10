@@ -403,7 +403,7 @@ public class Database
     private void handleConflictError(Object doc, Response resp, final String json) {
         log.error("!!! Retrieved 409 from BigCouch");
 
-        ViewResult<Object> viewResult = queryViewByKeys(ViewHelper.findViewName(this.getName()), Object.class, Arrays.asList(getFieldValue(doc, "id")), null,
+        ViewResult<Object> viewResult = queryViewByKeys("commonByGId/commonByGId", Object.class, Arrays.asList(getFieldValue(doc, "id")), null,
                 null);
 
         if (viewResult != null) {
@@ -1469,28 +1469,5 @@ public class Database
         {
             log.error("Interrupted while waiting for ContinuousChangesDriver to start", e);
         }
-    }
-    
-    private static class ViewHelper {
-
-    	private static final Map<String, String> Views = new HashMap<String, String>();
-    	
-    	static {
-    		Views.put("pmdata", "measurementsById/measurementsById");
-    		Views.put("cmdata", "getMOById/getMOById");
-    		Views.put("audits", "auditRecords/auditRecordsById");
-    		Views.put("alarms", "alarmsById/alarmsById");
-    		Views.put("events", "eventsById/eventsById");
-    		Views.put("operations", "operations/operationsById");
-    		Views.put("fmdata", "fm/fmById");
-    	}
-    	
-    	public static String findViewName(String databaseName) {
-    		return Views.get(extractDatabaseName(databaseName));
-    	}
-    	
-    	private static String extractDatabaseName(String databaseName){
-    		return databaseName.substring(databaseName.indexOf('-')+1);
-    	}
     }
 }
