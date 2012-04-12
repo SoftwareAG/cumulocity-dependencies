@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.15.4</version>
+		<version>0.16.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>cglib-nodep</artifactId>
