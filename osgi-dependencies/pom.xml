@@ -113,7 +113,10 @@
         
         <unpack.source.directory>${project.build.directory}/sources</unpack.source.directory>
         <unpack.target.directory>${project.build.outputDirectory}</unpack.target.directory>
-        <unpack.excludes>META-INF/MANIFEST.MF</unpack.excludes>
+        <unpack.excludes>
+        	META-INF/MANIFEST.MF,
+			META-INF/maven/**/*
+        </unpack.excludes>
     </properties>
 
     <build>

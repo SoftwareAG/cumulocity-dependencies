@@ -1,108 +1,109 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
-        <artifactId>osgi-dependencies</artifactId>
-        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+		<artifactId>osgi-dependencies</artifactId>
+		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
 		<version>0.18.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>jcouchdb</artifactId>
 	<version>${osgi.jcouchdb.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JCouchDB</name>
-    <url>http://startups.jira.com/wiki/display/MTM/Home</url>
-    
-    <properties>
-	    <hamcrest.version>1.1</hamcrest.version>
-	    <junit.version>4.8.2</junit.version>
-	    <mockito.version>1.8.5</mockito.version>
-	    <powermock.version>1.4.9</powermock.version>
+	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+	<properties>
+		<hamcrest.version>1.1</hamcrest.version>
+		<junit.version>4.8.2</junit.version>
+		<mockito.version>1.8.5</mockito.version>
+		<powermock.version>1.4.9</powermock.version>
 	</properties>
-	
-    <dependencies>
-        <dependency>
-		    <groupId>com.google.code.jcouchdb</groupId>
-		    <artifactId>jcouchdb</artifactId>
-		    <version>${jcouchdb.version}</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-beanutils</groupId>
-                    <artifactId>commons-beanutils</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-codec</groupId>
-                    <artifactId>commons-codec</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-io</groupId>
-                    <artifactId>commons-io</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpclient</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpcore</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.code.svenson</groupId>
-                    <artifactId>svenson</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${osgi.commons-codec.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${osgi.httpclient.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>${osgi.httpcore.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>svenson</artifactId>
-            <version>${osgi.svenson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version>
-        </dependency>
-        
-	    <!--TEST DEPENDENCIES -->
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.jcouchdb</groupId>
+			<artifactId>jcouchdb</artifactId>
+			<version>${jcouchdb.version}</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-beanutils</groupId>
+					<artifactId>commons-beanutils</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-codec</groupId>
+					<artifactId>commons-codec</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>commons-io</groupId>
+					<artifactId>commons-io</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.code.svenson</groupId>
+					<artifactId>svenson</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>${osgi.commons-codec.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${osgi.httpclient.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>${osgi.httpcore.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+			<artifactId>svenson</artifactId>
+			<version>${osgi.svenson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<!--TEST DEPENDENCIES -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -110,42 +111,48 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>${hamcrest.version}</version>
-            <scope>test</scope>
-    	</dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-  	   </dependency>
-  	   <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-       </dependency>
-       <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-       </dependency>
-    </dependencies>
-	
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <includeGroupIds>com.google.code.jcouchdb</includeGroupIds>
-                    <includeArtifactIds>jcouchdb</includeArtifactIds>
-					<excludes>META-INF/MANIFEST.MF,org/jcouchdb/document/ChangeNotification.class,org/jcouchdb/document/DocumentInfo.class,org/jcouchdb/db/Database.class</excludes>
-                </configuration>
-            </plugin>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>${hamcrest.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<configuration>
+					<includeGroupIds>com.google.code.jcouchdb</includeGroupIds>
+					<includeArtifactIds>jcouchdb</includeArtifactIds>
+					<excludes>
+						META-INF/MANIFEST.MF,
+						META-INF/maven/**/*,
+						org/jcouchdb/document/ChangeNotification.class,
+						org/jcouchdb/document/DocumentInfo.class,
+						org/jcouchdb/db/Database.class
+					</excludes>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
@@ -175,19 +182,19 @@
 					</excludes>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <configuration>
-                    <instructions>
-                        <Import-Package>
-                            !com.google.code.jcouchdb.*,
-                            *
-                        </Import-Package>
-                    </instructions>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-    
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Import-Package>
+							!com.google.code.jcouchdb.*,
+							*
+						</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
