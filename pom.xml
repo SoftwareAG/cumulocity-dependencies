@@ -107,6 +107,14 @@
     </dependencyManagement>
 	
     <build>
+       <extensions>
+	      <!-- Enabling the use of sftp -->
+	      <extension>
+	        <groupId>org.apache.maven.wagon</groupId>
+	         <artifactId>wagon-ssh-external</artifactId>
+	         <version>1.0-beta-6</version>
+	      </extension>
+	    </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -242,5 +250,20 @@
             <url>https://nexus.cumulocity.com:${nexus.port}/nexus/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
+   <profiles>
+	<profile>
+		<id>publicDeployment</id>
+		<distributionManagement>
+		    <snapshotRepository>
+	    		<id>resources-snapshot</id>
+		 	<url>scpexe://resources.cumulocity.com/cumulocity/maven/repository-snapshots</url>
+		    </snapshotRepository>
+		    <repository>
+			<id>resources-release</id>
+			<url>scpexe://resources.cumulocity.com/cumulocity/maven/repository</url>
+		    </repository>
+	  </distributionManagement>
+	</profile>
+</profiles>
 	
 </project>
