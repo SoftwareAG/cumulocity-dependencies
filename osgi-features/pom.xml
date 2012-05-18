@@ -19,11 +19,14 @@
 	<modules>
 		<module>apache-cxf-features</module>
 		<module>aspectj-features</module>
+		<module>jersey-features</module>
 	</modules>
 	
 	<properties>
         <osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
         <osgi.cxf.version>${cxf.version}-${project.parent.version}</osgi.cxf.version>
+        <jersey.version>1.8</jersey.version>
+        <osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
 	</properties>
 
 	<build>
