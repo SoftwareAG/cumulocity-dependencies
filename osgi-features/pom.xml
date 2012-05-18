@@ -24,10 +24,8 @@
 	<properties>
         <cxf.version>2.4.2</cxf.version>
         <osgi.cxf.version>${cxf.version}-${project.parent.version}</osgi.cxf.version>
-        <jersey.version>1.8.0.0</jersey.version>
+        <jersey.version>1.8</jersey.version>
         <osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-        <jersey.apache.client.version>1.8.0.11</jersey.apache.client.version>
-        <osgi.jersey.apache.client.version>${jersey.apache.client.version}-${project.parent.version}</osgi.jersey.apache.client.version>
 	</properties>
 
 	<build>

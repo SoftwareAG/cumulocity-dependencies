@@ -45,8 +45,8 @@
         <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/jersey-core/${osgi.jersey.version}</bundle>
         <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/jersey-client/${osgi.jersey.version}</bundle>
     </feature>
-    <feature name="jersey-apache-client" version="${osgi.jersey.apache.client.version}">
-        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/jersey-apache-client/${osgi.jersey.apache.client.version}</bundle>
+    <feature name="jersey-apache-client" version="${osgi.jersey.version}">
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/jersey-apache-client/${osgi.jersey.version}</bundle>
     </feature>
 </features>
 
