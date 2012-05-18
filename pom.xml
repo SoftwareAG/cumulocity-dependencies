@@ -18,6 +18,7 @@
         
         <nexus.port>443</nexus.port>
         
+        <cxf.version>2.4.2</cxf.version>
         <aspectj.version>1.6.12</aspectj.version>
         <slf4j.version>1.6.1</slf4j.version>
         <spring.version>3.0.7.RELEASE</spring.version>

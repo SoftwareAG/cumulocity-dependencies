@@ -18,10 +18,11 @@
 
 	<modules>
 		<module>apache-cxf-features</module>
+		<module>aspectj-features</module>
 	</modules>
 	
 	<properties>
-        <cxf.version>2.4.2</cxf.version>
+        <osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
         <osgi.cxf.version>${cxf.version}-${project.parent.version}</osgi.cxf.version>
 	</properties>
 
