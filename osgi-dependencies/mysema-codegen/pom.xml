@@ -27,10 +27,6 @@
                     <groupId>net.sourceforge.findbugs</groupId>
                     <artifactId>jsr305</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>net.sourceforge.findbugs</groupId>
-                    <artifactId>annotations</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
 
@@ -47,11 +43,6 @@
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
             <artifactId>findbugs-jsr305</artifactId>
-            <version>${osgi.findbugs.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>findbugs-annotations</artifactId>
             <version>${osgi.findbugs.version}</version>
         </dependency>
     </dependencies>
