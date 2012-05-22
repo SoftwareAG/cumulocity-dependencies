@@ -16,4 +16,8 @@
 	<name>Cumulocity Dependencies :: OSGi Features :: AspectJ</name>
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
+    <properties>
+        <skip.features.xml>false</skip.features.xml>
+    </properties>
+
 </project>
