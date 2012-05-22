@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.18.0</version>
+		<version>0.18.1</version>
 	</parent>
 	
 	<artifactId>jersey-server</artifactId>
