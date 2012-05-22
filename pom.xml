@@ -3,7 +3,7 @@
 	
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>0.17.0</version>
+	<version>0.18.1</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 	
@@ -18,9 +18,10 @@
         
         <nexus.port>443</nexus.port>
         
+        <cxf.version>2.4.2</cxf.version>
         <aspectj.version>1.6.12</aspectj.version>
         <slf4j.version>1.6.1</slf4j.version>
-        <spring.version>3.0.5.RELEASE</spring.version>
+        <spring.version>3.0.7.RELEASE</spring.version>
         
         <hamcrest.version>1.1</hamcrest.version>
         <junit.version>4.8.2</junit.version>
@@ -32,6 +33,7 @@
 	    <module>kpi-logger</module>
 	    <module>osgi-dependencies</module>
 	    <module>osgi-fragments</module>
+	    <module>osgi-features</module>
 	</modules>
 	
     <dependencyManagement>
@@ -107,6 +109,15 @@
     </dependencyManagement>
 	
     <build>
+		<extensions>
+			<!-- Enabling the use of sftp -->
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh-external</artifactId>
+				<version>1.0-beta-6</version>
+			</extension>
+		</extensions>
+		
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
@@ -193,6 +204,12 @@
                         </dependency>
                     </dependencies>
                 </plugin>
+                
+                <plugin>
+	                <groupId>org.codehaus.mojo</groupId>
+	                <artifactId>build-helper-maven-plugin</artifactId>
+	                <version>1.7</version>
+                </plugin>
             
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
@@ -242,5 +259,20 @@
             <url>https://nexus.cumulocity.com:${nexus.port}/nexus/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
+   <profiles>
+	<profile>
+		<id>publicDeployment</id>
+		<distributionManagement>
+		    <snapshotRepository>
+	    		<id>resources-snapshot</id>
+		 	<url>scpexe://resources.cumulocity.com/cumulocity/maven/repository-snapshots</url>
+		    </snapshotRepository>
+		    <repository>
+			<id>resources-release</id>
+			<url>scpexe://resources.cumulocity.com/cumulocity/maven/repository</url>
+		    </repository>
+	  </distributionManagement>
+	</profile>
+</profiles>
 	
 </project>

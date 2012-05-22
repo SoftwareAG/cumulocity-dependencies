@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.17.0</version>
+		<version>0.18.1</version>
 	</parent>
 	
 	<artifactId>dozer</artifactId>
@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
 			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer-osgi</artifactId>
+			<artifactId>dozer</artifactId>
 			<version>${dozer.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -55,43 +55,25 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
                     <includeGroupIds>net.sf.dozer</includeGroupIds>
-                    <includeArtifactIds>dozer-osgi</includeArtifactIds>
-					<excludes>org/dozer/MappingProcessor.class</excludes>
+                    <includeArtifactIds>dozer</includeArtifactIds>
+					<excludes>
+						META-INF/MANIFEST.MF,
+						META-INF/maven/**/*,
+						org/dozer/MappingProcessor.class
+					</excludes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>alt-unpack-dependencies-sources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>net.sf.dozer</groupId>
-                                    <artifactId>dozer</artifactId>
-                                    <version>${dozer.version}</version>
-                                    <type>jar</type>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                            </artifactItems>
-                            <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
-                            <outputDirectory>${project.build.directory}/sources</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>copy-resources</id>
-						<phase>generate-sources</phase>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/sources</outputDirectory>
+							<outputDirectory>${unpack.source.directory}</outputDirectory>
 							<resources>
 								<resource>
 									<directory>${basedir}/src/main/java</directory>
@@ -110,19 +92,21 @@
 					</excludes>
 				</configuration>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <configuration>
-                	<manifestLocation>${project.build.directory}/notNeeded</manifestLocation>
-                    <instructions>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
                         <Import-Package>
                             !org.dozer.*,
+                            org.hibernate.proxy.*;resolution:="optional",
+                            org.springframework.beans.factory.*;resolution:="optional",
+                            org.springframework.core.io.*;resolution:="optional",
                             *
                         </Import-Package>
-                    </instructions>
-                </configuration>
-            </plugin>
+					</instructions>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 </project>
