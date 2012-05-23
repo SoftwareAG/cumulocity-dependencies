@@ -21,6 +21,8 @@
 		<module>aspectj-features</module>
 		<module>jersey-features</module>
 		<module>postgresql-features</module>
+		<module>eclipselink-features</module>
+		<module>kpi-logger-features</module>
 	</modules>
 
 	<properties>
