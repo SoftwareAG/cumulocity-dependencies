@@ -37,7 +37,7 @@
     </properties>
 	
 	<modules>
-	    <module>cumulocity-resource-bundles</module>
+	    <module>cumulocity-sdk-resource-bundles</module>
 	    <module>kpi-logger</module>
 	    <module>osgi-dependencies</module>
 	    <module>osgi-fragments</module>
