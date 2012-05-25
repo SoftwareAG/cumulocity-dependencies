@@ -6,6 +6,11 @@
 	<version>0.19.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
+
+	    <organization>
+		<name>Nokia Siemens Networks</name>
+		<url>http://nokiasiemensnetworks.com</url>
+	    </organization>
 	
 	<scm>
 	    <connection>scm:hg:https://bitbucket.org/m2m/cumulocity-dependencies</connection>
@@ -32,6 +37,7 @@
     </properties>
 	
 	<modules>
+	    <module>cumulocity-resource-bundles</module>
 	    <module>kpi-logger</module>
 	    <module>osgi-dependencies</module>
 	    <module>osgi-fragments</module>
