@@ -23,12 +23,21 @@
         
         <nexus.port>443</nexus.port>
         
+        <cglib-nodep.version>2.2</cglib-nodep.version>
+        <osgi.cglib-nodep.version>${cglib-nodep.version}-${version}</osgi.cglib-nodep.version>
+
+        <aries.version>0.3</aries.version>
+        <aries.blueprint.version>0.3.1</aries.blueprint.version>
         <cxf.version>2.4.2</cxf.version>
         <aspectj.version>1.6.12</aspectj.version>
         <eclipselink.version>2.2.1</eclipselink.version>
+        <jetty.version>7.4.2.v20110526</jetty.version>
+        <karaf.version>2.2.2</karaf.version>
+        <pax.web.version>1.0.4</pax.web.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
         <slf4j.version>1.6.1</slf4j.version>
         <spring.version>3.0.7.RELEASE</spring.version>
+        <spring.osgi.version>1.2.1</spring.osgi.version>
         
         <hamcrest.version>1.1</hamcrest.version>
         <junit.version>4.8.2</junit.version>
@@ -42,6 +51,7 @@
 	    <module>osgi-dependencies</module>
 	    <module>osgi-fragments</module>
 	    <module>osgi-features</module>
+            <module>cumulocity-base-karaf</module>
 	</modules>
 	
     <dependencyManagement>

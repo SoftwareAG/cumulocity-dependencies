@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.nsn.cumulocity.dependencies</groupId>
+		<artifactId>cumulocity-dependencies</artifactId>
+		<version>0.19.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>cumulocity-base-karaf</artifactId>
+	<packaging>pom</packaging>
+
+	<name>Cumulocity :: Dependencies :: Core Karaf</name>
+	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+	<properties>
+		<custom-karaf.dir>${project.build.directory}/dependencies/apache-karaf-${karaf.version}</custom-karaf.dir>
+		<custom-karaf.system.dir>${custom-karaf.dir}/system</custom-karaf.system.dir>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.karaf</groupId>
+			<artifactId>apache-karaf</artifactId>
+			<version>${karaf.version}</version>
+			<type>tar.gz</type>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse</groupId>
+					<artifactId>osgi</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Uncompress the standard Karaf distribution -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-karaf</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.apache.karaf</groupId>
+									<artifactId>apache-karaf</artifactId>
+									<type>tar.gz</type>
+									<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+            
+			<!-- Install Cumulocity Karaf configuration files and features. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${custom-karaf.dir}</outputDirectory>
+					<resources>
+						<resource>
+							<directory>src/main/resources</directory>
+							<filtering>true</filtering>
+						</resource>
+					</resources>
+				</configuration>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Download features. -->
+			<plugin>
+				<groupId>org.apache.karaf.tooling</groupId>
+				<artifactId>features-maven-plugin</artifactId>
+				<version>${karaf.version}</version>
+				<executions>
+					<execution>
+						<id>add-features-to-repo</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>add-features-to-repo</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>file:${custom-karaf.system.dir}/karaf-standard-features.xml</descriptor>
+								<descriptor>file:${custom-karaf.system.dir}/karaf-enterprise-features.xml</descriptor>
+							</descriptors>
+							<features>
+								<!-- Karaf infrastructure -->
+								<feature>config</feature>
+								<feature>ssh</feature>
+								<feature>management</feature>
+								<feature>webconsole</feature>
+								
+								<!-- OSGi services (Http, JPA, Transaction, ...) -->
+								<feature>http</feature>
+								<feature>jpa</feature>
+								<feature>transaction</feature>
+
+								<!-- External frameworks -->
+								<feature>spring-dm-web</feature>
+							</features>
+							<repository>${custom-karaf.system.dir}</repository>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Build tar.gz artifact. -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptors>
+						<descriptor>${basedir}/src/main/assemble/karaf-assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>karaf-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
