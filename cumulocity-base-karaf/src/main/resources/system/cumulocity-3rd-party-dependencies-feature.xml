@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features name="cumulocity-3rd-party-dependencies">
+    
+    <feature name="apache-dependencies" version="${project.version}">
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/commons-codec/${osgi.commons-codec.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/commons-configuration/${osgi.commons-configuration.version}</bundle>
+        <bundle>mvn:commons-beanutils/commons-beanutils/1.8.3</bundle>
+        <bundle>mvn:commons-digester/commons-digester/1.8.1</bundle>
+        <bundle>mvn:commons-io/commons-io/${commons-io.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/httpcore/${osgi.httpcore.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/httpclient/${osgi.httpclient.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/commons-httpclient/${osgi.commons-httpclient.version}</bundle>
+    </feature>
+    
+    <feature name="ektorp-dependencies" version="${project.version}">
+        <bundle>mvn:org.codehaus.jackson/jackson-core-asl/1.7.3</bundle>
+        <bundle>mvn:org.codehaus.jackson/jackson-mapper-asl/1.7.3</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/ektorp/${osgi.ektorp.version}</bundle>    
+    </feature>
+    
+    <feature name="springsource-dependencies" version="${project.version}">
+        <bundle>mvn:org.springframework/spring-jdbc/${spring.version}</bundle>
+        <bundle>mvn:org.springframework/spring-orm/${spring.version}</bundle>
+        <bundle>mvn:org.springframework.security/spring-security-core/${spring.version}</bundle>
+        <bundle>mvn:org.springframework.security/spring-security-config/${spring.version}</bundle>
+        <bundle>mvn:org.springframework.security/spring-security-web/${spring.version}</bundle>
+    </feature>
+    
+    <feature name="validation-dependencies" version="${project.version}">
+        <bundle>mvn:javax.validation/com.springsource.javax.validation/1.0.0.GA</bundle>
+        <bundle>mvn:org.hibernate/hibernate-validator/4.2.0.Final</bundle>
+    </feature>
+
+    <feature name="querydsl-dependencies" version="${project.version}">
+        <bundle>mvn:javax.validation/com.springsource.javax.validation/1.0.0.GA</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/findbugs-jsr305/${osgi.findbugs.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/inject/${osgi.inject.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/collections-generic/${osgi.collections-generic.version}</bundle>
+        <bundle>mvn:org.apache.commons/commons-lang3/3.0.1</bundle>
+        <bundle>mvn:com.mysema.commons/mysema-commons-lang/0.2.2</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/mysema-codegen/${osgi.mysema-codegen.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/querydsl-core/${osgi.querydsl.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/querydsl-sql/${osgi.querydsl.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/querydsl-jpa/${osgi.querydsl.version}</bundle>
+    </feature>
+
+    <feature name="cumulocity-dependencies" version="${project.version}">
+        <feature version="${project.version}">apache-dependencies</feature>
+        
+        <bundle>mvn:org.mortbay.jetty/servlet-api-2.5/6.1H.14.1</bundle>
+        <bundle>mvn:javax.el/javax.el-api/2.2.4</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/dozer/${osgi.dozer.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/liquibase-core/${osgi.liquibase.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/svenson/${osgi.svenson.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/jcouchdb/${osgi.jcouchdb.version}</bundle>
+        <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/apache-log4j-extras/${osgi.apache-log4j-extras.version}</bundle>
+        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/${ehcache.version}</bundle>
+        
+        <feature version="${project.version}">ektorp-dependencies</feature>
+        <feature version="${project.version}">springsource-dependencies</feature>
+        <feature version="${project.version}">validation-dependencies</feature>
+        <feature version="${project.version}">querydsl-dependencies</feature>
+    </feature>
+</features>
