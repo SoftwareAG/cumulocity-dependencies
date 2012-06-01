@@ -21,6 +21,7 @@
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         
+        <osgi.service.http.port>8181</osgi.service.http.port>
         <nexus.port>443</nexus.port>
 
         <apache-log4j-extras.version>1.1</apache-log4j-extras.version>
@@ -68,6 +69,8 @@
         <ehcache.version>1.6.2_2</ehcache.version>
         <jetty.version>7.4.2.v20110526</jetty.version>
         <karaf.version>2.2.2</karaf.version>
+        <pax.logging.version>1.6.3</pax.logging.version>
+        <pax.url.version>1.2.7</pax.url.version>
         <pax.web.version>1.0.4</pax.web.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
         <slf4j.version>1.6.1</slf4j.version>
@@ -86,7 +89,7 @@
 	    <module>osgi-dependencies</module>
 	    <module>osgi-fragments</module>
 	    <module>osgi-features</module>
-            <module>cumulocity-base-karaf</module>
+	    <module>cumulocity-base-karaf</module>
 	</modules>
 	
     <dependencyManagement>
