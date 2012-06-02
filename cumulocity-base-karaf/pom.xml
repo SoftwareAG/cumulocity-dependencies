@@ -85,6 +85,43 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Download features. -->
+			<plugin>
+				<groupId>org.apache.karaf.tooling</groupId>
+				<artifactId>features-maven-plugin</artifactId>
+				<version>${karaf.version}</version>
+				<executions>
+					<execution>
+						<id>add-features-to-repo</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>add-features-to-repo</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>file:${custom-karaf.system.dir}/karaf-standard-features.xml</descriptor>
+								<descriptor>file:${custom-karaf.system.dir}/karaf-enterprise-features.xml</descriptor>
+							</descriptors>
+							<features>
+								<!-- Karaf infrastructure -->
+								<feature>config</feature>
+								<feature>ssh</feature>
+								<feature>management</feature>
+								<feature>webconsole</feature>
+
+								<!-- OSGi services (Http, JPA, Transaction, ...) -->
+								<feature>http</feature>
+								<feature>jpa</feature>
+								<feature>transaction</feature>
+
+								<!-- External frameworks -->
+								<feature>spring-dm-web</feature>
+							</features>
+							<repository>${custom-karaf.system.dir}</repository>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- Build tar.gz artifact. -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
