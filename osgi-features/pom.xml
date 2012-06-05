@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
 		<artifactId>cumulocity-dependencies</artifactId>
-		<version>0.18.1</version>
+		<version>0.19.0</version>
 	</parent>
 
 	<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -20,6 +20,9 @@
 		<module>apache-cxf-features</module>
 		<module>aspectj-features</module>
 		<module>jersey-features</module>
+		<module>postgresql-features</module>
+		<module>eclipselink-features</module>
+		<module>kpi-logger-features</module>
 	</modules>
 
 	<properties>
@@ -29,6 +32,7 @@
 		<osgi.cxf.version>${cxf.version}-${project.parent.version}</osgi.cxf.version>
 		<jersey.version>1.8</jersey.version>
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
+		<osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
 	</properties>
 
 	<build>
