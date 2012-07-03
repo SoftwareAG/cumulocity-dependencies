@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>eclipselink-features</artifactId>
-	<version>${osgi.eclipselink.version}</version>
+	<version>${eclipselink.version}</version>
 	<packaging>pom</packaging>
 
 	<name>Cumulocity Dependencies :: OSGi Features :: Eclipselink</name>
