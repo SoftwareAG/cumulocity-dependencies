@@ -33,6 +33,7 @@
 		<jersey.version>1.8</jersey.version>
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
 		<osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
+		<osgi.eclipselink.version>${eclipselink.version}-${project.parent.version}</osgi.eclipselink.version>
 	</properties>
 
 	<build>
