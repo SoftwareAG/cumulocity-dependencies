@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>0.21.0</version>
+		<version>2.0.1</version>
 	</parent>
 	
 	<artifactId>aspectjweaver</artifactId>

@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>cumulocity-dependencies</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
-		<version>0.21.0</version>
+		<version>2.0.1</version>
 	</parent>
 
 	<artifactId>cumulocity-sdk-resource-bundles</artifactId>
