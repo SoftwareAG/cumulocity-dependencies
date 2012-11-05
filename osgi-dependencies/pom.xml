@@ -36,6 +36,7 @@
         <module>aspectjweaver</module>
         <module>httpcore</module>
         <module>httpclient</module>
+        <module>httpclient-cache</module>
         <module>log4j-extras</module>
         <module>jcouchdb</module>
         <module>ektorp</module>
@@ -49,6 +50,7 @@
         <module>querydsl-core</module>
         <module>querydsl-sql</module>
         <module>querydsl-jpa</module>
+        <module>spring-security-jwt</module>
     </modules>
 
     <properties>
@@ -75,7 +77,7 @@
         <osgi.commons-httpclient.version>${commons-httpclient.version}-${project.parent.version}</osgi.commons-httpclient.version>
         <dozer.version>5.3.2</dozer.version>
         <osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
-        <ektorp.version>1.1.1</ektorp.version>
+        <ektorp.version>1.2.2</ektorp.version>
         <osgi.ektorp.version>${ektorp.version}-${project.parent.version}</osgi.ektorp.version>
         <esper.version>4.4.0</esper.version>
         <osgi.esper.version>${esper.version}-${project.parent.version}</osgi.esper.version>
@@ -103,6 +105,8 @@
         <osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
         <querydsl.version>2.3.3</querydsl.version>
         <osgi.querydsl.version>${querydsl.version}-${project.parent.version}</osgi.querydsl.version>
+        <spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
+        <osgi.spring.security.jwt.version>${spring.security.jwt.version}-${project.parent.version}</osgi.spring.security.jwt.version>
         <stringtemplate.version>3.2</stringtemplate.version>
         <osgi.stringtemplate.version>${stringtemplate.version}-${project.parent.version}</osgi.stringtemplate.version>
         <stax-api.version>1.0-2</stax-api.version>
