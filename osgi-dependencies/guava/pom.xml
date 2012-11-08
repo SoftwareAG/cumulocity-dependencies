@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <artifactId>osgi-dependencies</artifactId>
+        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+		<version>2.3.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>guava</artifactId>
+	<version>${osgi.guava.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Guava</name>
+    <url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+    <dependencies>
+        <dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.sourceforge.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>findbugs-jsr305</artifactId>
+            <version>${osgi.findbugs.version}</version>
+        </dependency>
+    </dependencies>
+	
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <includeGroupIds>com.google.guava</includeGroupIds>
+                    <includeArtifactIds>guava</includeArtifactIds>
+					<excludes>
+						META-INF/MANIFEST.MF,
+						META-INF/maven/**/*
+					</excludes>
+                </configuration>
+            </plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+					    <Export-Package>
+					       com.google.common.*
+					    </Export-Package>
+                        <Import-Package>
+                            !com.google.common.*,
+                            javax.annotation,
+                            sun.misc;resolution:="optional",
+                            *
+                        </Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+        </plugins>
+    </build>
+</project>
