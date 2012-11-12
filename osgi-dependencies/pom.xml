@@ -36,6 +36,7 @@
         <module>aspectjweaver</module>
         <module>httpcore</module>
         <module>httpclient</module>
+        <module>httpclient-cache</module>
         <module>log4j-extras</module>
         <module>jcouchdb</module>
         <module>ektorp</module>
@@ -45,71 +46,16 @@
         <module>inject</module>
         <module>collections-generic</module>
         <module>findbugs-jsr305</module>
+        <module>guava</module>
         <module>mysema-codegen</module>
+        <module>mysema-commons-lang</module>
         <module>querydsl-core</module>
         <module>querydsl-sql</module>
         <module>querydsl-jpa</module>
+        <module>spring-security-jwt</module>
     </modules>
 
     <properties>
-        <activation.version>1.1</activation.version>
-        <osgi.activation.version>${activation.version}-${project.parent.version}</osgi.activation.version>
-        <antlr.version>2.7.7</antlr.version>
-        <osgi.antlr.version>${antlr.version}-${project.parent.version}</osgi.antlr.version>
-        <antlr-runtime.version>3.2</antlr-runtime.version>
-        <osgi.antlr-runtime.version>${antlr-runtime.version}-${project.parent.version}</osgi.antlr-runtime.version>
-        <apache-log4j-extras.version>1.1</apache-log4j-extras.version>
-        <osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
-        <asm.version>3.1</asm.version>
-        <osgi.asm.version>${asm.version}-${project.parent.version}</osgi.asm.version>
-        <osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
-        <cglib-nodep.version>2.2</cglib-nodep.version>
-        <osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
-        <collections-generic.version>4.01</collections-generic.version>
-        <osgi.collections-generic.version>${collections-generic.version}-${project.parent.version}</osgi.collections-generic.version>
-        <commons-codec.version>1.4</commons-codec.version>
-        <osgi.commons-codec.version>${commons-codec.version}-${project.parent.version}</osgi.commons-codec.version>
-        <commons-configuration.version>1.7</commons-configuration.version>
-        <osgi.commons-configuration.version>${commons-configuration.version}-${project.parent.version}</osgi.commons-configuration.version>
-        <commons-httpclient.version>3.1</commons-httpclient.version>
-        <osgi.commons-httpclient.version>${commons-httpclient.version}-${project.parent.version}</osgi.commons-httpclient.version>
-        <dozer.version>5.3.2</dozer.version>
-        <osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
-        <ektorp.version>1.1.1</ektorp.version>
-        <osgi.ektorp.version>${ektorp.version}-${project.parent.version}</osgi.ektorp.version>
-        <esper.version>4.4.0</esper.version>
-        <osgi.esper.version>${esper.version}-${project.parent.version}</osgi.esper.version>
-        <findbugs.version>1.3.2</findbugs.version>
-        <osgi.findbugs.version>${findbugs.version}-${project.parent.version}</osgi.findbugs.version>
-        <httpclient.version>4.1.2</httpclient.version>
-        <osgi.httpclient.version>${httpclient.version}-${project.parent.version}</osgi.httpclient.version>
-        <httpcore.version>4.1.4</httpcore.version>
-        <osgi.httpcore.version>${httpcore.version}-${project.parent.version}</osgi.httpcore.version>
-        <inject.version>1</inject.version>
-        <osgi.inject.version>${inject.version}-${project.parent.version}</osgi.inject.version>
-        <jaxb-api.version>2.1</jaxb-api.version>
-        <osgi.jaxb-api.version>${jaxb-api.version}-${project.parent.version}</osgi.jaxb-api.version>
-        <jcouchdb.version>1.0.1-1</jcouchdb.version>
-        <osgi.jcouchdb.version>${jcouchdb.version}-${project.parent.version}</osgi.jcouchdb.version>
-        <jersey.version>1.8</jersey.version>
-        <osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-        <liquibase.version>1.9.5</liquibase.version>
-        <osgi.liquibase.version>${liquibase.version}-${project.parent.version}</osgi.liquibase.version>
-        <mail.version>1.4</mail.version>
-        <osgi.mail.version>${mail.version}-${project.parent.version}</osgi.mail.version>
-        <mysema-codegen.version>0.4.9</mysema-codegen.version>
-        <osgi.mysema-codegen.version>${mysema-codegen.version}-${project.parent.version}</osgi.mysema-codegen.version>
-        <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
-        <osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
-        <querydsl.version>2.3.3</querydsl.version>
-        <osgi.querydsl.version>${querydsl.version}-${project.parent.version}</osgi.querydsl.version>
-        <stringtemplate.version>3.2</stringtemplate.version>
-        <osgi.stringtemplate.version>${stringtemplate.version}-${project.parent.version}</osgi.stringtemplate.version>
-        <stax-api.version>1.0-2</stax-api.version>
-        <osgi.stax-api.version>${stax-api.version}-${project.parent.version}</osgi.stax-api.version>
-        <svenson.version>1.3.8</svenson.version>
-        <osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
-        
         <unpack.source.directory>${project.build.directory}/sources</unpack.source.directory>
         <unpack.target.directory>${project.build.outputDirectory}</unpack.target.directory>
         <unpack.excludes>

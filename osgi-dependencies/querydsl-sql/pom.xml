@@ -23,6 +23,14 @@
                     <groupId>com.mysema.querydsl</groupId>
                     <artifactId>querydsl-core</artifactId>
                 </exclusion>
+                <exclusion>
+				    <groupId>javax.validation</groupId>
+				    <artifactId>validation-api</artifactId>
+                </exclusion>
+                <exclusion>
+					<groupId>javax.inject</groupId>
+					<artifactId>javax.inject</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -51,7 +59,12 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
-        </dependency>    
+        </dependency>
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>inject</artifactId>
+            <version>${osgi.inject.version}</version>
+        </dependency>
     </dependencies>
 	
     <build>

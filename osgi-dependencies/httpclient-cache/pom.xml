@@ -7,16 +7,16 @@
 		<version>2.3.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>ektorp</artifactId>
-	<version>${osgi.ektorp.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Ektorp</name>
+	<artifactId>httpclient-cache</artifactId>
+	<version>${osgi.httpclient.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: HTTP Client Cache</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
-
+    
     <dependencies>
         <dependency>
-            <groupId>org.ektorp</groupId>
-            <artifactId>org.ektorp</artifactId>
-            <version>${ektorp.version}</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient-cache</artifactId>
+            <version>${httpclient.version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -24,49 +24,20 @@
                     <artifactId>httpclient</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>org.apache.httpcomponents</groupId>
-                    <artifactId>httpclient-cache</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-io</groupId>
-                    <artifactId>commons-io</artifactId>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
-            <version>1.8.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.8.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>${osgi.httpcore.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
             <artifactId>httpclient</artifactId>
             <version>${osgi.httpclient.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>httpclient-cache</artifactId>
-            <version>${osgi.httpclient.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <artifactId>jcl-over-slf4j</artifactId>
             <version>1.6.1</version>
         </dependency>
     </dependencies>
@@ -77,21 +48,25 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <includeGroupIds>org.ektorp</includeGroupIds>
-                    <includeArtifactIds>org.ektorp</includeArtifactIds>
+                    <includeGroupIds>org.apache.httpcomponents</includeGroupIds>
+                    <includeArtifactIds>httpclient-cache</includeArtifactIds>
                 </configuration>
             </plugin>
+            
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <!-- Exports are listed on purpose to avoid conflicts with 'httpcore' -->
                         <Export-Package>
-                            org.ektorp.*,
-                            org.ektorp.impl.*
+                            org.apache.http.client.cache.*,
+                            org.apache.http.impl.client.cache.*
                         </Export-Package>
                         <Import-Package>
-                            !org.ektorp.*,
+                            !org.apache.http.client.cache.*,
+                            net.sf.ehcache.*;resolution:="optional",
+                            net.spy.memcached.*;resolution:="optional",
                             *
                         </Import-Package>
                     </instructions>
