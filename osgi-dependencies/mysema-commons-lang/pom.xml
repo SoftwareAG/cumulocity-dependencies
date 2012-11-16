@@ -7,16 +7,16 @@
 		<version>2.3.0</version>
 	</parent>
 	
-	<artifactId>activation</artifactId>
-	<version>${osgi.activation.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Activation</name>
+	<artifactId>mysema-commons-lang</artifactId>
+	<version>${osgi.mysema-commons.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: MySema Commons Lang</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>${activation.version}</version>
+            <groupId>com.mysema.commons</groupId>
+            <artifactId>mysema-commons-lang</artifactId>
+            <version>${mysema-commons.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -24,20 +24,15 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <configuration>
-                    <includeGroupIds>javax.activation</includeGroupIds>
-                    <includeArtifactIds>activation</includeArtifactIds>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <Export-Package>
+                            com.mysema.commons.lang.*
+                        </Export-Package>
                         <Import-Package>
-                            !javax.activation.*,
+                            !com.mysema.commons.lang,
                             *
                         </Import-Package>
                     </instructions>
