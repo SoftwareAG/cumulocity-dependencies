@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>2.4.1-SNAPSHOT</version>
+		<version>2.5.0</version>
 	</parent>
 	
 	<artifactId>dozer</artifactId>
@@ -51,6 +51,24 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
@@ -59,37 +77,20 @@
 					<excludes>
 						META-INF/MANIFEST.MF,
 						META-INF/maven/**/*,
-						org/dozer/MappingProcessor.class
+						org/dozer/MappingProcessor*
 					</excludes>
                 </configuration>
             </plugin>
 			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${unpack.source.directory}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/src/main/java</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<excludes>
-						<exclude>anythingButDozer</exclude>
-					</excludes>
+                   <includes>
+                       <include>org/dozer/MappingProcessor*</include>
+                   </includes>
+                   <excludes>
+                       <exclude>nothing</exclude>
+                   </excludes>
 				</configuration>
 			</plugin>
 			<plugin>

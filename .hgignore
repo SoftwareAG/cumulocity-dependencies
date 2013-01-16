@@ -1,20 +1,6 @@
-# hg revert backup copy
-.*\.orig
-
-# Maven build foler
+(^|/)\.
 target
 bin
-.maven
-
-# Eclipse IDE
-.project
-.settings
-.classpath
-/build/
-.loadpath
-
-#Cucumber output
+.*\.iml
+.*\.orig
 cucumber.html
-
-#Mac
-.DS_Store
