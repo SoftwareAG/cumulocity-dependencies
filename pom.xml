@@ -88,18 +88,16 @@
         <svenson.version>1.3.8</svenson.version>
         <osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
 
-        <aries.version>0.3</aries.version>
-        <aries.blueprint.version>0.3.1</aries.blueprint.version>
         <commons-io.version>2.0.1</commons-io.version>
         <cxf.version>2.4.2</cxf.version>
         <aspectj.version>1.6.12</aspectj.version>
         <eclipselink.version>2.2.1</eclipselink.version>
         <ehcache.version>1.6.2_2</ehcache.version>
-        <jetty.version>7.4.2.v20110526</jetty.version>
-        <karaf.version>2.2.2</karaf.version>
-        <pax.logging.version>1.6.3</pax.logging.version>
-        <pax.url.version>1.2.7</pax.url.version>
-        <pax.web.version>1.0.4</pax.web.version>
+        <jetty.version>7.5.4.v20111024</jetty.version>
+        <karaf.version>2.2.10</karaf.version>
+        <pax.logging.version>1.6.10</pax.logging.version>
+        <pax.url.version>1.2.8</pax.url.version>
+        <pax.web.version>1.0.12.1</pax.web.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
         <slf4j.version>1.6.1</slf4j.version>
         <spring.version>3.1.4.RELEASE</spring.version>
