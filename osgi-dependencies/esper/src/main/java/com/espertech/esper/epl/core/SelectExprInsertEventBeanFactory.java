@@ -461,7 +461,7 @@ public class SelectExprInsertEventBeanFactory
         FastConstructor fctor;
         try {
             Constructor ctor = engineImportService.resolveCtor(beanEventType.getUnderlyingType(), ctorTypes);
-            FastClass fastClass = FastClass.create(beanEventType.getUnderlyingType());
+            FastClass fastClass = FastClass.create(Thread.currentThread().getContextClassLoader(), beanEventType.getUnderlyingType());
             fctor = fastClass.getConstructor(ctor);
         }
         catch (EngineImportException ex) {
