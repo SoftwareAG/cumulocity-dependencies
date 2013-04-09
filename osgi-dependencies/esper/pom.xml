@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>3.0.1-SNAPSHOT</version>
+		<version>3.0.2-SNAPSHOT</version>
 	</parent>
 	
     <artifactId>esper</artifactId>
@@ -99,7 +99,8 @@
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
-                        com/espertech/esper/util/SerializableObjectCopier*
+                        com/espertech/esper/util/SerializableObjectCopier*,
+                        com/espertech/esper/epl/core/SelectExprInsertEventBeanFactory*
                     </excludes>
                 </configuration>
             </plugin>
@@ -109,6 +110,7 @@
                 <configuration>
                    <includes>
                        <include>com/espertech/esper/util/SerializableObjectCopier*</include>
+                       <include>com/espertech/esper/epl/core/SelectExprInsertEventBeanFactory*</include>
                    </includes>
                    <excludes>
                        <exclude>nothing</exclude>
@@ -124,6 +126,7 @@
                             !com.espertech.esper.*,
                             com.sun.org.apache.xerces.internal.*;resolution:=optional,
                             net.sf.cglib.*;version="[2.0.1,3.0.0)",
+                            sun.*;resolution:=optional,
                             *
                         </Import-Package>
                     </instructions>
