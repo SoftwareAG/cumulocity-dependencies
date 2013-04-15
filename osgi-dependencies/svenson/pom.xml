@@ -83,7 +83,7 @@
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
-                        org/svenson/AbstractDynamicProperties*
+                        org/svenson/AbstractDynamicProperties.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -94,7 +94,7 @@
                    <includes>
                        <include>org</include>
                        <include>org/svenson</include>
-                       <include>org/svenson/AbstractDynamicProperties*</include>
+                       <include>org/svenson/AbstractDynamicProperties.*</include>
                    </includes>
                    <excludes>
                        <exclude>nothing</exclude>

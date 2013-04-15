@@ -160,9 +160,9 @@
 					<excludes>
 						META-INF/MANIFEST.MF,
 						META-INF/maven/**/*,
-                        org/jcouchdb/db/Database*,
-						org/jcouchdb/document/ChangeNotification*,
-						org/jcouchdb/document/DocumentInfo*
+                        org/jcouchdb/db/Database.*,
+						org/jcouchdb/document/ChangeNotification.*,
+						org/jcouchdb/document/DocumentInfo.*
 					</excludes>
 				</configuration>
 			</plugin>
@@ -174,10 +174,10 @@
                        <include>org</include>
                        <include>org/jcouchdb</include>
                        <include>org/jcouchdb/db</include>
-                       <include>org/jcouchdb/db/Database*</include>
+                       <include>org/jcouchdb/db/Database.*</include>
                        <include>org/jcouchdb/document</include>
-                       <include>org/jcouchdb/document/ChangeNotification*</include>
-                       <include>org/jcouchdb/document/DocumentInfo*</include>
+                       <include>org/jcouchdb/document/ChangeNotification.*</include>
+                       <include>org/jcouchdb/document/DocumentInfo.*</include>
                    </includes>
                    <excludes>
                        <exclude>nothing</exclude>
@@ -190,7 +190,7 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!com.google.code.jcouchdb.*,
+							!org.jcouchdb.*,
 							*
 						</Import-Package>
 					</instructions>
