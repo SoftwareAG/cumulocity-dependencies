@@ -107,37 +107,50 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
-			<version>${hamcrest.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-api-mockito</artifactId>
-			<version>${powermock.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.powermock</groupId>
 			<artifactId>powermock-module-junit4</artifactId>
-			<version>${powermock.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -147,39 +160,28 @@
 					<excludes>
 						META-INF/MANIFEST.MF,
 						META-INF/maven/**/*,
-						org/jcouchdb/document/ChangeNotification.class,
-						org/jcouchdb/document/DocumentInfo.class,
-						org/jcouchdb/db/Database.class
+                        org/jcouchdb/db/Database*,
+						org/jcouchdb/document/ChangeNotification*,
+						org/jcouchdb/document/DocumentInfo*
 					</excludes>
 				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${unpack.source.directory}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${basedir}/src/main/java</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<excludes>
-						<exclude>anythingButJCouchDB</exclude>
-					</excludes>
+                   <includes>
+                       <include>org</include>
+                       <include>org/jcouchdb</include>
+                       <include>org/jcouchdb/db</include>
+                       <include>org/jcouchdb/db/Database*</include>
+                       <include>org/jcouchdb/document</include>
+                       <include>org/jcouchdb/document/ChangeNotification*</include>
+                       <include>org/jcouchdb/document/DocumentInfo*</include>
+                   </includes>
+                   <excludes>
+                       <exclude>nothing</exclude>
+                   </excludes>
 				</configuration>
 			</plugin>
 			<plugin>

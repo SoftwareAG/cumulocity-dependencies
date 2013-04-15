@@ -99,8 +99,8 @@
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
-                        com/espertech/esper/util/SerializableObjectCopier*,
-                        com/espertech/esper/epl/core/SelectExprInsertEventBeanFactory*
+                        com/espertech/esper/epl/core/SelectExprInsertEventBeanFactory*,
+                        com/espertech/esper/util/SerializableObjectCopier*
                     </excludes>
                 </configuration>
             </plugin>
@@ -109,8 +109,14 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                    <includes>
-                       <include>com/espertech/esper/util/SerializableObjectCopier*</include>
+                       <include>com</include>
+                       <include>com/espertech</include>
+                       <include>com/espertech/esper</include>
+                       <include>com/espertech/esper/epl</include>
+                       <include>com/espertech/esper/epl/core</include>
                        <include>com/espertech/esper/epl/core/SelectExprInsertEventBeanFactory*</include>
+                       <include>com/espertech/esper/util</include>
+                       <include>com/espertech/esper/util/SerializableObjectCopier*</include>
                    </includes>
                    <excludes>
                        <exclude>nothing</exclude>
