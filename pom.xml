@@ -92,7 +92,7 @@
         <cxf.version>2.6.2</cxf.version>
         <aspectj.version>1.6.12</aspectj.version>
         <eclipselink.version>2.2.1</eclipselink.version>
-        <ehcache.version>1.6.2_2</ehcache.version>
+        <ehcache.version>2.5.1.1</ehcache.version>
         <jetty.version>7.6.10.v20130312</jetty.version>
         <karaf.version>2.3.1</karaf.version>
         <pax.logging.version>1.7.0</pax.logging.version>

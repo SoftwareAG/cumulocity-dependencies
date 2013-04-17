@@ -113,7 +113,7 @@
         <feature version="2.6.2">cxf-ws-policy</feature>
         <feature version="1.6.7">wss4j</feature>
         <feature version="2.6.2">cxf-ws-addr</feature>
-        <bundle start-level='40' dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/2.5.1_1</bundle>
+        <bundle start-level='40' dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ehcache/2.4.3_1</bundle>
         <bundle start-level='40'>mvn:org.apache.cxf/cxf-rt-ws-security/2.6.2</bundle>
     </feature>
     <feature name="cxf-http" version="2.6.2" resolver='(obr)'>
@@ -228,14 +228,8 @@
         <feature version="2.6.2">cxf-core</feature>
         <bundle start-level='40'>mvn:org.apache.cxf/cxf-rt-transports-local/2.6.2</bundle>
     </feature>
-    <feature name="cxf-transports-jms" version="2.6.2" resolver='(obr)'>
-        <feature version="2.6.2">cxf-core</feature>
-        <feature version="[3,4)">spring</feature>
-        <feature version="[3,4)">spring-jms</feature>
-        <feature version="2.6.2">cxf-bindings-soap</feature>
-        <bundle start-level='40'>mvn:org.apache.cxf/cxf-rt-transports-jms/2.6.2</bundle>
-    </feature>
-<feature name="cxf-javascript" version="2.6.2" resolver='(obr)'>
+   
+    <feature name="cxf-javascript" version="2.6.2" resolver='(obr)'>
         <feature version="2.6.2">cxf-core</feature>
         <feature version="2.6.2">cxf-bindings-soap</feature>
         <bundle start-level='40'>mvn:org.apache.cxf/cxf-rt-javascript/2.6.2</bundle>
@@ -283,7 +277,7 @@
     <feature name="cxf" version="2.6.2" resolver='(obr)'>
         <feature version="[3,4)">spring</feature>
         <feature version="[1.2,2)">spring-dm</feature>
-        <feature version="[1,2)">war</feature>
+        <feature version="[2,3)">war</feature>
         <feature version="2.6.2">cxf-core</feature>
         <feature version="2.6.2">cxf-jaxws</feature>
         <feature version="2.6.2">cxf-jaxrs</feature>
@@ -298,7 +292,6 @@
         <feature version="2.6.2">cxf-http-jetty</feature>
 
         <feature version="2.6.2">cxf-transports-local</feature>
-        <feature version="2.6.2">cxf-transports-jms</feature>
 
 
         <feature version="2.6.2">cxf-xjc-runtime</feature>

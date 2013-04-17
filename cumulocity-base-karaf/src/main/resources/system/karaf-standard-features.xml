@@ -42,7 +42,7 @@
     </feature>
 
 
-    <feature name="spring" description="Spring ${spring.version} support" version="${spring.version}" resolver="(obr)">
+    <feature name="spring" description="Spring support" version="${spring.version}" resolver="(obr)">
         <bundle dependency="true" start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aopalliance/1.0_6</bundle>
         <bundle start-level="30">mvn:org.springframework/spring-core/${spring.version}</bundle>
         <bundle start-level="30">mvn:org.springframework/spring-asm/${spring.version}</bundle>
@@ -54,15 +54,37 @@
     </feature>
 
 
-    <feature name="spring-web" description="Spring ${spring.version} Web support" version="${spring.version}"
+    <feature name="spring-web" description="Spring Web support" version="${spring.version}"
         resolver="(obr)">
         <feature version="${spring.version}">spring</feature>
         <feature version="[2,3)">http</feature>
         <bundle start-level="30">mvn:org.springframework/spring-web/${spring.version}</bundle>
         <bundle start-level="30">mvn:org.springframework/spring-webmvc/${spring.version}</bundle>
     </feature>
+    
+    <feature name="spring-tx" description="Spring Transaction (TX) support" version="${spring.version}" resolver="(obr)">
+        <feature version="${spring.version}">spring</feature>
+        <bundle start-level="30">mvn:org.springframework/spring-tx/${spring.version}</bundle>
+    </feature>
+    
+    <feature name="spring-jdbc" description="Spring JDBC support" version="${spring.version}" resolver="(obr)">
+        <feature version="${spring.version}">spring-tx</feature>
+        <bundle start-level="30">mvn:org.springframework/spring-jdbc/${spring.version}</bundle>
+    </feature>
 
-
+    <feature name="spring-jms" description="Spring JMS support" version="${spring.version}" resolver="(obr)">
+        <feature version="${spring.version}">spring-web</feature>
+        <feature version="${spring.version}">spring-tx</feature>
+        <bundle start-level="10">mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1</bundle>
+        <bundle start-level="10">mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1</bundle>
+        <bundle start-level="30">mvn:org.springframework/spring-jms/${spring.version}</bundle>      
+    </feature>
+    
+    <feature name="spring-orm" description="Spring ORM support" version="${spring.version}" resolver="(obr)">
+        <feature version="${spring.version}">spring-jdbc</feature>
+        <bundle start-level="30">mvn:org.springframework/spring-orm/${spring.version}</bundle>
+    </feature>
+    
     <feature name="spring-dm" description="Spring DM support" version="1.2.1" resolver="(obr)">
         <feature version="[2.5.6,4)">spring</feature>
         <bundle dependency="true" start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/cglib-nodep/${osgi.cglib-nodep.version}</bundle>
