@@ -89,7 +89,7 @@
         <osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
 
         <commons-io.version>2.0.1</commons-io.version>
-        <cxf.version>2.5.9</cxf.version>
+        <cxf.version>2.6.2</cxf.version>
         <aspectj.version>1.6.12</aspectj.version>
         <eclipselink.version>2.2.1</eclipselink.version>
         <ehcache.version>1.6.2_2</ehcache.version>
