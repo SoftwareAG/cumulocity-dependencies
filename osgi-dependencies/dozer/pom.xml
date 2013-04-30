@@ -1,53 +1,54 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	
-	<parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>3.1.1-SNAPSHOT</version>
-	</parent>
-	
-	<artifactId>dozer</artifactId>
-	<version>${osgi.dozer.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Dozer</name>
+        <version>3.1.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>dozer</artifactId>
+    <version>${osgi.dozer.version}</version>
+    <name>Cumulocity Dependencies :: OSGi Dependencies :: Dozer</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
-			<version>${dozer.version}</version>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>${dozer.version}</version>
             <scope>provided</scope>
         </dependency>
 
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.8.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
         <dependency>
-        	<groupId>commons-lang</groupId>
-        	<artifactId>commons-lang</artifactId>
-        	<version>2.5</version>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
+            <version>1.6.6</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.6.1</version>
+            <version>1.6.6</version>
         </dependency>
     </dependencies>
-	
+
     <build>
         <plugins>
             <plugin>
@@ -74,30 +75,30 @@
                 <configuration>
                     <includeGroupIds>net.sf.dozer</includeGroupIds>
                     <includeArtifactIds>dozer</includeArtifactIds>
-					<excludes>
-						META-INF/MANIFEST.MF,
-						META-INF/maven/**/*,
-						org/dozer/MappingProcessor*
-					</excludes>
+                    <excludes>
+                        META-INF/MANIFEST.MF,
+                        META-INF/maven/**/*,
+                        org/dozer/MappingProcessor*
+                    </excludes>
                 </configuration>
             </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-                   <includes>
-                       <include>org/dozer/MappingProcessor*</include>
-                   </includes>
-                   <excludes>
-                       <exclude>nothing</exclude>
-                   </excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<configuration>
-					<instructions>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>org/dozer/MappingProcessor*</include>
+                    </includes>
+                    <excludes>
+                        <exclude>nothing</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
                         <Import-Package>
                             !org.dozer.*,
                             org.hibernate.proxy.*;resolution:="optional",
@@ -105,9 +106,9 @@
                             org.springframework.core.io.*;resolution:="optional",
                             *
                         </Import-Package>
-					</instructions>
-				</configuration>
-			</plugin>
+                    </instructions>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
