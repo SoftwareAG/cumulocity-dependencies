@@ -15,7 +15,7 @@
  */
 package org.dozer;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dozer.cache.Cache;
 import org.dozer.cache.CacheKeyFactory;
 import org.dozer.cache.CacheManager;
@@ -178,12 +178,15 @@ public class MappingProcessor implements Mapper {
             .getDestClassBeanFactory(), classMap.getDestClassBeanFactoryId(), classMap.getDestClassCreateMethod()));
       }
 
+      // ########## CUMULOCITY PATCH START ##########
+      // Commented out due to NullPointerException
+      // --------------------------------------------
       // If this is a nested MapperAware conversion this mapping can be already processed
-      //Commented out due to NullPointerException
-//      Object alreadyMappedValue = mappedFields.getMappedValue(srcObj, destClass);
-//      if (alreadyMappedValue != null) {
-//        return (T) alreadyMappedValue;
-//      }
+      // Object alreadyMappedValue = mappedFields.getMappedValue(srcObj, destClass);
+      // if (alreadyMappedValue != null) {
+      //   return (T) alreadyMappedValue;
+      // }
+      // ##########  CUMULOCITY PATCH END  ##########
 
       map(classMap, srcObj, result, false, null);
     } catch (Throwable e) {
@@ -195,6 +198,10 @@ public class MappingProcessor implements Mapper {
   }
 
   private void map(ClassMap classMap, Object srcObj, Object destObj, boolean bypassSuperMappings, String mapId) {
+    map(classMap, srcObj, destObj, bypassSuperMappings, new ArrayList<String>(), mapId);
+  }
+
+  private void map(ClassMap classMap, Object srcObj, Object destObj, boolean bypassSuperMappings, List<String> mappedParentFields, String mapId) {
     srcObj = MappingUtils.deProxy(srcObj);
 
     // 1596766 - Recursive object mapping issue. Prevent recursive mapping
@@ -222,7 +229,6 @@ public class MappingProcessor implements Mapper {
     }
 
     // Now check for super class mappings.  Process super class mappings first.
-    List<String> mappedParentFields = null;
     if (!bypassSuperMappings) {
       Collection<ClassMap> superMappings = new ArrayList<ClassMap>();
 
@@ -232,7 +238,7 @@ public class MappingProcessor implements Mapper {
       superMappings.addAll(superClasses);
       //superMappings.addAll(interfaceMappings);
       if (!superMappings.isEmpty()) {
-        mappedParentFields = processSuperTypeMapping(superMappings, srcObj, destObj, mapId);
+        processSuperTypeMapping(superMappings, srcObj, destObj, mappedParentFields, mapId);
       }
     }
 
@@ -247,6 +253,15 @@ public class MappingProcessor implements Mapper {
     }
   }
 
+  /**
+   * Perform mapping of a field.
+   * Uses {@link #mapFromFieldMap(Object, Object, Object, FieldMap)} to do the real work, unless
+   * if iterate, where {@link #mapFromIterateMethodFieldMap(Object, Object, Object, FieldMap)} is used. 
+   * 
+   * @param fieldMapping Field mapping.
+   * @param srcObj Source object.
+   * @param destObj Destination object.
+   */
   private void mapField(FieldMap fieldMapping, Object srcObj, Object destObj) {
 
     // The field has been explicitly excluded from mapping. So just return, as
@@ -617,7 +632,7 @@ public class MappingProcessor implements Mapper {
           MappingUtils.throwMappingException("<field type=\"iterate\"> must have a source or destination type hint");
         }
 
-        Class<?> destinationHint = fieldMapping.getDestHintContainer().getHint();
+        Class<?> destinationHint = fieldMapping.getDestHintType(value.getClass());
 
         Object result = mapOrRecurseObject(srcObj, value, destinationHint, fieldMapping, destObj);
 
@@ -678,7 +693,6 @@ public class MappingProcessor implements Mapper {
   private Set<?> addToSet(Object srcObj, FieldMap fieldMap, Collection<?> srcCollectionValue, Object destObj) {
     // create a list here so we can keep track of which elements we have mapped, and remove all others if removeOrphans = true
     Set<Object> mappedElements = new HashSet<Object>();
-    Class<?> destEntryType = null;
 
     LinkedHashSet<Object> result = new LinkedHashSet<Object>();
     // don't want to create the set if it already exists.
@@ -687,16 +701,15 @@ public class MappingProcessor implements Mapper {
       result.addAll((Collection<?>) field);
     }
     Object destValue;
+
+    Class<?> destEntryType = null;
     Class<?> prevDestEntryType = null;
     for (Object srcValue : srcCollectionValue) {
       if (destEntryType == null
-          || (fieldMap.getDestHintContainer() != null && fieldMap.getDestHintContainer().hasMoreThanOneHint())) {
-        if (srcValue == null) {
-          destEntryType = prevDestEntryType;
-        } else {
-          destEntryType = fieldMap.getDestHintType(srcValue.getClass());
-        }
+              || (fieldMap.getDestHintContainer() != null && fieldMap.getDestHintContainer().hasMoreThanOneHint())) {
+        destEntryType = determineCollectionItemType(fieldMap, destObj, srcValue, prevDestEntryType);
       }
+
       CopyByReferenceContainer copyByReferences = globalConfiguration.getCopyByReferences();
       if (srcValue != null && copyByReferences.contains(srcValue.getClass())) {
         destValue = srcValue;
@@ -717,7 +730,9 @@ public class MappingProcessor implements Mapper {
           mappedElements.add(obj);
         }
       } else {
-        result.add(destValue);
+        if (destValue != null || fieldMap.isDestMapNull()) {
+          result.add(destValue);
+        }
         mappedElements.add(destValue);
       }
     }
@@ -754,13 +769,10 @@ public class MappingProcessor implements Mapper {
     Class<?> prevDestEntryType = null;
     for (Object srcValue : srcCollectionValue) {
       if (destEntryType == null
-          || (fieldMap.getDestHintContainer() != null && fieldMap.getDestHintContainer().hasMoreThanOneHint())) {
-        if (srcValue == null) {
-          destEntryType = prevDestEntryType;
-        } else {
-          destEntryType = fieldMap.getDestHintType(srcValue.getClass());
-        }
+              || (fieldMap.getDestHintContainer() != null && fieldMap.getDestHintContainer().hasMoreThanOneHint())) {
+        destEntryType = determineCollectionItemType(fieldMap, destObj, srcValue, prevDestEntryType);
       }
+
       CopyByReferenceContainer copyByReferences = globalConfiguration.getCopyByReferences();
       if (srcValue != null && copyByReferences.contains(srcValue.getClass())) {
         destValue = srcValue;
@@ -780,10 +792,12 @@ public class MappingProcessor implements Mapper {
           mappedElements.add(obj);
         }
       } else {
-        result.add(destValue);
+        // respect null mappings
+        if (destValue != null || fieldMap.isDestMapNull()) {
+          result.add(destValue);
+        }
         mappedElements.add(destValue);
       }
-
     }
 
     // If remove orphans - we only want to keep the objects we've mapped from the src collection
@@ -792,6 +806,20 @@ public class MappingProcessor implements Mapper {
     }
 
     return result;
+  }
+
+  private Class<?> determineCollectionItemType(FieldMap fieldMap, Object destObj, Object srcValue, Class<?> prevDestEntryType) {
+    if (srcValue == null && fieldMap.getDestHintType(destObj.getClass()) != null) {
+      // try to get a possible configured dest hint for the dest obj
+      return fieldMap.getDestHintType(destObj.getClass());
+    } else if (srcValue == null && prevDestEntryType != null) {
+      // if we already evaluated the dest type, use it
+      return prevDestEntryType;
+    } else if (srcValue != null) {
+      // if there's no dest hint for the dest obj, take the src hint
+      return fieldMap.getDestHintType(srcValue.getClass());
+    }
+    throw new MappingException("Unable to determine type for value '" + srcValue + "'. Use hints or generic collections.");
   }
 
   static void removeOrphans(Collection<?> mappedElements, List<Object> result) {
@@ -994,16 +1022,14 @@ public class MappingProcessor implements Mapper {
     }
   }
 
-  private List<String> processSuperTypeMapping(Collection<ClassMap> superClasses, Object srcObj, Object destObj, String mapId) {
-    List<String> mappedFields = new ArrayList<String>();
+  private void processSuperTypeMapping(Collection<ClassMap> superClasses, Object srcObj, Object destObj, List<String> mappedParentFields, String mapId) {
     for (ClassMap map : superClasses) {
-      map(map, srcObj, destObj, true, mapId);
+      map(map, srcObj, destObj, true, mappedParentFields ,mapId);
       for (FieldMap fieldMapping : map.getFieldMaps()) {
         String key = MappingUtils.getMappedParentFieldKey(destObj, fieldMapping);
-        mappedFields.add(key);
+        mappedParentFields.add(key);
       }
     }
-    return mappedFields;
   }
 
   private static Object getExistingValue(FieldMap fieldMap, Object destObj, Class<?> destFieldType) {
