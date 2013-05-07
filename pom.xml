@@ -3,7 +3,7 @@
 	
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>3.1.1-SNAPSHOT</version>
+	<version>3.1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -45,7 +45,7 @@
         <osgi.commons-configuration.version>${commons-configuration.version}-${project.parent.version}</osgi.commons-configuration.version>
         <commons-httpclient.version>3.1</commons-httpclient.version>
         <osgi.commons-httpclient.version>${commons-httpclient.version}-${project.parent.version}</osgi.commons-httpclient.version>
-        <dozer.version>5.3.2</dozer.version>
+        <dozer.version>5.4.0</dozer.version>
         <osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
         <ektorp.version>1.2.2</ektorp.version>
         <osgi.ektorp.version>${ektorp.version}-${project.parent.version}</osgi.ektorp.version>
