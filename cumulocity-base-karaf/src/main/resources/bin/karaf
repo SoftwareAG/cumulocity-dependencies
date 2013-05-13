@@ -264,7 +264,7 @@ setupDebugOptions() {
 }
 
 setupDefaults() {
-    DEFAULT_JAVA_OPTS="-Xms$JAVA_MIN_MEM -Xmx$JAVA_MAX_MEM "
+    DEFAULT_JAVA_OPTS="-server -Xms$JAVA_MIN_MEM -Xmx$JAVA_MAX_MEM "
 
     #Set the JVM_VENDOR specific JVM flags
     if [ "$JVM_VENDOR" = "SUN" ]; then
@@ -304,6 +304,17 @@ setupDefaults() {
     ##
     # Uncomment to enable YourKit profiling
     #DEFAULT_JAVA_DEBUG_OPTS="-Xrunyjpagent"
+}
+
+setupJMX() {
+
+    JMX_OPTS="$JMX_OPTS -Djava.rmi.server.hostname=127.0.0.1"
+    JMX_OPTS="$JMX_OPTS -Djava.rmi.server.useLocalHostname=true"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.port=8199"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.ssl=false"
+
 }
 
 init() {
@@ -363,6 +374,7 @@ run() {
                 shift
                 ;;
             'server')
+                setupJMX
                 OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true"
                 shift
                 ;;
@@ -388,7 +400,7 @@ run() {
         JAVA_EXT_DIRS=`cygpath --path --windows "$JAVA_EXT_DIRS"`
     fi
     cd "$KARAF_BASE"
-    exec "$JAVA" $JAVA_OPTS -Djava.endorsed.dirs="${JAVA_ENDORSED_DIRS}" -Djava.ext.dirs="${JAVA_EXT_DIRS}" -Dkaraf.instances="${KARAF_HOME}/instances" -Dkaraf.home="$KARAF_HOME" -Dkaraf.base="$KARAF_BASE" -Dkaraf.data="$KARAF_DATA" -Djava.io.tmpdir="$KARAF_DATA/tmp" -Djava.util.logging.config.file="$KARAF_BASE/etc/java.util.logging.properties" $KARAF_OPTS $OPTS -classpath "$CLASSPATH" $MAIN "$@"
+    exec "$JAVA" -XX:+UseConcMarkSweepGC $JMX_OPTS $JAVA_OPTS -Djava.endorsed.dirs="${JAVA_ENDORSED_DIRS}" -Djava.ext.dirs="${JAVA_EXT_DIRS}" -Dkaraf.instances="${KARAF_HOME}/instances" -Dkaraf.home="$KARAF_HOME" -Dkaraf.base="$KARAF_BASE" -Dkaraf.data="$KARAF_DATA" -Djava.io.tmpdir="$KARAF_DATA/tmp" -Djava.util.logging.config.file="$KARAF_BASE/etc/java.util.logging.properties" $KARAF_OPTS $OPTS -classpath "$CLASSPATH" $MAIN "$@"
 }
 
 main() {
