@@ -53,6 +53,7 @@
         <module>querydsl-sql</module>
         <module>querydsl-jpa</module>
         <module>spring-security-jwt</module>
+        <module>reflections</module>
     </modules>
 
     <properties>

@@ -87,6 +87,8 @@
         <osgi.stax-api.version>${stax-api.version}-${project.parent.version}</osgi.stax-api.version>
         <svenson.version>1.3.8</svenson.version>
         <osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
+        <reflections.version>0.9.9-RC1</reflections.version>
+        <osgi.reflections.version>${reflections.version}-${project.parent.version}</osgi.reflections.version>
 
         <commons-io.version>2.0.1</commons-io.version>
         <cxf.version>2.6.7</cxf.version>
@@ -217,6 +219,11 @@
                 <artifactId>spring-web</artifactId>
                 <version>${spring.version}</version>
             </dependency>
+	         <dependency>
+	             <groupId>org.reflections</groupId>
+	             <artifactId>reflections</artifactId>
+	             <version>${reflections.version}</version>
+	         </dependency>	
         </dependencies>
     </dependencyManagement>
 	
