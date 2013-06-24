@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>3.4.0</version>
+		<version>3.5.0</version>
 	</parent>
 	
 	<artifactId>findbugs-jsr305</artifactId>
