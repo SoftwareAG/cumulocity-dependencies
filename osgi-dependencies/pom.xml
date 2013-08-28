@@ -47,6 +47,7 @@
         <module>collections-generic</module>
         <module>findbugs-jsr305</module>
         <module>guava</module>
+	<module>geronimo-annotation</module>
         <module>mysema-codegen</module>
         <module>mysema-commons-lang</module>
         <module>querydsl-core</module>
