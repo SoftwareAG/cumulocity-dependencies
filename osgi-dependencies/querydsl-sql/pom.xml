@@ -84,11 +84,12 @@
                     <instructions>
                         <Import-Package>
                             !com.mysema.query.sql.*,
-                            javax.annotation.*;version="0",
+                            javax.annotation.*;version="1.0",
                             org.apache.tools.ant.*;resolution:="optional",
                             org.joda.time.*;resolution:="optional",
                             *
                         </Import-Package>
+                        <_nouses>true</_nouses>
                     </instructions>
                 </configuration>
             </plugin>

@@ -57,7 +57,7 @@
 					    </Export-Package>
                         <Import-Package>
                             !com.google.common.*,
-                            javax.annotation,
+                            javax.annotation.*;version="1.0",
                             sun.misc;resolution:="optional",
                             *
                         </Import-Package>

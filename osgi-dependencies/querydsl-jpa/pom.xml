@@ -80,7 +80,7 @@
                         <Import-Package>
                             !com.mysema.query.jpa.*,
                             com.mysema.query.sql.*;resolution:="optional",
-                            javax.annotation.*;version="0",
+                            javax.annotation.*;version="1.0",
                             org.hibernate.*;resolution:="optional",
                             *
                         </Import-Package>

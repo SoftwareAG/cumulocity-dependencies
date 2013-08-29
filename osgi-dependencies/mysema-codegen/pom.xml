@@ -63,7 +63,7 @@
                 <configuration>
                     <instructions>
                         <Import-Package>
-                            javax.annotation.*;version="0",
+                            javax.annotation.*;version="1.0",
                             *
                         </Import-Package>
                     </instructions>
