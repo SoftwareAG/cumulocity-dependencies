@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>3.8.0</version>
+		<version>4.0.0</version>
 	</parent>
 	
 	<artifactId>findbugs-jsr305</artifactId>
@@ -33,12 +33,8 @@
                 <configuration>
                     <instructions>
                         <Export-Package>
-                            javax.annotation.*;partial=true;version="0"
+                            javax.annotation.*;version="1.0";partial=true
                         </Export-Package>
-                        <Import-Package>
-                            javax.annotation,
-                            *
-                        </Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

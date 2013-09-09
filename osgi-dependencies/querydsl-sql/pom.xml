@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>3.8.0</version>
+		<version>4.0.0</version>
 	</parent>
 	
 	<artifactId>querydsl-sql</artifactId>
@@ -84,11 +84,12 @@
                     <instructions>
                         <Import-Package>
                             !com.mysema.query.sql.*,
-                            javax.annotation.*;version="0",
+                            javax.annotation.*;version="1.0",
                             org.apache.tools.ant.*;resolution:="optional",
                             org.joda.time.*;resolution:="optional",
                             *
                         </Import-Package>
+                        <_nouses>true</_nouses>
                     </instructions>
                 </configuration>
             </plugin>

@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>3.8.0</version>
+		<version>4.0.0</version>
 	</parent>
 	
 	<artifactId>guava</artifactId>
@@ -57,7 +57,7 @@
 					    </Export-Package>
                         <Import-Package>
                             !com.google.common.*,
-                            javax.annotation,
+                            javax.annotation.*;version="1.0",
                             sun.misc;resolution:="optional",
                             *
                         </Import-Package>

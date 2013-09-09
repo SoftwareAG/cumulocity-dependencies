@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>3.8.0</version>
+		<version>4.0.0</version>
 	</parent>
 	
 	<artifactId>querydsl-jpa</artifactId>
@@ -80,7 +80,7 @@
                         <Import-Package>
                             !com.mysema.query.jpa.*,
                             com.mysema.query.sql.*;resolution:="optional",
-                            javax.annotation.*;version="0",
+                            javax.annotation.*;version="1.0",
                             org.hibernate.*;resolution:="optional",
                             *
                         </Import-Package>
