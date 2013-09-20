@@ -22,6 +22,10 @@ public abstract class AbstractDynamicProperties implements DynamicProperties, Se
     public void setProperty(String name, Object value) {
         attrs.put(name, value);
     }
+    
+    public void removeProperty(String name) {
+        attrs.remove(name);
+    }
 
     public Set<String> propertyNames() {
         return attrs.keySet();
