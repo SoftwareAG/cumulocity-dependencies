@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>json-path</artifactId>
-	<version>${osgi.svenson.version}</version>
+	<version>${osgi.json-path.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JsonPath</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -16,7 +16,7 @@
 		<dependency>
 		    <groupId>com.jayway.jsonpath</groupId>
 		    <artifactId>json-path</artifactId>
-		    <version>0.8.1</version>
+		    <version>${json-path.version}</version>
 		    <scope>provided</scope>
 		</dependency>
 	</dependencies>
