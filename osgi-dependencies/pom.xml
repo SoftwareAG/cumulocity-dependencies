@@ -29,6 +29,7 @@
         <module>esper</module>
         <module>svenson</module>
         <module>json-path</module>
+        <module>json-smart</module>
         <module>jersey-core</module>
         <module>jersey-server</module>
         <module>jersey-client</module>
