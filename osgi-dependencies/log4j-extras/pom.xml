@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>4.4.0</version>
+		<version>4.5.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>apache-log4j-extras</artifactId>
