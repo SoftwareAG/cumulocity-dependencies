@@ -35,6 +35,7 @@
         <module>jersey-server</module>
         <module>jersey-client</module>
         <module>jersey-apache-client</module>
+        <module>jersey-multipart</module>
         <module>aspectjrt</module>
         <module>aspectjweaver</module>
         <module>httpcore</module>

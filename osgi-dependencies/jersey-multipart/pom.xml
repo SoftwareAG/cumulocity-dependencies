@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+                <artifactId>osgi-dependencies</artifactId>
+                <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+		<version>5.1.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>jersey-multipart</artifactId>
+	<version>${osgi.jersey.version}</version>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Jersey Multipart</name>
+        <url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-multipart</artifactId>
+            <version>${jersey.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>osgi_R4_core</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+	
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <includeGroupIds>com.sun.jersey.contribs</includeGroupIds>
+                    <includeArtifactIds>jersey-multipart</includeArtifactIds>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Import-Package>
+                            !com.sun.jersey.multipart.*,
+                            *
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+	
+</project>
