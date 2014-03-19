@@ -8,36 +8,18 @@
 		<version>5.1.0</version>
 	</parent>
 
-	<artifactId>jersey-multipart</artifactId>
-	<version>${osgi.jersey.version}</version>
+	<artifactId>mimepull</artifactId>
+	<version>${osgi.mimepull.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Jersey Multipart</name>
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
 	<dependencies>
 		<dependency>
-			<groupId>com.sun.jersey.contribs</groupId>
-			<artifactId>jersey-multipart</artifactId>
-			<version>${jersey.version}</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.jvnet</groupId>
-					<artifactId>mimepull</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>osgi_R4_core</artifactId>
-			<version>1.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+			<groupId>org.jvnet</groupId>
 			<artifactId>mimepull</artifactId>
-			<version>${osgi.mimepull.version}</version>
+			<version>${mimepull.version}</version>
+			<scope>provided</scope>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -46,8 +28,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<configuration>
-					<includeGroupIds>com.sun.jersey.contribs</includeGroupIds>
-					<includeArtifactIds>jersey-multipart</includeArtifactIds>
+					<includeGroupIds>org.jvnet</includeGroupIds>
+					<includeArtifactIds>mimepull</includeArtifactIds>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -55,10 +37,14 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<configuration>
 					<instructions>
+						<Export-Package>
+							org.jvnet.mimepull.*
+						</Export-Package>
 						<Import-Package>
-							!com.sun.jersey.multipart.*,
+							!org.jvnet.mimepull.*,
 							*
 						</Import-Package>
+
 					</instructions>
 				</configuration>
 			</plugin>

@@ -16,7 +16,8 @@
     <modules>
         <module>activation</module>
         <module>mail</module>
-        <module>asm</module>
+        <module>mimepull</module>
+	<module>asm</module>
         <module>stax-api</module>
         <module>jaxb-api</module>
         <module>commons-codec</module>

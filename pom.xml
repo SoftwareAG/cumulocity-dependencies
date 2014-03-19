@@ -73,7 +73,9 @@
         <osgi.liquibase.version>${liquibase.version}-${project.parent.version}</osgi.liquibase.version>
         <mail.version>1.4</mail.version>
         <osgi.mail.version>${mail.version}-${project.parent.version}</osgi.mail.version>
-        <mysema-codegen.version>0.4.9</mysema-codegen.version>
+        <mimepull.version>1.4</mimepull.version>
+	<osgi.mimepull.version>${mimepull.version}-${project.parent.version}</osgi.mimepull.version>
+	<mysema-codegen.version>0.4.9</mysema-codegen.version>
         <osgi.mysema-codegen.version>${mysema-codegen.version}-${project.parent.version}</osgi.mysema-codegen.version>
         <mysema-commons.version>0.2.3</mysema-commons.version>
         <osgi.mysema-commons.version>${mysema-commons.version}-${project.parent.version}</osgi.mysema-commons.version>
