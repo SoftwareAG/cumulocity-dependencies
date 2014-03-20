@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>5.0.1-SNAPSHOT</version>
+        <version>5.1.0</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -16,7 +16,8 @@
     <modules>
         <module>activation</module>
         <module>mail</module>
-        <module>asm</module>
+        <module>mimepull</module>
+	<module>asm</module>
         <module>stax-api</module>
         <module>jaxb-api</module>
         <module>commons-codec</module>
@@ -35,6 +36,7 @@
         <module>jersey-server</module>
         <module>jersey-client</module>
         <module>jersey-apache-client</module>
+        <module>jersey-multipart</module>
         <module>aspectjrt</module>
         <module>aspectjweaver</module>
         <module>httpcore</module>
