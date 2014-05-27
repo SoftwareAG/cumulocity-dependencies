@@ -100,6 +100,11 @@
                     <instructions>
                         <Import-Package>
                             !com.sun.jersey.multipart.*,
+			    com.sun.jersey.api.*;resolution:=optional,
+			    com.sun.jersey.server.*;resolution:=optional,		
+			    com.sun.jersey.spi.container.*;resolution:=optional,
+			    com.sun.jersey.spi.dispatch.*;resolution:=optional,
+			    com.sun.jersey.spi.inject.*;resolution:=optional,
                             *
                         </Import-Package>
                     </instructions>
