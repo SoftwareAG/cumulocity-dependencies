@@ -5,7 +5,7 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>5.5.0</version>
+        <version>5.6.0</version>
     </parent>
 
     <artifactId>jersey-multipart</artifactId>
@@ -100,6 +100,11 @@
                     <instructions>
                         <Import-Package>
                             !com.sun.jersey.multipart.*,
+			    com.sun.jersey.api.*;resolution:=optional,
+			    com.sun.jersey.server.*;resolution:=optional,		
+			    com.sun.jersey.spi.container.*;resolution:=optional,
+			    com.sun.jersey.spi.dispatch.*;resolution:=optional,
+			    com.sun.jersey.spi.inject.*;resolution:=optional,
                             *
                         </Import-Package>
                     </instructions>
