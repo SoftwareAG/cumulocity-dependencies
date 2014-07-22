@@ -17,12 +17,13 @@
         <module>activation</module>
         <module>mail</module>
         <module>mimepull</module>
-	<module>asm</module>
+		<module>asm</module>
         <module>stax-api</module>
         <module>jaxb-api</module>
         <module>commons-codec</module>
         <module>commons-httpclient</module>
         <module>commons-configuration</module>
+        <module>cometd</module>
         <module>antlr</module>
         <module>stringtemplate</module>
         <module>antlr-runtime</module>
@@ -52,7 +53,7 @@
         <module>collections-generic</module>
         <module>findbugs-jsr305</module>
         <module>guava</module>
-	<module>geronimo-annotation</module>
+		<module>geronimo-annotation</module>
         <module>mysema-codegen</module>
         <module>mysema-commons-lang</module>
         <module>querydsl-core</module>
