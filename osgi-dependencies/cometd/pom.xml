@@ -2,23 +2,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-        <artifactId>osgi-dependencies</artifactId>
+		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
 		<version>5.9.0</version>
 	</parent>
+	<packaging>pom</packaging>
 	
-	<artifactId>asm</artifactId>
-	<version>${osgi.asm.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: ASM</name>
+    <artifactId>cometd</artifactId>
+    <name>Cumulocity Dependencies :: OSGi Dependencies :: CometD</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
-
-    <dependencies>
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>${asm.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+	<modules>
+		<module>cometd-java-server</module>
+	</modules>
 	
 </project>
