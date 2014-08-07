@@ -108,6 +108,7 @@
 							org.cometd.bayeux.client,
 							org.cometd.bayeux.server,
 							org.cometd.common,
+							org.joda.time.*,
 							org.slf4j
 							*
 						</Import-Package>
