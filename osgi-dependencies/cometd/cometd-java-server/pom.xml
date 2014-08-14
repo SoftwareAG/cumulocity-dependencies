@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>cometd</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>5.9.0</version>
+		<version>5.9.1</version>
 	</parent>
 
 	<artifactId>cometd-java-server</artifactId>
@@ -108,6 +108,7 @@
 							org.cometd.bayeux.client,
 							org.cometd.bayeux.server,
 							org.cometd.common,
+							org.joda.time.*,
 							org.slf4j
 							*
 						</Import-Package>
