@@ -342,7 +342,6 @@ public abstract class LongPollingTransport extends HttpTransport {
 
         public void schedule() {
             continuation.resume();
-            session.deactivate();
             cleanup();
         }
 
