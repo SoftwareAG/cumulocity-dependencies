@@ -81,7 +81,7 @@ public abstract class LongPollingTransport extends HttpTransport {
                     }
 
                     if (connect && session != null) {
-                        session.setScheduler(null);
+                        session.cancelSchedule();
                     }
 
                     boolean wasConnected = session != null && session.isConnected();
@@ -310,8 +310,7 @@ public abstract class LongPollingTransport extends HttpTransport {
                     if (continuation.getServletResponse().getWriter().checkError()) {
                         log.debug("long poll interupted session {}", session);
                         cleanup();
-                        continuation.complete();
-                        session.deactivate();
+                        session.cancelSchedule();
                     }
                     lastValidation = new Interval(new DateTime(), validTime);
                 } catch (IOException e) {
@@ -362,7 +361,7 @@ public abstract class LongPollingTransport extends HttpTransport {
         }
 
         public void onTimeout(Continuation continuation) {
-            session.setScheduler(null);
+            session.cancelSchedule();
         }
 
         @Override

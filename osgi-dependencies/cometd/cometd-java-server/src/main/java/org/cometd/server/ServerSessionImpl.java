@@ -165,7 +165,6 @@ public class ServerSessionImpl implements ServerSession {
             return;
 
         boolean remove = false;
-        Scheduler scheduler = null;
         synchronized (_queue) {
             if (_intervalTimestamp == 0) {
                 if (_maxServerInterval > 0 && now > _connectTimestamp + _maxServerInterval) {
@@ -178,13 +177,9 @@ public class ServerSessionImpl implements ServerSession {
                     remove = true;
                 }
             }
-            if (remove)
-                scheduler = _scheduler;
         }
         if (remove) {
-            if (scheduler != null) {
-                scheduler.cancel();
-            }
+            cancelSchedule();
             _bayeux.removeServerSession(this, true);
         }
     }
@@ -445,29 +440,31 @@ public class ServerSessionImpl implements ServerSession {
             }
             if (oldScheduler != null) {
                 oldScheduler.cancel();
+                deactivate();
             }
-            deactivate();
+        
         } else {
             Scheduler oldScheduler;
-            boolean schedule = false;
             synchronized (_queue) {
                 oldScheduler = _scheduler;
                 _scheduler = newScheduler;
-                if (hasNonLazyMessages() && _batch == 0) {
-                    schedule = true;
+                if (hasPendingMessages()) {
+                    deactivate();
+                    newScheduler.schedule();
                     if (newScheduler instanceof OneTimeScheduler)
                         _scheduler = null;
+                }else {
+                    activate();
                 }
             }
             if (oldScheduler != null && oldScheduler != newScheduler) {
                 oldScheduler.cancel();
             }
-            if (schedule) {
-                newScheduler.schedule();
-            } else {
-                activate();
-            }
         }
+    }
+
+    private boolean hasPendingMessages() {
+        return hasNonLazyMessages() && _batch == 0;
     }
 
     public SessionState getState() {
@@ -483,8 +480,10 @@ public class ServerSessionImpl implements ServerSession {
             scheduler = _scheduler;
 
             if (scheduler != null) {
-                if (_scheduler instanceof OneTimeScheduler)
+                if (_scheduler instanceof OneTimeScheduler) {
                     _scheduler = null;
+                    deactivate();
+                }
             }
         }
         if (scheduler != null) {
@@ -527,17 +526,7 @@ public class ServerSessionImpl implements ServerSession {
     }
 
     public void cancelSchedule() {
-        Scheduler scheduler;
-        synchronized (_queue) {
-            scheduler = _scheduler;
-            if (scheduler != null)
-                _scheduler = null;
-        }
-        if (scheduler != null) {
-            scheduler.cancel();
-            deactivate();
-        }
-
+        setScheduler(null);
     }
 
     private void cancelIntervalTimeout() {
