@@ -328,7 +328,7 @@ public abstract class LongPollingTransport extends HttpTransport {
             if (continuation != null && continuation.isSuspended() && !continuation.isExpired()) {
                 try {
                     ((HttpServletResponse) continuation.getServletResponse()).sendError(HttpServletResponse.SC_REQUEST_TIMEOUT);
-                } catch (IOException x) {
+                } catch (Exception x) {
                     _logger.trace("", x);
                 }
 
