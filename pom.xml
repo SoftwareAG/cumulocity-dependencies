@@ -7,10 +7,10 @@
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
-	    <organization>
-		<name>Nokia Siemens Networks</name>
-		<url>http://nokiasiemensnetworks.com</url>
-	    </organization>
+	<organization>
+		<name>Cumulocity GmbH</name>
+		<url>https://cumulocity.com</url>
+	</organization>
 	
 	<scm>
 	    <connection>scm:hg:https://bitbucket.org/m2m/cumulocity-dependencies</connection>
