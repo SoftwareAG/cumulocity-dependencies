@@ -3,14 +3,14 @@
 	
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>5.10.0-SNAPSHOT</version>
+	<version>5.19.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
-	    <organization>
-		<name>Nokia Siemens Networks</name>
-		<url>http://nokiasiemensnetworks.com</url>
-	    </organization>
+	<organization>
+		<name>Cumulocity GmbH</name>
+		<url>https://cumulocity.com</url>
+	</organization>
 	
 	<scm>
 	    <connection>scm:hg:https://bitbucket.org/m2m/cumulocity-dependencies</connection>
@@ -388,11 +388,11 @@
     <distributionManagement>
         <snapshotRepository>
             <id>snapshot</id>
-            <url>https://nexus.cumulocity.com:${nexus.port}/nexus/content/repositories/snapshots/</url>
+            <url>http://localhost:8080/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>release</id>
-            <url>https://nexus.cumulocity.com:${nexus.port}/nexus/content/repositories/releases/</url>
+            <url>http://localhost:8080/nexus/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
    <profiles>
