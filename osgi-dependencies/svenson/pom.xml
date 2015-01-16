@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>5.18.0</version>
+		<version>5.19.0</version>
 	</parent>
 	
 	<artifactId>svenson</artifactId>
@@ -52,6 +52,12 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.6.1</version>
         </dependency>
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 	
 	<build>
@@ -83,7 +89,8 @@
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
-                        org/svenson/AbstractDynamicProperties.*
+                        org/svenson/AbstractDynamicProperties.*,
+			org/svenson/JSON.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -95,6 +102,7 @@
                        <include>org</include>
                        <include>org/svenson</include>
                        <include>org/svenson/AbstractDynamicProperties.*</include>
+		       <include>org/svenson/JSON.*</include>
                    </includes>
                    <excludes>
                        <exclude>nothing</exclude>

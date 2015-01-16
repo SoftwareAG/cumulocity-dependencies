@@ -23,12 +23,16 @@ public abstract class AbstractDynamicProperties implements DynamicProperties, Se
         attrs.put(name, value);
     }
     
-    public void removeProperty(String name) {
-        attrs.remove(name);
+    public Object removeProperty(String name) {
+        return attrs.remove(name);
     }
 
     public Set<String> propertyNames() {
         return attrs.keySet();
+    }
+    
+    public boolean hasProperty(String name) {
+        return attrs.containsKey(name);
     }
     
     @JSONProperty(ignore = true)
