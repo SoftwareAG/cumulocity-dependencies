@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>5.20.0-SNAPSHOT</version>
+		<version>5.20.0</version>
 	</parent>
 	
     <artifactId>esper</artifactId>
