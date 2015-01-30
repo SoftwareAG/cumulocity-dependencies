@@ -13,6 +13,7 @@
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	<modules>
 		<module>cometd-java-server</module>
+		<module>cometd-java-oort</module>
 	</modules>
 	
 </project>
