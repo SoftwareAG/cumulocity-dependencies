@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.cometd.bayeux.Channel;
 import org.cometd.bayeux.Message;
 import org.cometd.bayeux.server.ServerMessage;
+import org.cometd.bayeux.server.ServerMessage.Mutable;
 import org.cometd.bayeux.server.ServerSession;
 import org.cometd.bayeux.server.ServerSession.RemoveListener;
 import org.cometd.server.AbstractServerTransport;
@@ -31,9 +32,9 @@ public abstract class LongPollingTransport extends HttpTransport {
 
     public final static String PREFIX = "long-polling";
 
-    public final static String AUTOBATCH_OPTION = "autoBatch"; 
+    public final static String AUTOBATCH_OPTION = "autoBatch";
 
-    private final Logger _logger = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(LongPollingTransport.class);
 
     private final Collection<LongPollScheduler> schedulers = new CopyOnWriteArrayList<LongPollScheduler>();
 
@@ -53,6 +54,7 @@ public abstract class LongPollingTransport extends HttpTransport {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (!isResumed(request)) {
+            log.debug("new request");
             boolean batch = false;
             ServerSessionImpl session = null;
 
@@ -67,9 +69,10 @@ public abstract class LongPollingTransport extends HttpTransport {
                     boolean connect = isConnectChannel(message);
 
                     // Get the session from the message
-                    String client_id = message.getClientId();
-                    if (session == null || client_id != null && !client_id.equals(session.getId())) {
-                        session = (ServerSessionImpl) getBayeux().getSession(client_id);
+                    String clientId = message.getClientId();
+                    log.debug("recived message from {} >> {}", clientId, message.getJSON());
+                    if (session == null || clientId != null && !clientId.equals(session.getId())) {
+                        session = (ServerSessionImpl) getBayeux().getSession(clientId);
                         if (_autoBatch && !batch && session != null && !message.isMeta()) {
                             // start a batch to group all resulting messages into a single response.
                             batch = true;
@@ -97,7 +100,8 @@ public abstract class LongPollingTransport extends HttpTransport {
                                     if (!session.hasNonLazyMessages() && reply.isSuccessful()) {
                                         long timeout = session.calculateTimeout(getTimeout());
                                         if (timeout > 0 && wasConnected && session.isConnected()) {
-                                            reply = suspendRequest(request, response, session, reply, timeout);
+                                            suspendRequest(request, response, session, timeout, reply);
+                                            reply = null;
                                         }
                                     }
                                 } finally {
@@ -144,20 +148,12 @@ public abstract class LongPollingTransport extends HttpTransport {
 
     private void sendMessages(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LongPollScheduler scheduler = (LongPollScheduler) request.getAttribute(LongPollScheduler.ATTRIBUTE);
-        // Get the resumed session
         ServerSessionImpl session = scheduler.getSession();
-        metaConnectResumed(request, session);
-
         PrintWriter writer = writeQueueForMetaConnect(request, response, session, null);
-
-        // Send the connect reply
         ServerMessage.Mutable reply = scheduler.getReply();
-
         if (session.isDisconnected())
             reconnect(reply);
-
         writer = sendReply(request, response, session, writer, reply);
-
         finishWrite(writer, session);
     }
 
@@ -184,8 +180,9 @@ public abstract class LongPollingTransport extends HttpTransport {
         return ContinuationSupport.getContinuation(request).isResumed() && request.getAttribute(LongPollScheduler.ATTRIBUTE) != null;
     }
 
-    private ServerMessage.Mutable suspendRequest(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session,
-            ServerMessage.Mutable reply, long timeout) {
+    private void suspendRequest(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, long timeout,
+            Mutable reply) {
+        log.debug("suspending session {}", session.getId());
         LongPollScheduler scheduler;
         Continuation continuation = ContinuationSupport.getContinuation(request);
         continuation.setTimeout(timeout);
@@ -193,41 +190,26 @@ public abstract class LongPollingTransport extends HttpTransport {
         scheduler = newLongPollScheduler(session, continuation, reply);
         request.setAttribute(LongPollScheduler.ATTRIBUTE, scheduler);
         session.setScheduler(scheduler);
-        reply = null;
-        metaConnectSuspended(request, session, timeout);
-        return reply;
     }
 
-    protected LongPollScheduler newLongPollScheduler(ServerSessionImpl session, Continuation continuation,
-            ServerMessage.Mutable metaConnectReply) {
-        final LongPollScheduler longPollScheduler = new LongPollScheduler(session, continuation, metaConnectReply);
+    protected LongPollScheduler newLongPollScheduler(ServerSessionImpl session, Continuation continuation, Mutable reply) {
+        final LongPollScheduler longPollScheduler = new LongPollScheduler(session, continuation, reply);
         schedulers.add(longPollScheduler);
         return longPollScheduler;
     }
 
     private PrintWriter writeQueueForMetaConnect(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session,
             PrintWriter writer) throws IOException {
-        try {
-            return writeQueue(request, response, session, writer);
-        } finally {
-            if (session.isConnected())
-                session.deactivate();
-        }
+        return writeQueue(request, response, session, writer);
     }
 
     protected ServerMessage.Mutable bayeuxServerHandle(ServerSessionImpl session, ServerMessage.Mutable message) {
         return getBayeux().handle(session, message);
     }
 
-    protected void metaConnectSuspended(HttpServletRequest request, ServerSession session, long timeout) {
-    }
-
-    protected void metaConnectResumed(HttpServletRequest request, ServerSession session) {
-    }
-
     protected void handleJSONParseException(HttpServletRequest request, HttpServletResponse response, String json, Throwable exception)
             throws ServletException, IOException {
-        _logger.warn("Error parsing JSON: " + json, exception);
+        log.warn("Error parsing JSON: " + json, exception);
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
@@ -245,14 +227,25 @@ public abstract class LongPollingTransport extends HttpTransport {
     private PrintWriter writeQueue(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, PrintWriter writer)
             throws IOException {
         List<ServerMessage> queue = session.takeQueue();
-        for (ServerMessage m : queue)
-            writer = writeMessage(request, response, writer, session, m);
+        try {
+            for (ServerMessage m : queue) {
+                log.debug("sending message {} >>> {}", session.getId(), m.getJSON());
+                writer = writeMessage(request, response, writer, session, m);
+            }
+        } catch (IOException ex) {
+            log.warn("delievery failed {} >>> {}", session.getId(), queue);
+            for (ServerMessage m : queue) {
+                log.warn("redelivering {} >>> {}", session.getId(), m);
+                session.deliver(session, m.getChannel(), m.getData(), m.getId());
+            }
+        }
         return writer;
     }
 
     protected ServerMessage.Mutable[] parseMessages(String[] requestParameters) throws IOException, ParseException {
-        if (requestParameters == null || requestParameters.length == 0)
+        if (requestParameters == null || requestParameters.length == 0) {
             throw new IOException("Missing '" + MESSAGE_PARAM + "' request parameter");
+        }
 
         if (requestParameters.length == 1)
             return parseMessages(requestParameters[0]);
@@ -304,17 +297,16 @@ public abstract class LongPollingTransport extends HttpTransport {
 
         public void validate() {
             if (!lastValidation.containsNow()) {
-                log.trace("validating session {}", session);
+                log.debug("validating session {}", session.getId());
                 try {
                     continuation.getServletResponse().getWriter().write(" ");
                     if (continuation.getServletResponse().getWriter().checkError()) {
-                        log.debug("long poll interupted session {}", session);
-                        cleanup();
-                        continuation.complete();
-                        session.deactivate();
+                        log.debug("long poll interupted session {}", session.getId());
+                        cancel();
                     }
                     lastValidation = new Interval(new DateTime(), validTime);
-                } catch (IOException e) {
+                } catch (Exception e) {
+                    log.debug("validation error", e);
                 }
             }
         }
@@ -325,18 +317,19 @@ public abstract class LongPollingTransport extends HttpTransport {
         }
 
         public void cancel() {
+            log.debug("canceling {} - {}", session.getId(), this);
+            cleanup();
             if (continuation != null && continuation.isSuspended() && !continuation.isExpired()) {
                 try {
                     ((HttpServletResponse) continuation.getServletResponse()).sendError(HttpServletResponse.SC_REQUEST_TIMEOUT);
                 } catch (Exception x) {
-                    _logger.trace("", x);
+                    log.trace("", x);
                 }
-
                 try {
                     continuation.complete();
-                    cleanup();
+
                 } catch (Exception x) {
-                    _logger.trace("", x);
+                    log.trace("", x);
                 }
             }
         }
@@ -344,6 +337,7 @@ public abstract class LongPollingTransport extends HttpTransport {
         public void schedule() {
             continuation.resume();
             cleanup();
+            session.deactivate();
         }
 
         public ServerSessionImpl getSession() {
