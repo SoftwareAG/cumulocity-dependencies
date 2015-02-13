@@ -497,7 +497,6 @@ public class ServerSessionImpl implements ServerSession {
         }
         if (scheduler != null) {
             scheduler.schedule();
-            deactivate();
             return;
         }
 

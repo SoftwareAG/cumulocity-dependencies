@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -133,6 +134,7 @@ public abstract class LongPollingTransport extends HttpTransport {
                 flushSession(batch, session);
             }
         } else {
+            log.debug("request resumed");
             sendMessages(request, response);
         }
     }
@@ -227,18 +229,11 @@ public abstract class LongPollingTransport extends HttpTransport {
     private PrintWriter writeQueue(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, PrintWriter writer)
             throws IOException {
         List<ServerMessage> queue = session.takeQueue();
-        try {
-            for (ServerMessage m : queue) {
-                log.debug("sending message {} >>> {}", session.getId(), m.getJSON());
-                writer = writeMessage(request, response, writer, session, m);
-            }
-        } catch (IOException ex) {
-            log.warn("delievery failed {} >>> {}", session.getId(), queue);
-            for (ServerMessage m : queue) {
-                log.warn("redelivering {} >>> {}", session.getId(), m);
-                session.deliver(session, m.getChannel(), m.getData(), m.getId());
-            }
+        for (ServerMessage m : queue) {
+            log.debug("sending message {} >>> {}", session.getId(), m.getJSON());
+            writer = writeMessage(request, response, writer, session, m);
         }
+        log.debug("messages sended {} >>> {}", session.getId(), queue);
         return writer;
     }
 
@@ -257,6 +252,16 @@ public abstract class LongPollingTransport extends HttpTransport {
             messages.addAll(Arrays.asList(parseMessages(batch)));
         }
         return messages.toArray(new ServerMessage.Mutable[messages.size()]);
+    }
+
+    private boolean isValid(final ServletResponse response) {
+        try {
+            response.getWriter().write(' ');
+            response.getWriter().flush();
+            return !response.getWriter().checkError();
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     protected abstract ServerMessage.Mutable[] parseMessages(HttpServletRequest request) throws IOException, ParseException;
@@ -299,8 +304,7 @@ public abstract class LongPollingTransport extends HttpTransport {
             if (!lastValidation.containsNow()) {
                 log.debug("validating session {}", session.getId());
                 try {
-                    continuation.getServletResponse().getWriter().write(" ");
-                    if (continuation.getServletResponse().getWriter().checkError()) {
+                    if (!isValid(continuation.getServletResponse())) {
                         log.debug("long poll interupted session {}", session.getId());
                         cancel();
                     }
