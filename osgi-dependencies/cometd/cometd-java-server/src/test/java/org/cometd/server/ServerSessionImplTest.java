@@ -22,14 +22,5 @@ public class ServerSessionImplTest {
         assertThat(session.getState()).isEqualTo(INACTIVE);
     }
     
-    @Test
-    public void test() {
-        //Given
-        session.activate();
-        //When
-        session.setScheduler(null);
-        //Then
-        assertThat(session.getState()).isEqualTo(INACTIVE);
-    }
 
 }
