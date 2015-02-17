@@ -3,7 +3,7 @@
 	
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>5.20.0</version>
+	<version>5.21.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -216,6 +216,11 @@
              <dependency>
                 <groupId>org.cometd.java</groupId>
                 <artifactId>cometd-java-server</artifactId>
+                <version>${cometd.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cometd.java</groupId>
+                <artifactId>cometd-java-oort</artifactId>
                 <version>${cometd.version}</version>
             </dependency>
             <dependency>
