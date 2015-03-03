@@ -41,9 +41,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ServerSessionImpl implements ServerSession {
+    private static final int DEFAULT_INACTIVE_INTERVAL = 30;
+
     private static final AtomicLong _idCount = new AtomicLong();
 
-    private static final Logger _logger = LoggerFactory.getLogger(ServerSession.class);
+    private static final Logger log = LoggerFactory.getLogger(ServerSession.class);
 
     private final BayeuxServerImpl _bayeux;
 
@@ -111,9 +113,9 @@ public class ServerSessionImpl implements ServerSession {
         _id = genedateId(idHint);
 
         HttpTransport transport = (HttpTransport) _bayeux.getCurrentTransport();
-        if (transport != null)
+        if (transport != null) {
             _intervalTimestamp = now() + transport.getMaxInterval();
-
+        }
         _lazyTask = new Timeout.Task() {
             @Override
             public void expired() {
@@ -163,29 +165,19 @@ public class ServerSessionImpl implements ServerSession {
     protected void sweep(long now) {
         if (isLocalSession())
             return;
-
-        boolean remove = false;
-        Scheduler scheduler = null;
+        log.trace("try to sweep session {}", getId());
         synchronized (_queue) {
             if (_intervalTimestamp == 0) {
                 if (_maxServerInterval > 0 && now > _connectTimestamp + _maxServerInterval) {
-                    _logger.info("Emergency sweeping session {}", this);
-                    remove = true;
+                    log.debug("emergency sweeping session {}", this);
+                    cancelSchedule();
+                    timeout();
                 }
-            } else {
-                if (now > _intervalTimestamp) {
-                    _logger.debug("Sweeping session {}", this);
-                    remove = true;
-                }
+            } else if (now > _intervalTimestamp) {
+                log.debug("sweeping session {}", this);
+                cancelSchedule();
+                timeout();
             }
-            if (remove)
-                scheduler = _scheduler;
-        }
-        if (remove) {
-            if (scheduler != null) {
-                scheduler.cancel();
-            }
-            _bayeux.removeServerSession(this, true);
         }
     }
 
@@ -236,6 +228,7 @@ public class ServerSessionImpl implements ServerSession {
     }
 
     protected void doDeliver(ServerSession from, ServerMessage.Mutable mutable) {
+        log.debug("deliver message {} -> {}", getId(), mutable);
         ServerMessage message = null;
         if (mutable.isMeta()) {
             if (extendSendMeta(mutable))
@@ -249,7 +242,7 @@ public class ServerSessionImpl implements ServerSession {
 
         // TODO: should freeze the message here not the mutable, in case the extension changed it
         _bayeux.freeze(mutable);
-        if(message instanceof Mutable) {
+        if (message instanceof Mutable) {
             _bayeux.freeze((Mutable) message);
         }
 
@@ -259,7 +252,7 @@ public class ServerSessionImpl implements ServerSession {
             queueSize = _queue.size();
         }
         for (ServerSessionListener listener : _listeners) {
-            if (maxQueueSize > 0 && queueSize > maxQueueSize && listener instanceof MaxQueueListener) {
+            if (isQueueMaxSizeReached(maxQueueSize, queueSize) && listener instanceof MaxQueueListener) {
                 if (!notifyQueueMaxed((MaxQueueListener) listener, from, message))
                     return;
             }
@@ -283,11 +276,16 @@ public class ServerSessionImpl implements ServerSession {
         }
     }
 
+    private boolean isQueueMaxSizeReached(final int maxQueueSize, final int queueSize) {
+        return maxQueueSize > 0 && queueSize > maxQueueSize;
+    }
+
     private boolean notifyQueueMaxed(MaxQueueListener listener, ServerSession from, ServerMessage message) {
+        log.warn("queue exceeded max size session : {}", getId());
         try {
             return listener.queueMaxed(this, from, message);
         } catch (Exception x) {
-            _logger.info("Exception while invoking listener " + listener, x);
+            log.info("Exception while invoking listener " + listener, x);
             return true;
         }
     }
@@ -296,13 +294,13 @@ public class ServerSessionImpl implements ServerSession {
         try {
             return listener.onMessage(this, from, message);
         } catch (Exception x) {
-            _logger.info("Exception while invoking listener " + listener, x);
+            log.info("Exception while invoking listener " + listener, x);
             return true;
         }
     }
 
     protected void handshake() {
-
+        log.debug("changing session {} state {} -> {}", getId(), sessionState.get(), INITIALIZED);
         sessionState.set(INITIALIZED);
         HttpTransport transport = (HttpTransport) _bayeux.getCurrentTransport();
         if (transport != null) {
@@ -311,17 +309,19 @@ public class ServerSessionImpl implements ServerSession {
             _maxServerInterval = transport.getOption("maxServerInterval", -1);
             _randomizeLazy = transport.getOption(AbstractServerTransport.RANDOMIZE_LAZY_TIMEOUT_OPTION, false);
             _maxLazy = transport.getMaxLazyTimeout();
-            _inactiveInterval = transport.getOption("inactiveInterval", TimeUnit.MINUTES.toMillis(10));
+            _inactiveInterval = transport.getOption("inactiveInterval", TimeUnit.MINUTES.toMillis(DEFAULT_INACTIVE_INTERVAL));
         }
     }
 
     protected void connected() {
+        log.debug("changing session {} state {} -> {}", getId(), sessionState.get(), INACTIVE);
         sessionState.set(INACTIVE);
         cancelIntervalTimeout();
     }
 
     public void disconnect() {
-        boolean connected = _bayeux.removeServerSession(this, false);
+        log.debug("disconnect {}", getId());
+        boolean connected = remove();
         if (connected) {
             ServerMessage.Mutable message = _bayeux.newMessage();
             message.setChannel(Channel.META_DISCONNECT);
@@ -329,6 +329,16 @@ public class ServerSessionImpl implements ServerSession {
             deliver(this, message);
             flush();
         }
+    }
+
+    private boolean remove() {
+        log.debug("remove session {}", getId());
+        return _bayeux.removeServerSession(this, false);
+    }
+
+    private boolean timeout() {
+        log.debug("remove timeouted session {}", getId());
+        return _bayeux.removeServerSession(this, true);
     }
 
     public boolean endBatch() {
@@ -394,6 +404,7 @@ public class ServerSessionImpl implements ServerSession {
     }
 
     protected void addMessage(ServerMessage message) {
+        log.debug("enqueue message {} - {}", getId(), message.getJSON());
         synchronized (_queue) {
             _queue.add(message);
             _nonLazyMessages |= !message.isLazy();
@@ -426,7 +437,7 @@ public class ServerSessionImpl implements ServerSession {
         try {
             listener.deQueue(serverSession, queue);
         } catch (Exception x) {
-            _logger.info("Exception while invoking listener " + listener, x);
+            log.info("Exception while invoking listener " + listener, x);
         }
     }
 
@@ -435,39 +446,36 @@ public class ServerSessionImpl implements ServerSession {
     }
 
     public void setScheduler(AbstractServerTransport.Scheduler newScheduler) {
-        if (newScheduler == null) {
-            Scheduler oldScheduler;
-            synchronized (_queue) {
-                oldScheduler = _scheduler;
-                if (oldScheduler != null) {
+        log.debug("reschedule schedule {} - {}", getId(), newScheduler);
+        synchronized (_queue) {
+            cancelSchedule();
+            _scheduler = newScheduler;
+            if (hasNonLazyMessages() && _batch == 0) {
+                if (newScheduler instanceof OneTimeScheduler) {
+                    log.debug("schedule interupted sending pending messages");
                     _scheduler = null;
+                    newScheduler.schedule();
                 }
             }
-            if (oldScheduler != null) {
-                oldScheduler.cancel();
-            }
-            deactivate();
-        } else {
-            Scheduler oldScheduler;
-            boolean schedule = false;
-            synchronized (_queue) {
-                oldScheduler = _scheduler;
-                _scheduler = newScheduler;
-                if (hasNonLazyMessages() && _batch == 0) {
-                    schedule = true;
-                    if (newScheduler instanceof OneTimeScheduler)
-                        _scheduler = null;
-                }
-            }
-            if (oldScheduler != null && oldScheduler != newScheduler) {
-                oldScheduler.cancel();
-            }
-            if (schedule) {
-                newScheduler.schedule();
-            } else {
+            if (newScheduler != null) {
                 activate();
             }
         }
+    }
+
+    public void cancelSchedule() {
+        log.debug("cancel schedule {}", getId());
+        Scheduler scheduler;
+        synchronized (_queue) {
+            deactivate();
+            scheduler = _scheduler;
+            if (scheduler != null)
+                _scheduler = null;
+        }
+        if (scheduler != null) {
+            scheduler.cancel();
+        }
+
     }
 
     public SessionState getState() {
@@ -489,8 +497,6 @@ public class ServerSessionImpl implements ServerSession {
         }
         if (scheduler != null) {
             scheduler.schedule();
-            // If there is a scheduler, then it's a remote session
-            // and we should not perform local delivery, so we return
             return;
         }
 
@@ -524,20 +530,6 @@ public class ServerSessionImpl implements ServerSession {
                     _bayeux.startTimeout(_lazyTask, delay);
             }
         }
-    }
-
-    public void cancelSchedule() {
-        Scheduler scheduler;
-        synchronized (_queue) {
-            scheduler = _scheduler;
-            if (scheduler != null)
-                _scheduler = null;
-        }
-        if (scheduler != null) {
-            scheduler.cancel();
-            deactivate();
-        }
-
     }
 
     private void cancelIntervalTimeout() {
@@ -612,7 +604,7 @@ public class ServerSessionImpl implements ServerSession {
         try {
             return extension.rcvMeta(this, message);
         } catch (Exception x) {
-            _logger.info("Exception while invoking extension " + extension, x);
+            log.info("Exception while invoking extension " + extension, x);
             return true;
         }
     }
@@ -621,7 +613,7 @@ public class ServerSessionImpl implements ServerSession {
         try {
             return extension.rcv(this, message);
         } catch (Exception x) {
-            _logger.info("Exception while invoking extension " + extension, x);
+            log.info("Exception while invoking extension " + extension, x);
             return true;
         }
     }
@@ -641,7 +633,7 @@ public class ServerSessionImpl implements ServerSession {
         try {
             return extension.sendMeta(this, message);
         } catch (Exception x) {
-            _logger.info("Exception while invoking extension " + extension, x);
+            log.info("Exception while invoking extension " + extension, x);
             return true;
         }
     }
@@ -663,7 +655,7 @@ public class ServerSessionImpl implements ServerSession {
         try {
             return extension.send(this, message);
         } catch (Exception x) {
-            _logger.info("Exception while invoking extension " + extension, x);
+            log.info("Exception while invoking extension " + extension, x);
             return message;
         }
     }
@@ -720,7 +712,7 @@ public class ServerSessionImpl implements ServerSession {
      * @return True if the session was connected.
      */
     protected boolean removed(boolean timedOut) {
-
+        log.debug("changing session {} state {} -> {}", getId(), sessionState.get(), !timedOut ? DISCONNECTED : TIMEOUTED);
         SessionState state = sessionState.getAndSet(!timedOut ? DISCONNECTED : TIMEOUTED);
         if (state != UNINITILIZED) {
             for (ServerChannelImpl channel : _subscribedTo.keySet())
@@ -739,7 +731,7 @@ public class ServerSessionImpl implements ServerSession {
         try {
             listener.removed(serverSession, timedout);
         } catch (Exception x) {
-            _logger.info("Exception while invoking listener " + listener, x);
+            log.info("Exception while invoking listener " + listener, x);
         }
     }
 
@@ -829,6 +821,7 @@ public class ServerSessionImpl implements ServerSession {
     }
 
     public void activate() {
+        log.debug("changing session {} state {} -> {}", getId(), sessionState.get(), ACTIVE);
         if (sessionState.getAndSet(ACTIVE) != ACTIVE) {
             synchronized (_queue) {
                 _intervalTimestamp = now() + _maxInterval;
@@ -837,6 +830,7 @@ public class ServerSessionImpl implements ServerSession {
     }
 
     public void deactivate() {
+        log.debug("changing session {} state {} -> {}", getId(), sessionState.get(), INACTIVE);
         if (sessionState.getAndSet(INACTIVE) != INACTIVE) {
             synchronized (_queue) {
                 _intervalTimestamp = now() + calculateInterval(0) + _inactiveInterval;

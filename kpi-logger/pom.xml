@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>cumulocity-dependencies</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
-		<version>5.21.0</version>
+		<version>5.22.0</version>
 	</parent>
 	
 	<groupId>com.nsn.cumulocity.dependencies.kpi</groupId>

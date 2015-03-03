@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>cometd</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>5.21.0</version>
+		<version>5.22.0</version>
 	</parent>
 
 	<artifactId>cometd-java-server</artifactId>
@@ -32,7 +32,22 @@
 			<artifactId>jackson-jaxrs</artifactId>
 			<version>1.9.13</version>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert</artifactId>
+			<scope>test</scope> 
+		</dependency>
+	</dependencies> 
 
 	<build>
 		<plugins>
