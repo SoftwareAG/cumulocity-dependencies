@@ -318,6 +318,7 @@ public abstract class LongPollingTransport extends HttpTransport {
         private void cleanup() {
             schedulers.remove(this);
             session.removeListener(this);
+            session.deactivate();
         }
 
         public void cancel() {
@@ -341,7 +342,6 @@ public abstract class LongPollingTransport extends HttpTransport {
         public void schedule() {
             continuation.resume();
             cleanup();
-            session.deactivate();
         }
 
         public ServerSessionImpl getSession() {
