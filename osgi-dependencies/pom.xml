@@ -27,6 +27,8 @@
         <module>antlr</module>
         <module>stringtemplate</module>
         <module>antlr-runtime</module>
+        <module>antlr4-runtime</module>
+        <module>treelayout</module>
         <module>cglib-nodep</module>
         <module>esper</module>
         <module>svenson</module>
