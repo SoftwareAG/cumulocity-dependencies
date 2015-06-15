@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>6.1.0</version>
+		<version>6.2.0</version>
 	</parent>
 	
     <artifactId>esper</artifactId>
@@ -25,7 +25,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>org.antlr</groupId>
-                    <artifactId>antlr-runtime</artifactId>
+                    <artifactId>antlr4-runtime</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>cglib</groupId>
@@ -60,8 +60,8 @@
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>antlr-runtime</artifactId>
-            <version>${osgi.antlr-runtime.version}</version>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${osgi.antlr4-runtime.version}</version>
         </dependency>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
