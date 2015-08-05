@@ -230,8 +230,10 @@ public abstract class LongPollingTransport extends HttpTransport {
             throws IOException {
         List<ServerMessage> queue = session.takeQueue();
         for (ServerMessage m : queue) {
-            log.debug("sending message {} >>> {}", session.getId(), m.getJSON());
-            writer = writeMessage(request, response, writer, session, m);
+            if (m.getData() != null) {
+                log.debug("sending message {} >>> {}", session.getId(), m.getJSON());
+                writer = writeMessage(request, response, writer, session, m);
+            }
         }
         log.debug("messages sended {} >>> {}", session.getId(), queue);
         return writer;
