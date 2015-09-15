@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>6.8.0</version>
+	<version>6.9.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -58,7 +58,7 @@
 		<osgi.findbugs.version>${findbugs.version}-${project.parent.version}</osgi.findbugs.version>
 		<geronimo-annotation.version>1.1.1</geronimo-annotation.version>
 		<osgi.geronimo-annotation.version>${geronimo-annotation.version}-${project.parent.version}</osgi.geronimo-annotation.version>
-		<guava.version>13.0.1</guava.version>
+		<guava.version>18.0</guava.version>
 		<osgi.guava.version>${guava.version}-${project.parent.version}</osgi.guava.version>
 		<httpclient.version>4.1.2</httpclient.version>
 		<osgi.httpclient.version>${httpclient.version}-${project.parent.version}</osgi.httpclient.version>
