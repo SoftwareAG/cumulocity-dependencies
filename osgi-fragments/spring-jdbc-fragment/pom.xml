@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-                <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-                <artifactId>osgi-fragments</artifactId>
+        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+        <artifactId>osgi-fragments</artifactId>
 		<version>7.1.0-SNAPSHOT</version>
 	</parent>
 

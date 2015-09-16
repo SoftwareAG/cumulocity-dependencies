@@ -94,9 +94,9 @@
 		<osgi.stax-api.version>${stax-api.version}-${project.parent.version}</osgi.stax-api.version>
 		<svenson.version>1.3.8</svenson.version>
 		<osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
-		<json-path.version>1.2.0</json-path.version>
+		<json-path.version>0.8.1</json-path.version>
 		<osgi.json-path.version>${json-path.version}-${project.parent.version}</osgi.json-path.version>
-		<json-smart.version>2.1.0</json-smart.version>
+		<json-smart.version>1.2</json-smart.version>
 		<osgi.json-smart.version>${json-smart.version}-${project.parent.version}</osgi.json-smart.version>
 		<super-csv.version>2.1.0</super-csv.version>
 		<osgi.super-csv.version>${super-csv.version}-${project.parent.version}</osgi.super-csv.version>
