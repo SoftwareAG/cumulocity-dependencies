@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>6.10.0</version>
+	<version>6.11.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
