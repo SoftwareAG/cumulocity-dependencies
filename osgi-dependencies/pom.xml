@@ -62,6 +62,7 @@
         <module>querydsl-sql</module>
         <module>querydsl-jpa</module>
         <module>spring-security-jwt</module>
+        <module>odata</module>
     </modules>
 
     <properties>
@@ -135,4 +136,3 @@
         </plugins>
     </build>
 </project>
-
