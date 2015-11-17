@@ -56,6 +56,51 @@
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
+												org/apache/olingo/odata2/api/uri/expression/MethodOperator.*,
+												org/apache/olingo/odata2/core/uri/expression/Tokenizer.*,
+												org/apache/olingo/odata2/core/uri/expression/FilterParserImpl.*
+                    </excludes>
+                </configuration>
+            </plugin>
+						<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+						<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>org</include>
+												<include>org/apache</include>
+												<include>org/apache/olingo</include>
+												<include>org/apache/olingo/odata2</include>
+												<include>org/apache/olingo/odata2/api</include>
+												<include>org/apache/olingo/odata2/api/uri</include>
+												<include>org/apache/olingo/odata2/api/uri/expression</include>
+												<include>org/apache/olingo/odata2/api/uri/expression/MethodOperator.*</include>
+												<include>org/apache/olingo/odata2/core</include>
+												<include>org/apache/olingo/odata2/core/uri</include>
+												<include>org/apache/olingo/odata2/core/uri/expression</include>
+												<include>org/apache/olingo/odata2/core/uri/expression/Tokenizer.*</include>
+												<include>org/apache/olingo/odata2/core/uri/expression/FilterParserImpl.*</include>
+                    </includes>
+                    <excludes>
+                        <exclude>nothing</exclude>
                     </excludes>
                 </configuration>
             </plugin>
