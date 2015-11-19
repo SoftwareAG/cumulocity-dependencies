@@ -43,7 +43,8 @@ public enum MethodOperator {
   ROUND("round"),
   FLOOR("floor"),
   CEILING("ceiling"),
-  HAS("has");
+  HAS("has"),
+  BY_GROUPID("bygroupid");
 
   private String syntax;
   private String stringRespresentation;

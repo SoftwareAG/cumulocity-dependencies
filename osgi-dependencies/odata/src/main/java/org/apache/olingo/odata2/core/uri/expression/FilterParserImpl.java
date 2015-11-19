@@ -971,10 +971,18 @@ public class FilterParserImpl implements FilterParser {
     combination.add(new ParameterSet(double_, double_));
     lAvailableMethods.put(MethodOperator.FLOOR.toUriLiteral(), new InfoMethod(MethodOperator.FLOOR, combination));
 
-    // startswith
+    // has
     combination = new ParameterSetCombination.PSCflex();
     combination.add(new ParameterSet(boolean_, string));
     lAvailableMethods.put(MethodOperator.HAS.toUriLiteral(), new InfoMethod(MethodOperator.HAS, combination));
+
+    // bygroupid
+    combination = new ParameterSetCombination.PSCflex();
+    combination.add(new ParameterSet(boolean_, string));
+    combination.add(new ParameterSet(boolean_, int16));
+    combination.add(new ParameterSet(boolean_, int32));
+    combination.add(new ParameterSet(boolean_, int64));    
+    lAvailableMethods.put(MethodOperator.BY_GROUPID.toUriLiteral(), new InfoMethod(MethodOperator.BY_GROUPID, combination));
 
     // ---unary---
 
