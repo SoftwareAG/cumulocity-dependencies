@@ -4,11 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>6.14.0-SNAPSHOT</version>
+		<version>6.15.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>jaxb-api</artifactId>
-	<version>${osgi.jaxb-api.version}</version>
+	<version>6.15.0-SNAPSHOT</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JAXB XML API</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
