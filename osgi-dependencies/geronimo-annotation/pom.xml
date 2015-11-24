@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>geronimo-annotation_1.0_spec</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.geronimo-annotation.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Geronimo Annotation</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

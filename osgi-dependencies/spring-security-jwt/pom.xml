@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>spring-security-jwt</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.spring.security.jwt.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Spring Security JWT</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

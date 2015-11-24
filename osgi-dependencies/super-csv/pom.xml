@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>super-csv</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.super-csv.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Super CSV</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

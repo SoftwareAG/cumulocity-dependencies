@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>apache-log4j-extras</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.apache-log4j-extras.version}</version>
 	<packaging>jar</packaging>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Log4j Extras Fragment</name>
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>

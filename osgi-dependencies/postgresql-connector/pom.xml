@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>postgresql</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.postgresql.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: PostgreSQL Connector</name>
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	

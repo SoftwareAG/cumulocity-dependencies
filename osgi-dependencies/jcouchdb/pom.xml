@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -8,7 +9,7 @@
 	</parent>
 
 	<artifactId>jcouchdb</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.jcouchdb.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JCouchDB</name>
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

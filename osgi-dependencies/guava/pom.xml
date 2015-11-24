@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>guava</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.guava.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Guava</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

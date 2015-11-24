@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>querydsl-sql</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.querydsl.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: QueryDSL SQL</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

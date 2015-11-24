@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>json-path</artifactId>
-	<version>6.15.0-SNAPSHOT</version>
+	<version>${osgi.json-path.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JsonPath</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
