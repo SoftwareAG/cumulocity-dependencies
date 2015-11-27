@@ -178,15 +178,16 @@ public class MappingProcessor implements Mapper {
             .getDestClassBeanFactory(), classMap.getDestClassBeanFactoryId(), classMap.getDestClassCreateMethod()));
       }
 
-      // ########## CUMULOCITY PATCH START ##########
-      // Commented out due to NullPointerException
+      // removed bellow comment - try fix in different way if possible      
+      //   ########## CUMULOCITY PATCH START ##########
+      //   Commented out due to NullPointerException
       // --------------------------------------------
       // If this is a nested MapperAware conversion this mapping can be already processed
-      // Object alreadyMappedValue = mappedFields.getMappedValue(srcObj, destClass);
-      // if (alreadyMappedValue != null) {
-      //   return (T) alreadyMappedValue;
-      // }
-      // ##########  CUMULOCITY PATCH END  ##########
+       Object alreadyMappedValue = mappedFields.getMappedValue(srcObj, destClass);
+       if (alreadyMappedValue != null) {
+         return (T) alreadyMappedValue;
+       }
+      //   ##########  CUMULOCITY PATCH END  ##########
 
       map(classMap, srcObj, result, false, null);
     } catch (Throwable e) {
