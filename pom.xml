@@ -19,8 +19,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.6</maven.compiler.source>
-		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
 
 		<osgi.service.http.port>8181</osgi.service.http.port>
 		<nexus.port>443</nexus.port>
@@ -110,7 +110,7 @@
 		<joda-time.version>1.6.2</joda-time.version>
 		<commons-io.version>2.0.1</commons-io.version>
 		<cxf.version>2.6.7</cxf.version>
-		<aspectj.version>1.6.12</aspectj.version>
+		<aspectj.version>1.7.4</aspectj.version>
 		<eclipselink.version>2.2.1</eclipselink.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
 		<jetty.version>7.6.8.v20121106</jetty.version>
@@ -333,7 +333,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>aspectj-maven-plugin</artifactId>
-					<version>1.4</version>
+					<version>1.7</version>
 					<executions>
 						<execution>
 							<id>kpi-weaver</id>
@@ -342,7 +342,7 @@
 								<goal>compile</goal>
 							</goals>
 							<configuration>
-								<complianceLevel>1.6</complianceLevel>
+								<complianceLevel>1.7</complianceLevel>
 								<showWeaveInfo>true</showWeaveInfo>
 								<verbose>true</verbose>
 							</configuration>
