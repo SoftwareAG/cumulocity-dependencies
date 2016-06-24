@@ -281,7 +281,7 @@ public class ServerSessionImpl implements ServerSession {
     }
 
     private boolean notifyQueueMaxed(MaxQueueListener listener, ServerSession from, ServerMessage message) {
-        log.warn("queue exceeded max size session : {}", getId());
+        log.debug("queue exceeded max size session : {}", getId());
         try {
             return listener.queueMaxed(this, from, message);
         } catch (Exception x) {
