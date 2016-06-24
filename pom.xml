@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>6.17.0</version>
+	<version>7.29.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -32,7 +32,7 @@
 		<antlr-runtime.version>3.2</antlr-runtime.version>
 		<osgi.antlr-runtime.version>${antlr-runtime.version}-${project.parent.version}</osgi.antlr-runtime.version>
 		<antlr4-runtime.version>4.1</antlr4-runtime.version>
-		<osgi.antlr4-runtime.version>${antlr4-runtime.version}-${project.parent.version}</osgi.antlr4-runtime.version>    
+		<osgi.antlr4-runtime.version>${antlr4-runtime.version}-${project.parent.version}</osgi.antlr4-runtime.version>
 		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
 		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
 		<asm.version>3.1</asm.version>
@@ -74,7 +74,7 @@
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
 		<liquibase.version>1.9.5</liquibase.version>
 		<osgi.liquibase.version>${liquibase.version}-${project.parent.version}</osgi.liquibase.version>
-		<mail.version>1.4</mail.version>
+		<mail.version>1.4.7</mail.version>
 		<osgi.mail.version>${mail.version}-${project.parent.version}</osgi.mail.version>
 		<mimepull.version>1.4</mimepull.version>
 		<osgi.mimepull.version>${mimepull.version}-${project.parent.version}</osgi.mimepull.version>
@@ -94,9 +94,9 @@
 		<osgi.stax-api.version>${stax-api.version}-${project.parent.version}</osgi.stax-api.version>
 		<svenson.version>1.3.8</svenson.version>
 		<osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
-		<json-path.version>0.8.1</json-path.version>
+		<json-path.version>1.2.0</json-path.version>
 		<osgi.json-path.version>${json-path.version}-${project.parent.version}</osgi.json-path.version>
-		<json-smart.version>1.2</json-smart.version>
+		<json-smart.version>2.1.0</json-smart.version>
 		<osgi.json-smart.version>${json-smart.version}-${project.parent.version}</osgi.json-smart.version>
 		<super-csv.version>2.1.0</super-csv.version>
 		<osgi.super-csv.version>${super-csv.version}-${project.parent.version}</osgi.super-csv.version>
@@ -104,6 +104,8 @@
 		<osgi.cometd.version>${cometd.version}-${project.parent.version}</osgi.cometd.version>
 		<treelayout.version>1.0.1</treelayout.version>
 		<osgi.treelayout.version>${treelayout.version}-${project.parent.version}</osgi.treelayout.version>
+		<odata.version>2.0.4</odata.version>
+		<osgi.odata.version>${odata.version}-${project.parent.version}</osgi.odata.version>
 
 		<joda-time.version>1.6.2</joda-time.version>
 		<commons-io.version>2.0.1</commons-io.version>
