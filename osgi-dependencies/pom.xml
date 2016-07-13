@@ -30,7 +30,6 @@
         <module>antlr4-runtime</module>
         <module>treelayout</module>
         <module>cglib-nodep</module>
-        <module>esper</module>
         <module>svenson</module>
         <module>json-path</module>
         <module>json-smart</module>
