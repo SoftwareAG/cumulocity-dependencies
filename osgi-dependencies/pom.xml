@@ -63,6 +63,7 @@
         <module>querydsl-jpa</module>
         <module>spring-security-jwt</module>
         <module>odata</module>
+        <module>moquette</module>
     </modules>
 
     <properties>

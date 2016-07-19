@@ -30,7 +30,6 @@
 		<dependency>
 	      	<groupId>io.moquette</groupId>
 	     	<artifactId>moquette-broker</artifactId>
-	      	<version>${moquette.version}</version>
 	      	<scope>provided</scope>
 	      	<exclusions>
 				<exclusion>
@@ -47,13 +46,11 @@
 		<dependency>
             <groupId>io.moquette</groupId>
             <artifactId>moquette-netty-parser</artifactId>
-            <version>${moquette.version}</version>
         </dependency>
        	
        	<dependency>
             <groupId>io.moquette</groupId>
             <artifactId>moquette-parser-commons</artifactId>
-            <version>${moquette.version}</version>
         </dependency>
         
         <dependency>
