@@ -154,6 +154,7 @@
                        <include>io/moquette/server/Server.*</include>
                        <include>io/moquette/spi/security</include>
                        <include>io/moquette/spi/security/IMessagingPolicy.*</include>
+                       <include>io/moquette/spi/persistence</include>
 	                </includes>
 	                <excludes>
 	                    <exclude>nothing</exclude>
