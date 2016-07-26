@@ -469,6 +469,7 @@ public class ProtocolProcessor {
 
     protected void directSend(ClientSession clientsession, String topic, AbstractMessage.QOSType qos, ByteBuffer message, boolean retained, Integer messageID) {
         String clientId = clientsession.clientID;
+        topic = adjustOutgoingTopic(topic);
         LOG.debug("directSend invoked clientId <{}> on topic <{}> QoS {} retained {} messageID {}", clientId, topic, qos, retained, messageID);
         PublishMessage pubMessage = new PublishMessage();
         pubMessage.setRetainFlag(retained);
@@ -673,7 +674,7 @@ public class ProtocolProcessor {
 
         String username = NettyUtils.userName(channel);
         List<Subscription> newSubscriptions = new ArrayList<>();
-        for (SubscribeMessage.Couple req : msg.subscriptions()) {
+        for (SubscribeMessage.Couple req : subs) {
             if (!m_authorizator.canRead(req.topicFilter, username, clientSession.clientID)) {
                 //send SUBACK with 0x80, the user hasn't credentials to read the topic
                 LOG.debug("topic {} doesn't have read credentials", req.topicFilter);
