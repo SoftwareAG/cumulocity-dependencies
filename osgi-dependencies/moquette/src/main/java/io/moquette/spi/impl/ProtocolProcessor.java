@@ -32,7 +32,6 @@ import io.moquette.spi.security.IAuthorizator;
 import io.moquette.spi.security.IMessagingPolicy;
 import io.moquette.spi.impl.subscriptions.SubscriptionsStore;
 import io.moquette.spi.impl.subscriptions.Subscription;
-
 import static io.moquette.parser.netty.Utils.VERSION_3_1;
 import static io.moquette.parser.netty.Utils.VERSION_3_1_1;
 import io.moquette.proto.messages.AbstractMessage;
@@ -51,6 +50,7 @@ import io.moquette.proto.messages.UnsubscribeMessage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.timeout.IdleStateHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -631,7 +631,8 @@ public class ProtocolProcessor {
      * doesn't reply any error
      */
     public void processUnsubscribe(ServerChannel channel, UnsubscribeMessage msg) {
-        List<String> topics = msg.topicFilters();
+        //List<String> topics = msg.topicFilters();
+        List<String> topics = adjustIncomingTopic(channel, msg);
         int messageID = msg.getMessageID();
         String clientID = NettyUtils.clientID(channel);
 
@@ -651,6 +652,7 @@ public class ProtocolProcessor {
             subscriptions.removeSubscription(topic, clientID);
             clientSession.unsubscribeFrom(topic);
             m_interceptor.notifyTopicUnsubscribed(topic, clientID);
+            messagingPolicy.notifyTopicUnsubscribed(channel, topic);
         }
 
         //ack the client
@@ -675,7 +677,8 @@ public class ProtocolProcessor {
         String username = NettyUtils.userName(channel);
         List<Subscription> newSubscriptions = new ArrayList<>();
         for (SubscribeMessage.Couple req : subs) {
-            if (!m_authorizator.canRead(req.topicFilter, username, clientSession.clientID)) {
+            //if (!m_authorizator.canRead(req.topicFilter, username, clientSession.clientID)) {
+            if (!messagingPolicy.canSubscribe(channel, req)) {
                 //send SUBACK with 0x80, the user hasn't credentials to read the topic
                 LOG.debug("topic {} doesn't have read credentials", req.topicFilter);
                 ackMessage.addType( AbstractMessage.QOSType.FAILURE);
@@ -736,6 +739,10 @@ public class ProtocolProcessor {
 
     protected List<SubscribeMessage.Couple> adjustIncomingTopic(ServerChannel channel, SubscribeMessage msg) {
         return msg.subscriptions();
+    }
+    
+    protected List<String> adjustIncomingTopic(ServerChannel channel, UnsubscribeMessage msg) {
+        return msg.topicFilters();
     }
     
     protected String adjustOutgoingTopic(String topic) {
