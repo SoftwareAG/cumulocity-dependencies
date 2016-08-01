@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>7.31.0</version>
+		<version>7.32.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>mysema-commons-lang</artifactId>
