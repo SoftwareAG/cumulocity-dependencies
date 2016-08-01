@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>7.30.0</version>
+        <version>7.31.0</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -30,7 +30,6 @@
         <module>antlr4-runtime</module>
         <module>treelayout</module>
         <module>cglib-nodep</module>
-        <module>esper</module>
         <module>svenson</module>
         <module>json-path</module>
         <module>json-smart</module>
