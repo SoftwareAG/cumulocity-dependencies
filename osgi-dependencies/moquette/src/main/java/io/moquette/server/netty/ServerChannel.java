@@ -1,17 +1,14 @@
 package io.moquette.server.netty;
 
-import io.moquette.server.netty.NettyUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
-import io.netty.channel.socket.SocketChannel;
 
 public class ServerChannel {
     
-    public final static AttributeKey<String> TENANT_ATTRIBUTE = AttributeKey.valueOf("tenant");
+    public final static AttributeKey<String> PASSWORD_ATTRIBUTE = AttributeKey.valueOf("password");
     public final static AttributeKey<String> SERIAL_ATTRIBUTE = AttributeKey.valueOf("serial");
     public final static AttributeKey<String> TEMPLATE_ATTRIBUTE = AttributeKey.valueOf("template");
     public final static AttributeKey DEVICE_ATTRIBUTE = AttributeKey.valueOf("device");
@@ -26,7 +23,7 @@ public class ServerChannel {
     }
     
     public <T> Attribute<T> attr(AttributeKey<T> key) {
-        if (key == TENANT_ATTRIBUTE ||
+        if (key == PASSWORD_ATTRIBUTE ||
             key == SERIAL_ATTRIBUTE ||
             key == TEMPLATE_ATTRIBUTE ||
             key == DEVICE_ATTRIBUTE) {
