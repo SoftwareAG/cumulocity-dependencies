@@ -2,6 +2,8 @@ package org.cometd.server.transport;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -41,9 +43,12 @@ public abstract class LongPollingTransport extends HttpTransport {
 
     private boolean _autoBatch;
 
-    protected LongPollingTransport(BayeuxServerImpl bayeux, String name) {
+    private Integer heartbeatMinutes;
+
+    protected LongPollingTransport(BayeuxServerImpl bayeux, String name, Integer heartbeatMinutes) {
         super(bayeux, name);
         setOptionPrefix(PREFIX);
+        this.heartbeatMinutes = heartbeatMinutes;
     }
 
     @Override
@@ -284,15 +289,23 @@ public abstract class LongPollingTransport extends HttpTransport {
 
         private static final String ATTRIBUTE = "org.cometd.scheduler";
 
+        private static final String PROPERTY_HEARTBEAT = "cometd.heartbeat.minutes";
+
+        private final Integer HEARTBEAT_MINUTES_MINIMUM = 1;
+
+        private final Integer HEARTBEAT_MINUTES_MAXIMUM = 10;
+
+        private final Integer HEARTBEAT_MINUTES_DEFAULT = 1;
+
         private final ServerSessionImpl session;
 
         private final Continuation continuation;
 
         private final ServerMessage.Mutable reply;
 
-        private final Duration validTime = Duration.standardMinutes(10);
+        private Duration validTime;
 
-        private Interval lastValidation = new Interval(new DateTime(), validTime);
+        private Interval lastValidation;
 
         public LongPollScheduler(ServerSessionImpl session, Continuation continuation, ServerMessage.Mutable reply) {
             this.session = session;
@@ -300,6 +313,31 @@ public abstract class LongPollingTransport extends HttpTransport {
             this.continuation = continuation;
             this.continuation.addContinuationListener(this);
             this.reply = reply;
+
+            validTime = Duration.standardMinutes(heartbeatMinutes);
+            this.lastValidation = new Interval(new DateTime(), validTime);
+        }
+
+        private void loadPropertiesFromClasspathIfPossible(Properties prop, String filename) {
+            try {
+                InputStream stream = getClass().getClassLoader().getResourceAsStream(filename);
+                if (stream != null) {
+                    prop.load(stream);
+                }
+            } catch (IOException e) {
+                // Ignore 
+            }
+        }
+
+        private void loadPropertiesFromFileIfPossible(Properties prop, String filename) {
+            try {
+                InputStream stream = new FileInputStream(filename);
+                if (stream != null) {
+                    prop.load(stream);
+                }
+            } catch (IOException e) {
+                // Ignore
+            }
         }
 
         public void validate() {
