@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>7.32.0</version>
+	<version>7.33.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -104,6 +104,8 @@
 		<osgi.treelayout.version>${treelayout.version}-${project.parent.version}</osgi.treelayout.version>
 		<odata.version>2.0.4</odata.version>
 		<osgi.odata.version>${odata.version}-${project.parent.version}</osgi.odata.version>
+		<moquette.version>0.8.1</moquette.version>
+		<osgi.moquette.version>${moquette.version}-${project.parent.version}</osgi.moquette.version>
 
 		<joda-time.version>1.6.2</joda-time.version>
 		<commons-io.version>2.0.1</commons-io.version>
@@ -257,6 +259,32 @@
 				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+			<dependency>
+		      	<groupId>io.moquette</groupId>
+		     	<artifactId>moquette-broker</artifactId>
+		     	<version>${moquette.version}</version>
+		      	<scope>provided</scope>
+		      	<exclusions>
+					<exclusion>
+						<artifactId>log4j</artifactId>
+						<groupId>log4j</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>slf4j-log4j12</artifactId>
+						<groupId>org.slf4j</groupId>
+					</exclusion>
+		      	</exclusions>
+			</dependency>
+			<dependency>
+	            <groupId>io.moquette</groupId>
+	            <artifactId>moquette-netty-parser</artifactId>
+	            <version>${moquette.version}</version>
+	        </dependency>
+	       	<dependency>
+	            <groupId>io.moquette</groupId>
+	            <artifactId>moquette-parser-commons</artifactId>
+	            <version>${moquette.version}</version>
+	        </dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -397,6 +425,19 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<repositories>
+	 	 <repository>
+		    <id>bintray</id>
+		    <url>http://dl.bintray.com/andsel/maven/</url>
+		    <releases>
+		      <enabled>true</enabled>
+		    </releases>
+		    <snapshots>
+		      <enabled>false</enabled>
+		    </snapshots>
+	  	</repository>
+	</repositories>
 
 	<distributionManagement>
 		<snapshotRepository>
