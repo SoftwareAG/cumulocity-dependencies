@@ -79,7 +79,10 @@
 						META-INF/MANIFEST.MF,
 						META-INF/maven/**/*,
 						org/cometd/server/ServerSessionImpl.*,
-						org/cometd/server/transport/LongPollingTransport.*
+						org/cometd/server/transport/LongPollingTransport.*,
+						org/cometd/server/transport/JSONTransport.*,
+						org/cometd/server/transport/JSONPTransport.*,
+						org/cometd/server/BayeuxServerImpl.*
 					</excludes>
 				</configuration>
 			</plugin>

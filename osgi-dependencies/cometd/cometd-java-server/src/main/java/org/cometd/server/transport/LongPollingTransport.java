@@ -41,9 +41,12 @@ public abstract class LongPollingTransport extends HttpTransport {
 
     private boolean _autoBatch;
 
-    protected LongPollingTransport(BayeuxServerImpl bayeux, String name) {
+    private Integer heartbeatMinutes;
+
+    protected LongPollingTransport(BayeuxServerImpl bayeux, String name, Integer heartbeatMinutes) {
         super(bayeux, name);
         setOptionPrefix(PREFIX);
+        this.heartbeatMinutes = heartbeatMinutes;
     }
 
     @Override
@@ -290,9 +293,9 @@ public abstract class LongPollingTransport extends HttpTransport {
 
         private final ServerMessage.Mutable reply;
 
-        private final Duration validTime = Duration.standardMinutes(10);
+        private Duration validTime;
 
-        private Interval lastValidation = new Interval(new DateTime(), validTime);
+        private Interval lastValidation;
 
         public LongPollScheduler(ServerSessionImpl session, Continuation continuation, ServerMessage.Mutable reply) {
             this.session = session;
@@ -300,6 +303,9 @@ public abstract class LongPollingTransport extends HttpTransport {
             this.continuation = continuation;
             this.continuation.addContinuationListener(this);
             this.reply = reply;
+
+            validTime = Duration.standardMinutes(heartbeatMinutes);
+            this.lastValidation = new Interval(new DateTime(), validTime);
         }
 
         public void validate() {
