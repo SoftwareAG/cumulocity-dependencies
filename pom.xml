@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>7.33.0</version>
+	<version>7.34.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -106,6 +106,9 @@
 		<osgi.odata.version>${odata.version}-${project.parent.version}</osgi.odata.version>
 		<moquette.version>0.8.1</moquette.version>
 		<osgi.moquette.version>${moquette.version}-${project.parent.version}</osgi.moquette.version>
+		<libphonenumber.version>7.6.0</libphonenumber.version>
+		<osgi.libphonenumber.version>${libphonenumber.version}-${project.parent.version}</osgi.libphonenumber.version>
+
 
 		<joda-time.version>1.6.2</joda-time.version>
 		<commons-io.version>2.0.1</commons-io.version>
