@@ -140,6 +140,7 @@
 		<module>osgi-fragments</module>
 		<module>osgi-features</module>
 		<module>cumulocity-base-karaf</module>
+		<module>maven-plugins</module>
 	</modules>
 
 	<dependencyManagement>
@@ -390,7 +391,7 @@
 					<artifactId>build-helper-maven-plugin</artifactId>
 					<version>1.7</version>
 				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
+				<!--This plugin's configuration is used to store Eclipse m2e settings
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -428,7 +429,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<repositories>
 	 	 <repository>
 		    <id>bintray</id>
