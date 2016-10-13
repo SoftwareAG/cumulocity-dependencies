@@ -25,31 +25,31 @@ import java.util.List;
  * @goal generate
  * @phase prepare-package
  */
-@Mojo(name = "generate", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PREPARE_PACKAGE)
+//@Mojo(name = "generate", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PREPARE_PACKAGE)
 public class Generate3rdLicenseMojo extends AbstractMojo {
 
     /**
      * @parameter default-value="${project.build.directory}/${project.build.finalName}"
      */
-    @Parameter(alias = "app.basedir", defaultValue = "${project.build.directory}/${project.build.finalName}")
+    //@Parameter(alias = "app.basedir", defaultValue = "${project.build.directory}/${project.build.finalName}")
     private File appBasedir;
 
     /**
      * @parameter default-value="${project.build.directory}/${project.build.finalName}"
      */
-    @Parameter(alias = "third.party.license.file.path", defaultValue = "${project.build.directory}/${project.build.finalName}")
+    //@Parameter(alias = "third.party.license.file.path", defaultValue = "${project.build.directory}/${project.build.finalName}")
     private File thirdPartyLicenseFilePath;
 
     /**
      * @parameter default-value="THIRD-PARTY-LICENSES"
      */
-    @Parameter(alias = "third.party.license.file.name", defaultValue = "THIRD-PARTY-LICENSES")
+    //@Parameter(alias = "third.party.license.file.name", defaultValue = "THIRD-PARTY-LICENSES")
     private String thirdPartyLicenseFileName;
 
     /**
      * @parameter default-value="${basedir}/src/main/resources/license/mapper.properties"
      */
-    @Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
+    //@Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
 
     @Override
