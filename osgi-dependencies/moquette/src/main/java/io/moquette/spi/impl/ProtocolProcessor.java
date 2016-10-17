@@ -47,7 +47,6 @@ import io.moquette.proto.messages.SubAckMessage;
 import io.moquette.proto.messages.SubscribeMessage;
 import io.moquette.proto.messages.UnsubAckMessage;
 import io.moquette.proto.messages.UnsubscribeMessage;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.timeout.IdleStateHandler;
 
@@ -541,7 +540,10 @@ public class ProtocolProcessor {
         ClientSession targetSession = m_sessionsStore.sessionForClient(clientID);
         verifyToActivate(clientID, targetSession);
         IMessagesStore.StoredMessage evt = targetSession.storedMessage(messageID);
-        route2Subscribers(evt);
+        boolean shouldForwardToSubscribers = !messagingPolicy.handleMessageInService(channel, evt);
+        if (shouldForwardToSubscribers) {
+            route2Subscribers(evt);
+        }
 
         if (evt.isRetained()) {
             final String topic = evt.getTopic();
