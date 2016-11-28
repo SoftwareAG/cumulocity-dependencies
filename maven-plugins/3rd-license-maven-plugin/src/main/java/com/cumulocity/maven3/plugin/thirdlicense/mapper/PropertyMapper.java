@@ -1,23 +1,13 @@
 package com.cumulocity.maven3.plugin.thirdlicense.mapper;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 public class PropertyMapper {
 
-    private final Properties properties;
+    private final WildCardAwareProperties properties;
 
-    public PropertyMapper(File definition) {
-        properties = new Properties();
-        if (definition.exists() && definition.isFile()) {
-            try {
-                properties.load(new FileInputStream(definition));
-            } catch (IOException e) {
-                throw new IllegalStateException("Cannot read from " + definition.getAbsolutePath());
-            }
-        }
+    public PropertyMapper(Properties properties) {
+        this.properties = WildCardAwareProperties.create(properties);
     }
 
     public String mapGroupId(String jarName, String defaultValue) {

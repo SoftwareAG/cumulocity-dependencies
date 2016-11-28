@@ -5,6 +5,8 @@ import com.cumulocity.maven3.plugin.thirdlicense.jar.Jars;
 import com.cumulocity.maven3.plugin.thirdlicense.license.JarTo3PartyInformation;
 import com.cumulocity.maven3.plugin.thirdlicense.license.Licenses;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
+import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapperFactory;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -62,7 +64,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         checkNotNull(mapperProperties, "Cannot work on undefined: mapper.properties");
         getLog().info("Reading mapping from " + mapperProperties.getAbsolutePath());
 
-        final PropertyMapper mapper = new PropertyMapper(mapperProperties);
+        final PropertyMapper mapper = PropertyMapperFactory.create(mapperProperties);
         final List<Jar> jars = new ArrayList<>();
         Jars.walkJarTree(appBasedir, new Jars.JarFileVisitor() {
             @Override

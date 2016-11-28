@@ -10,13 +10,12 @@ import javax.annotation.Nullable;
  */
 public class JarTo3PartyInformation implements Function<Jar, String> {
 
+    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s";;
+
     @Nullable
     @Override
     public String apply(@Nullable Jar jar) {
-        return jar.getFileName() + ", " +
-                jar.getGroupId() + ":" + jar.getArtifactId() + ":" + jar.getVersion() + ", " +
-                jar.getCopyright() + ", " +
-                jar.getLicense();
+        return String.format(LINE_FORMAT, jar.getFileName(), jar.getGroupId(), jar.getArtifactId(), jar.getVersion(), jar.getCopyright(), jar.getLicense());
     }
 
 }
