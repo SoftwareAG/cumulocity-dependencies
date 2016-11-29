@@ -16,6 +16,7 @@ import com.cumulocity.maven3.plugin.thirdlicense.license.JarTo3PartyInformation;
 import com.cumulocity.maven3.plugin.thirdlicense.license.Licenses;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapperFactory;
+import com.cumulocity.maven3.plugin.thirdlicense.validation.Validator;
 
 /**
  * This is main class for maven plugin, from this file maven start work with this feature
@@ -74,6 +75,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         getLog().info("Save 3rd-party-file " + thirdPartyFile());
         thirdPartyLicenseFilePath.mkdirs();
         Licenses.save(thirdPartyFile(), jars, new JarTo3PartyInformation());
+        Validator.validate(getLog(), jars);
     }
 
     private Path thirdPartyFile() {

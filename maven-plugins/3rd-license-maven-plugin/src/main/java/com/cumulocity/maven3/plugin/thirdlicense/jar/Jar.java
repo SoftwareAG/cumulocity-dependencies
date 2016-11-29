@@ -72,7 +72,7 @@ public class Jar {
     public boolean isCumulocityJar() {
         return getGroupId() != null && getGroupId().startsWith("com.nsn.cumulocity");
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
