@@ -50,19 +50,15 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
     //@Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
     
-    /**
-     * Default mapper properties inside plugin jar
-     */
-    private File defaultMapperProperties = new File("src/main/resources/META-INF/mapper.properties");
-
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Generate 3rd part libraries");
 
         checkNotNull(appBasedir, "Cannot work on undefined: app.basedir");
         getLog().info("Reading libraries from " + appBasedir.getAbsolutePath());
+        
+        final PropertyMapper mapper = PropertyMapperFactory.create(getLog(), mapperProperties);
 
-        final PropertyMapper mapper = createMapper();
         final List<Jar> jars = new ArrayList<>();
         Jars.walkJarTree(appBasedir, new Jars.JarFileVisitor() {
             @Override
@@ -76,16 +72,6 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         getLog().info("Save 3rd-party-file " + thirdPartyFile());
         thirdPartyLicenseFilePath.mkdirs();
         Licenses.save(thirdPartyFile(), jars, new JarTo3PartyInformation());
-    }
-
-    private PropertyMapper createMapper() throws MojoFailureException {
-        if (mapperProperties == null) {
-            getLog().info("Reading mapping from " + defaultMapperProperties.getAbsolutePath());            
-            return PropertyMapperFactory.create(defaultMapperProperties);
-        } else {
-            getLog().info("Reading mapping from defaultMapperProperties and " + mapperProperties.getAbsolutePath());
-            return PropertyMapperFactory.create(defaultMapperProperties, mapperProperties);
-        }
     }
 
     private Path thirdPartyFile() {

@@ -8,6 +8,7 @@ public class PropertyMapper {
 
     public PropertyMapper(Properties... lProperties) {
         this.properties = WildCardAwareProperties.create(lProperties);
+        System.out.println("mapper = " + properties);
     }
 
     public String mapGroupId(String jarName, String defaultValue) {
@@ -51,7 +52,7 @@ public class PropertyMapper {
     }
 
     private String getValue(String value) {
-        return value.replaceAll(" ", "_").replaceAll(":", "_");
+        return value.trim().replaceAll(" ", "_").replaceAll(":", "_");
     }
 
     public String mapLicense(String jarName, String defaultValue) {

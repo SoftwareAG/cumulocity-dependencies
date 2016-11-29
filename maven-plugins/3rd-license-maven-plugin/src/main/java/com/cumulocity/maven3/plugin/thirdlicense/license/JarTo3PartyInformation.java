@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
  */
 public class JarTo3PartyInformation implements Function<Jar, String> {
 
-    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s";;
+    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s";
 
     @Nullable
     @Override

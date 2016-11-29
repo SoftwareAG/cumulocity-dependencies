@@ -18,18 +18,18 @@ public class WildCardAwarePropertiesTest {
     @Test
     public void shouldGetPropertyWithWildCardedKey() throws Exception {
         WildCardAwareProperties properties = new WildCardAwareProperties();
-        properties.setProperty("liquibase-core-1.9.*.jar.license", "value");
+        properties.setProperty("liquibase-core-1.9.*jar.license", "value");
 
         assertThat(properties.getProperty("liquibase-core-1.9.1.jar.license")).isEqualTo("value");
 
         properties = new WildCardAwareProperties();
-        properties.setProperty("liquibase-core-1.*.jar.license", "value1");
-        properties.setProperty("liquibase-core-2.*.jar.license", "value2");
+        properties.setProperty("liquibase-core-1.*jar.license", "value1");
+        properties.setProperty("liquibase-core-2.*jar.license", "value2");
 
+        assertThat(properties.getProperty("liquibase-core-1.jar.license")).isEqualTo("value1");
         assertThat(properties.getProperty("liquibase-core-1.5.1.jar.license")).isEqualTo("value1");
         assertThat(properties.getProperty("liquibase-core-2.5.1.jar.license")).isEqualTo("value2");
         assertThat(properties.getProperty("liquibase-core-2.5.1-SNAPSHPOT.jar.license")).isEqualTo("value2");
         assertThat(properties.getProperty("liquibase-core-2.5.1-7.0.0-SNAPSHPOT.jar.license")).isEqualTo("value2");
     }
-
 }

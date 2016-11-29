@@ -41,12 +41,19 @@ public class WildCardAwareProperties {
         return null;
     }
 
+    
+    
+    @Override
+    public String toString() {
+        return content.toString();
+    }
+
     private static class KeyExpression {
 
         private final String regex;
 
         public KeyExpression(String key) {
-            regex = key.replaceAll("\\*", ".+");
+            regex = key.replaceAll("\\*", ".*");
         }
 
         public boolean match(String input) {
@@ -78,10 +85,9 @@ public class WildCardAwareProperties {
             return true;
         }
 
+        @Override
+        public String toString() {
+            return regex;
+        }
     }
-    
-    public static void main(String[] args) {
-        System.out.println(Pattern.matches(".+", "1asaj.j"));
-    }
-
 }
