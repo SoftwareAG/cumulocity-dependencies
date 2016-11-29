@@ -65,7 +65,9 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
             public void visitJar(Path jarPath) {
                 Jar jar = Jar.of(jarPath, appBasedir.getAbsoluteFile().toPath(), mapper);
                 getLog().info("Reading library " + jar);
-                jars.add(jar);
+                if (!jar.isCumulocityJar()) {
+                    jars.add(jar);
+                }
             }
         });
 
