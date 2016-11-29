@@ -1,25 +1,21 @@
 package com.cumulocity.maven3.plugin.thirdlicense;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+
 import com.cumulocity.maven3.plugin.thirdlicense.jar.Jar;
 import com.cumulocity.maven3.plugin.thirdlicense.jar.Jars;
 import com.cumulocity.maven3.plugin.thirdlicense.license.JarTo3PartyInformation;
 import com.cumulocity.maven3.plugin.thirdlicense.license.Licenses;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapperFactory;
-
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is main class for maven plugin, from this file maven start work with this feature
@@ -53,6 +49,11 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
      */
     //@Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
+    
+    /**
+     * Default mapper properties inside plugin jar
+     */
+    private File defaultMapperProperties = new File("src/main/resources/META-INF/mapper.properties");
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -61,10 +62,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         checkNotNull(appBasedir, "Cannot work on undefined: app.basedir");
         getLog().info("Reading libraries from " + appBasedir.getAbsolutePath());
 
-        checkNotNull(mapperProperties, "Cannot work on undefined: mapper.properties");
-        getLog().info("Reading mapping from " + mapperProperties.getAbsolutePath());
-
-        final PropertyMapper mapper = PropertyMapperFactory.create(mapperProperties);
+        final PropertyMapper mapper = createMapper();
         final List<Jar> jars = new ArrayList<>();
         Jars.walkJarTree(appBasedir, new Jars.JarFileVisitor() {
             @Override
@@ -78,6 +76,16 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         getLog().info("Save 3rd-party-file " + thirdPartyFile());
         thirdPartyLicenseFilePath.mkdirs();
         Licenses.save(thirdPartyFile(), jars, new JarTo3PartyInformation());
+    }
+
+    private PropertyMapper createMapper() throws MojoFailureException {
+        if (mapperProperties == null) {
+            getLog().info("Reading mapping from " + defaultMapperProperties.getAbsolutePath());            
+            return PropertyMapperFactory.create(defaultMapperProperties);
+        } else {
+            getLog().info("Reading mapping from defaultMapperProperties and " + mapperProperties.getAbsolutePath());
+            return PropertyMapperFactory.create(defaultMapperProperties, mapperProperties);
+        }
     }
 
     private Path thirdPartyFile() {

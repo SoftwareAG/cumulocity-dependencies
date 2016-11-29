@@ -6,8 +6,8 @@ public class PropertyMapper {
 
     private final WildCardAwareProperties properties;
 
-    public PropertyMapper(Properties properties) {
-        this.properties = WildCardAwareProperties.create(properties);
+    public PropertyMapper(Properties... lProperties) {
+        this.properties = WildCardAwareProperties.create(lProperties);
     }
 
     public String mapGroupId(String jarName, String defaultValue) {

@@ -10,11 +10,13 @@ public class WildCardAwareProperties {
 
     private final Map<KeyExpression, String> content = new HashMap<KeyExpression, String>();
 
-    public static WildCardAwareProperties create(Properties properties) {
+    public static WildCardAwareProperties create(Properties... lProperties) {
         WildCardAwareProperties result = new WildCardAwareProperties();
-        for (String propName : properties.stringPropertyNames()) {
-            String value = properties.getProperty(propName);
-            result.setProperty(propName, value);
+        for (Properties properties : lProperties) {
+            for (String propName : properties.stringPropertyNames()) {
+                String value = properties.getProperty(propName);
+                result.setProperty(propName, value);
+            }            
         }
         return result;
     }
