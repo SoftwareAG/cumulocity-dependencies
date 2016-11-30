@@ -13,48 +13,83 @@ import com.google.common.base.Function;
  * Class convert object {@see Jar} to String representation.
  */
 public class JarTo3PartyInformation implements Function<Jar, String> {
-
-    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s";
-
+    
+    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s, %s";
+    
     @Nullable
     @Override
     public String apply(Jar jar) {
-        return String.format(LINE_FORMAT, jar.getFileName(), jar.getGroupId(), jar.getArtifactId(), jar.getVersion(), jar.getCopyright(), jar.getLicense());
+        return String.format(LINE_FORMAT, (Object[]) getPrintableProperties(jar));
     }
     
     
-    public static List<MissingInformation> getMissingInformations(Jar jar) {
-        List<MissingInformation> missings = new ArrayList<MissingInformation>();
-        checkProperty(missings, jar.getFileName(), jar.getGroupId(), "groupId");
-        checkProperty(missings, jar.getFileName(), jar.getArtifactId(), "artifactId");
-        checkProperty(missings, jar.getFileName(), jar.getVersion(), "version");
-        checkProperty(missings, jar.getFileName(), jar.getCopyright(), "copyright");
-        checkProperty(missings, jar.getFileName(), jar.getLicense(), "license");
+    public static List<MissingJarProperty> getMissingJarProperties(Jar jar) {
+        List<MissingJarProperty> missings = new ArrayList<MissingJarProperty>();
+        for (JarProperty property : getPrintableProperties(jar)) {
+            checkProperty(missings, jar.getFileName(), property);            
+        }
         return missings;
     }
     
-    private static void checkProperty(List<MissingInformation> missings, String fileName, String value, String propertyName) {
-        if (Jars.UNKNOWN_VALUE.equals(value)) {
-            missings.add(new MissingInformation(fileName, propertyName));
+    private static void checkProperty(List<MissingJarProperty> missings, String fileName, JarProperty property) {
+        if (Jars.UNKNOWN_VALUE.equals(property.toString())) {
+            missings.add(new MissingJarProperty(fileName, property.getLabel()));
         }
     }
+
     
-    public static class MissingInformation {
+    private static  JarProperty[] getPrintableProperties(Jar jar) {
+        return  new JarProperty[] {
+            // @formatter:off
+            new JarProperty(jar.getFileName(), "fileName"),
+            new JarProperty(jar.getGroupId(), "groupId"),
+            new JarProperty(jar.getArtifactId(), "artifactId"),
+            new JarProperty(jar.getVersion(), "version"),
+            new JarProperty(jar.getCopyright(), "copyright"),
+            new JarProperty(jar.getLicense(), "license"),
+            new JarProperty(jar.getUsOrigin(), "usOrigin")
+            // @formatter:on
+        };
+    }
+    
+    static class JarProperty {
         
-        private final String fileName;
-        private final String information;
+        private final String value;
+        private final String label;
         
-        public MissingInformation(String fileName, String information) {
-            this.fileName = fileName;
-            this.information = information;
+        public JarProperty(String value, String label) {
+            this.value = value;
+            this.label = label;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getLabel() {
+            return label;
         }
 
         @Override
         public String toString() {
-            return String.format("fileName: %s, information: %s", fileName, information);
+            return value == null ? "" : value.trim();
+        }
+    }
+    
+    public static class MissingJarProperty {
+        
+        private final String fileName;
+        private final String information;
+        
+        public MissingJarProperty(String fileName, String information) {
+            this.fileName = fileName;
+            this.information = information;
         }
         
-        
+        @Override
+        public String toString() {
+            return String.format("artifact: %s, property: %s", fileName, information);
+        }
     }
 
 }

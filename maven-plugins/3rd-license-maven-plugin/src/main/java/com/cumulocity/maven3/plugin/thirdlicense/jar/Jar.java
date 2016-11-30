@@ -18,8 +18,9 @@ public class Jar {
     private final String fileName;
     private final String absolutePath;
     private final String relativePath;
+    private final String usOrigin;
 
-    private Jar(String separator, String groupId, String artifactId, String version, String copyright, String license, String fileName, String absolutePath, String relativePath) {
+    private Jar(String separator, String groupId, String artifactId, String version, String copyright, String license, String fileName, String absolutePath, String relativePath, String usOrigin) {
         this.separator = separator;
         this.groupId = groupId;
         this.artifactId = artifactId;
@@ -29,6 +30,7 @@ public class Jar {
         this.fileName = fileName;
         this.absolutePath = absolutePath;
         this.relativePath = relativePath;
+        this.usOrigin = usOrigin;
     }
 
     public static Jar of(Path jarPath, Path basedir, PropertyMapper propertyMapper) {
@@ -42,6 +44,7 @@ public class Jar {
                 , Jars.toFileName(jarPath)
                 , Jars.toAbsolutePath(jarPath)
                 , Jars.toRelativePath(jarPath, basedir)
+                , Jars.toUsOrigin(jarPath, propertyMapper)
         );
     }
 
@@ -69,6 +72,10 @@ public class Jar {
         return license;
     }
     
+    public String getUsOrigin() {
+        return usOrigin;
+    }
+
     public boolean isCumulocityJar() {
         return getGroupId() != null && getGroupId().startsWith("com.nsn.cumulocity");
     }

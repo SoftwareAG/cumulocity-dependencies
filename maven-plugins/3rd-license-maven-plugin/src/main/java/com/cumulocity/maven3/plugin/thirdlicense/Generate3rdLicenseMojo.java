@@ -61,6 +61,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         final PropertyMapper mapper = PropertyMapperFactory.create(getLog(), mapperProperties);
 
         final List<Jar> jars = new ArrayList<>();
+        
         Jars.walkJarTree(appBasedir, new Jars.JarFileVisitor() {
             @Override
             public void visitJar(Path jarPath) {

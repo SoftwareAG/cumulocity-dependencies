@@ -58,9 +58,17 @@ public class PropertyMapper {
     public String mapLicense(String jarName, String defaultValue) {
         return properties.getProperty(licenseKey(jarName), defaultValue);
     }
+    
+    public String mapUsOrigin(String jarName, String defaultValue) {
+        return properties.getProperty(usOriginKey(jarName), defaultValue);
+    }
 
     public String licenseKey(String jarName) {
         return jarName + ".license";
+    }
+    
+    private String usOriginKey(String jarName) {
+        return jarName + ".usOrigin";
     }
 
     public String mapValueForLicense(String license) {
@@ -70,4 +78,5 @@ public class PropertyMapper {
     private String licenseValueKey(String value) {
         return (value == null ? null : getValue(value)) + ".value";
     }
+
 }
