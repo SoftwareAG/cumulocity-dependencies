@@ -6,17 +6,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.project.MavenProject;
 
+import com.cumulocity.maven3.plugin.thirdlicense.diff.DiffService;
 import com.cumulocity.maven3.plugin.thirdlicense.jar.Jar;
 import com.cumulocity.maven3.plugin.thirdlicense.jar.Jars;
 import com.cumulocity.maven3.plugin.thirdlicense.license.JarTo3PartyInformation;
 import com.cumulocity.maven3.plugin.thirdlicense.license.Licenses;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapperFactory;
-import com.cumulocity.maven3.plugin.thirdlicense.validation.Validator;
 
 /**
  * This is main class for maven plugin, from this file maven start work with this feature
@@ -24,33 +32,30 @@ import com.cumulocity.maven3.plugin.thirdlicense.validation.Validator;
  * @goal generate
  * @phase prepare-package
  */
-//@Mojo(name = "generate", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PREPARE_PACKAGE)
+@Mojo(name = "3rd-license-generate", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PREPARE_PACKAGE)
 public class Generate3rdLicenseMojo extends AbstractMojo {
 
-    /**
-     * @parameter default-value="${project.build.directory}/${project.build.finalName}"
-     */
-    //@Parameter(alias = "app.basedir", defaultValue = "${project.build.directory}/${project.build.finalName}")
+    @Parameter(alias = "app.basedir", defaultValue = "${project.build.directory}/${project.build.finalName}")
     private File appBasedir;
-
-    /**
-     * @parameter default-value="${project.build.directory}/${project.build.finalName}"
-     */
-    //@Parameter(alias = "third.party.license.file.path", defaultValue = "${project.build.directory}/${project.build.finalName}")
+    
+    @Parameter(alias = "third.party.license.file.path", defaultValue = "${project.build.directory}/${project.build.finalName}")
     private File thirdPartyLicenseFilePath;
 
-    /**
-     * @parameter default-value="THIRD-PARTY-LICENSES"
-     */
-    //@Parameter(alias = "third.party.license.file.name", defaultValue = "THIRD-PARTY-LICENSES")
+    @Parameter(alias = "third.party.license.file.name", defaultValue = "THIRD-PARTY-LICENSES")
     private String thirdPartyLicenseFileName;
 
-    /**
-     * @parameter default-value="${basedir}/src/main/resources/license/mapper.properties"
-     */
-    //@Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
+    @Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
     
+    @Parameter(defaultValue = "${project}", readonly = true)
+    private MavenProject project;
+
+    @Parameter(defaultValue = "${session}", readonly = true)
+    private MavenSession mavenSession;
+
+    @Component
+    private BuildPluginManager pluginManager;
+        
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().info("Generate 3rd part libraries");
@@ -76,7 +81,9 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         getLog().info("Save 3rd-party-file " + thirdPartyFile());
         thirdPartyLicenseFilePath.mkdirs();
         Licenses.save(thirdPartyFile(), jars, new JarTo3PartyInformation());
-        Validator.validate(getLog(), jars);
+        //Validator.validate(getLog(), jars);
+        DiffService diffService = new DiffService(project, mavenSession, pluginManager, thirdPartyLicenseFileName, thirdPartyLicenseFilePath, getLog());
+        diffService.execute();
     }
 
     private Path thirdPartyFile() {
