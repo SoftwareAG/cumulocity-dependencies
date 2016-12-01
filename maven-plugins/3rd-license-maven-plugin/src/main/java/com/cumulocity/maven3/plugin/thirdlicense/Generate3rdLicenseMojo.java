@@ -18,6 +18,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
+import com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContext;
+import com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContextImpl;
 import com.cumulocity.maven3.plugin.thirdlicense.diff.DiffService;
 import com.cumulocity.maven3.plugin.thirdlicense.jar.Jar;
 import com.cumulocity.maven3.plugin.thirdlicense.jar.Jars;
@@ -52,12 +54,20 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${session}", readonly = true)
     private MavenSession mavenSession;
-
+    
     @Component
     private BuildPluginManager pluginManager;
-        
+    
+    @Component
+    private LicensePluginContext pluginContext;
+    
+    @Component
+    private DiffService diffService;
+    
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        initContext();
+        
         getLog().info("Generate 3rd part libraries");
 
         checkNotNull(appBasedir, "Cannot work on undefined: app.basedir");
@@ -82,7 +92,6 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         thirdPartyLicenseFilePath.mkdirs();
         Licenses.save(thirdPartyFile(), jars, new JarTo3PartyInformation());
         //Validator.validate(getLog(), jars);
-        DiffService diffService = new DiffService(project, mavenSession, pluginManager, thirdPartyLicenseFileName, thirdPartyLicenseFilePath, getLog());
         diffService.execute();
     }
 
@@ -94,5 +103,16 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         if (object == null) {
             throw new MojoFailureException(message);
         }
+    }
+    
+    private void initContext() {
+        LicensePluginContextImpl pluginContextImpl = (LicensePluginContextImpl) pluginContext;
+        pluginContextImpl.setAppBasedir(appBasedir);
+        pluginContextImpl.setLicenseFilePath(thirdPartyLicenseFilePath);
+        pluginContextImpl.setLicenseFileName(thirdPartyLicenseFileName);
+        pluginContextImpl.setMapperProperties(mapperProperties);
+        pluginContextImpl.setProject(project);
+        pluginContextImpl.setSession(mavenSession);
+        pluginContextImpl.setLog(getLog());;
     }
 }
