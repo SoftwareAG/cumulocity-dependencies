@@ -21,7 +21,9 @@ public class Licenses {
 
     public static void save(Path path, Collection<Jar> jars, Function<Jar, String> toLine) throws MojoFailureException {
         try {
-            Files.createFile(path);
+            if(!Files.exists(path)) {
+                Files.createFile(path);
+            }
             Collection<String> lines = Collections2.transform(jars, toLine);
             Files.write(path, lines, Charsets.UTF_8);
         } catch (IOException ioe) {
