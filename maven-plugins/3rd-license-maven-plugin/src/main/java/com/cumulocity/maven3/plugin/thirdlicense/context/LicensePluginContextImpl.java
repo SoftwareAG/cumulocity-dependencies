@@ -1,6 +1,7 @@
 package com.cumulocity.maven3.plugin.thirdlicense.context;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.logging.Log;
@@ -27,6 +28,8 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     private MavenSession session;
     
     private Log log;
+    
+    private Properties settingsProperties;
 
     @Override
     public File getAppBasedir() {
@@ -62,5 +65,14 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     public void info(String text) {
         log.info(text);
     }
+    
+    @Override
+    public void warn(String text) {
+        log.warn(text);
+    }
 
+    @Override
+    public Properties getSettingsProperties() {
+        return settingsProperties;
+    }
 }

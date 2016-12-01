@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -17,6 +18,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Profile;
+import org.apache.maven.settings.Settings;
 
 import com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContext;
 import com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContextImpl;
@@ -54,6 +57,9 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${session}", readonly = true)
     private MavenSession mavenSession;
+    
+    @Parameter( defaultValue = "${settings}", readonly = true )
+    private Settings settings;
     
     @Component
     private BuildPluginManager pluginManager;
@@ -113,6 +119,8 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         pluginContextImpl.setMapperProperties(mapperProperties);
         pluginContextImpl.setProject(project);
         pluginContextImpl.setSession(mavenSession);
-        pluginContextImpl.setLog(getLog());;
+        pluginContextImpl.setLog(getLog());
+        Profile profile = settings.getProfilesAsMap().get("3rdLicense");
+        pluginContextImpl.setSettingsProperties(profile == null ? new Properties() : profile.getProperties());
     }
 }
