@@ -48,7 +48,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
     @Parameter(alias = "third.party.license.file.name", defaultValue = "THIRD-PARTY-LICENSES")
     private String thirdPartyLicenseFileName;
-
+    
     @Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
     
@@ -72,6 +72,8 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
     
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        List activeProfiles = project.getActiveProfiles();
+        System.out.println("ACTIVE PROFILES = " + activeProfiles);
         initContext();
         
         getLog().info("Generate 3rd part libraries");
@@ -87,7 +89,6 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
             @Override
             public void visitJar(Path jarPath) {
                 Jar jar = Jar.of(jarPath, appBasedir.getAbsoluteFile().toPath(), mapper);
-                getLog().info("Reading library " + jar);
                 if (!jar.isCumulocityJar()) {
                     jars.add(jar);
                 }

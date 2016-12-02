@@ -7,6 +7,8 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.project.MavenProject;
 
 public interface LicensePluginContext {
+    
+    public static String PROPERTY_KEY_PREFIX = "3rdLicense";
 
     File getAppBasedir();
 
