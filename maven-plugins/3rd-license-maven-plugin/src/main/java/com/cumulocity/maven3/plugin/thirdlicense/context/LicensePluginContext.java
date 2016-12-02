@@ -8,7 +8,7 @@ import org.apache.maven.project.MavenProject;
 
 public interface LicensePluginContext {
     
-    public static String PROPERTY_KEY_PREFIX = "3rdLicense";
+    public static String PROPERTY_KEY_PREFIX = "third.party.license.";
 
     File getAppBasedir();
 
@@ -22,10 +22,14 @@ public interface LicensePluginContext {
 
     MavenSession getSession();
     
-    Properties getSettingsProperties();
-    
     void info(String text);
     
     void warn(String text);
+    
+    String getProperty(String key);
+    
+    boolean hasProperty(String key);
+    
+    Properties getProperties();
 
 }

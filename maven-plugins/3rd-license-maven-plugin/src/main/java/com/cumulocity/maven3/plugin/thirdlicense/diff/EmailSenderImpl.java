@@ -1,6 +1,5 @@
 package com.cumulocity.maven3.plugin.thirdlicense.diff;
 
-import static com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContext.PROPERTY_KEY_PREFIX;
 import static com.cumulocity.maven3.plugin.thirdlicense.diff.EmailMessageBuilder.aMessage;
 import static com.google.common.base.Throwables.propagate;
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -25,18 +24,36 @@ import com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContext;
 @Component(role = EmailSender.class)
 public class EmailSenderImpl implements EmailSender {
 
+    private static final String PROPERTY_MAIL_TO = "mail.to";
+    private static final String PROPERTY_MAIL_PASSWORD = "mail.password";
+    private static final String PROPERTY_MAIL_USERNAME = "mail.username";
+    
     @Requirement
     private LicensePluginContext ctx;
 
+    private boolean validate() {
+        return validate(PROPERTY_MAIL_TO) & validate(PROPERTY_MAIL_USERNAME) & validate(PROPERTY_MAIL_PASSWORD);
+    }
+
+    private boolean validate(String key) {
+        if (ctx.hasProperty(key)) {
+            return true;
+        }
+        ctx.warn("Missing property '" + LicensePluginContext.PROPERTY_KEY_PREFIX + key + "'; skip email sending!");
+        return false;
+    }
+
     @Override
     public void sendDiff(File diffFile) {
-        String from = ctx.getSettingsProperties().getProperty(prefixKey("mail.from"));
-        String to = ctx.getSettingsProperties().getProperty(prefixKey("mail.to"));
+        if (!validate()) {
+            return;
+        }
+        String to = ctx.getProperty(PROPERTY_MAIL_TO);
         boolean changesDetected = changesDetected(diffFile);
 
         // @formatter:off
         Message message = aMessage(getSession())
-                .withFrom(from)
+                .withFrom("support@cumulocity.com")
                 .withTo(to)
                 .withSubject(prepareSubject(changesDetected))
                 .withBody(prepareBody(changesDetected))
@@ -59,7 +76,7 @@ public class EmailSenderImpl implements EmailSender {
         } else {
             result.append("Changes in 3rd party component licenses not detected.");
         }
-        result.append("\nRegards \n3rd license plugin");
+        result.append("\nRegards \nCumulocity 3rd-license-maven-plugin");
         return result.toString();
     }
 
@@ -93,9 +110,8 @@ public class EmailSenderImpl implements EmailSender {
     }
 
     private Session getSession() {
-        Properties properties = ctx.getSettingsProperties();
-        final String username = properties.getProperty(prefixKey("mail.username"));
-        final String password = properties.getProperty(prefixKey("mail.password"));
+        final String username = ctx.getProperty(PROPERTY_MAIL_USERNAME);
+        final String password = ctx.getProperty(PROPERTY_MAIL_PASSWORD);
         return Session.getInstance(smtpProperties(), new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
@@ -105,22 +121,11 @@ public class EmailSenderImpl implements EmailSender {
 
     private Properties smtpProperties() {
         Properties smtpProperties = new Properties();
-        for (String key : ctx.getSettingsProperties().stringPropertyNames()) {
-            if (key.startsWith(prefixKey("mail.smtp"))) {
-                String smtpKey = unPrefixKey(key);
-                String smtpValue = ctx.getSettingsProperties().getProperty(key);
-                smtpProperties.setProperty(smtpKey, smtpValue);
+        for (String key : ctx.getProperties().stringPropertyNames()) {
+            if (key.startsWith("mail.smtp.")) {
+                smtpProperties.setProperty(key, ctx.getProperty(key));
             }
         }
         return smtpProperties;
     }
-
-    private static String prefixKey(String key) {
-        return String.format("%s.%s", PROPERTY_KEY_PREFIX, key);
-    }
-
-    private static String unPrefixKey(String key) {
-        return key.substring(PROPERTY_KEY_PREFIX.length());
-    }
-
 }

@@ -3,15 +3,18 @@ package com.cumulocity.maven3.plugin.thirdlicense.context;
 import java.io.File;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Setter
+@ToString
 @Component( role = LicensePluginContext.class )
 public class LicensePluginContextImpl implements LicensePluginContext {
     
@@ -29,7 +32,7 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     
     private Log log;
     
-    private Properties settingsProperties;
+    private Properties properties;
 
     @Override
     public File getAppBasedir() {
@@ -72,7 +75,20 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     }
 
     @Override
-    public Properties getSettingsProperties() {
-        return settingsProperties;
+    public String getProperty(String key) {
+        return properties.getProperty(key);
     }
+    
+    @Override
+    public Properties getProperties() {
+        return properties;
+    }
+
+    @Override
+    public boolean hasProperty(String key) {
+        return StringUtils.isNotBlank(getProperty(key));
+    }
+
+    
+
 }
