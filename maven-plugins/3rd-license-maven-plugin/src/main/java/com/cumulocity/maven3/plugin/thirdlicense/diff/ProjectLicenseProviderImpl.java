@@ -65,7 +65,7 @@ public class ProjectLicenseProviderImpl implements ProjectLicenseProvider {
                       element("groupId", ctx.getProject().getGroupId()),
                       element("artifactId", ctx.getProject().getArtifactId()),
                       element("version", projectVersion),
-                      element("type", "tar.gz"),
+                      element("type", ctx.getLicenseFileTargetType()),
                       element("overWrite", String.valueOf(true)))),
               element("outputDirectory", String.valueOf(outputDirectory)),
               element("overWriteReleases", String.valueOf(true))

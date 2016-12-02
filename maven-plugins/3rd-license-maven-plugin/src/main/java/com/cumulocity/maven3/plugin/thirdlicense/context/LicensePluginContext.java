@@ -15,6 +15,8 @@ public interface LicensePluginContext {
     File getLicenseFilePath();
 
     String getLicenseFileName();
+    
+    String getLicenseFileTargetType();
 
     File getMapperProperties();
 

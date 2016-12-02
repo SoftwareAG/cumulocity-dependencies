@@ -15,7 +15,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 
 public class EmailMessageBuilder {

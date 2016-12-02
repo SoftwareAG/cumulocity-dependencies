@@ -31,6 +31,7 @@ import com.cumulocity.maven3.plugin.thirdlicense.license.JarTo3PartyInformation;
 import com.cumulocity.maven3.plugin.thirdlicense.license.Licenses;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapperFactory;
+import com.cumulocity.maven3.plugin.thirdlicense.validation.Validator;
 
 /**
  * This is main class for maven plugin, from this file maven start work with
@@ -50,6 +51,12 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
     @Parameter(alias = "third.party.license.file.name", defaultValue = "THIRD-PARTY-LICENSES")
     private String thirdPartyLicenseFileName;
+    
+    @Parameter(alias = "third.party.license.target.type", defaultValue = "rpm")
+    private String thirdPartyLicenseTargetType;
+    
+    @Parameter(alias = "third.party.license.diffEnabled", defaultValue = "false")
+    private boolean diffEnabled;
 
     @Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
@@ -62,7 +69,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
     @Component
     private BuildPluginManager pluginManager;
-
+    
     @Component
     private LicensePluginContext pluginContext;
 
@@ -97,9 +104,13 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
         getLog().info("Save 3rd-party-file " + thirdPartyFile());
         thirdPartyLicenseFilePath.mkdirs();
-        Licenses.save(thirdPartyFile(), jars, new JarTo3PartyInformation());
-        // Validator.validate(getLog(), jars);
-        diffService.execute();
+        Licenses.save(getLog(), thirdPartyFile(), jars, new JarTo3PartyInformation());
+        if ("TRUE".equalsIgnoreCase(pluginContext.getProperty("validate"))) {
+            Validator.validate(getLog(), jars);
+        }
+        if (diffEnabled) {
+            diffService.execute();
+        }
     }
 
     private Path thirdPartyFile() {
@@ -117,6 +128,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         pluginContextImpl.setAppBasedir(appBasedir);
         pluginContextImpl.setLicenseFilePath(thirdPartyLicenseFilePath);
         pluginContextImpl.setLicenseFileName(thirdPartyLicenseFileName);
+        pluginContextImpl.setLicenseFileTargetType(thirdPartyLicenseTargetType);
         pluginContextImpl.setMapperProperties(mapperProperties);
         pluginContextImpl.setProject(project);
         pluginContextImpl.setSession(mavenSession);
@@ -127,7 +139,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
     /**
      * Read all properties from settings.xml from active profiles and with
-     * prefix "3rdLicense."
+     * prefix "third.party.license."
      */
     @SuppressWarnings("unchecked")
     private Properties initProperties() {

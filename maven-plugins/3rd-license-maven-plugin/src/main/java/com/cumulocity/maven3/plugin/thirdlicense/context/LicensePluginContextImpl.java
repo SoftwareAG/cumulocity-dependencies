@@ -23,6 +23,8 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     private File licenseFilePath;
 
     private String licenseFileName;
+    
+    private String licenseFileTargetType;
 
     private File mapperProperties;
     
@@ -47,6 +49,11 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     @Override
     public String getLicenseFileName() {
         return licenseFileName;
+    }
+    
+    @Override
+    public String getLicenseFileTargetType() {
+        return licenseFileTargetType;
     }
 
     @Override
@@ -88,7 +95,6 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     public boolean hasProperty(String key) {
         return StringUtils.isNotBlank(getProperty(key));
     }
-
     
 
 }
