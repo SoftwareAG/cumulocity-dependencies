@@ -128,6 +128,11 @@ public class Jars {
 
         return propertyMapper.mapValueForLicense(license);
     }
+    
+    public static String toUsOrigin(Path jarPath, PropertyMapper propertyMapper) {
+        return propertyMapper.mapUsOrigin(toFileName(jarPath), UNKNOWN_VALUE);
+    }
+
 
     private static String getPropertyFromPomProperties(Path jarPath, String propertyKey) {
         try {
@@ -248,4 +253,5 @@ public class Jars {
             return super.visitFile(file, attrs);
         }
     }
+
 }
