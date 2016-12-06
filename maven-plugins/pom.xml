@@ -4,7 +4,7 @@
   <parent>
     <artifactId>cumulocity-dependencies</artifactId>
     <groupId>com.nsn.cumulocity.dependencies</groupId>
-    <version>7.39.0</version>
+    <version>7.40.0</version>
   </parent>
 
   <artifactId>maven-plugins</artifactId>
