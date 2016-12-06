@@ -79,7 +79,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         initContext();
-        if (!"TRUE".equalsIgnoreCase(pluginContext.getProperty("enabled"))) {
+        if (!pluginContext.getBooleanProperty("enabled", false)) {
             return;
         }
         getLog().info("Generate 3rd part libraries");
@@ -104,8 +104,10 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
         getLog().info("Save 3rd-party-file " + thirdPartyFile());
         thirdPartyLicenseFilePath.mkdirs();
+        // TODO refactor as service and use plexus dependency injection
         Licenses.save(getLog(), thirdPartyFile(), jars, new JarTo3PartyInformation());
-        if ("TRUE".equalsIgnoreCase(pluginContext.getProperty("validate"))) {
+        if (pluginContext.getBooleanProperty("validate", false)) {
+            // TODO refactor as service and use plexus dependency injection
             Validator.validate(getLog(), jars);
         }
         if (diffEnabled) {

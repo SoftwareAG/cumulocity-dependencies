@@ -9,11 +9,13 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 
 @Setter
+@Getter
 @ToString
 @Component( role = LicensePluginContext.class )
 public class LicensePluginContextImpl implements LicensePluginContext {
@@ -36,42 +38,6 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     
     private Properties properties;
 
-    @Override
-    public File getAppBasedir() {
-        return appBasedir;
-    }
-
-    @Override
-    public File getLicenseFilePath() {
-        return licenseFilePath;
-    }
-
-    @Override
-    public String getLicenseFileName() {
-        return licenseFileName;
-    }
-    
-    @Override
-    public String getLicenseFileTargetType() {
-        return licenseFileTargetType;
-    }
-
-    @Override
-    public File getMapperProperties() {
-        return mapperProperties;
-    }
-
-    @Override
-    public MavenProject getProject() {
-        return project;
-    }
-
-    @Override
-    public MavenSession getSession() {
-        return session;
-    }
-
-    @Override
     public void info(String text) {
         log.info(text);
     }
@@ -80,21 +46,26 @@ public class LicensePluginContextImpl implements LicensePluginContext {
     public void warn(String text) {
         log.warn(text);
     }
+    
+    @Override
+    public boolean hasProperty(String key) {
+        return StringUtils.isNotBlank(getProperty(key));
+    }
 
     @Override
     public String getProperty(String key) {
         return properties.getProperty(key);
     }
-    
-    @Override
-    public Properties getProperties() {
-        return properties;
-    }
 
     @Override
-    public boolean hasProperty(String key) {
-        return StringUtils.isNotBlank(getProperty(key));
+    public Boolean getBooleanProperty(String key, Boolean defaultValue) {
+        if (hasProperty(key)) {
+            return Boolean.valueOf(getProperty(key));
+        }
+        return defaultValue;
     }
+    
+    
     
 
 }
