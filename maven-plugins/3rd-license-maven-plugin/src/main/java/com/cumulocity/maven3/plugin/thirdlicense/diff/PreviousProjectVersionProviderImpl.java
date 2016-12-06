@@ -60,8 +60,9 @@ public class PreviousProjectVersionProviderImpl implements PreviousProjectVersio
 
     private Xpp3Dom executionConfiguration(Path outputFile) {
         // @formatter:off
+        String allowSnapshot = ctx.getBooleanProperty("diff.allowSnapshot", false).toString();
         return MojoExecutor.configuration(
-                element("allowSnapshots", String.valueOf(false)), 
+                element("allowSnapshots", allowSnapshot), 
                 element("outputFile", String.valueOf(outputFile)),
                 element("outputEncoding", "UTF-8")
         );
