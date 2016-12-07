@@ -51,17 +51,16 @@ public class EmailSenderImpl implements EmailSender {
         String to = ctx.getProperty(PROPERTY_MAIL_TO);
         boolean changesDetected = changesDetected(diffFile);
 
-        // @formatter:off
-        Message message = aMessage(getSession())
-                .withFrom("support@cumulocity.com")
-                .withTo(to)
-                .withSubject(prepareSubject(changesDetected))
-                .withBody(prepareBody(changesDetected))
-                .withAttachement(prepareAttachment(diffFile, changesDetected))
-                .build();
-        // @formatter:on
-
         try {
+            // @formatter:off
+            Message message = aMessage(getSession())
+                    .withFrom("support@cumulocity.com")
+                    .withTo(to)
+                    .withSubject(prepareSubject(changesDetected))
+                    .withBody(prepareBody(changesDetected))
+                    .withAttachement(prepareAttachment(diffFile, changesDetected))
+                    .build();
+            // @formatter:on
             Transport.send(message);
             ctx.info("Diff sent successfully....");
         } catch (MessagingException e) {
