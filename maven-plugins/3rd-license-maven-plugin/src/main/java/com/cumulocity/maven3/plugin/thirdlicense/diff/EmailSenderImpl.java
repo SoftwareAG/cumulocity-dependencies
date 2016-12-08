@@ -32,7 +32,7 @@ public class EmailSenderImpl implements EmailSender {
     private LicensePluginContext ctx;
 
     private boolean validate() {
-        return validate(PROPERTY_MAIL_TO) & validate(PROPERTY_MAIL_USERNAME) & validate(PROPERTY_MAIL_PASSWORD);
+        return validate(PROPERTY_MAIL_TO);
     }
 
     private boolean validate(String key) {
@@ -109,8 +109,8 @@ public class EmailSenderImpl implements EmailSender {
     }
 
     private Session getSession() {
-        final String username = ctx.getProperty(PROPERTY_MAIL_USERNAME);
-        final String password = ctx.getProperty(PROPERTY_MAIL_PASSWORD);
+        final String username = ctx.getProperty(PROPERTY_MAIL_USERNAME, "");
+        final String password = ctx.getProperty(PROPERTY_MAIL_PASSWORD, "");
         return Session.getInstance(smtpProperties(), new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);

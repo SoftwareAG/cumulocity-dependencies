@@ -57,10 +57,19 @@ public class LicensePluginContextImpl implements LicensePluginContext {
         return properties.getProperty(key);
     }
 
+    
     @Override
     public Boolean getBooleanProperty(String key, Boolean defaultValue) {
         if (hasProperty(key)) {
             return Boolean.valueOf(getProperty(key));
+        }
+        return defaultValue;
+    }
+
+    @Override
+    public String getProperty(String key, String defaultValue) {
+        if (hasProperty(key)) {
+            return getProperty(key);
         }
         return defaultValue;
     }

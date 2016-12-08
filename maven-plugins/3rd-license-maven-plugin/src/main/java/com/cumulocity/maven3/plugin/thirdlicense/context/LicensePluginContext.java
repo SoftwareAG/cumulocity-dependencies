@@ -30,6 +30,8 @@ public interface LicensePluginContext {
     
     String getProperty(String key);
     
+    String getProperty(String key, String defaultValue);
+    
     Boolean getBooleanProperty(String key, Boolean defaultValue);
     
     boolean hasProperty(String key);
