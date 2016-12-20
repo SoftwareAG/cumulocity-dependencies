@@ -4,3 +4,4 @@ bin
 .*\.iml
 .*\.orig
 cucumber.html
+maven-plugins/3rd-license-maven-plugin/src/main/java/com/cumulocity/maven3/plugin/thirdlicense/MapperMergerIgnoreMe.java

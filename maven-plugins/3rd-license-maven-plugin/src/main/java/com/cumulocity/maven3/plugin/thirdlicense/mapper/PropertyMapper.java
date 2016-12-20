@@ -1,23 +1,13 @@
 package com.cumulocity.maven3.plugin.thirdlicense.mapper;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 public class PropertyMapper {
 
-    private final Properties properties;
+    private final WildCardAwareProperties properties;
 
-    public PropertyMapper(File definition) {
-        properties = new Properties();
-        if (definition.exists() && definition.isFile()) {
-            try {
-                properties.load(new FileInputStream(definition));
-            } catch (IOException e) {
-                throw new IllegalStateException("Cannot read from " + definition.getAbsolutePath());
-            }
-        }
+    public PropertyMapper(Properties... lProperties) {
+        this.properties = WildCardAwareProperties.create(lProperties);
     }
 
     public String mapGroupId(String jarName, String defaultValue) {
@@ -61,15 +51,23 @@ public class PropertyMapper {
     }
 
     private String getValue(String value) {
-        return value.replaceAll(" ", "_").replaceAll(":", "_");
+        return value.trim().replaceAll(" ", "_").replaceAll(":", "_");
     }
 
     public String mapLicense(String jarName, String defaultValue) {
         return properties.getProperty(licenseKey(jarName), defaultValue);
     }
+    
+    public String mapUsOrigin(String jarName, String defaultValue) {
+        return properties.getProperty(usOriginKey(jarName), defaultValue);
+    }
 
     public String licenseKey(String jarName) {
         return jarName + ".license";
+    }
+    
+    private String usOriginKey(String jarName) {
+        return jarName + ".usOrigin";
     }
 
     public String mapValueForLicense(String license) {
@@ -79,4 +77,5 @@ public class PropertyMapper {
     private String licenseValueKey(String value) {
         return (value == null ? null : getValue(value)) + ".value";
     }
+
 }
