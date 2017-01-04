@@ -238,7 +238,7 @@ public class Jars {
                 }
             });
         } catch (IOException e) {
-            throw new MojoFailureException("Cannot read libraries", e);
+            throw new MojoFailureException("Cannot read libraries from dir " + basedir, e);
         }
     }
 
