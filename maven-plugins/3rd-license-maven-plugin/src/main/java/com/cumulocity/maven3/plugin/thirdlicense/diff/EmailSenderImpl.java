@@ -32,7 +32,7 @@ public class EmailSenderImpl implements EmailSender {
     private LicensePluginContext ctx;
 
     private boolean validate() {
-        return validate(PROPERTY_MAIL_TO) & validate(PROPERTY_MAIL_USERNAME) & validate(PROPERTY_MAIL_PASSWORD);
+        return validate(PROPERTY_MAIL_TO);
     }
 
     private boolean validate(String key) {
@@ -51,17 +51,16 @@ public class EmailSenderImpl implements EmailSender {
         String to = ctx.getProperty(PROPERTY_MAIL_TO);
         boolean changesDetected = changesDetected(diffFile);
 
-        // @formatter:off
-        Message message = aMessage(getSession())
-                .withFrom("support@cumulocity.com")
-                .withTo(to)
-                .withSubject(prepareSubject(changesDetected))
-                .withBody(prepareBody(changesDetected))
-                .withAttachement(prepareAttachment(diffFile, changesDetected))
-                .build();
-        // @formatter:on
-
         try {
+            // @formatter:off
+            Message message = aMessage(getSession())
+                    .withFrom("support@cumulocity.com")
+                    .withTo(to)
+                    .withSubject(prepareSubject(changesDetected))
+                    .withBody(prepareBody(changesDetected))
+                    .withAttachement(prepareAttachment(diffFile, changesDetected))
+                    .build();
+            // @formatter:on
             Transport.send(message);
             ctx.info("Diff sent successfully....");
         } catch (MessagingException e) {
@@ -110,8 +109,8 @@ public class EmailSenderImpl implements EmailSender {
     }
 
     private Session getSession() {
-        final String username = ctx.getProperty(PROPERTY_MAIL_USERNAME);
-        final String password = ctx.getProperty(PROPERTY_MAIL_PASSWORD);
+        final String username = ctx.getProperty(PROPERTY_MAIL_USERNAME, "");
+        final String password = ctx.getProperty(PROPERTY_MAIL_PASSWORD, "");
         return Session.getInstance(smtpProperties(), new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
