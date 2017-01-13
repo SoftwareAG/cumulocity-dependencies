@@ -37,28 +37,26 @@ import com.cumulocity.maven3.plugin.thirdlicense.validation.Validator;
  * This is main class for maven plugin, from this file maven start work with
  * this feature
  *
- * @goal generate
- * @phase prepare-package
  */
 @Mojo(name = "3rd-license-generate", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.PREPARE_PACKAGE)
 public class Generate3rdLicenseMojo extends AbstractMojo {
 
-    @Parameter(alias = "app.basedir", defaultValue = "${project.build.directory}/${project.build.finalName}")
+    @Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}")
     private File appBasedir;
 
-    @Parameter(alias = "third.party.license.file.path", defaultValue = "${project.build.directory}/${project.build.finalName}")
+    @Parameter(defaultValue = "${project.build.directory}/${project.build.finalName}")
     private File thirdPartyLicenseFilePath;
 
-    @Parameter(alias = "third.party.license.file.name", defaultValue = "THIRD-PARTY-LICENSES")
+    @Parameter(defaultValue = "THIRD-PARTY-LICENSES")
     private String thirdPartyLicenseFileName;
-    
-    @Parameter(alias = "third.party.license.target.type", defaultValue = "rpm")
+
+    @Parameter(defaultValue = "rpm")
     private String thirdPartyLicenseTargetType;
-    
-    @Parameter(alias = "third.party.license.diffEnabled", defaultValue = "false")
+
+    @Parameter(defaultValue = "false")
     private boolean diffEnabled;
 
-    @Parameter(alias = "mapper.properties", defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
+    @Parameter(defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
 
     @Parameter(defaultValue = "${project}", readonly = true)
