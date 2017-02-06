@@ -5,7 +5,7 @@
 	<parent>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
         <artifactId>osgi-fragments</artifactId>
-		<version>7.43.0</version>
+		<version>7.44.0</version>
 	</parent>
 
 	<artifactId>spring-jdbc-fragment</artifactId>
