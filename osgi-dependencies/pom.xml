@@ -45,9 +45,8 @@
         <module>httpclient</module>
         <module>httpclient-cache</module>
         <module>log4j-extras</module>
-        <module>jcouchdb</module>
         <module>ektorp</module>
-	<module>libphonenumber</module>
+	    <module>libphonenumber</module>
         <module>liquibase-core</module>
         <module>postgresql-connector</module>
         <module>dozer</module>
@@ -61,6 +60,7 @@
         <module>querydsl-core</module>
         <module>querydsl-sql</module>
         <module>querydsl-jpa</module>
+        <module>spring-dm</module>
         <module>spring-security-jwt</module>
         <module>odata</module>
         <module>moquette</module>
