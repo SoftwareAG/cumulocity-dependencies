@@ -178,18 +178,6 @@ public class ProtocolProcessor {
             return;
         }
 
-        //if an old client with the same ID already exists close its session.
-        if (m_clientIDs.containsKey(msg.getClientID())) {
-            LOG.info("Found an existing connection with same client ID <{}>, forcing to close", msg.getClientID());
-            //clean the subscriptions if the old used a cleanSession = true
-            ServerChannel oldChannel = m_clientIDs.get(msg.getClientID()).channel;
-            ClientSession oldClientSession = m_sessionsStore.sessionForClient(msg.getClientID());
-            oldClientSession.disconnect();
-            NettyUtils.sessionStolen(oldChannel, true);
-            oldChannel.close();
-            LOG.debug("Existing connection with same client ID <{}>, forced to close", msg.getClientID());
-        }
-
         ConnectionDescriptor connDescr = new ConnectionDescriptor(msg.getClientID(), channel, msg.isCleanSession());
         m_clientIDs.put(msg.getClientID(), connDescr);
 
@@ -613,15 +601,8 @@ public class ProtocolProcessor {
     public void processConnectionLost(String clientID, boolean sessionStolen, ServerChannel channel) {
         ConnectionDescriptor oldConnDescr = new ConnectionDescriptor(clientID, channel, true);
         m_clientIDs.remove(clientID, oldConnDescr);
-        //If already removed a disconnect message was already processed for this clientID
-        if (sessionStolen) {
-            //de-activate the subscriptions for this ClientID
-            ClientSession clientSession = m_sessionsStore.sessionForClient(clientID);
-            clientSession.deactivate();
-            LOG.info("Lost connection with client <{}>", clientID);
-        }
         //publish the Will message (if any) for the clientID
-        if (!sessionStolen && m_willStore.containsKey(clientID)) {
+        if (m_willStore.containsKey(clientID)) {
             WillMessage will = m_willStore.get(clientID);
             forwardPublishWill(will, clientID);
             m_willStore.remove(clientID);
