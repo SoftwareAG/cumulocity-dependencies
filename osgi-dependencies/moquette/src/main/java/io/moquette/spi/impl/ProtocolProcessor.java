@@ -387,7 +387,7 @@ public class ProtocolProcessor {
     /**
      * Specialized version to publish will testament message.
      */
-    private void forwardPublishWill(WillMessage will, String clientID) {
+    private void forwardPublishWill(WillMessage will, String clientID, ServerChannel channel) {
         //it has just to publish the message downstream to the subscribers
         //NB it's a will publish, it needs a PacketIdentifier for this conn, default to 1
         Integer messageId = null;
@@ -398,7 +398,13 @@ public class ProtocolProcessor {
         IMessagesStore.StoredMessage tobeStored = asStoredMessage(will);
         tobeStored.setClientID(clientID);
         tobeStored.setMessageID(messageId);
-        route2Subscribers(tobeStored);
+        if (messagingPolicy.handleMessageInService(channel, tobeStored)) {
+            route2Subscribers(tobeStored);
+        }
+        PublishMessage publishMessage = new PublishMessage();
+        publishMessage.setTopicName(will.getTopic());
+        publishMessage.setPayload(will.getPayload());
+        m_interceptor.notifyTopicPublished(publishMessage, clientID);
     }
 
 
@@ -604,7 +610,7 @@ public class ProtocolProcessor {
         //publish the Will message (if any) for the clientID
         if (m_willStore.containsKey(clientID)) {
             WillMessage will = m_willStore.get(clientID);
-            forwardPublishWill(will, clientID);
+            forwardPublishWill(will, clientID, channel);
             m_willStore.remove(clientID);
         }
     }
