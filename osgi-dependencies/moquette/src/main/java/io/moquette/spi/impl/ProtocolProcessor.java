@@ -229,19 +229,19 @@ public class ProtocolProcessor {
         m_interceptor.notifyClientConnected(msg);
 
         if (!isSessionAlreadyStored) {
-            LOG.info("Create persistent session for clientID <{}>", msg.getClientID());
+            LOG.debug("Create persistent session for clientID <{}>", msg.getClientID());
             clientSession = m_sessionsStore.createNewSession(msg.getClientID(), msg.isCleanSession());
         }
         clientSession.activate();
         if (msg.isCleanSession()) {
             clientSession.cleanSession();
         }
-        LOG.info("Connected client ID <{}> with clean session {}", msg.getClientID(), msg.isCleanSession());
+        LOG.debug("Connected client ID <{}> with clean session {}", msg.getClientID(), msg.isCleanSession());
         if (!msg.isCleanSession()) {
             //force the republish of stored QoS1 and QoS2
             republishStoredInSession(clientSession);
         }
-        LOG.info("CONNECT processed");
+        LOG.debug("CONNECT processed");
     }
 
     private void executeStoredLastWill(String clientId, ServerChannel channel) {
@@ -272,7 +272,7 @@ public class ProtocolProcessor {
         LOG.trace("republishStoredInSession for client <{}>", clientSession);
         List<IMessagesStore.StoredMessage> publishedEvents = clientSession.storedMessages();
         if (publishedEvents.isEmpty()) {
-            LOG.info("No stored messages for client <{}>", clientSession.clientID);
+            LOG.debug("No stored messages for client <{}>", clientSession.clientID);
             return;
         }
 
@@ -325,7 +325,7 @@ public class ProtocolProcessor {
         }
         final AbstractMessage.QOSType qos = msg.getQos();
         final Integer messageID = msg.getMessageID();
-        LOG.info("PUBLISH from clientID <{}> on topic <{}> with QoS {}", clientID, topic, qos);
+        LOG.debug("PUBLISH from clientID <{}> on topic <{}> with QoS {}", clientID, topic, qos);
 
         String guid = null;
         IMessagesStore.StoredMessage toStoreMsg = asStoredMessage(msg);
@@ -377,7 +377,7 @@ public class ProtocolProcessor {
     public void internalPublish(PublishMessage msg) {
         final AbstractMessage.QOSType qos = msg.getQos();
         final String topic = msg.getTopicName();
-        LOG.info("embedded PUBLISH on topic <{}> with QoS {}", topic, qos);
+        LOG.debug("embedded PUBLISH on topic <{}> with QoS {}", topic, qos);
 
         String guid = null;
         IMessagesStore.StoredMessage toStoreMsg = asStoredMessage(msg);
@@ -489,7 +489,7 @@ public class ProtocolProcessor {
         pubMessage.setQos(qos);
         pubMessage.setPayload(message);
         
-        LOG.info("send publish message to <{}> on topic <{}>", clientId, topic);
+        LOG.debug("send publish message to <{}> on topic <{}>", clientId, topic);
         if (LOG.isDebugEnabled()) {
             LOG.debug("content <{}>", DebugUtils.payload2Str(message));
         }
@@ -609,7 +609,7 @@ public class ProtocolProcessor {
         channel.flush();
         String clientID = NettyUtils.clientID(channel);
         boolean cleanSession = NettyUtils.cleanSession(channel);
-        LOG.info("DISCONNECT client <{}> with clean session {}", clientID, cleanSession);
+        LOG.debug("DISCONNECT client <{}> with clean session {}", clientID, cleanSession);
         ClientSession clientSession = m_sessionsStore.sessionForClient(clientID);
         clientSession.disconnect();
 
@@ -620,7 +620,7 @@ public class ProtocolProcessor {
         m_willStore.remove(clientID);
 
         m_interceptor.notifyClientDisconnected(clientID);
-        LOG.info("DISCONNECT client <{}> finished", clientID, cleanSession);
+        LOG.debug("DISCONNECT client <{}> finished", clientID, cleanSession);
     }
 
     public void processConnectionLost(String clientID, boolean sessionStolen, ServerChannel channel) {
@@ -665,7 +665,7 @@ public class ProtocolProcessor {
         UnsubAckMessage ackMessage = new UnsubAckMessage();
         ackMessage.setMessageID(messageID);
 
-        LOG.info("replying with UnsubAck to MSG ID {}", messageID);
+        LOG.debug("replying with UnsubAck to MSG ID {}", messageID);
         channel.writeAndFlush(ackMessage);
     }
 
