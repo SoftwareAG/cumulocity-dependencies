@@ -183,7 +183,7 @@ public class ProtocolProcessor {
             ServerChannel oldChannel = m_clientIDs.get(msg.getClientID()).channel;
             // ClientSession oldClientSession = m_sessionsStore.sessionForClient(msg.getClientID());
             // oldClientSession.disconnect();
-            executeStoredLastWill(msg.getClientID(), channel);
+            executeStoredLastWill(msg.getClientID(), oldChannel);
             NettyUtils.sessionStolen(oldChannel, true);
             oldChannel.close();
             LOG.debug("Existing connection with same client ID <{}>, forced to close", msg.getClientID());
