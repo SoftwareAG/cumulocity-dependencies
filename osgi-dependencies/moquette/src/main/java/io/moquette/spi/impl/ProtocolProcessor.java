@@ -178,6 +178,17 @@ public class ProtocolProcessor {
             return;
         }
 
+        if (m_clientIDs.containsKey(msg.getClientID())) {
+            LOG.info("Found an existing connection with same client ID <{}>, forcing to close", msg.getClientID());
+            ServerChannel oldChannel = m_clientIDs.get(msg.getClientID()).channel;
+            // ClientSession oldClientSession = m_sessionsStore.sessionForClient(msg.getClientID());
+            // oldClientSession.disconnect();
+            executeStoredLastWill(msg.getClientID(), channel);
+            NettyUtils.sessionStolen(oldChannel, true);
+            oldChannel.close();
+            LOG.debug("Existing connection with same client ID <{}>, forced to close", msg.getClientID());
+        }
+
         ConnectionDescriptor connDescr = new ConnectionDescriptor(msg.getClientID(), channel, msg.isCleanSession());
         m_clientIDs.put(msg.getClientID(), connDescr);
 
@@ -231,6 +242,14 @@ public class ProtocolProcessor {
             republishStoredInSession(clientSession);
         }
         LOG.info("CONNECT processed");
+    }
+
+    private void executeStoredLastWill(String clientId, ServerChannel channel) {
+        if (m_willStore.containsKey(clientId)) {
+            WillMessage will = m_willStore.get(clientId);
+            forwardPublishWill(will, clientId, channel);
+            m_willStore.remove(clientId);
+        }
     }
 
     private void setIdleTime(ChannelPipeline pipeline, int idleTime) {
@@ -607,11 +626,9 @@ public class ProtocolProcessor {
     public void processConnectionLost(String clientID, boolean sessionStolen, ServerChannel channel) {
         ConnectionDescriptor oldConnDescr = new ConnectionDescriptor(clientID, channel, true);
         m_clientIDs.remove(clientID, oldConnDescr);
-        //publish the Will message (if any) for the clientID
-        if (m_willStore.containsKey(clientID)) {
-            WillMessage will = m_willStore.get(clientID);
-            forwardPublishWill(will, clientID, channel);
-            m_willStore.remove(clientID);
+        // publish the Will message (if any) for the clientID
+        if (!sessionStolen) {
+            executeStoredLastWill(clientID, channel);
         }
     }
 
