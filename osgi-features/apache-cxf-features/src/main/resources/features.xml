@@ -303,7 +303,7 @@
         <feature version="${cxf.version}">cxf-frontend-javascript</feature>
         <feature version="${cxf.version}">cxf-features-clustering</feature>
         <!-- Compatibility bundle for the Require-Bundle use cases -->
-        <bundle start-level='50'>mvn:org.apache.cxf/cxf-bundle-compatible/${cxf.version}</bundle>
+        <bundle start-level='50'>mvn:org.apache.cxf/cxf-bundle-compatible/2.6.16</bundle>
 
         <!-- tools really aren't needed in OSGi by default
         <feature version="${cxf.version}">cxf-tools</feature>

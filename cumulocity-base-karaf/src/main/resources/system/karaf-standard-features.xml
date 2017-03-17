@@ -44,13 +44,13 @@
 
     <feature name="spring" description="Spring support" version="${spring.version}" resolver="(obr)">
         <bundle dependency="true" start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aopalliance/1.0_6</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-core/${spring.version}</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-asm/${spring.version}</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-expression/${spring.version}</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-beans/${spring.version}</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-aop/${spring.version}</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-context/${spring.version}</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-context-support/${spring.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-core/3.2.18.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.springframework/spring-asm/${spring.asm.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-expression/3.2.18.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-beans/3.2.18.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-aop/3.2.18.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context/3.2.18.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context-support/3.2.18.RELEASE_1</bundle>
     </feature>
 
 
@@ -58,18 +58,18 @@
         resolver="(obr)">
         <feature version="${spring.version}">spring</feature>
         <feature version="[2,3)">http</feature>
-        <bundle start-level="30">mvn:org.springframework/spring-web/${spring.version}</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-webmvc/${spring.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-web/3.2.18.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-webmvc/3.2.18.RELEASE_1</bundle>
     </feature>
     
     <feature name="spring-tx" description="Spring Transaction (TX) support" version="${spring.version}" resolver="(obr)">
         <feature version="${spring.version}">spring</feature>
-        <bundle start-level="30">mvn:org.springframework/spring-tx/${spring.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-tx/3.2.18.RELEASE_1</bundle>
     </feature>
     
     <feature name="spring-jdbc" description="Spring JDBC support" version="${spring.version}" resolver="(obr)">
         <feature version="${spring.version}">spring-tx</feature>
-        <bundle start-level="30">mvn:org.springframework/spring-jdbc/${spring.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-jdbc/3.2.18.RELEASE_1</bundle>
     </feature>
 
     <feature name="spring-jms" description="Spring JMS support" version="${spring.version}" resolver="(obr)">
@@ -77,12 +77,12 @@
         <feature version="${spring.version}">spring-tx</feature>
         <bundle start-level="10">mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1</bundle>
         <bundle start-level="10">mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-jms/${spring.version}</bundle>      
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-jms/3.2.18.RELEASE_1</bundle>
     </feature>
     
     <feature name="spring-orm" description="Spring ORM support" version="${spring.version}" resolver="(obr)">
         <feature version="${spring.version}">spring-jdbc</feature>
-        <bundle start-level="30">mvn:org.springframework/spring-orm/${spring.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-orm/3.2.18.RELEASE_1</bundle>
     </feature>
     
     <feature name="spring-dm" description="Spring DM support" version="1.2.1" resolver="(obr)">
