@@ -45,7 +45,6 @@
     <feature name="spring" description="Spring support" version="${spring.version}" resolver="(obr)">
         <bundle dependency="true" start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aopalliance/1.0_6</bundle>
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-core/3.2.18.RELEASE_1</bundle>
-        <bundle start-level="30">mvn:org.springframework/spring-asm/${spring.asm.version}</bundle>
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-expression/3.2.18.RELEASE_1</bundle>
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-beans/3.2.18.RELEASE_1</bundle>
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-aop/3.2.18.RELEASE_1</bundle>
