@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>7.46.0</version>
+	<version>7.47.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -84,6 +84,8 @@
 		<osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
 		<querydsl.version>2.7.3</querydsl.version>
 		<osgi.querydsl.version>${querydsl.version}-${project.parent.version}</osgi.querydsl.version>
+		<spring.dm.version>1.2.1</spring.dm.version>
+		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
 		<spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
 		<osgi.spring.security.jwt.version>${spring.security.jwt.version}-${project.parent.version}</osgi.spring.security.jwt.version>
 		<stringtemplate.version>3.2</stringtemplate.version>
@@ -124,7 +126,6 @@
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<spring.version>3.1.4.RELEASE</spring.version>
-		<spring.osgi.version>1.2.1</spring.osgi.version>
         <lombok.version>1.16.6</lombok.version>
 
 		<hamcrest.version>1.1</hamcrest.version>
