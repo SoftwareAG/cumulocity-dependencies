@@ -33,7 +33,6 @@
                      <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
-                        liquibase/database/structure/PostgresDatabaseSnapshot.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -56,21 +55,6 @@
                 </executions>
             </plugin>
            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                   <includes>
-                       <include>liquibase</include>
-                       <include>liquibase/database</include>
-                       <include>liquibase/database/structure</include>
-                       <include>liquibase/database/structure/PostgresDatabaseSnapshot.*</include>
-                   </includes>
-                   <excludes>
-                       <exclude>nothing</exclude>
-                   </excludes>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
