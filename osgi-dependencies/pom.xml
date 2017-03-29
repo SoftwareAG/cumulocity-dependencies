@@ -47,7 +47,6 @@
         <module>log4j-extras</module>
         <module>ektorp</module>
 	    <module>libphonenumber</module>
-        <module>liquibase-core</module>
         <module>postgresql-connector</module>
         <module>dozer</module>
         <module>inject</module>
