@@ -70,8 +70,6 @@
 		<osgi.jcouchdb.version>${jcouchdb.version}-${project.parent.version}</osgi.jcouchdb.version>
 		<jersey.version>1.8</jersey.version>
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-		<liquibase.version>2.0.5</liquibase.version>
-		<osgi.liquibase.version>${liquibase.version}-${project.parent.version}</osgi.liquibase.version>
 		<mail.version>1.4.7</mail.version>
 		<osgi.mail.version>${mail.version}-${project.parent.version}</osgi.mail.version>
 		<mimepull.version>1.4</mimepull.version>
