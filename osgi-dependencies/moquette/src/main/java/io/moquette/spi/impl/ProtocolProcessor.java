@@ -178,13 +178,12 @@ public class ProtocolProcessor {
             return;
         }
 
-        //if an old client with the same ID already exists close its session.
         if (m_clientIDs.containsKey(msg.getClientID())) {
             LOG.info("Found an existing connection with same client ID <{}>, forcing to close", msg.getClientID());
-            //clean the subscriptions if the old used a cleanSession = true
             ServerChannel oldChannel = m_clientIDs.get(msg.getClientID()).channel;
-            ClientSession oldClientSession = m_sessionsStore.sessionForClient(msg.getClientID());
-            oldClientSession.disconnect();
+            // ClientSession oldClientSession = m_sessionsStore.sessionForClient(msg.getClientID());
+            // oldClientSession.disconnect();
+            executeStoredLastWill(msg.getClientID(), oldChannel);
             NettyUtils.sessionStolen(oldChannel, true);
             oldChannel.close();
             LOG.debug("Existing connection with same client ID <{}>, forced to close", msg.getClientID());
@@ -230,19 +229,27 @@ public class ProtocolProcessor {
         m_interceptor.notifyClientConnected(msg);
 
         if (!isSessionAlreadyStored) {
-            LOG.info("Create persistent session for clientID <{}>", msg.getClientID());
+            LOG.debug("Create persistent session for clientID <{}>", msg.getClientID());
             clientSession = m_sessionsStore.createNewSession(msg.getClientID(), msg.isCleanSession());
         }
         clientSession.activate();
         if (msg.isCleanSession()) {
             clientSession.cleanSession();
         }
-        LOG.info("Connected client ID <{}> with clean session {}", msg.getClientID(), msg.isCleanSession());
+        LOG.debug("Connected client ID <{}> with clean session {}", msg.getClientID(), msg.isCleanSession());
         if (!msg.isCleanSession()) {
             //force the republish of stored QoS1 and QoS2
             republishStoredInSession(clientSession);
         }
-        LOG.info("CONNECT processed");
+        LOG.debug("CONNECT processed");
+    }
+
+    private void executeStoredLastWill(String clientId, ServerChannel channel) {
+        if (m_willStore.containsKey(clientId)) {
+            WillMessage will = m_willStore.get(clientId);
+            forwardPublishWill(will, clientId, channel);
+            m_willStore.remove(clientId);
+        }
     }
 
     private void setIdleTime(ChannelPipeline pipeline, int idleTime) {
@@ -265,7 +272,7 @@ public class ProtocolProcessor {
         LOG.trace("republishStoredInSession for client <{}>", clientSession);
         List<IMessagesStore.StoredMessage> publishedEvents = clientSession.storedMessages();
         if (publishedEvents.isEmpty()) {
-            LOG.info("No stored messages for client <{}>", clientSession.clientID);
+            LOG.debug("No stored messages for client <{}>", clientSession.clientID);
             return;
         }
 
@@ -318,7 +325,7 @@ public class ProtocolProcessor {
         }
         final AbstractMessage.QOSType qos = msg.getQos();
         final Integer messageID = msg.getMessageID();
-        LOG.info("PUBLISH from clientID <{}> on topic <{}> with QoS {}", clientID, topic, qos);
+        LOG.debug("PUBLISH from clientID <{}> on topic <{}> with QoS {}", clientID, topic, qos);
 
         String guid = null;
         IMessagesStore.StoredMessage toStoreMsg = asStoredMessage(msg);
@@ -370,7 +377,7 @@ public class ProtocolProcessor {
     public void internalPublish(PublishMessage msg) {
         final AbstractMessage.QOSType qos = msg.getQos();
         final String topic = msg.getTopicName();
-        LOG.info("embedded PUBLISH on topic <{}> with QoS {}", topic, qos);
+        LOG.debug("embedded PUBLISH on topic <{}> with QoS {}", topic, qos);
 
         String guid = null;
         IMessagesStore.StoredMessage toStoreMsg = asStoredMessage(msg);
@@ -399,7 +406,7 @@ public class ProtocolProcessor {
     /**
      * Specialized version to publish will testament message.
      */
-    private void forwardPublishWill(WillMessage will, String clientID) {
+    private void forwardPublishWill(WillMessage will, String clientID, ServerChannel channel) {
         //it has just to publish the message downstream to the subscribers
         //NB it's a will publish, it needs a PacketIdentifier for this conn, default to 1
         Integer messageId = null;
@@ -410,7 +417,13 @@ public class ProtocolProcessor {
         IMessagesStore.StoredMessage tobeStored = asStoredMessage(will);
         tobeStored.setClientID(clientID);
         tobeStored.setMessageID(messageId);
-        route2Subscribers(tobeStored);
+        if (messagingPolicy.handleMessageInService(channel, tobeStored)) {
+            route2Subscribers(tobeStored);
+        }
+        PublishMessage publishMessage = new PublishMessage();
+        publishMessage.setTopicName(will.getTopic());
+        publishMessage.setPayload(will.getPayload());
+        m_interceptor.notifyTopicPublished(publishMessage, clientID);
     }
 
 
@@ -476,7 +489,7 @@ public class ProtocolProcessor {
         pubMessage.setQos(qos);
         pubMessage.setPayload(message);
         
-        LOG.info("send publish message to <{}> on topic <{}>", clientId, topic);
+        LOG.debug("send publish message to <{}> on topic <{}>", clientId, topic);
         if (LOG.isDebugEnabled()) {
             LOG.debug("content <{}>", DebugUtils.payload2Str(message));
         }
@@ -596,7 +609,7 @@ public class ProtocolProcessor {
         channel.flush();
         String clientID = NettyUtils.clientID(channel);
         boolean cleanSession = NettyUtils.cleanSession(channel);
-        LOG.info("DISCONNECT client <{}> with clean session {}", clientID, cleanSession);
+        LOG.debug("DISCONNECT client <{}> with clean session {}", clientID, cleanSession);
         ClientSession clientSession = m_sessionsStore.sessionForClient(clientID);
         clientSession.disconnect();
 
@@ -607,24 +620,15 @@ public class ProtocolProcessor {
         m_willStore.remove(clientID);
 
         m_interceptor.notifyClientDisconnected(clientID);
-        LOG.info("DISCONNECT client <{}> finished", clientID, cleanSession);
+        LOG.debug("DISCONNECT client <{}> finished", clientID, cleanSession);
     }
 
     public void processConnectionLost(String clientID, boolean sessionStolen, ServerChannel channel) {
         ConnectionDescriptor oldConnDescr = new ConnectionDescriptor(clientID, channel, true);
         m_clientIDs.remove(clientID, oldConnDescr);
-        //If already removed a disconnect message was already processed for this clientID
-        if (sessionStolen) {
-            //de-activate the subscriptions for this ClientID
-            ClientSession clientSession = m_sessionsStore.sessionForClient(clientID);
-            clientSession.deactivate();
-            LOG.info("Lost connection with client <{}>", clientID);
-        }
-        //publish the Will message (if any) for the clientID
-        if (!sessionStolen && m_willStore.containsKey(clientID)) {
-            WillMessage will = m_willStore.get(clientID);
-            forwardPublishWill(will, clientID);
-            m_willStore.remove(clientID);
+        // publish the Will message (if any) for the clientID
+        if (!sessionStolen) {
+            executeStoredLastWill(clientID, channel);
         }
     }
 
@@ -661,7 +665,7 @@ public class ProtocolProcessor {
         UnsubAckMessage ackMessage = new UnsubAckMessage();
         ackMessage.setMessageID(messageID);
 
-        LOG.info("replying with UnsubAck to MSG ID {}", messageID);
+        LOG.debug("replying with UnsubAck to MSG ID {}", messageID);
         channel.writeAndFlush(ackMessage);
     }
 
