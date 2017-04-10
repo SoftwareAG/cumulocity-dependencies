@@ -15,36 +15,35 @@
  */
 package io.moquette.server;
 
-import io.moquette.BrokerConstants;
-import io.moquette.interception.InterceptHandler;
-import io.moquette.proto.messages.PublishMessage;
-import io.moquette.server.config.MemoryConfig;
-import io.moquette.spi.impl.SimpleMessaging;
-import io.moquette.server.config.FilesystemConfig;
-import io.moquette.server.config.IConfig;
-import io.moquette.server.netty.NettyAcceptor;
-import io.moquette.spi.impl.ProtocolProcessor;
-import io.moquette.spi.security.IAuthenticator;
-import io.moquette.spi.security.IMessagingPolicy;
-import io.moquette.spi.security.IAuthorizator;
-import io.moquette.spi.security.ISslContextCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import io.moquette.BrokerConstants;
+import io.moquette.interception.InterceptHandler;
+import io.moquette.proto.messages.PublishMessage;
+import io.moquette.server.config.FilesystemConfig;
+import io.moquette.server.config.IConfig;
+import io.moquette.server.config.MemoryConfig;
+import io.moquette.server.netty.NettyAcceptor;
+import io.moquette.spi.ServiceLocator;
+import io.moquette.spi.ServiceLocator.ServiceLookup;
+import io.moquette.spi.impl.ProtocolProcessor;
+import io.moquette.spi.impl.SimpleMessaging;
+import io.moquette.spi.security.ISslContextCreator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Launch a  configured version of the server.
  * @author andrea
  */
 public class Server {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(Server.class);
-    
+
     private ServerAcceptor m_acceptor;
 
     private volatile boolean m_initialized;
@@ -63,7 +62,7 @@ public class Server {
             }
         });
     }
-    
+
     /**
      * Starts Moquette bringing the configuration from the file 
      * located at m_config/moquette.conf
@@ -81,10 +80,10 @@ public class Server {
         final IConfig config = new FilesystemConfig(configFile);
         startServer(config);
     }
-    
+
     /**
      * Starts the server with the given properties.
-     * 
+     *
      * Its suggested to at least have the following properties:
      * <ul>
      *  <li>port</li>
@@ -102,23 +101,18 @@ public class Server {
     public void startServer(IConfig config) throws IOException {
         startServer(config, null);
     }
-    
-    public void startServer(IConfig config, List<? extends InterceptHandler> handlers, IMessagingPolicy messagingPolicy, ProtocolProcessor protocolProcessor) throws IOException {
-        startServer(config, handlers, null, null, null, messagingPolicy, protocolProcessor);
-    }
+
 
     /**
      * Starts Moquette with config provided by an implementation of IConfig class and with the
      * set of InterceptHandler.
      * */
     public void startServer(IConfig config, List<? extends InterceptHandler> handlers) throws IOException {
-        startServer(config, handlers, null, null, null, null, null);
+        startServer(config, handlers, null, ServiceLocator.getInstance(config));
     }
 
     public void startServer(IConfig config, List<? extends InterceptHandler> handlers,
-                            ISslContextCreator sslCtxCreator, IAuthenticator authenticator,
-                            IAuthorizator authorizator, IMessagingPolicy messagingPolicy,
-                            ProtocolProcessor protocolProcessor) throws IOException {
+                            ISslContextCreator sslCtxCreator, ServiceLookup serviceLocator) throws IOException {
         if (handlers == null) {
             handlers = Collections.emptyList();
         }
@@ -128,11 +122,11 @@ public class Server {
             config.setProperty("intercept.handler", handlerProp);
         }
         LOG.info("Persistent store file: " + config.getProperty(BrokerConstants.PERSISTENT_STORE_PROPERTY_NAME));
-        
-        final ProtocolProcessor processor = SimpleMessaging.getInstance().init(config, handlers, authenticator, authorizator, messagingPolicy, protocolProcessor);
+
+        final ProtocolProcessor processor = SimpleMessaging.getInstance().init(config, handlers, serviceLocator);
 
         if (sslCtxCreator == null) {
-            sslCtxCreator = new DefaultMoquetteSslContextCreator(config);
+            sslCtxCreator = serviceLocator.lookup(ISslContextCreator.class, DefaultMoquetteSslContextCreator.class);
         }
 
         m_acceptor = new NettyAcceptor();
@@ -154,7 +148,7 @@ public class Server {
         }
         m_processor.internalPublish(msg);
     }
-    
+
     public void stopServer() {
         LOG.info("Server stopping...");
         m_acceptor.close();

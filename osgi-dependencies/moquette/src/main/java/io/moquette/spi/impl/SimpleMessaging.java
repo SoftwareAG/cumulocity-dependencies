@@ -15,28 +15,25 @@
  */
 package io.moquette.spi.impl;
 
-import io.moquette.BrokerConstants;
-import io.moquette.spi.IMessagesStore;
-import io.moquette.interception.InterceptHandler;
-import io.moquette.server.config.IConfig;
-import io.moquette.spi.ISessionsStore;
-import io.moquette.spi.impl.ProtocolProcessor;
-import io.moquette.spi.impl.security.*;
-import io.moquette.spi.impl.subscriptions.SubscriptionsStore;
-import io.moquette.spi.persistence.MapDBPersistentStore;
-import io.moquette.spi.security.IAuthenticator;
-import io.moquette.spi.security.IAuthorizator;
-import io.moquette.spi.security.IMessagingPolicy;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.moquette.BrokerConstants;
+import io.moquette.interception.InterceptHandler;
+import io.moquette.server.config.IConfig;
+import io.moquette.spi.IMessagesStore;
+import io.moquette.spi.ISessionsStore;
+import io.moquette.spi.IStore;
+import io.moquette.spi.ServiceLocator.ServiceLookup;
+import io.moquette.spi.impl.security.*;
+import io.moquette.spi.impl.subscriptions.SubscriptionsStore;
+import io.moquette.spi.security.IAuthenticator;
+import io.moquette.spi.security.IAuthorizator;
+import io.moquette.spi.security.IMessagingPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -52,12 +49,12 @@ public class SimpleMessaging {
 
     private SubscriptionsStore subscriptions;
 
-    private MapDBPersistentStore m_mapStorage;
+    private IStore m_mapStorage;
 
     private BrokerInterceptor m_interceptor;
 
     private static SimpleMessaging INSTANCE;
-    
+
     private ProtocolProcessor m_processor;
 
     private SimpleMessaging() {
@@ -76,23 +73,14 @@ public class SimpleMessaging {
      *              For the full list check of configurable properties check moquette.conf file.
      * @param embeddedObservers a list of callbacks to be notified of certain events inside the broker.
      *                          Could be empty list of null.
-     * @param authenticator an implementation of the authenticator to be used, if null load that specified in config
-     *                      and fallback on the default one (permit all).
-     * @param authorizator an implementation of the authorizator to be used, if null load that specified in config
-     *                      and fallback on the default one (permit all).
      * */
-    public ProtocolProcessor init(IConfig props, List<? extends InterceptHandler> embeddedObservers,
-                                  IAuthenticator authenticator, IAuthorizator authorizator, 
-                                  // added messaging policy
-                                  IMessagingPolicy messagingPolicy,
-                                  ProtocolProcessor protocolProcessor) {
-        m_processor = protocolProcessor;
+    public ProtocolProcessor init(IConfig props, List<? extends InterceptHandler> embeddedObservers, ServiceLookup serviceLocator) {
         if (m_processor == null) {
-            m_processor = new ProtocolProcessor();
+            m_processor = serviceLocator.lookup(ProtocolProcessor.class);
         }
-        subscriptions = new SubscriptionsStore();
+        subscriptions = serviceLocator.lookup(SubscriptionsStore.class);
 
-        m_mapStorage = new MapDBPersistentStore(props);
+        m_mapStorage = serviceLocator.lookup(IStore.class);
         m_mapStorage.initStore();
         IMessagesStore messagesStore = m_mapStorage.messagesStore();
         ISessionsStore sessionsStore = m_mapStorage.sessionsStore(messagesStore);
@@ -101,7 +89,7 @@ public class SimpleMessaging {
         String interceptorClassName = props.getProperty("intercept.handler");
         if (interceptorClassName != null && !interceptorClassName.isEmpty()) {
             try {
-                InterceptHandler handler = Class.forName(interceptorClassName).asSubclass(InterceptHandler.class).newInstance();
+                InterceptHandler handler = serviceLocator.lookup(InterceptHandler.class, this.<InterceptHandler>load(interceptorClassName));
                 observers.add(handler);
             } catch (Throwable ex) {
                 LOG.error("Can't load the intercept handler {}", ex);
@@ -113,24 +101,28 @@ public class SimpleMessaging {
 
         String configPath = System.getProperty("moquette.path", null);
         String authenticatorClassName = props.getProperty(BrokerConstants.AUTHENTICATOR_CLASS_NAME, "");
-
+        IAuthenticator authenticator = null;
         if (!authenticatorClassName.isEmpty()) {
-            authenticator = (IAuthenticator)loadClass(authenticatorClassName, IAuthenticator.class, props);
+            authenticator = serviceLocator.lookup(IAuthenticator.class, this.<IAuthenticator>load(authenticatorClassName));
             LOG.info("Loaded custom authenticator {}", authenticatorClassName);
         }
 
         if (authenticator == null) {
             String passwdPath = props.getProperty(BrokerConstants.PASSWORD_FILE_PROPERTY_NAME, "");
             if (passwdPath.isEmpty()) {
-                authenticator = new AcceptAllAuthenticator();
+                try {
+                    authenticator = serviceLocator.lookup(IAuthenticator.class);
+                } catch (Exception ex) {
+                    authenticator = serviceLocator.lookup(IAuthenticator.class, AcceptAllAuthenticator.class);
+                }
             } else {
                 authenticator = new FileAuthenticator(configPath, passwdPath);
             }
         }
-
+        IAuthorizator authorizator = null;
         String authorizatorClassName = props.getProperty(BrokerConstants.AUTHORIZATOR_CLASS_NAME, "");
         if (!authorizatorClassName.isEmpty()) {
-            authorizator = (IAuthorizator)loadClass(authorizatorClassName, IAuthorizator.class, props);
+            authorizator = serviceLocator.lookup(IAuthorizator.class, this.<IAuthorizator>load(authorizatorClassName));
             LOG.info("Loaded custom authorizator {}", authorizatorClassName);
         }
 
@@ -146,62 +138,37 @@ public class SimpleMessaging {
                 }
                 LOG.info("Using acl file defined at path {}", aclFilePath);
             } else {
-                authorizator = new PermitAllAuthorizator();
+                try {
+                    authorizator = serviceLocator.lookup(IAuthorizator.class);
+                } catch (Exception ex) {
+                    authorizator = serviceLocator.lookup(IAuthorizator.class, PermitAllAuthorizator.class);
+                }
                 LOG.info("Starting without ACL definition");
             }
 
         }
 
         boolean allowAnonymous = Boolean.parseBoolean(props.getProperty(BrokerConstants.ALLOW_ANONYMOUS_PROPERTY_NAME, "true"));
-        m_processor.init(subscriptions, messagesStore, sessionsStore, authenticator, messagingPolicy, allowAnonymous, authorizator, m_interceptor);
+        m_processor.init(subscriptions,
+            messagesStore,
+            sessionsStore,
+            authenticator,
+            serviceLocator.lookup(IMessagingPolicy.class),
+            allowAnonymous,
+            authorizator,
+            m_interceptor);
         return m_processor;
     }
-    
-    private Object loadClass(String className, Class<?> cls, IConfig props) {
-        Object instance = null;
+
+    private <T> Class<T> load(String className) {
         try {
-            Class<?> clazz = Class.forName(className);
-
-            // check if method getInstance exists
-            Method method = clazz.getMethod("getInstance", new Class[] {});
-            try {
-                instance = method.invoke(null, new Object[] {});
-            } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException ex) {
-                LOG.error(null, ex);
-                throw new RuntimeException("Cannot call method "+ className +".getInstance", ex);
-            }
+            return (Class<T>) this
+                       .getClass()
+                       .getClassLoader()
+                       .loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        catch (NoSuchMethodException nsmex) {
-            try {
-                // check if constructor with IConfig parameter exists
-                instance = this.getClass().getClassLoader()
-                        .loadClass(className)
-                        .asSubclass(cls)
-                        .getConstructor(IConfig.class).newInstance(props);
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
-                LOG.error(null, ex);
-                throw new RuntimeException("Cannot load custom authenticator class " + className, ex);
-            } catch (NoSuchMethodException | InvocationTargetException e) {
-                try {
-                    // fallback to default constructor
-                    instance = this.getClass().getClassLoader()
-                            .loadClass(className)
-                            .asSubclass(cls)
-                            .newInstance();
-                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
-                    LOG.error(null, ex);
-                    throw new RuntimeException("Cannot load custom authenticator class " + className, ex);
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            LOG.error(null, ex);
-            throw new RuntimeException("Class " + className + " not found", ex);
-        } catch (SecurityException ex) {
-            LOG.error(null, ex);
-            throw new RuntimeException("Cannot call method "+ className +".getInstance", ex);
-        }
-
-        return instance;
     }
 
     public void shutdown() {

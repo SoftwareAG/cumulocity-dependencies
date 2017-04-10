@@ -16,7 +16,6 @@
 package io.moquette.server;
 
 import io.moquette.server.netty.ServerChannel;
-import io.netty.channel.Channel;
 
 /**
  * Value object to maintain the information of single connection, like ClientID, IoSession,
