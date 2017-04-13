@@ -1,10 +1,23 @@
 package io.moquette.spi;
 
-import io.moquette.spi.ClientSession.FlightAcknowledged;
-import io.moquette.spi.ClientSession.SecondPhaseAcknowledged;
+import lombok.Value;
 
 public interface ClientSessionListener {
     void onAcknowledged(SecondPhaseAcknowledged event);
 
     void onAcknowledged(FlightAcknowledged event);
+
+    @Value
+    class SecondPhaseAcknowledged {
+        private final ClientSession session;
+
+        private final String guid;
+    }
+
+    @Value
+    class FlightAcknowledged {
+        private final ClientSession session;
+
+        private final String guid;
+    }
 }

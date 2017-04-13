@@ -402,68 +402,72 @@ public class ProtocolProcessor {
         final String topic = toStoreMsg.getTopic();
         final QOSType publishingQos = toStoreMsg.getQos();
         final ByteBuffer origMessage = toStoreMsg.getMessage();
-
+        String publishGuid = null;
         if (publishingQos == QOSType.EXACTLY_ONCE || publishingQos == QOSType.LEAST_ONE) {
-            guid = m_messagesStore.storePublishForFuture(toStoreMsg);
+            publishGuid = m_messagesStore.storePublishForFuture(toStoreMsg);
         }
 
-        List<Subscription> topicMatchingSubscriptions = FluentIterable
-                                                            .from(subscriptions.matches(topic))
-                                                            .filter(forClient(clientId))
-                                                            .toList();
-        log.trace("Found {} matching subscriptions to <{}>", topicMatchingSubscriptions.size(), topic);
-        for (final Subscription sub : topicMatchingSubscriptions) {
-            QOSType qos1 = publishingQos;
-            if (qos1.byteValue() > sub
-                                       .getRequestedQos()
-                                       .byteValue()) {
-                qos1 = sub.getRequestedQos();
-            }
+        List<Subscription> subscriptions = FluentIterable
+                                               .from(this.subscriptions.matches(topic))
+                                               .filter(forClient(clientId))
+                                               .toList();
+        log.trace("Found {} matching subscriptions to <{}>", subscriptions.size(), topic);
+        for (final Subscription sub : subscriptions) {
+            QOSType clientQos = selectQoS(sub, publishingQos);
             ClientSession targetSession = m_sessionsStore.sessionForClient(sub.getClientId());
             verifyToActivate(sub.getClientId(), targetSession);
 
             log.debug("Broker republishing to client <{}> topic <{}> qos <{}>, active {}",
                 sub.getClientId(),
                 sub.getTopicFilter(),
-                qos1,
+                clientQos,
                 targetSession.isActive());
-            ByteBuffer message = origMessage.duplicate();
-            if (qos1 == QOSType.MOST_ONE && targetSession.isActive()) {
+
+            if (clientQos == QOSType.MOST_ONE && targetSession.isActive()) {
                 //QoS 0
-                directSend(targetSession, topic, qos1, message, false, null);
+                directSend(targetSession, topic, clientQos, origMessage.duplicate(), false, null);
             } else {
                 //QoS 1 or 2
                 //if the target subscription is not clean session and is not connected => store it
                 if (!targetSession.isCleanSession() && !targetSession.isActive()) {
                     //store the message in targetSession queue to deliver
-                    targetSession.enqueueToDeliver(guid);
+                    targetSession.enqueueToDeliver(publishGuid);
                 } else {
                     //publish
                     if (targetSession.isActive()) {
                         int messageId = targetSession.nextPacketId();
-                        targetSession.inFlightAckWaiting(guid, messageId);
-                        directSend(targetSession, topic, qos1, message, false, messageId);
+                        targetSession.inFlightAckWaiting(publishGuid, messageId);
+                        directSend(targetSession, topic, clientQos, origMessage.duplicate(), false, messageId);
                     }
                 }
             }
         }
 
         if (!msg.isRetainFlag()) {
-            return guid;
+            return publishGuid;
         }
         if (qos == QOSType.MOST_ONE || !msg
                                             .getPayload()
                                             .hasRemaining()) {
             //QoS == 0 && retain => clean old retained
             m_messagesStore.cleanRetained(topic);
-            return guid;
+            return publishGuid;
         }
         if (guid == null) {
             //before wasn't stored
             guid = m_messagesStore.storePublishForFuture(toStoreMsg);
         }
         m_messagesStore.storeRetained(topic, guid);
-        return guid;
+        return publishGuid;
+    }
+
+    private QOSType selectQoS(Subscription subscription, QOSType publishQos) {
+        if (publishQos.byteValue() > subscription
+                                   .getRequestedQos()
+                                   .byteValue()) {
+            return subscription.getRequestedQos();
+        }
+        return publishQos;
     }
 
     private Predicate<? super Subscription> forClient(final String clientId) {
@@ -560,12 +564,7 @@ public class ProtocolProcessor {
         List<Subscription> topicMatchingSubscriptions = subscriptions.matches(topic);
         log.trace("Found {} matching subscriptions to <{}>", topicMatchingSubscriptions.size(), topic);
         for (final Subscription sub : topicMatchingSubscriptions) {
-            QOSType qos = publishingQos;
-            if (qos.byteValue() > sub
-                                      .getRequestedQos()
-                                      .byteValue()) {
-                qos = sub.getRequestedQos();
-            }
+            QOSType qos = selectQoS(sub, publishingQos);
             ClientSession targetSession = m_sessionsStore.sessionForClient(sub.getClientId());
             verifyToActivate(sub.getClientId(), targetSession);
 

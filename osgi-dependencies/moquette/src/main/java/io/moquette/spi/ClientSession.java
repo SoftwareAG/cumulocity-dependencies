@@ -62,7 +62,6 @@ public class ClientSession {
 
     private Set<Subscription> subscriptions = new HashSet<>();
 
-
     private volatile boolean cleanSession;
 
     private boolean active = false;
@@ -204,32 +203,16 @@ public class ClientSession {
         return messagesStore.getMessageByGuid(guid);
     }
 
-
-
     public void addListener(ClientSessionListener clientSessionListener) {
-        m_sessionsStore.register(getClientID(),clientSessionListener);
+        m_sessionsStore.register(getClientID(), clientSessionListener);
     }
 
     public void removeListener(ClientSessionListener listener) {
-        m_sessionsStore.unregister(getClientID(),listener);
+        m_sessionsStore.unregister(getClientID(), listener);
     }
 
     public void moveInFlightToSecondPhaseAckWaiting(int messageID) {
         m_sessionsStore.moveInFlightToSecondPhaseAckWaiting(this.clientID, messageID);
     }
 
-
-    @Value
-    public static class SecondPhaseAcknowledged {
-        private final ClientSession session;
-
-        private final String guid;
-    }
-
-    @Value
-    public static class FlightAcknowledged {
-        private final ClientSession session;
-
-        private final String guid;
-    }
 }

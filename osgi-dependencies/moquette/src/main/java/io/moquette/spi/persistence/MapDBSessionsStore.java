@@ -20,6 +20,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import io.moquette.spi.ClientSession;
 import io.moquette.spi.ClientSessionListener;
+import io.moquette.spi.ClientSessionListener.FlightAcknowledged;
+import io.moquette.spi.ClientSessionListener.SecondPhaseAcknowledged;
 import io.moquette.spi.IMessagesStore;
 import io.moquette.spi.ISessionsStore;
 import io.moquette.spi.impl.Utils;
@@ -30,6 +32,7 @@ import org.mapdb.DB;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 /**
  * ISessionsStore implementation backed by MapDB.
@@ -50,7 +53,7 @@ class MapDBSessionsStore implements ISessionsStore {
     //maps clientID->[guid*], insertion order cares, it's queue
     private ConcurrentMap<String, List<String>> m_enqueuedStore;
 
-    //maps clientID->[messageID*]
+    //maps clientID->[MessageId -> guid]
     private ConcurrentMap<String, Map<Integer, String>> m_secondPhaseStore;
 
     private final DB m_db;
@@ -190,7 +193,7 @@ class MapDBSessionsStore implements ISessionsStore {
             return;
         }
         final String guid = m.remove(messageID);
-        final ClientSession.FlightAcknowledged event = new ClientSession.FlightAcknowledged(sessionForClient(clientID), guid);
+        final FlightAcknowledged event = new FlightAcknowledged(sessionForClient(clientID), guid);
         notifyListeners(clientID, new EventNotifier() {
             @Override
             public void notify(ClientSessionListener listener) {
@@ -258,7 +261,7 @@ class MapDBSessionsStore implements ISessionsStore {
     public void secondPhaseAcknowledged(String clientID, int messageID) {
         Map<Integer, String> messageIDs = Utils.defaultGet(m_secondPhaseStore, clientID, new HashMap<Integer, String>());
         final String message = messageIDs.remove(messageID);
-        final ClientSession.SecondPhaseAcknowledged event = new ClientSession.SecondPhaseAcknowledged(sessionForClient(clientID), message);
+        final SecondPhaseAcknowledged event = new SecondPhaseAcknowledged(sessionForClient(clientID), message);
         notifyListeners(clientID, new EventNotifier() {
             @Override
             public void notify(ClientSessionListener listener) {
@@ -294,8 +297,10 @@ class MapDBSessionsStore implements ISessionsStore {
     public Collection<ClientSessionListener> sessionListenersFor(String clientID) {
         final Collection<ClientSessionListener> clientListeners = listeners.get(clientID);
         if (clientListeners == null) {
-            listeners.putIfAbsent(clientID, Lists.<ClientSessionListener>newCopyOnWriteArrayList());
-            return listeners.get(clientID);
+            synchronized (listeners) {
+                listeners.putIfAbsent(clientID, Lists.<ClientSessionListener>newCopyOnWriteArrayList());
+                return listeners.get(clientID);
+            }
         }
         return clientListeners;
     }
