@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>8.0.0</version>
+	<version>8.1.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -70,8 +70,6 @@
 		<osgi.jcouchdb.version>${jcouchdb.version}-${project.parent.version}</osgi.jcouchdb.version>
 		<jersey.version>1.8</jersey.version>
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-		<liquibase.version>1.9.5</liquibase.version>
-		<osgi.liquibase.version>${liquibase.version}-${project.parent.version}</osgi.liquibase.version>
 		<mail.version>1.4.7</mail.version>
 		<osgi.mail.version>${mail.version}-${project.parent.version}</osgi.mail.version>
 		<mimepull.version>1.4</mimepull.version>
@@ -125,7 +123,7 @@
 		<pax.web.version>1.1.12</pax.web.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<slf4j.version>1.7.0</slf4j.version>
-		<spring.version>3.1.4.RELEASE</spring.version>
+		<spring.version>3.2.18.RELEASE</spring.version>
         <lombok.version>1.16.6</lombok.version>
 
 		<hamcrest.version>1.1</hamcrest.version>
@@ -216,11 +214,6 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aop</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-asm</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
