@@ -27,22 +27,23 @@
 	</repositories>
 	
 	<dependencies>
-		<dependency>
-	      	<groupId>io.moquette</groupId>
-	     	<artifactId>moquette-broker</artifactId>
-	      	<scope>provided</scope>
-	      	<exclusions>
-				<exclusion>
-					<artifactId>log4j</artifactId>
-					<groupId>log4j</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>slf4j-log4j12</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-	      	</exclusions>
-		</dependency>
-		
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>guava</artifactId>
+            <version>${osgi.guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+
 		<dependency>
             <groupId>io.moquette</groupId>
             <artifactId>moquette-netty-parser</artifactId>
@@ -52,12 +53,7 @@
             <groupId>io.moquette</groupId>
             <artifactId>moquette-parser-commons</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.10</version>
-        </dependency>
+
         
         <dependency>
             <groupId>org.mapdb</groupId>
@@ -70,13 +66,12 @@
             <artifactId>HdrHistogram</artifactId>
             <version>2.1.4</version>
         </dependency>
-        
+
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.10</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
-		
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -85,6 +80,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -123,7 +119,6 @@
                     	commons-codec
                    	</includeGroupIds>
                     <includeArtifactIds>
-                    	moquette-broker,
                     	moquette-netty-parser,
                     	moquette-parser-commons,
                     	mapdb,
@@ -133,12 +128,6 @@
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
-                        io/moquette/spi/impl/ProtocolProcessor.*,
-                        io/moquette/spi/impl/SimpleMessaging.*,
-                        io/moquette/server/Server.*,
-                        io/moquette/server/ConnectionDescriptor.*,
-                        io/moquette/server/netty/NettyMQTTHandler.*,
-                        io/moquette/server/netty/NettyUtils.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -146,24 +135,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                	<includes>
-                       <include>io</include>
-                       <include>io/moquette</include>
-                       <include>io/moquette/spi</include>
-                       <include>io/moquette/spi/impl</include>
-                       <include>io/moquette/spi/impl/ProtocolProcessor.*</include>
-                       <include>io/moquette/spi/impl/SimpleMessaging.*</include>
-                       <include>io/moquette/server</include>
-                       <include>io/moquette/server/Server.*</include>
-                       <include>io/moquette/server/ConnectionDescriptor.*</include>
-                       <include>io/moquette/server/netty</include>
-                       <include>io/moquette/server/netty/ServerChannel.*</include>
-                       <include>io/moquette/server/netty/NettyUtils.*</include>
-                       <include>io/moquette/server/netty/NettyMQTTHandler.*</include>
-                       <include>io/moquette/spi/security</include>
-                       <include>io/moquette/spi/security/IMessagingPolicy.*</include>
-                       <include>io/moquette/spi/persistence</include>
-	                </includes>
 	                <excludes>
 	                    <exclude>nothing</exclude>
 	                </excludes>

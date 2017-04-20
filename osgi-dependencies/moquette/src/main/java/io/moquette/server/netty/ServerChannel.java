@@ -1,6 +1,7 @@
 package io.moquette.server.netty;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.util.Attribute;
@@ -31,17 +32,22 @@ public class ServerChannel {
         }
         return channel.attr(key);
     }
-    
-    public void close() {
-        channel.close();
+
+    public <T> T get(AttributeKey<T> key) {
+        return attr(key).get();
     }
     
-    public void flush() {
-        channel.flush();
+    public ChannelFuture close() {
+        return channel.close();
+    }
+    
+    public ServerChannel flush() {
+         channel.flush();
+         return this;
     }
 
-    public void writeAndFlush(Object value) {
-        channel.writeAndFlush(value);
+    public ChannelFuture writeAndFlush(Object value) {
+        return channel.writeAndFlush(value);
     }
     
     public ChannelPipeline pipeline() {
@@ -89,4 +95,7 @@ public class ServerChannel {
         return true;
     }
 
+    public <T> void set(AttributeKey<T> attr, T value) {
+        attr(attr).set(value);
+    }
 }

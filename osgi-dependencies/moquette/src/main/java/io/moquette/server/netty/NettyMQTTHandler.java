@@ -15,17 +15,15 @@
  */
 package io.moquette.server.netty;
 
+import static io.moquette.proto.messages.AbstractMessage.*;
+
 import io.moquette.proto.Utils;
 import io.moquette.proto.messages.*;
-import io.moquette.server.netty.NettyUtils;
-import io.moquette.server.netty.ServerChannel;
 import io.moquette.spi.impl.ProtocolProcessor;
-import static io.moquette.proto.messages.AbstractMessage.*;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.CorruptedFrameException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
