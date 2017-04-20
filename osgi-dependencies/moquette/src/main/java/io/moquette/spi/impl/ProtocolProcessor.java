@@ -161,9 +161,7 @@ public class ProtocolProcessor {
             return;
         }
 
-        if (msg.getClientID() == null || msg
-                                             .getClientID()
-                                             .length() == 0) {
+        if (msg.getClientID() == null || msg.getClientID().length() == 0) {
             ConnAckMessage okResp = new ConnAckMessage();
             okResp.setReturnCode(ConnAckMessage.IDENTIFIER_REJECTED);
             channel.writeAndFlush(okResp);
@@ -221,10 +219,7 @@ public class ProtocolProcessor {
         if (msg.isWillFlag()) {
             QOSType willQos = QOSType.valueOf(msg.getWillQos());
             byte[] willPayload = msg.getWillMessage();
-            ByteBuffer bb = (ByteBuffer) ByteBuffer
-                                             .allocate(willPayload.length)
-                                             .put(willPayload)
-                                             .flip();
+            ByteBuffer bb = (ByteBuffer) ByteBuffer.allocate(willPayload.length).put(willPayload).flip();
             //save the will testament in the clientID store
             WillMessage will = new WillMessage(msg.getWillTopic(), bb, msg.isWillRetain(), willQos);
             m_willStore.put(msg.getClientID(), will);
@@ -269,9 +264,7 @@ public class ProtocolProcessor {
     }
 
     private void setIdleTime(ChannelPipeline pipeline, int idleTime) {
-        if (pipeline
-                .names()
-                .contains("idleStateHandler")) {
+        if (pipeline.names().contains("idleStateHandler")) {
             pipeline.remove("idleStateHandler");
         }
         pipeline.addFirst("idleStateHandler", new IdleStateHandler(0, 0, idleTime));
@@ -318,18 +311,14 @@ public class ProtocolProcessor {
     }
 
     private static IMessagesStore.StoredMessage asStoredMessage(PublishMessage msg) {
-        IMessagesStore.StoredMessage stored = new IMessagesStore.StoredMessage(msg
-                                                                                   .getPayload()
-                                                                                   .array(), msg.getQos(), msg.getTopicName());
+        IMessagesStore.StoredMessage stored = new IMessagesStore.StoredMessage(msg.getPayload().array(), msg.getQos(), msg.getTopicName());
         stored.setRetained(msg.isRetainFlag());
         stored.setMessageID(msg.getMessageID());
         return stored;
     }
 
     private static IMessagesStore.StoredMessage asStoredMessage(WillMessage will) {
-        IMessagesStore.StoredMessage pub = new IMessagesStore.StoredMessage(will
-                                                                                .getPayload()
-                                                                                .array(), will.getQos(), will.getTopic());
+        IMessagesStore.StoredMessage pub = new IMessagesStore.StoredMessage(will.getPayload().array(), will.getQos(), will.getTopic());
         pub.setRetained(will.isRetained());
         return pub;
     }
@@ -373,9 +362,7 @@ public class ProtocolProcessor {
                 //QoS == 0 && retain => clean old retained
                 m_messagesStore.cleanRetained(topic);
             } else {
-                if (!msg
-                         .getPayload()
-                         .hasRemaining()) {
+                if (!msg.getPayload().hasRemaining()) {
                     m_messagesStore.cleanRetained(topic);
                 } else {
                     if (guid == null) {
@@ -407,10 +394,7 @@ public class ProtocolProcessor {
             publishGuid = m_messagesStore.storePublishForFuture(toStoreMsg);
         }
 
-        List<Subscription> subscriptions = FluentIterable
-                                               .from(this.subscriptions.matches(topic))
-                                               .filter(forClient(clientId))
-                                               .toList();
+        List<Subscription> subscriptions = FluentIterable.from(this.subscriptions.matches(topic)).filter(forClient(clientId)).toList();
         log.trace("Found {} matching subscriptions to <{}>", subscriptions.size(), topic);
         for (final Subscription sub : subscriptions) {
             QOSType clientQos = selectQoS(sub, publishingQos);
@@ -446,9 +430,7 @@ public class ProtocolProcessor {
         if (!msg.isRetainFlag()) {
             return publishGuid;
         }
-        if (qos == QOSType.MOST_ONE || !msg
-                                            .getPayload()
-                                            .hasRemaining()) {
+        if (qos == QOSType.MOST_ONE || !msg.getPayload().hasRemaining()) {
             //QoS == 0 && retain => clean old retained
             m_messagesStore.cleanRetained(topic);
             return publishGuid;
@@ -462,9 +444,7 @@ public class ProtocolProcessor {
     }
 
     private QOSType selectQoS(Subscription subscription, QOSType publishQos) {
-        if (publishQos.byteValue() > subscription
-                                   .getRequestedQos()
-                                   .byteValue()) {
+        if (publishQos.byteValue() > subscription.getRequestedQos().byteValue()) {
             return subscription.getRequestedQos();
         }
         return publishQos;
@@ -474,9 +454,7 @@ public class ProtocolProcessor {
         return new Predicate<Subscription>() {
             @Override
             public boolean apply(@Nullable Subscription input) {
-                return input
-                           .getClientId()
-                           .equals(clientId);
+                return input.getClientId().equals(clientId);
             }
         };
     }
@@ -506,9 +484,7 @@ public class ProtocolProcessor {
         if (!msg.isRetainFlag()) {
             return;
         }
-        if (qos == QOSType.MOST_ONE || !msg
-                                            .getPayload()
-                                            .hasRemaining()) {
+        if (qos == QOSType.MOST_ONE || !msg.getPayload().hasRemaining()) {
             //QoS == 0 && retain => clean old retained
             m_messagesStore.cleanRetained(topic);
             return;
@@ -690,9 +666,7 @@ public class ProtocolProcessor {
 
         if (evt.isRetained()) {
             final String topic = evt.getTopic();
-            if (!evt
-                     .getMessage()
-                     .hasRemaining()) {
+            if (!evt.getMessage().hasRemaining()) {
                 m_messagesStore.cleanRetained(topic);
             } else {
                 m_messagesStore.storeRetained(topic, evt.getGuid());
