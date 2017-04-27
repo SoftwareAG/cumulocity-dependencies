@@ -77,7 +77,9 @@ public class Jar {
     }
 
     public boolean isCumulocityJar() {
-        return getGroupId() != null && getGroupId().startsWith("com.nsn.cumulocity");
+        return getGroupId() != null
+                && getGroupId().startsWith("com.nsn.cumulocity")
+                && !getGroupId().startsWith("com.nsn.cumulocity.dependencies.osgi");
     }
     
     @Override
