@@ -45,7 +45,6 @@
         <module>httpclient</module>
         <module>httpclient-cache</module>
         <module>log4j-extras</module>
-        <module>ektorp</module>
 	    <module>libphonenumber</module>
         <module>postgresql-connector</module>
         <module>dozer</module>
