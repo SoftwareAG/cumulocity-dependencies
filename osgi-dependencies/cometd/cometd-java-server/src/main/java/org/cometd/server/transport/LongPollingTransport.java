@@ -164,9 +164,6 @@ public abstract class LongPollingTransport extends HttpTransport {
             reconnect(reply);
         writer = sendReply(request, response, session, writer, reply);
         finishWrite(writer, session);
-        if(!scheduler.isValid()){
-
-        }
     }
 
     private LongPollScheduler getScheduler(HttpServletRequest request) {
