@@ -254,6 +254,7 @@ public abstract class LongPollingTransport extends HttpTransport {
                 writer = writeMessage(request, response, writer, session, m);
             }
         }
+        // Checking if messages send failed and if you we putting back messages back to delivery queue
         if(writer != null && writer.checkError()){
             log.debug("message delivery failed rollback {} >>> {} ", session.getId(), queue);
             for (ServerMessage message : queue) {
