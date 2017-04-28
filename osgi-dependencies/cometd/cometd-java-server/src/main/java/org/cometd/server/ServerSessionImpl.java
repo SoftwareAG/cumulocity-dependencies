@@ -403,7 +403,7 @@ public class ServerSessionImpl implements ServerSession {
         _nonLazyMessages = false;
     }
 
-    protected void addMessage(ServerMessage message) {
+    public void addMessage(ServerMessage message) {
         log.debug("enqueue message {} - {}", getId(), message.getJSON());
         synchronized (_queue) {
             _queue.add(message);
