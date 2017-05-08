@@ -355,6 +355,7 @@ public abstract class LongPollingTransport extends HttpTransport {
         }
 
         private void cleanup() {
+            session.setScheduler(null);
             schedulers.remove(this);
             session.removeListener(this);
             session.deactivate();
@@ -371,7 +372,6 @@ public abstract class LongPollingTransport extends HttpTransport {
                 }
                 try {
                     continuation.complete();
-
                 } catch (Exception x) {
                     log.trace("", x);
                 }
