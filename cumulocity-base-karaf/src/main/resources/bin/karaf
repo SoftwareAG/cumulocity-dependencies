@@ -278,8 +278,7 @@ setupDefaults() {
             DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS -XX:MaxPermSize=$JAVA_MAX_PERM_MEM"
         fi
         DEFAULT_JAVA_OPTS="-server $DEFAULT_JAVA_OPTS -Dcom.sun.management.jmxremote -XX:+UseCompressedOops \
-         -XX:+UseParNewGC -XX:+UseConcMarkSweepGC \
-         -XX:+CMSClassUnloadingEnabled -XX:+ScavengeBeforeFullGC \
+         -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+ScavengeBeforeFullGC \
          -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark \
          -XX:+DisableExplicitGC -Djava.awt.headless=true"
 
