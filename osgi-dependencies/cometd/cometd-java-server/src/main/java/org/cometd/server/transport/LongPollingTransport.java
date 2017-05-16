@@ -138,7 +138,11 @@ public abstract class LongPollingTransport extends HttpTransport {
             }
         } else {
             log.debug("request resumed");
-            sendMessages(request, response);
+            if (getScheduler(request).isValid()) {
+                sendMessages(request, response);
+            } else {
+                log.debug("unable to use scheduler for session {}",getScheduler(request).session.getId());
+            }
         }
     }
 
@@ -152,7 +156,7 @@ public abstract class LongPollingTransport extends HttpTransport {
     }
 
     private void sendMessages(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LongPollScheduler scheduler = (LongPollScheduler) request.getAttribute(LongPollScheduler.ATTRIBUTE);
+        LongPollScheduler scheduler = getScheduler(request);
         ServerSessionImpl session = scheduler.getSession();
         PrintWriter writer = writeQueueForMetaConnect(request, response, session, null);
         ServerMessage.Mutable reply = scheduler.getReply();
@@ -162,12 +166,19 @@ public abstract class LongPollingTransport extends HttpTransport {
         finishWrite(writer, session);
     }
 
+    private LongPollScheduler getScheduler(HttpServletRequest request) {
+        return (LongPollScheduler) request.getAttribute(LongPollScheduler.ATTRIBUTE);
+    }
+
     private void reconnect(ServerMessage.Mutable reply) {
         reply.getAdvice(true).put(Message.RECONNECT_FIELD, Message.RECONNECT_NONE_VALUE);
     }
 
-    private PrintWriter sendReply(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, PrintWriter writer,
-            ServerMessage.Mutable reply) throws IOException {
+    private PrintWriter sendReply(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  ServerSessionImpl session,
+                                  PrintWriter writer,
+                                  ServerMessage.Mutable reply) throws IOException {
         reply = getBayeux().extendReply(session, session, reply);
 
         if (reply != null) {
@@ -185,8 +196,11 @@ public abstract class LongPollingTransport extends HttpTransport {
         return ContinuationSupport.getContinuation(request).isResumed() && request.getAttribute(LongPollScheduler.ATTRIBUTE) != null;
     }
 
-    private void suspendRequest(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, long timeout,
-            Mutable reply) {
+    private void suspendRequest(HttpServletRequest request,
+                                HttpServletResponse response,
+                                ServerSessionImpl session,
+                                long timeout,
+                                Mutable reply) {
         log.debug("suspending session {}", session.getId());
         LongPollScheduler scheduler;
         Continuation continuation = ContinuationSupport.getContinuation(request);
@@ -203,8 +217,10 @@ public abstract class LongPollingTransport extends HttpTransport {
         return longPollScheduler;
     }
 
-    private PrintWriter writeQueueForMetaConnect(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session,
-            PrintWriter writer) throws IOException {
+    private PrintWriter writeQueueForMetaConnect(HttpServletRequest request,
+                                                 HttpServletResponse response,
+                                                 ServerSessionImpl session,
+                                                 PrintWriter writer) throws IOException {
         return writeQueue(request, response, session, writer);
     }
 
@@ -213,7 +229,7 @@ public abstract class LongPollingTransport extends HttpTransport {
     }
 
     protected void handleJSONParseException(HttpServletRequest request, HttpServletResponse response, String json, Throwable exception)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         log.warn("Error parsing JSON: " + json, exception);
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
@@ -230,7 +246,7 @@ public abstract class LongPollingTransport extends HttpTransport {
     }
 
     private PrintWriter writeQueue(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, PrintWriter writer)
-            throws IOException {
+        throws IOException {
         List<ServerMessage> queue = session.takeQueue();
         for (ServerMessage m : queue) {
             if (m.getData() != null) {
@@ -238,7 +254,15 @@ public abstract class LongPollingTransport extends HttpTransport {
                 writer = writeMessage(request, response, writer, session, m);
             }
         }
-        log.debug("messages sended {} >>> {}", session.getId(), queue);
+        // Checking if messages send failed and if you we putting back messages back to delivery queue
+        if(writer != null && writer.checkError()){
+            log.debug("message delivery failed rollback {} >>> {} ", session.getId(), queue);
+            for (ServerMessage message : queue) {
+                session.addMessage(message);
+            }
+        }else{
+            log.debug("messages sended {} >>> {}", session.getId(), queue);
+        }
         return writer;
     }
 
@@ -259,16 +283,6 @@ public abstract class LongPollingTransport extends HttpTransport {
         return messages.toArray(new ServerMessage.Mutable[messages.size()]);
     }
 
-    private boolean isValid(final ServletResponse response) {
-        try {
-            response.getWriter().write(' ');
-            response.getWriter().flush();
-            return !response.getWriter().checkError();
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
     protected abstract ServerMessage.Mutable[] parseMessages(HttpServletRequest request) throws IOException, ParseException;
 
     /**
@@ -276,8 +290,11 @@ public abstract class LongPollingTransport extends HttpTransport {
      */
     protected abstract boolean isAlwaysFlushingAfterHandle();
 
-    protected abstract PrintWriter writeMessage(HttpServletRequest request, HttpServletResponse response, PrintWriter writer,
-            ServerSessionImpl session, ServerMessage message) throws IOException;
+    protected abstract PrintWriter writeMessage(HttpServletRequest request,
+                                                HttpServletResponse response,
+                                                PrintWriter writer,
+                                                ServerSessionImpl session,
+                                                ServerMessage message) throws IOException;
 
     protected abstract void finishWrite(PrintWriter writer, ServerSessionImpl session) throws IOException;
 
@@ -312,8 +329,8 @@ public abstract class LongPollingTransport extends HttpTransport {
             if (!lastValidation.containsNow()) {
                 log.debug("validating session {}", session.getId());
                 try {
-                    if (!isValid(continuation.getServletResponse())) {
-                        log.debug("long poll interupted session {}", session.getId());
+                    if (!isValid()) {
+                        log.debug("long poll interrupted session {}", session.getId());
                         cancel();
                     }
                     lastValidation = new Interval(new DateTime(), validTime);
@@ -323,7 +340,22 @@ public abstract class LongPollingTransport extends HttpTransport {
             }
         }
 
+        private boolean isValid() {
+            log.debug("validating session {}  ", session.getId());
+            final ServletResponse response = continuation.getServletResponse();
+            try {
+                response.getWriter().write(' ');
+                response.getWriter().flush();
+                return !response.getWriter().checkError();
+            } catch (IOException e) {
+                log.debug("session {} validation failed", session.getId());
+                return false;
+            }
+
+        }
+
         private void cleanup() {
+            session.setScheduler(null);
             schedulers.remove(this);
             session.removeListener(this);
             session.deactivate();
@@ -340,7 +372,6 @@ public abstract class LongPollingTransport extends HttpTransport {
                 }
                 try {
                     continuation.complete();
-
                 } catch (Exception x) {
                     log.trace("", x);
                 }

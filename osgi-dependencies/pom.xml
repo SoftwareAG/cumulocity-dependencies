@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>8.2.0</version>
+        <version>8.3.1</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -45,7 +45,6 @@
         <module>httpclient</module>
         <module>httpclient-cache</module>
         <module>log4j-extras</module>
-        <module>ektorp</module>
 	    <module>libphonenumber</module>
         <module>postgresql-connector</module>
         <module>dozer</module>
@@ -127,13 +126,9 @@
                         <goals>
                             <goal>jar-no-fork</goal>
                         </goals>
-                        <configuration>
-                            <excludeResources>true</excludeResources>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
 </project>
-

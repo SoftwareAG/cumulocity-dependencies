@@ -1,0 +1,8 @@
+[
+  {
+    "channel": "/meta/subscribe",
+    "subscription": "${subscribe}",
+    "id": "3",
+    "clientId": "${clientId}"
+  }
+]
