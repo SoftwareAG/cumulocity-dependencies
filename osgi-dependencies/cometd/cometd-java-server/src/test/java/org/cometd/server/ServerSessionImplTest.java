@@ -10,6 +10,7 @@ import org.cometd.server.transport.LongPollingTransport;
 import org.eclipse.jetty.continuation.Continuation;
 import org.eclipse.jetty.continuation.ContinuationListener;
 import org.eclipse.jetty.continuation.ContinuationThrowable;
+import org.joda.time.DateTimeUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.env.MapPropertySource;
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import static com.google.common.base.Preconditions.checkState;
 import static org.cometd.server.SessionState.*;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.joda.time.DateTimeUtils.currentTimeMillis;
 import static org.joda.time.DateTimeUtils.setCurrentMillisFixed;
 
 public class ServerSessionImplTest {
@@ -104,7 +106,9 @@ public class ServerSessionImplTest {
         Response connect = new Response();
 
         transport.handle(request().clientId(clientId).connect().response(connect).build(), connect.invalidConnection().build());
-        setCurrentMillisFixed(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30));
+        setCurrentMillisFixed(currentTimeMillis() + TimeUnit.MINUTES.toMillis(30));
+        server.sweep();
+        setCurrentMillisFixed(currentTimeMillis() + TimeUnit.MINUTES.toMillis(30));
         server.sweep();
 
         //Then
