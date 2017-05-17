@@ -23,7 +23,7 @@
         <module>commons-codec</module>
         <module>commons-httpclient</module>
         <module>commons-configuration</module>
-        <module>cometd</module>
+        <module>cometd-java-server</module>
         <module>antlr</module>
         <module>stringtemplate</module>
         <module>antlr-runtime</module>

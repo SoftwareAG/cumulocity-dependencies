@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>mail</artifactId>
-	<version>${osgi.mail.version}</version>
+	<version>${osgi.javax.mail.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Javax Mail</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>${mail.version}</version>
+            <version>${javax.mail.version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
