@@ -14,7 +14,7 @@
 	</organization>
 
 	<scm>
-		<connection>scm:hg:https://bitbucket.org/m2m/cumulocity-dependencies</connection>
+		<connection>scm:hg:ssh://hg@bitbucket.org/m2m/cumulocity-dependencies</connection>
 	</scm>
 
 	<properties>
