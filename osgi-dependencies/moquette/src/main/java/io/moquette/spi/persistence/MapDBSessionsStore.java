@@ -350,14 +350,17 @@ class MapDBSessionsStore implements ISessionsStore {
     public void cleanup() {
         m_messagesStore.dropMessagesNotIn(FluentIterable.from(m_enqueuedStore.values())
                 .transformAndConcat(Functions.<Iterable<String>>identity())
-                .append(FluentIterable.from(m_secondPhaseStore.values()).transformAndConcat(new Function<Map<Integer, String>, Iterable<String>>() {
-                    @Nullable
-                    @Override
-                    public Iterable<String> apply(@Nullable Map<Integer, String> input) {
-                        return input.values();
-                    }
-                }))
+                .append(FluentIterable.from(m_secondPhaseStore.values()).transformAndConcat(asValues()))
                 .toSet());
+    }
+
+    private Function<Map<Integer, String>, Iterable<String>> asValues() {
+        return new Function<Map<Integer, String>, Iterable<String>>() {
+            @Override
+            public Iterable<String> apply(Map<Integer, String> input) {
+                return input.values();
+            }
+        };
     }
 
     interface EventNotifier {

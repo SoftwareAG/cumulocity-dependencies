@@ -18,6 +18,7 @@ package io.moquette.spi.persistence;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
 import io.moquette.spi.IMatchingCondition;
 import io.moquette.spi.IMessagesStore;
 import org.mapdb.DB;
@@ -29,6 +30,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import static com.google.common.base.Predicates.in;
 import static com.google.common.base.Predicates.not;
+import static com.google.common.collect.ImmutableSet.copyOf;
+import static com.google.common.collect.Iterables.concat;
 import static io.moquette.spi.persistence.MapDBSessionsStore.messageId2GuidsMapName;
 
 /**
@@ -127,9 +130,8 @@ class MapDBMessagesStore implements IMessagesStore {
 
 
     public void dropMessagesNotIn(Collection<String> guids) {
-        for (String toRemove : FluentIterable.from(ImmutableSet.copyOf(m_persistentMessageStore.keySet()))
-                .filter(not(in(guids)))
-                .filter(not(in(m_retainedStore.values())))
+        for (String toRemove : FluentIterable.from(copyOf(m_persistentMessageStore.keySet()))
+                .filter(not(in(copyOf(concat(guids, m_retainedStore.values())))))
                 ) {
             m_persistentMessageStore.remove(toRemove);
         }
