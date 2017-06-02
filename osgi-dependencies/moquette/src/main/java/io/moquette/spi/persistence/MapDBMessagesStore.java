@@ -15,6 +15,7 @@
  */
 package io.moquette.spi.persistence;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableSet;
@@ -130,10 +131,16 @@ class MapDBMessagesStore implements IMessagesStore {
 
 
     public void dropMessagesNotIn(Collection<String> guids) {
-        for (String toRemove : FluentIterable.from(copyOf(m_persistentMessageStore.keySet()))
-                .filter(not(in(copyOf(concat(guids, m_retainedStore.values())))))
-                ) {
+        for (String toRemove : allMessages().filter(hasNoReference(guids))) {
             m_persistentMessageStore.remove(toRemove);
         }
+    }
+
+    private Predicate<String> hasNoReference(Collection<String> guids) {
+        return not(in(copyOf(concat(guids, m_retainedStore.values()))));
+    }
+
+    private FluentIterable<String> allMessages() {
+        return FluentIterable.from(copyOf(m_persistentMessageStore.keySet()));
     }
 }
