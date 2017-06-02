@@ -15,6 +15,9 @@
  */
 package io.moquette.spi.persistence;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableSet;
 import io.moquette.spi.IMatchingCondition;
 import io.moquette.spi.IMessagesStore;
 import org.mapdb.DB;
@@ -23,6 +26,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentMap;
+
+import static com.google.common.base.Predicates.in;
+import static com.google.common.base.Predicates.not;
+import static io.moquette.spi.persistence.MapDBSessionsStore.messageId2GuidsMapName;
 
 /**
  * IMessagesStore implementation backed by MapDB.
@@ -82,9 +89,20 @@ class MapDBMessagesStore implements IMessagesStore {
         String guid = UUID.randomUUID().toString();
         evt.setGuid(guid);
         m_persistentMessageStore.put(guid, evt);
-        ConcurrentMap<Integer, String> messageIdToGuid = m_db.getHashMap(MapDBSessionsStore.messageId2GuidsMapName(evt.getClientID()));
+        ConcurrentMap<Integer, String> messageIdToGuid = m_db.getHashMap(messageId2GuidsMapName(evt.getClientID()));
         messageIdToGuid.put(evt.getMessageID(), guid);
         return guid;
+    }
+
+    @Override
+    public void dropInFlightMessagesInSession(Collection<String> pendingAckMessages) {
+        //remove all guids from retained
+        Collection<String> messagesToRemove = new HashSet<>(pendingAckMessages);
+        messagesToRemove.removeAll(m_retainedStore.values());
+
+        for (String guid : messagesToRemove) {
+            m_persistentMessageStore.remove(guid);
+        }
     }
 
     @Override
@@ -96,11 +114,6 @@ class MapDBMessagesStore implements IMessagesStore {
         return ret;
     }
 
-    @Override
-    public void dropMessagesInSession(String clientID) {
-        m_db.getHashMap(MapDBSessionsStore.messageId2GuidsMapName(clientID)).clear();
-        m_persistentMessageStore.remove(clientID);
-    }
 
     @Override
     public StoredMessage getMessageByGuid(String guid) {
@@ -110,5 +123,15 @@ class MapDBMessagesStore implements IMessagesStore {
     @Override
     public void cleanRetained(String topic) {
         m_retainedStore.remove(topic);
+    }
+
+
+    public void dropMessagesNotIn(Collection<String> guids) {
+        for (String toRemove : FluentIterable.from(ImmutableSet.copyOf(m_persistentMessageStore.keySet()))
+                .filter(not(in(guids)))
+                .filter(not(in(m_retainedStore.values())))
+                ) {
+            m_persistentMessageStore.remove(toRemove);
+        }
     }
 }

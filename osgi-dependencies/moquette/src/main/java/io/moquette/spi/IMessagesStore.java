@@ -125,14 +125,15 @@ public interface IMessagesStore {
      * */
     String storePublishForFuture(StoredMessage evt);
 
+    void dropInFlightMessagesInSession(Collection<String> pendingAckMessages);
+
     /**
      * Return the list of persisted publishes for the given clientID.
      * For QoS1 and QoS2 with clean session flag, this method return the list of 
      * missed publish events while the client was disconnected.
      */
     List<StoredMessage> listMessagesInSession(Collection<String> guids);
-    
-    void dropMessagesInSession(String clientID);
+
 
     StoredMessage getMessageByGuid(String guid);
 
