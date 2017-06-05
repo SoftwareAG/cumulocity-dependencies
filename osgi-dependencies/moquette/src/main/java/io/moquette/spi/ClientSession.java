@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
 import io.moquette.proto.messages.AbstractMessage;
 import io.moquette.spi.ISessionsStore.ClientTopicCouple;
 import io.moquette.spi.impl.subscriptions.Subscription;
@@ -99,7 +98,7 @@ public class ClientSession {
     }
 
     public boolean subscribe(String topicFilter, Subscription newSubscription) {
-        LOG.debug("<{}> subscribed to topicFilter <{}> with QoS {}",
+        LOG.info("<{}> subscribed to topicFilter <{}> with QoS {}",
             newSubscription.getClientId(),
             topicFilter,
             AbstractMessage.QOSType.formatQoS(newSubscription.getRequestedQos()));
@@ -149,13 +148,11 @@ public class ClientSession {
     }
 
     public void cleanSession() {
-        LOG.debug("cleaning old saved subscriptions for client <{}>", this.clientID);
+        LOG.info("cleaning old saved subscriptions for client <{}>", this.clientID);
         m_sessionsStore.wipeSubscriptions(this.clientID);
 
-        LOG.debug("Removing stored messages with QoS 1 and 2. ClientId={}", this.clientID);
-        messagesStore.dropInFlightMessagesInSession(m_sessionsStore.pendingAck(this.clientID));
-        //remove also the enqueued messages
-        this.m_sessionsStore.dropQueue(this.clientID);
+        //remove also the messages stored of type QoS1/2
+        messagesStore.dropMessagesInSession(this.clientID);
     }
 
     public boolean isCleanSession() {
@@ -184,9 +181,8 @@ public class ClientSession {
     }
 
     public void inFlightAcknowledged(int messageID) {
-        String guid = m_sessionsStore.mapToGuid(clientID, messageID);
+
         m_sessionsStore.inFlightAck(this.clientID, messageID);
-        messagesStore.dropInFlightMessagesInSession(ImmutableList.of(guid));
     }
 
     public void inFlightAckWaiting(String guid, int messageID) {
@@ -194,10 +190,7 @@ public class ClientSession {
     }
 
     public void secondPhaseAcknowledged(final int messageID) {
-        String guid = m_sessionsStore.mapToGuid(clientID, messageID);
         m_sessionsStore.secondPhaseAcknowledged(clientID, messageID);
-        messagesStore.dropInFlightMessagesInSession(ImmutableList.of(guid));
-
 
     }
 

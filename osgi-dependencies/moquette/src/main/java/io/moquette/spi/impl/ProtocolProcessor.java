@@ -287,7 +287,7 @@ public class ProtocolProcessor {
             return;
         }
 
-        log.debug("republishing stored messages to client <{}>", clientSession.clientID);
+        log.info("republishing stored messages to client <{}>", clientSession.clientID);
         for (IMessagesStore.StoredMessage pubEvt : publishedEvents) {
             //put in flight zone
             directSend(clientSession, pubEvt.getTopic(), pubEvt.getQos(), pubEvt.getMessage(), false, pubEvt.getMessageID());

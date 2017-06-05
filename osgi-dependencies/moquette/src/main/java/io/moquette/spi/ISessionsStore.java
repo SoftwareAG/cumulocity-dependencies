@@ -31,10 +31,6 @@ public interface ISessionsStore {
 
     void moveInFlightToSecondPhaseAckWaiting(String clientID, int messageID);
 
-    Collection<String> pendingAck(String clientID);
-
-    void dropQueue(String clientID);
-
     class ClientTopicCouple {
         public final String topicFilter;
         public final String clientID;
