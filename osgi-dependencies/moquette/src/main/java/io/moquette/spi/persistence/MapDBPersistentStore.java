@@ -22,12 +22,10 @@ import static io.moquette.BrokerConstants.PERSISTENT_STORE_PROPERTY_NAME;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.moquette.proto.MQTTException;
 import io.moquette.server.config.IConfig;
 import io.moquette.spi.IMessagesStore;
@@ -50,7 +48,7 @@ public class MapDBPersistentStore implements IStore {
     /**
      * This is a DTO used to persist minimal status (clean session and activation status) of
      * a session.
-     */
+     * */
     public static class PersistentSession implements Serializable {
         public final boolean cleanSession;
 
@@ -69,7 +67,7 @@ public class MapDBPersistentStore implements IStore {
 
     private volatile boolean initialized = false;
 
-    protected final ScheduledExecutorService m_scheduler = Executors.newScheduledThreadPool(1, new ThreadFactoryBuilder().setNameFormat("moquette-mapdb-%d").build());
+    protected final ScheduledExecutorService m_scheduler = Executors.newScheduledThreadPool(1);
 
     public MapDBPersistentStore(IConfig props) {
         this.m_storePath = props.getProperty(PERSISTENT_STORE_PROPERTY_NAME, "");
@@ -78,12 +76,11 @@ public class MapDBPersistentStore implements IStore {
 
     /**
      * Factory method to create message store backed by MapDB
-     */
+     * */
     public IMessagesStore messagesStore() {
         //TODO check m_db is valid and
         return msgStore;
     }
-
 
     public ISessionsStore sessionsStore(IMessagesStore msgStore) {
         return sessionsStore;
@@ -94,8 +91,8 @@ public class MapDBPersistentStore implements IStore {
             return;
         if (m_storePath == null || m_storePath.isEmpty()) {
             m_db = DBMaker
-                    .newMemoryDB()
-                    .make();
+                       .newMemoryDB()
+                       .make();
         } else {
             File tmpFile;
             try {
@@ -107,22 +104,13 @@ public class MapDBPersistentStore implements IStore {
                 throw new MQTTException("Can't create temp file for subscriptions storage [" + m_storePath + "]", ex);
             }
             m_db = DBMaker
-                    .newFileDB(tmpFile)
-                    .make();
+                       .newFileDB(tmpFile)
+                       .make();
         }
         m_scheduler.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
-                try {
-                    sessionsStore.cleanup();
-                } catch (Exception ex) {
-                    LOG.warn("Garbage collection on persistent storage failed ", ex);
-                }
-                try {
-                    m_db.commit();
-                } catch (Exception ex) {
-                    LOG.warn("Save to persistent storage failed ", ex);
-                }
+                m_db.commit();
             }
         }, this.m_autosaveInterval, this.m_autosaveInterval, TimeUnit.SECONDS);
 
