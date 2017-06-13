@@ -837,4 +837,13 @@ public class ServerSessionImpl implements ServerSession {
             }
         }
     }
+
+    public void startIntervalTimeout(long defaultInterval) {
+        long interval = calculateInterval(defaultInterval);
+        long now = System.currentTimeMillis();
+        synchronized (_queue)
+        {
+            _intervalTimestamp = now + interval + _maxInterval;
+        }
+    }
 }
