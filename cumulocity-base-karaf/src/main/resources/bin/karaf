@@ -380,6 +380,7 @@ run() {
                 shift
                 ;;
             'stop')
+                JAVA_OPTS="$JAVA_OPTS -Xms10m -Xmx512m"
                 MAIN=org.apache.karaf.main.Stop
                 shift
                 ;;
@@ -388,6 +389,7 @@ run() {
                 shift
                 ;;
             'console')
+                JAVA_OPTS="$JAVA_OPTS -Xms10m -Xmx512m"
                 shift
                 ;;
             'server')
@@ -396,6 +398,7 @@ run() {
                 shift
                 ;;
             'client')
+                JAVA_OPTS="$JAVA_OPTS -Xms10m -Xmx1g"
                 OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
                 shift
                 ;;
