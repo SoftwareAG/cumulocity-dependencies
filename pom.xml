@@ -52,8 +52,6 @@
 		<osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
 		<findbugs.version>1.3.2</findbugs.version>
 		<osgi.findbugs.version>${findbugs.version}-${project.parent.version}</osgi.findbugs.version>
-		<geronimo-annotation.version>1.1.1</geronimo-annotation.version>
-		<osgi.geronimo-annotation.version>${geronimo-annotation.version}-${project.parent.version}</osgi.geronimo-annotation.version>
 		<guava.version>18.0</guava.version>
 		<osgi.guava.version>${guava.version}-${project.parent.version}</osgi.guava.version>
 		<httpclient.version>4.1.2</httpclient.version>
