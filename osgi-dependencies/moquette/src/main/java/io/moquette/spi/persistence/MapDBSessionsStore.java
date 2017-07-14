@@ -15,26 +15,24 @@
  */
 package io.moquette.spi.persistence;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentMap;
-
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import io.moquette.spi.ClientSession;
 import io.moquette.spi.ClientSessionListener;
 import io.moquette.spi.ClientSessionListener.FlightAcknowledged;
 import io.moquette.spi.ClientSessionListener.SecondPhaseAcknowledged;
 import io.moquette.spi.ISessionsStore;
+import io.moquette.spi.impl.Utils;
 import io.moquette.spi.impl.subscriptions.Subscription;
 import io.moquette.spi.persistence.MapDBPersistentStore.PersistentSession;
 import lombok.extern.slf4j.Slf4j;
 import org.mapdb.DB;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import javax.annotation.Nullable;
+import java.util.*;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * ISessionsStore implementation backed by MapDB.
@@ -230,17 +228,26 @@ class MapDBSessionsStore implements ISessionsStore {
 
     @Override
     public void inFlight(String clientID, int messageID, String guid) {
-        Map<Integer, String> m = this.m_inflightStore.putIfAbsent(clientID, new HashMap<Integer, String>());
+        Map<Integer, String> m = this.m_inflightStore.get(clientID);
+        if (m == null) {
+            m = new HashMap<>();
+        }
         synchronized (m) {
             m.put(messageID, guid);
-            this.m_inflightStore.put(clientID, m);
+            if (!this.m_inflightStore.containsKey(clientID)) {
+                this.m_inflightStore.put(clientID, m);
+            }
         }
     }
 
     @Override
     public void moveInFlightToSecondPhaseAckWaiting(String clientID, int messageID) {
         log.debug("acknowledging inflight clientID <{}> messageID {}", clientID, messageID);
-        Map<Integer, String> m = this.m_inflightStore.putIfAbsent(clientID, new HashMap<Integer, String>());
+        Map<Integer, String> m = this.m_inflightStore.get(clientID);
+        if (m == null) {
+            log.error("Can't find the inFlight record for client <{}>", clientID);
+            return;
+        }
         String guid;
         synchronized (m) {
             guid = m.remove(messageID);
@@ -249,7 +256,11 @@ class MapDBSessionsStore implements ISessionsStore {
         }
 
         log.debug("Moving to second phase store");
-        Map<Integer, String> messageIDs = m_secondPhaseStore.putIfAbsent(clientID, new HashMap<Integer, String>());
+        Map<Integer, String> messageIDs = m_secondPhaseStore.get(clientID);
+        if (messageIDs == null) {
+            messageIDs = new HashMap<>();
+
+        }
         synchronized (messageIDs) {
             messageIDs.put(messageID, guid);
             m_secondPhaseStore.put(clientID, messageIDs);
@@ -258,7 +269,7 @@ class MapDBSessionsStore implements ISessionsStore {
 
     @Override
     public void bindToDeliver(String guid, String clientID) {
-        List<String> guids = m_enqueuedStore.putIfAbsent(clientID, new ArrayList<String>());
+        List<String> guids = Utils.defaultGet(m_enqueuedStore, clientID, new ArrayList<String>());
         synchronized (guids) {
             guids.add(guid);
             m_enqueuedStore.put(clientID, guids);
@@ -267,12 +278,12 @@ class MapDBSessionsStore implements ISessionsStore {
 
     @Override
     public Collection<String> enqueued(String clientID) {
-        return m_enqueuedStore.putIfAbsent(clientID, new ArrayList<String>());
+        return Utils.defaultGet(m_enqueuedStore, clientID, new ArrayList<String>());
     }
 
     @Override
     public void removeEnqueued(String clientID, String guid) {
-        List<String> guids = m_enqueuedStore.putIfAbsent(clientID, new ArrayList<String>());
+        List<String> guids = Utils.defaultGet(m_enqueuedStore, clientID, new ArrayList<String>());
         synchronized (guids) {
             guids.remove(guid);
             m_enqueuedStore.put(clientID, guids);
@@ -281,7 +292,7 @@ class MapDBSessionsStore implements ISessionsStore {
 
     @Override
     public void secondPhaseAcknowledged(String clientID, int messageID) {
-        Map<Integer, String> messageIDs = m_secondPhaseStore.putIfAbsent(clientID, new HashMap<Integer, String>());
+        Map<Integer, String> messageIDs = Utils.defaultGet(m_secondPhaseStore, clientID, new HashMap<Integer, String>());
         String message;
         synchronized (messageIDs) {
             message = messageIDs.remove(messageID);
