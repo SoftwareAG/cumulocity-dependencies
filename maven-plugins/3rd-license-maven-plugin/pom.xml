@@ -58,7 +58,7 @@
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>${mail.version}</version>
+            <version>${javax.mail.version}</version>
         </dependency>		
 		<dependency>
 			<groupId>junit</groupId>

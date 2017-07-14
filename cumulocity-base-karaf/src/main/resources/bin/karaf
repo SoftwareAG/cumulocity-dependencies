@@ -31,7 +31,6 @@ fi
 #
 # Check/Set up some easily accessible MIN/MAX params for JVM mem usage
 #
-
 if [ "x$JAVA_MAX_MEM" = "x" ]; then
     JAVA_MAX_MEM=512M
     export JAVA_MAX_MEM
@@ -91,7 +90,6 @@ detectOS() {
     # For AIX, set an environment variable
     if $aix; then
          export LDR_CNTRL=MAXDATA=0xB0000000@DSA
-         export IBM_JAVA_HEAPDUMP_TEXT=true
          echo $LDR_CNTRL
     fi
 }
@@ -104,35 +102,31 @@ unlimitFD() {
 
     # Increase the maximum file descriptors if we can
     if [ "$os400" = "false" ] && [ "$cygwin" = "false" ]; then
-        MAX_FD_LIMIT=`ulimit -H -n`
-        if [ "$MAX_FD_LIMIT" != 'unlimited' ]; then 
+        if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ]; then
+            MAX_FD_LIMIT=`ulimit -H -n`
             if [ $? -eq 0 ]; then
-                if [ "$MAX_FD" = "maximum" -o "$MAX_FD" = "max" ]; then
-                    # use the system max
-                    MAX_FD="$MAX_FD_LIMIT"
-                fi
-
-                ulimit -n $MAX_FD > /dev/null
-                # echo "ulimit -n" `ulimit -n`
-                if [ $? -ne 0 ]; then
-                    warn "Could not set maximum file descriptor limit: $MAX_FD"
-                fi
+                # use the system max
+                MAX_FD="$MAX_FD_LIMIT"
             else
                 warn "Could not query system maximum file descriptor limit: $MAX_FD_LIMIT"
             fi
         fi
-    fi
+        if [ "$MAX_FD" != 'unlimited' ]; then
+            ulimit -n $MAX_FD > /dev/null
+            if [ $? -ne 0 ]; then
+                warn "Could not set maximum file descriptor limit: $MAX_FD"
+            fi
+        fi
+     fi
 }
 
 locateHome() {
-    if [ "x$KARAF_HOME" != "x" ]; then
-        warn "Ignoring predefined value for KARAF_HOME"
+    if [ "x$KARAF_HOME" = "x" ]; then
+      # In POSIX shells, CDPATH may cause cd to write to stdout
+      (unset CDPATH) >/dev/null 2>&1 && unset CDPATH
+      KARAF_HOME=`cd "$DIRNAME/.."; pwd`
     fi
 
-    # In POSIX shells, CDPATH may cause cd to write to stdout
-    (unset CDPATH) >/dev/null 2>&1 && unset CDPATH
-
-    KARAF_HOME=`cd "$DIRNAME/.."; pwd`
     if [ ! -d "$KARAF_HOME" ]; then
         die "KARAF_HOME is not valid: $KARAF_HOME"
     fi
@@ -155,6 +149,16 @@ locateData() {
         fi
     else
         KARAF_DATA=$KARAF_BASE/data
+    fi
+}
+
+locateEtc() {
+    if [ "x$KARAF_ETC" != "x" ]; then
+        if [ ! -d "$KARAF_ETC" ]; then
+            die "KARAF_ETC is not valid: $KARAF_ETC"
+        fi
+    else
+        KARAF_ETC=$KARAF_BASE/etc
     fi
 }
 
@@ -198,7 +202,7 @@ locateJava() {
     fi
 
 	if [ "x$JAVA_HOME" = "x" ] && [ "$darwin" = "true" ]; then
-		JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
+		JAVA_HOME="$(/usr/libexec/java_home -v 1.7)"
 	fi
     if [ "x$JAVA" = "x" ] && [ -r /etc/gentoo-release ] ; then
         JAVA_HOME=`java-config --jre-home`
@@ -212,7 +216,7 @@ locateJava() {
         else
             warn "JAVA_HOME not set; results may vary"
             JAVA=`type java`
-            JAVA=`expr "$JAVA" : '.*is \(.*\)$'`
+            JAVA=`expr "$JAVA" : '.* \(/.*\)$'`
             if [ "x$JAVA" = "x" ]; then
                 die "java command not found"
             fi
@@ -244,13 +248,20 @@ setupDebugOptions() {
     fi
     export JAVA_OPTS
 
+    if [ "x$EXTRA_JAVA_OPTS" != "x" ]; then
+        JAVA_OPTS="$JAVA_OPTS $EXTRA_JAVA_OPTS"
+    fi
+
     # Set Debug options if enabled
     if [ "x$KARAF_DEBUG" != "x" ]; then
-        # Ignore DEBUG in case of stop or client mode
+        # Ignore DEBUG in case of stop, client, or status mode
         if [ "x$MODE" = "xstop" ]; then
             return
         fi
         if [ "x$MODE" = "xclient" ]; then
+            return
+        fi
+        if [ "x$MODE" = "xstatus" ]; then
             return
         fi
         # Use the defaults if JAVA_DEBUG_OPTS was not set
@@ -268,20 +279,21 @@ setupDefaults() {
 
     #Set the JVM_VENDOR specific JVM flags
     if [ "$JVM_VENDOR" = "SUN" ]; then
-        #
-        # Check some easily accessible MIN/MAX params for JVM mem usage
-        #
-        if [ "x$JAVA_PERM_MEM" != "x" ]; then
-            DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS -XX:PermSize=$JAVA_PERM_MEM"
-        fi
-        if [ "x$JAVA_MAX_PERM_MEM" != "x" ]; then
-            DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS -XX:MaxPermSize=$JAVA_MAX_PERM_MEM"
+        # permgen was removed in Java 8
+        VERSION=`$JAVA -version 2>&1 | egrep '"([0-9].[0-9]\..*[0-9]).*"' | awk '{print substr($3,2,length($3)-2)}' | awk '{print substr($1, 3, 3)}' | sed -e 's;\.;;g'`
+        if [ "$VERSION" -lt "80" ]; then
+            # Check some easily accessible MIN/MAX params for JVM mem usage
+            if [ "x$JAVA_PERM_MEM" != "x" ]; then
+                DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS -XX:PermSize=$JAVA_PERM_MEM"
+            fi
+            if [ "x$JAVA_MAX_PERM_MEM" != "x" ]; then
+                DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS -XX:MaxPermSize=$JAVA_MAX_PERM_MEM"
+            fi
         fi
         DEFAULT_JAVA_OPTS="-server $DEFAULT_JAVA_OPTS -Dcom.sun.management.jmxremote -XX:+UseCompressedOops \
          -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+ScavengeBeforeFullGC \
          -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark \
          -XX:+DisableExplicitGC -Djava.awt.headless=true"
-
     elif [ "$JVM_VENDOR" = "IBM" ]; then
         if $os400; then
             DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS"
@@ -301,7 +313,12 @@ setupDefaults() {
             CLASSPATH="$CLASSPATH:$file"
         fi
     done
-    DEFAULT_JAVA_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"
+
+    DEFAULT_JAVA_DEBUG_PORT="5005"
+    if [ "x$JAVA_DEBUG_PORT" = "x" ]; then
+        JAVA_DEBUG_PORT="$DEFAULT_JAVA_DEBUG_PORT"
+    fi
+    DEFAULT_JAVA_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=$JAVA_DEBUG_PORT"
 
     ##
     ## TODO: Move to conf/profiler/yourkit.{sh|cmd}
@@ -337,6 +354,9 @@ init() {
     # Locate the Karaf data directory
     locateData
 
+    # Locate the Karaf etc directory
+    locateEtc
+
     # Setup the native library path
     setupNativePath
 
@@ -360,7 +380,7 @@ run() {
     while [ "$1" != "" ]; do
         case $1 in
             'clean')
-                rm -Rf $KARAF_DATA
+                rm -Rf "$KARAF_DATA"
                 shift
                 ;;
             'debug')
@@ -373,6 +393,10 @@ run() {
             'stop')
                 JAVA_OPTS="$JAVA_OPTS -Xms10m -Xmx512m"
                 MAIN=org.apache.karaf.main.Stop
+                shift
+                ;;
+            'status')
+                MAIN=org.apache.karaf.main.Status
                 shift
                 ;;
             'console')
@@ -401,13 +425,14 @@ run() {
         KARAF_HOME=`cygpath --path --windows "$KARAF_HOME"`
         KARAF_BASE=`cygpath --path --windows "$KARAF_BASE"`
         KARAF_DATA=`cygpath --path --windows "$KARAF_DATA"`
+        KARAF_ETC=`cygpath --path --windows "$KARAF_ETC"`
         CLASSPATH=`cygpath --path --windows "$CLASSPATH"`
         JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
         JAVA_ENDORSED_DIRS=`cygpath --path --windows "$JAVA_ENDORSED_DIRS"`
         JAVA_EXT_DIRS=`cygpath --path --windows "$JAVA_EXT_DIRS"`
     fi
     cd "$KARAF_BASE"
-    exec "$JAVA" -XX:+UseConcMarkSweepGC $JMX_OPTS $JAVA_OPTS -Djava.endorsed.dirs="${JAVA_ENDORSED_DIRS}" -Djava.ext.dirs="${JAVA_EXT_DIRS}" -Dkaraf.instances="${KARAF_HOME}/instances" -Dkaraf.home="$KARAF_HOME" -Dkaraf.base="$KARAF_BASE" -Dkaraf.data="$KARAF_DATA" -Djava.io.tmpdir="$KARAF_DATA/tmp" -Djava.util.logging.config.file="$KARAF_BASE/etc/java.util.logging.properties" $KARAF_OPTS $OPTS -classpath "$CLASSPATH" $MAIN "$@"
+    exec "$JAVA" -XX:+UseConcMarkSweepGC $JMX_OPTS $JAVA_OPTS -Djava.endorsed.dirs="${JAVA_ENDORSED_DIRS}" -Djava.ext.dirs="${JAVA_EXT_DIRS}" -Dkaraf.instances="${KARAF_HOME}/instances" -Dkaraf.home="$KARAF_HOME" -Dkaraf.base="$KARAF_BASE" -Dkaraf.data="$KARAF_DATA" -Dkaraf.etc="$KARAF_ETC" -Djava.io.tmpdir="$KARAF_DATA/tmp" -Djava.util.logging.config.file="$KARAF_ETC/java.util.logging.properties" $KARAF_OPTS $OPTS -classpath "$CLASSPATH" $MAIN "$@"
 }
 
 main() {

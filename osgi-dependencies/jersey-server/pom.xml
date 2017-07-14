@@ -43,7 +43,7 @@
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
             <artifactId>mail</artifactId>
-            <version>${osgi.mail.version}</version>
+            <version>${osgi.javax.mail.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
