@@ -321,7 +321,7 @@ public class ServerSessionImpl implements ServerSession {
 
     public void disconnect() {
         log.debug("disconnect {}", getId());
-        if (isConnected()) {
+        if (isConnected() && _scheduler != null) {
             _scheduler.cancel();
         }
         remove();
