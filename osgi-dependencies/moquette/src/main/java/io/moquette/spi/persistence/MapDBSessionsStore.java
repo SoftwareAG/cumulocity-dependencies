@@ -15,14 +15,15 @@
  */
 package io.moquette.spi.persistence;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentMap;
-
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import io.moquette.spi.ClientSession;
 import io.moquette.spi.ClientSessionListener;
 import io.moquette.spi.ClientSessionListener.FlightAcknowledged;
 import io.moquette.spi.ClientSessionListener.SecondPhaseAcknowledged;
-import io.moquette.spi.IMessagesStore;
 import io.moquette.spi.ISessionsStore;
 import io.moquette.spi.impl.Utils;
 import io.moquette.spi.impl.subscriptions.Subscription;
@@ -30,9 +31,8 @@ import io.moquette.spi.persistence.MapDBPersistentStore.PersistentSession;
 import lombok.extern.slf4j.Slf4j;
 import org.mapdb.DB;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
+import java.util.*;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * ISessionsStore implementation backed by MapDB.
@@ -46,7 +46,7 @@ class MapDBSessionsStore implements ISessionsStore {
     private ConcurrentMap<String, Map<Integer, String>> m_inflightStore;
 
     //map clientID <-> set of currently in flight packet identifiers
-    private Map<String, Set<Integer>> m_inFlightIds;
+    private ConcurrentMap<String, Set<Integer>> m_inFlightIds;
 
     private ConcurrentMap<String, PersistentSession> m_persistentSessions;
 
@@ -58,14 +58,15 @@ class MapDBSessionsStore implements ISessionsStore {
 
     private final DB m_db;
 
-    private final IMessagesStore m_messagesStore;
+    private final MapDBMessagesStore m_messagesStore;
 
     private final ConcurrentMap<String, Collection<ClientSessionListener>> listeners = Maps.newConcurrentMap();
 
-    MapDBSessionsStore(DB db, IMessagesStore messagesStore) {
+    MapDBSessionsStore(DB db, MapDBMessagesStore messagesStore) {
         m_db = db;
         m_messagesStore = messagesStore;
     }
+
 
     @Override
     public void initStore() {
@@ -81,8 +82,8 @@ class MapDBSessionsStore implements ISessionsStore {
         log.debug("addNewSubscription invoked with subscription {}", newSubscription);
         final String clientID = newSubscription.getClientId();
         m_db
-            .getHashMap("subscriptions_" + clientID)
-            .put(newSubscription.getTopicFilter(), newSubscription);
+                .getHashMap("subscriptions_" + clientID)
+                .put(newSubscription.getTopicFilter(), newSubscription);
 
         if (log.isTraceEnabled()) {
             log.trace("subscriptions_{}: {}", clientID, m_db.getHashMap("subscriptions_" + clientID));
@@ -95,9 +96,8 @@ class MapDBSessionsStore implements ISessionsStore {
         if (!m_db.exists("subscriptions_" + clientID)) {
             return;
         }
-        m_db
-            .getHashMap("subscriptions_" + clientID)
-            .remove(topicFilter);
+        m_db.getHashMap("subscriptions_" + clientID)
+                .remove(topicFilter);
     }
 
     @Override
@@ -166,7 +166,7 @@ class MapDBSessionsStore implements ISessionsStore {
 
     /**
      * Return the next valid packetIdentifier for the given client session.
-     * */
+     */
     @Override
     public int nextPacketID(String clientID) {
         Set<Integer> inFlightForClient = this.m_inFlightIds.get(clientID);
@@ -192,7 +192,12 @@ class MapDBSessionsStore implements ISessionsStore {
             log.error("Can't find the inFlight record for client <{}>", clientID);
             return;
         }
-        final String guid = m.remove(messageID);
+        String guid;
+        synchronized (m) {
+            guid = m.remove(messageID);
+            m_inflightStore.put(clientID, m);
+
+        }
         final FlightAcknowledged event = new FlightAcknowledged(sessionForClient(clientID), guid);
         notifyListeners(clientID, new EventNotifier() {
             @Override
@@ -204,8 +209,21 @@ class MapDBSessionsStore implements ISessionsStore {
         //remove from the ids store
         Set<Integer> inFlightForClient = this.m_inFlightIds.get(clientID);
         if (inFlightForClient != null) {
-            inFlightForClient.remove(messageID);
+            synchronized (inFlightForClient) {
+                inFlightForClient.remove(messageID);
+                m_inFlightIds.put(clientID, inFlightForClient);
+            }
         }
+    }
+
+    @Override
+    public Collection<String> pendingAck(String clientID) {
+        ConcurrentMap<Integer, String> messageGUIDMap = m_db.getHashMap(messageId2GuidsMapName(clientID));
+        if (messageGUIDMap == null || messageGUIDMap.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return new ArrayList<>(messageGUIDMap.values());
     }
 
     @Override
@@ -214,35 +232,48 @@ class MapDBSessionsStore implements ISessionsStore {
         if (m == null) {
             m = new HashMap<>();
         }
-        m.put(messageID, guid);
-        this.m_inflightStore.put(clientID, m);
+        synchronized (m) {
+            m.put(messageID, guid);
+            if (!this.m_inflightStore.containsKey(clientID)) {
+                this.m_inflightStore.put(clientID, m);
+            }
+        }
     }
 
     @Override
     public void moveInFlightToSecondPhaseAckWaiting(String clientID, int messageID) {
-        log.info("acknowledging inflight clientID <{}> messageID {}", clientID, messageID);
+        log.debug("acknowledging inflight clientID <{}> messageID {}", clientID, messageID);
         Map<Integer, String> m = this.m_inflightStore.get(clientID);
         if (m == null) {
             log.error("Can't find the inFlight record for client <{}>", clientID);
             return;
         }
-        String guid = m.remove(messageID);
+        String guid;
+        synchronized (m) {
+            guid = m.remove(messageID);
+            if (guid == null) return;
+            m_inflightStore.put(clientID, m);
+        }
 
-        log.info("Moving to second phase store");
+        log.debug("Moving to second phase store");
         Map<Integer, String> messageIDs = m_secondPhaseStore.get(clientID);
         if (messageIDs == null) {
             messageIDs = new HashMap<>();
 
         }
-        messageIDs.put(messageID, guid);
-        m_secondPhaseStore.put(clientID, messageIDs);
+        synchronized (messageIDs) {
+            messageIDs.put(messageID, guid);
+            m_secondPhaseStore.put(clientID, messageIDs);
+        }
     }
 
     @Override
     public void bindToDeliver(String guid, String clientID) {
         List<String> guids = Utils.defaultGet(m_enqueuedStore, clientID, new ArrayList<String>());
-        guids.add(guid);
-        m_enqueuedStore.put(clientID, guids);
+        synchronized (guids) {
+            guids.add(guid);
+            m_enqueuedStore.put(clientID, guids);
+        }
     }
 
     @Override
@@ -253,14 +284,20 @@ class MapDBSessionsStore implements ISessionsStore {
     @Override
     public void removeEnqueued(String clientID, String guid) {
         List<String> guids = Utils.defaultGet(m_enqueuedStore, clientID, new ArrayList<String>());
-        guids.remove(guid);
-        m_enqueuedStore.put(clientID, guids);
+        synchronized (guids) {
+            guids.remove(guid);
+            m_enqueuedStore.put(clientID, guids);
+        }
     }
 
     @Override
     public void secondPhaseAcknowledged(String clientID, int messageID) {
         Map<Integer, String> messageIDs = Utils.defaultGet(m_secondPhaseStore, clientID, new HashMap<Integer, String>());
-        final String message = messageIDs.remove(messageID);
+        String message;
+        synchronized (messageIDs) {
+            message = messageIDs.remove(messageID);
+            m_secondPhaseStore.put(clientID, messageIDs);
+        }
         final SecondPhaseAcknowledged event = new SecondPhaseAcknowledged(sessionForClient(clientID), message);
         notifyListeners(clientID, new EventNotifier() {
             @Override
@@ -269,14 +306,21 @@ class MapDBSessionsStore implements ISessionsStore {
             }
         });
 
-        m_secondPhaseStore.put(clientID, messageIDs);
     }
 
     @Override
     public String mapToGuid(String clientID, int messageID) {
         ConcurrentMap<Integer, String> messageIdToGuid = m_db.getHashMap(messageId2GuidsMapName(clientID));
         final String normal = messageIdToGuid.get(messageID);
+        if (normal == null) {
+            return m_secondPhaseStore.get(clientID).get(messageID);
+        }
         return normal;
+    }
+
+    @Override
+    public void dropQueue(String clientID) {
+        m_enqueuedStore.remove(clientID);
     }
 
     static String messageId2GuidsMapName(String clientID) {
@@ -293,14 +337,13 @@ class MapDBSessionsStore implements ISessionsStore {
         sessionListenersFor(clientID).remove(listener);
     }
 
+
     @Override
     public Collection<ClientSessionListener> sessionListenersFor(String clientID) {
         final Collection<ClientSessionListener> clientListeners = listeners.get(clientID);
         if (clientListeners == null) {
-            synchronized (listeners) {
-                listeners.putIfAbsent(clientID, Lists.<ClientSessionListener>newCopyOnWriteArrayList());
-                return listeners.get(clientID);
-            }
+            listeners.putIfAbsent(clientID, Lists.<ClientSessionListener>newCopyOnWriteArrayList());
+            return listeners.get(clientID);
         }
         return clientListeners;
     }
@@ -313,6 +356,22 @@ class MapDBSessionsStore implements ISessionsStore {
                 log.debug("notify listener failed {} ", listener, ex);
             }
         }
+    }
+
+    public void cleanup() {
+        m_messagesStore.dropMessagesNotIn(FluentIterable.from(m_enqueuedStore.values())
+                .transformAndConcat(Functions.<Iterable<String>>identity())
+                .append(FluentIterable.from(m_secondPhaseStore.values()).transformAndConcat(asValues()))
+                .toSet());
+    }
+
+    private Function<Map<Integer, String>, Iterable<String>> asValues() {
+        return new Function<Map<Integer, String>, Iterable<String>>() {
+            @Override
+            public Iterable<String> apply(Map<Integer, String> input) {
+                return input.values();
+            }
+        };
     }
 
     interface EventNotifier {
