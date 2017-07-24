@@ -32,7 +32,7 @@ fi
 # Check/Set up some easily accessible MIN/MAX params for JVM mem usage
 #
 if [ "x$JAVA_MAX_MEM" = "x" ]; then
-    JAVA_MAX_MEM=512M
+    JAVA_MAX_MEM=1024M
     export JAVA_MAX_MEM
 fi
 
@@ -42,7 +42,7 @@ if [ "x$JAVA_MIN_MEM" = "x" ]; then
 fi
 
 if [ "x$JAVA_MAX_PERM_MEM" = "x" ]; then
-    JAVA_MAX_PERM_MEM=128M
+    JAVA_MAX_PERM_MEM=256M
     export JAVA_MAX_PERM_MEM
 fi
 
@@ -275,7 +275,7 @@ setupDebugOptions() {
 }
 
 setupDefaults() {
-    DEFAULT_JAVA_OPTS="-Xms$JAVA_MIN_MEM -Xmx$JAVA_MAX_MEM "
+    DEFAULT_JAVA_OPTS="-Xms$JAVA_MIN_MEM -Xmx$JAVA_MAX_MEM -XX:NewRatio=3 "
 
     #Set the JVM_VENDOR specific JVM flags
     if [ "$JVM_VENDOR" = "SUN" ]; then
