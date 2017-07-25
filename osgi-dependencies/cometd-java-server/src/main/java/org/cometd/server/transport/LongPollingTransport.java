@@ -3,7 +3,11 @@ package org.cometd.server.transport;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.ServletException;
@@ -362,13 +366,16 @@ public abstract class LongPollingTransport extends HttpTransport {
         }
 
         public void cancel() {
-            log.debug("canceling {} - {}", session.getId(), this);
+            log.debug("aborting {} - {}", session.getId(), this);
             cleanup();
             if (continuation != null && continuation.isSuspended() && !continuation.isExpired()) {
+                final HttpServletResponse response = (HttpServletResponse)continuation.getServletResponse();
                 try {
-                    ((HttpServletResponse) continuation.getServletResponse()).sendError(HttpServletResponse.SC_REQUEST_TIMEOUT);
-                } catch (Exception x) {
-                    log.trace("", x);
+                    response.setStatus(200);
+                    response.getWriter().append("");
+                    response.flushBuffer();
+                } catch (IOException e) {
+                    log.debug("Cancel for {} failed", session.getId());
                 }
                 try {
                     continuation.complete();

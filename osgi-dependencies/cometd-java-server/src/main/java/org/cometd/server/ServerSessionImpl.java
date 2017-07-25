@@ -67,7 +67,7 @@ public class ServerSessionImpl implements ServerSession {
 
     private final Task _lazyTask;
 
-    private AbstractServerTransport.Scheduler _scheduler;
+    private volatile AbstractServerTransport.Scheduler _scheduler;
 
     private ServerTransport _advisedTransport;
 
@@ -321,14 +321,10 @@ public class ServerSessionImpl implements ServerSession {
 
     public void disconnect() {
         log.debug("disconnect {}", getId());
-        boolean connected = remove();
-        if (connected) {
-            ServerMessage.Mutable message = _bayeux.newMessage();
-            message.setChannel(Channel.META_DISCONNECT);
-            message.setSuccessful(true);
-            deliver(this, message);
-            flush();
+        if (isConnected() && _scheduler != null) {
+            _scheduler.cancel();
         }
+        remove();
     }
 
     private boolean remove() {
