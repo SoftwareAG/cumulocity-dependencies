@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<features name="kpi-logger-osgi">
+<features name="kpi-logger-osgi" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
 
     <feature name="kpi-logger" version="${project.parent.version}">
         <bundle>mvn:com.nsn.cumulocity.dependencies.kpi/kpi-logger/${project.parent.version}</bundle>

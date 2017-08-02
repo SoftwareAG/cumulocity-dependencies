@@ -40,7 +40,7 @@
  * holder.
  */
 -->
-<features name="jersey">
+<features name="jersey" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
     <feature name="jersey-client" version="${osgi.jersey.version}">
         <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/jersey-core/${osgi.jersey.version}</bundle>
         <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/jersey-client/${osgi.jersey.version}</bundle>
