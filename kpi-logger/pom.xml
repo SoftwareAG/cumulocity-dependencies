@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>cumulocity-dependencies</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
-		<version>8.8.0</version>
+		<version>8.9.0</version>
 	</parent>
 	
 	<groupId>com.nsn.cumulocity.dependencies.kpi</groupId>
@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
+            <artifactId>javax.servlet-api</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>8.8.0</version>
+        <version>8.9.0</version>
     </parent>
 
     <artifactId>odata</artifactId>
@@ -23,7 +23,7 @@
             <exclusions>
                 <exclusion>
                     <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
+                    <artifactId>javax.servlet-api</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>javax.ws.rs</groupId>

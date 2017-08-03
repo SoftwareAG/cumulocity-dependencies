@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>8.8.0</version>
+		<version>8.9.0</version>
 	</parent>
 	
 	<artifactId>jersey-server</artifactId>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
             <artifactId>mail</artifactId>
-            <version>${osgi.mail.version}</version>
+            <version>${osgi.javax.mail.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

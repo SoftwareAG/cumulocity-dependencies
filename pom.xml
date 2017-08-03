@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>8.8.0</version>
+	<version>8.9.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -35,14 +35,14 @@
 		<osgi.antlr4-runtime.version>${antlr4-runtime.version}-${project.parent.version}</osgi.antlr4-runtime.version>
 		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
 		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
-		<asm.version>3.1</asm.version>
+		<asm.version>5.0.3</asm.version>
 		<osgi.asm.version>${asm.version}-${project.parent.version}</osgi.asm.version>
 		<osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
 		<collections-generic.version>4.01</collections-generic.version>
 		<osgi.collections-generic.version>${collections-generic.version}-${project.parent.version}</osgi.collections-generic.version>
-		<commons-codec.version>1.7</commons-codec.version>
+		<commons-codec.version>1.10</commons-codec.version>
 		<osgi.commons-codec.version>${commons-codec.version}-${project.parent.version}</osgi.commons-codec.version>
 		<commons-configuration.version>1.7</commons-configuration.version>
 		<osgi.commons-configuration.version>${commons-configuration.version}-${project.parent.version}</osgi.commons-configuration.version>
@@ -52,8 +52,6 @@
 		<osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
 		<findbugs.version>1.3.2</findbugs.version>
 		<osgi.findbugs.version>${findbugs.version}-${project.parent.version}</osgi.findbugs.version>
-		<geronimo-annotation.version>1.1.1</geronimo-annotation.version>
-		<osgi.geronimo-annotation.version>${geronimo-annotation.version}-${project.parent.version}</osgi.geronimo-annotation.version>
 		<guava.version>18.0</guava.version>
 		<osgi.guava.version>${guava.version}-${project.parent.version}</osgi.guava.version>
 		<httpclient.version>4.1.2</httpclient.version>
@@ -66,8 +64,8 @@
 		<osgi.jaxb-api.version>${jaxb-api.version}-${project.parent.version}</osgi.jaxb-api.version>
 		<jersey.version>1.8</jersey.version>
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-		<mail.version>1.4.7</mail.version>
-		<osgi.mail.version>${mail.version}-${project.parent.version}</osgi.mail.version>
+		<javax.mail.version>1.4.7</javax.mail.version>
+		<osgi.javax.mail.version>${javax.mail.version}-${project.parent.version}</osgi.javax.mail.version>
 		<mimepull.version>1.4</mimepull.version>
 		<osgi.mimepull.version>${mimepull.version}-${project.parent.version}</osgi.mimepull.version>
 		<mysema-codegen.version>0.4.9</mysema-codegen.version>
@@ -108,16 +106,19 @@
 
 
 		<joda-time.version>1.6.2</joda-time.version>
-		<commons-io.version>2.0.1</commons-io.version>
+		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<commons-collections.version>3.2.1</commons-collections.version>
+		<commons-lang.version>2.6</commons-lang.version>
+        <commons-io.version>2.4</commons-io.version>
 		<cxf.version>2.6.7</cxf.version>
 		<aspectj.version>1.7.4</aspectj.version>
 		<eclipselink.version>2.2.1</eclipselink.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
-		<jetty.version>7.6.8.v20121106</jetty.version>
-		<karaf.version>2.3.1</karaf.version>
-		<pax.logging.version>1.7.0</pax.logging.version>
-		<pax.url.version>1.3.5</pax.url.version>
-		<pax.web.version>1.1.12</pax.web.version>
+		<jetty.version>8.1.15.v20140411</jetty.version>
+		<karaf.version>2.4.4</karaf.version>
+		<pax.logging.version>1.8.4</pax.logging.version>
+		<pax.url.version>2.4.1</pax.url.version>
+		<pax.web.version>3.2.4</pax.web.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
@@ -128,6 +129,20 @@
 		<fest-assert.version>1.4</fest-assert.version>
 		<mockito.version>1.8.5</mockito.version>
 		<powermock.version>1.4.9</powermock.version>
+
+		<!-- KARAF FEATURES VERSIONS -->
+		<!-- already defined above -->
+		<!--<asm.version>5.0.3</asm.version>-->
+		<!--<commons-beanutils.version>1.9.2</commons-beanutils.version>-->
+		<!--<commons-codec.version>1.10</commons-codec.version>-->
+		<!--<commons-collections.version>3.2.1</commons-collections.version>-->
+		<!--<commons-io.version>2.4</commons-io.version>-->
+		<!--<commons-lang.version>2.6</commons-lang.version>-->
+		<!--<jetty.version>8.1.15.v20140411</jetty.version>-->
+		<!--<pax.logging.version>1.8.4</pax.logging.version>-->
+		<!--<pax.url.version>2.4.1</pax.url.version>-->
+		<!--<pax.web.version>3.2.4</pax.web.version>-->
+
 	</properties>
 
 	<modules>
@@ -144,8 +159,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>2.5</version>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>3.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>joda-time</groupId>
@@ -226,11 +241,6 @@
 			<dependency>
 				<groupId>org.cometd.java</groupId>
 				<artifactId>cometd-java-server</artifactId>
-				<version>${cometd.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.cometd.java</groupId>
-				<artifactId>cometd-java-oort</artifactId>
 				<version>${cometd.version}</version>
 			</dependency>
 			<dependency>
