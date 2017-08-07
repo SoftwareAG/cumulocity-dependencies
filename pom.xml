@@ -114,11 +114,8 @@
 		<aspectj.version>1.7.4</aspectj.version>
 		<eclipselink.version>2.2.1</eclipselink.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
-		<jetty.version>8.1.15.v20140411</jetty.version>
-		<karaf.version>2.4.4</karaf.version>
-		<pax.logging.version>1.8.4</pax.logging.version>
-		<pax.url.version>2.4.1</pax.url.version>
-		<pax.web.version>3.2.4</pax.web.version>
+		<jetty.version>8.1.19.v20160209</jetty.version>
+		<karaf.version>3.0.8</karaf.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
@@ -130,18 +127,11 @@
 		<mockito.version>1.8.5</mockito.version>
 		<powermock.version>1.4.9</powermock.version>
 
-		<!-- KARAF FEATURES VERSIONS -->
-		<!-- already defined above -->
+		<!-- KARAF BUNDLES VERSIONS -->
+		<!-- to align with project versions -->
 		<!--<asm.version>5.0.3</asm.version>-->
-		<!--<commons-beanutils.version>1.9.2</commons-beanutils.version>-->
-		<!--<commons-codec.version>1.10</commons-codec.version>-->
-		<!--<commons-collections.version>3.2.1</commons-collections.version>-->
-		<!--<commons-io.version>2.4</commons-io.version>-->
-		<!--<commons-lang.version>2.6</commons-lang.version>-->
-		<!--<jetty.version>8.1.15.v20140411</jetty.version>-->
-		<!--<pax.logging.version>1.8.4</pax.logging.version>-->
-		<!--<pax.url.version>2.4.1</pax.url.version>-->
-		<!--<pax.web.version>3.2.4</pax.web.version>-->
+		<!--<javax.mail.version>1.4.7</javax.mail.version>-->
+		<!--<jetty.version>8.1.19.v20160209</jetty.version>-->
 
 	</properties>
 

@@ -21,7 +21,7 @@
     <feature name="spring-web" description="Spring Web support" version="${spring.version}"
         resolver="(obr)">
         <feature version="${spring.version}">spring</feature>
-        <feature version="[2,3)">http</feature>
+        <feature>http</feature>
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-web/3.2.18.RELEASE_1</bundle>
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-webmvc/3.2.18.RELEASE_1</bundle>
     </feature>
@@ -62,7 +62,7 @@
     <feature name="spring-dm-web" description="Spring DM Web Support" version="1.2.1" resolver="(obr)">
         <feature version="1.2.1">spring-dm</feature>
         <feature version="[2.5.6,4)">spring-web</feature>
-        <feature version="[2,3)">http</feature>
+        <feature>http</feature>
         <bundle start-level="30">mvn:org.springframework.osgi/spring-osgi-web/1.2.1</bundle>
     </feature>
 
