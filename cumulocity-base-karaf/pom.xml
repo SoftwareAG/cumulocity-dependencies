@@ -110,7 +110,6 @@
 								<feature>region</feature>
 								<feature>ssh</feature>
 								<feature>management</feature>
-								<feature>webconsole</feature>
 
 								<!-- OSGi services (Http, JPA, Transaction, ...) -->
 								<feature>http</feature>
