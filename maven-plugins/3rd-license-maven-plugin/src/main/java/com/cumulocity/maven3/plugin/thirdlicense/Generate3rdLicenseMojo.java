@@ -1,27 +1,5 @@
 package com.cumulocity.maven3.plugin.thirdlicense;
 
-import static com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContext.PROPERTY_KEY_PREFIX;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
-import org.apache.maven.execution.MavenSession;
-import org.apache.maven.model.Profile;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.BuildPluginManager;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
-
 import com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContext;
 import com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContextImpl;
 import com.cumulocity.maven3.plugin.thirdlicense.diff.DiffService;
@@ -32,6 +10,23 @@ import com.cumulocity.maven3.plugin.thirdlicense.license.Licenses;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapperFactory;
 import com.cumulocity.maven3.plugin.thirdlicense.validation.Validator;
+import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Profile;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.BuildPluginManager;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.*;
+import org.apache.maven.project.MavenProject;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import static com.cumulocity.maven3.plugin.thirdlicense.context.LicensePluginContext.PROPERTY_KEY_PREFIX;
 
 /**
  * This is main class for maven plugin, from this file maven start work with
@@ -55,6 +50,9 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "false")
     private boolean diffEnabled;
+
+    @Parameter(defaultValue = "true")
+    private boolean stripCumulocityVersion;
 
     @Parameter(defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
@@ -95,7 +93,11 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
             public void visitJar(Path jarPath) {
                 Jar jar = Jar.of(jarPath, appBasedir.getAbsoluteFile().toPath(), mapper);
                 if (!jar.isCumulocityJar()) {
-                    jars.add(jar);
+                    if (stripCumulocityVersion && jar.isThirdPartyRepackedJar()) {
+                        jars.add(jar.stripCumulocityVersion());
+                    } else {
+                        jars.add(jar);
+                    }
                 }
             }
         });
