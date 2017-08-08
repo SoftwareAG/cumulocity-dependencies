@@ -61,6 +61,7 @@
         <module>spring-security-jwt</module>
         <module>odata</module>
         <module>moquette</module>
+        <module>uom</module>
     </modules>
 
     <properties>

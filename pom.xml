@@ -103,7 +103,8 @@
 		<osgi.moquette.version>${moquette.version}-${project.parent.version}</osgi.moquette.version>
 		<libphonenumber.version>7.6.0</libphonenumber.version>
 		<osgi.libphonenumber.version>${libphonenumber.version}-${project.parent.version}</osgi.libphonenumber.version>
-
+		<uom.version>0.7.1</uom.version>
+		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
 
 		<joda-time.version>1.6.2</joda-time.version>
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
