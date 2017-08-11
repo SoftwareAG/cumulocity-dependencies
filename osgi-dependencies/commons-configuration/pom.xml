@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>8.9.0</version>
+		<version>8.10.0</version>
 	</parent>
 	
 	<artifactId>commons-configuration</artifactId>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.8.3</version>
+            <version>${commons-beanutils.version}</version>
         </dependency>
     </dependencies>
 	

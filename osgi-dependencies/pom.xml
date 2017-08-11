@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>8.9.0</version>
+        <version>8.10.0</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -61,6 +61,7 @@
         <module>spring-security-jwt</module>
         <module>odata</module>
         <module>moquette</module>
+        <module>uom</module>
     </modules>
 
     <properties>

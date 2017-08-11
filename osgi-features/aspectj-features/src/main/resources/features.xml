@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<features name="aspectj-osgi">
+<features name="aspectj-osgi" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
 
     <feature name="aspectj-all" version="${osgi.aspectj.version}">
         <feature version="${osgi.aspectj.version}">aspectjrt</feature>
