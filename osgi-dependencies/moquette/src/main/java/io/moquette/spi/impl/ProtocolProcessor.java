@@ -660,6 +660,10 @@ public class ProtocolProcessor {
         ClientSession targetSession = m_sessionsStore.sessionForClient(clientID);
         verifyToActivate(clientID, targetSession);
         IMessagesStore.StoredMessage evt = targetSession.storedMessage(messageID);
+        if (evt == null) {
+            log.debug("Null message received for clientID {} and messageID {}; skip this message!", clientID, messageID);
+            return;
+        }
         if (!messagingPolicy.handleMessageInService(channel, evt)) {
             route2Subscribers(evt);
         }
