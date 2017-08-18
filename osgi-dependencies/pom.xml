@@ -60,7 +60,7 @@
         <module>spring-dm</module>
         <module>spring-security-jwt</module>
         <module>odata</module>
-        <module>moquette</module>
+        <module>moquette-dependencies</module>
         <module>uom</module>
     </modules>
 
