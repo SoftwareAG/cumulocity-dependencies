@@ -51,7 +51,7 @@ import com.google.common.collect.FluentIterable;
 
 /**
  * Class responsible to handle the logic of MQTT protocol it's the director of
- * the protocol execution. 
+ * the protocol execution.
  *
  * Used by the front facing class SimpleMessaging.
  *
@@ -402,10 +402,10 @@ public class ProtocolProcessor {
             verifyToActivate(sub.getClientId(), targetSession);
 
             log.debug("Broker republishing to client <{}> topic <{}> qos <{}>, active {}",
-                sub.getClientId(),
-                sub.getTopicFilter(),
-                clientQos,
-                targetSession.isActive());
+                    sub.getClientId(),
+                    sub.getTopicFilter(),
+                    clientQos,
+                    targetSession.isActive());
 
             if (clientQos == QOSType.MOST_ONE && targetSession.isActive()) {
                 //QoS 0
@@ -545,10 +545,10 @@ public class ProtocolProcessor {
             verifyToActivate(sub.getClientId(), targetSession);
 
             log.debug("Broker republishing to client <{}> topic <{}> qos <{}>, active {}",
-                sub.getClientId(),
-                sub.getTopicFilter(),
-                qos,
-                targetSession.isActive());
+                    sub.getClientId(),
+                    sub.getTopicFilter(),
+                    qos,
+                    targetSession.isActive());
             ByteBuffer message = origMessage.duplicate();
             if (qos == QOSType.MOST_ONE && targetSession.isActive()) {
                 //QoS 0
@@ -580,11 +580,11 @@ public class ProtocolProcessor {
         String clientId = clientsession.clientID;
         topic = adjustOutgoingTopic(topic);
         log.debug("directSend invoked clientId <{}> on topic <{}> QoS {} retained {} messageID {}",
-            clientId,
-            topic,
-            qos,
-            retained,
-            messageID);
+                clientId,
+                topic,
+                qos,
+                retained,
+                messageID);
         PublishMessage pubMessage = new PublishMessage();
         pubMessage.setRetainFlag(retained);
         pubMessage.setTopicName(topic);
@@ -601,7 +601,7 @@ public class ProtocolProcessor {
         } else {
             if (messageID != null) {
                 throw new RuntimeException("Internal bad error, trying to forwardPublish a QoS 0 message with PacketIdentifier: "
-                                               + messageID);
+                        + messageID);
             }
         }
 
@@ -613,8 +613,8 @@ public class ProtocolProcessor {
             //TODO while we were publishing to the target client, that client disconnected,
             // could happen is not an error HANDLE IT
             throw new RuntimeException(String.format("Can't find a ConnectionDescriptor for client <%s> in cache <%s>",
-                clientId,
-                m_clientIDs));
+                    clientId,
+                    m_clientIDs));
         }
         ServerChannel channel = m_clientIDs.get(clientId).channel;
         log.debug("Session for clientId {} is {}", clientId, channel);
@@ -640,8 +640,8 @@ public class ProtocolProcessor {
             log.debug("clientIDs are {}", m_clientIDs);
             if (m_clientIDs.get(clientId) == null) {
                 throw new RuntimeException(String.format("Can't find a ConnectionDescriptor for client %s in cache %s",
-                    clientId,
-                    m_clientIDs));
+                        clientId,
+                        m_clientIDs));
             }
             m_clientIDs.get(clientId).channel.writeAndFlush(pubAckMessage);
         } catch (Throwable t) {
