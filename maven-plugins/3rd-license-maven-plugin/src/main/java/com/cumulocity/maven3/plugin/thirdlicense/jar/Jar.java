@@ -1,6 +1,7 @@
 package com.cumulocity.maven3.plugin.thirdlicense.jar;
 
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
+import org.apache.commons.lang.StringUtils;
 
 import java.nio.file.Path;
 
@@ -80,6 +81,26 @@ public class Jar {
         return getGroupId() != null
                 && getGroupId().startsWith("com.nsn.cumulocity")
                 && !getGroupId().startsWith("com.nsn.cumulocity.dependencies.osgi");
+    }
+
+    public boolean isThirdPartyRepackedJar() {
+        return getGroupId() != null && getGroupId().startsWith("com.nsn.cumulocity.dependencies.osgi");
+    }
+
+    public Jar stripCumulocityVersion() {
+        final String strippedVersion = StringUtils.substringBefore(version, "-");
+        return new Jar(
+                separator,
+                groupId,
+                artifactId,
+                strippedVersion,
+                copyright,
+                license,
+                fileName.replace(version, strippedVersion),
+                absolutePath,
+                relativePath,
+                usOrigin
+        );
     }
     
     @Override
