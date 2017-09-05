@@ -62,6 +62,7 @@
         <module>odata</module>
         <module>moquette-dependencies</module>
         <module>uom</module>
+        <module>googleauth</module>
     </modules>
 
     <properties>

@@ -105,6 +105,9 @@
 		<osgi.libphonenumber.version>${libphonenumber.version}-${project.parent.version}</osgi.libphonenumber.version>
 		<uom.version>0.7.1</uom.version>
 		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
+		<googleauth.version>1.1.1</googleauth.version>
+		<osgi.googleauth.version>${googleauth.version}-${project.parent.version}</osgi.googleauth.version>
+
 
 		<joda-time.version>1.6.2</joda-time.version>
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
