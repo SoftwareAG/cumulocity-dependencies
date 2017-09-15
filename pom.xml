@@ -101,6 +101,8 @@
 		<osgi.odata.version>${odata.version}-${project.parent.version}</osgi.odata.version>
 		<moquette.version>0.8.1</moquette.version>
 		<osgi.moquette.version>${moquette.version}-${project.parent.version}</osgi.moquette.version>
+		<docker-client.version>8.9.0</docker-client.version>
+		<osgi.docker-client.version>${docker-client.version}-${project.parent.version}</osgi.docker-client.version>
 		<libphonenumber.version>7.6.0</libphonenumber.version>
 		<osgi.libphonenumber.version>${libphonenumber.version}-${project.parent.version}</osgi.libphonenumber.version>
 		<uom.version>0.7.1</uom.version>
@@ -114,6 +116,7 @@
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-lang.version>2.6</commons-lang.version>
         <commons-io.version>2.4</commons-io.version>
+        <commons-compress.version>1.14</commons-compress.version>
 		<cxf.version>2.6.7</cxf.version>
 		<aspectj.version>1.7.4</aspectj.version>
 		<eclipselink.version>2.2.1</eclipselink.version>
