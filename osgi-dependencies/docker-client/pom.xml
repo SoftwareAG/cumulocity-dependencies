@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>osgi-dependencies</artifactId>
+        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+        <version>8.13.0</version>
+    </parent>
+
+    <artifactId>docker-client</artifactId>
+    <version>${osgi.docker-client.version}</version>
+    <name>Cumulocity Dependencies :: OSGi Dependencies :: Docker Java</name>
+    <url>http://startups.jira.com/wiki/display/MTM/Home</url>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-client</artifactId>
+            <classifier>shaded</classifier>
+            <scope>provided</scope>
+            <version>${docker-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <includeGroupIds>
+                        com.spotify,
+                        org.apache.httpcomponents,
+                        commons-logging
+                    </includeGroupIds>
+                    <includeArtifactIds>
+                        docker-client,
+                        httpclient,
+                        httpcore,
+                        commons-logging
+                    </includeArtifactIds>
+                    <excludes>
+                        META-INF/MANIFEST.MF,
+                        META-INF/maven/**/*,
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Export-Package>
+                            com.spotify.docker.client.*
+                        </Export-Package>
+                        <Import-Package>
+                            !com.spotify.docker.client.*,
+                            org.slf4j.*,
+                            javax.net.ssl.*,
+                            javax.naming.*,
+                            javax.xml.transform.*,
+                            javax.xml.parsers.*,
+                            javax.activation.*,
+                            org.w3c.dom.*,
+                            org.xml.sax.*,
+                            org.apache.commons.compress.*
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
