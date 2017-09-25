@@ -77,7 +77,15 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
 
         @Override
         public String toString() {
-            return value == null ? "" : value.trim();
+            return value == null ? "" : escapeCommas(value.trim());
+        }
+
+        private String escapeCommas(String value) {
+            if (value.contains(",")) {
+                value = value.replace("\"", "");
+                return "\"" + value + "\"";
+            }
+            return value;
         }
     }
     
