@@ -15,14 +15,19 @@ import com.google.common.base.Function;
 public class JarTo3PartyInformation implements Function<Jar, String> {
     
     private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s, %s";
+    private static final String[] HEADERS = new String[]{"fileName", "groupId", "artifactId",
+            "version", "copyright", "license", "usOrigin"};
     
     @Nullable
     @Override
     public String apply(Jar jar) {
         return String.format(LINE_FORMAT, (Object[]) getPrintableProperties(jar));
     }
-    
-    
+
+    public static String getHeadersLine() {
+        return String.format(LINE_FORMAT, HEADERS);
+    }
+
     public static List<MissingJarProperty> getMissingJarProperties(Jar jar) {
         List<MissingJarProperty> missings = new ArrayList<MissingJarProperty>();
         for (JarProperty property : getPrintableProperties(jar)) {
@@ -41,13 +46,13 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
     private static  JarProperty[] getPrintableProperties(Jar jar) {
         return  new JarProperty[] {
             // @formatter:off
-            new JarProperty(jar.getFileName(), "fileName"),
-            new JarProperty(jar.getGroupId(), "groupId"),
-            new JarProperty(jar.getArtifactId(), "artifactId"),
-            new JarProperty(jar.getVersion(), "version"),
-            new JarProperty(jar.getCopyright(), "copyright"),
-            new JarProperty(jar.getLicense(), "license"),
-            new JarProperty(jar.getUsOrigin(), "usOrigin")
+            new JarProperty(jar.getFileName(), HEADERS[0]),
+            new JarProperty(jar.getGroupId(), HEADERS[1]),
+            new JarProperty(jar.getArtifactId(), HEADERS[2]),
+            new JarProperty(jar.getVersion(), HEADERS[3]),
+            new JarProperty(jar.getCopyright(), HEADERS[4]),
+            new JarProperty(jar.getLicense(), HEADERS[5]),
+            new JarProperty(jar.getUsOrigin(), HEADERS[6])
             // @formatter:on
         };
     }
