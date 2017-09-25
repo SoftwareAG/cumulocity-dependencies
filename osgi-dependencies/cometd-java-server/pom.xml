@@ -26,6 +26,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-util-ajax</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-continuation</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
@@ -135,11 +140,14 @@
 					<excludes>
 						META-INF/MANIFEST.MF,
 						META-INF/maven/**/*,
+						org/cometd/server/AbstractService.*,
+						org/cometd/server/BayeuxServerImpl.*,
+						org/cometd/server/ServerChannelImpl.*,
 						org/cometd/server/ServerSessionImpl.*,
 						org/cometd/server/transport/LongPollingTransport.*,
 						org/cometd/server/transport/JSONTransport.*,
 						org/cometd/server/transport/JSONPTransport.*,
-						org/cometd/server/BayeuxServerImpl.*
+						org/cometd/server/ext/TimestampExtension.*
 					</excludes>
 				</configuration>
 			</plugin>
