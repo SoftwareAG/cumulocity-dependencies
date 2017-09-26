@@ -78,6 +78,16 @@ public class Jar {
     }
 
     public boolean isCumulocityJar() {
+        return isCumulocityInternalDependency()
+                || isCumulocityAgentInternalDependency();
+    }
+
+    public boolean isCumulocityAgentInternalDependency() {
+        return getGroupId() != null
+                && getGroupId().startsWith("c8y.agents");
+    }
+
+    private boolean isCumulocityInternalDependency() {
         return getGroupId() != null
                 && getGroupId().startsWith("com.nsn.cumulocity")
                 && !getGroupId().startsWith("com.nsn.cumulocity.dependencies.osgi");
