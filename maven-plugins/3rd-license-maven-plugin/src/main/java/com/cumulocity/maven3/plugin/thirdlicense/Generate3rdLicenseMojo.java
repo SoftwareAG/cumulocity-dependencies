@@ -106,8 +106,10 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         thirdPartyLicenseFilePath.mkdirs();
         // TODO refactor as service and use plexus dependency injection
         Licenses.save(getLog(), thirdPartyFile(), jars, new JarTo3PartyInformation());
-        // TODO refactor as service and use plexus dependency injection
-        Validator.validate(getLog(), jars);
+        if (pluginContext.getBooleanProperty("validate", true)) {
+            // TODO refactor as service and use plexus dependency injection
+            Validator.validate(getLog(), jars);
+        }
         if (diffEnabled) {
             diffService.execute();
         }
