@@ -14,7 +14,7 @@ public class Validator {
     public static void validate(Log log, List<Jar> jars) {
         List<MissingJarProperty> missingProperties = new ArrayList<MissingJarProperty>();
         for (Jar jar : jars) {
-            missingProperties.addAll(JarTo3PartyInformation.getMissingJarProperties(jar));
+            missingProperties.addAll(JarTo3PartyInformation.getMissingRequiredJarProperties(jar));
         }
         if (!missingProperties.isEmpty()) {
             String errorDetails = asErrorDetails(missingProperties);

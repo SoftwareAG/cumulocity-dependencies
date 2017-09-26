@@ -28,11 +28,11 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
         return String.format(LINE_FORMAT, HEADERS);
     }
 
-    public static List<MissingJarProperty> getMissingJarProperties(Jar jar) {
+    public static List<MissingJarProperty> getMissingRequiredJarProperties(Jar jar) {
         List<MissingJarProperty> missings = new ArrayList<MissingJarProperty>();
-        for (JarProperty property : getPrintableProperties(jar)) {
-            checkProperty(missings, jar.getFileName(), property);            
-        }
+        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getFileName(), HEADERS[0]));
+        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getCopyright(), HEADERS[4]));
+        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getLicense(), HEADERS[5]));
         return missings;
     }
     
@@ -56,7 +56,7 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
             // @formatter:on
         };
     }
-    
+
     static class JarProperty {
         
         private final String value;
