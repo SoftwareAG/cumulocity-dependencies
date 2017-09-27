@@ -84,7 +84,8 @@ public class Jar {
 
     public boolean isCumulocityAgentInternalDependency() {
         return getGroupId() != null
-                && getGroupId().startsWith("c8y.agents");
+                && (getGroupId().startsWith("c8y.agents")
+                || getGroupId().startsWith("c8y-agents"));
     }
 
     private boolean isCumulocityInternalDependency() {
