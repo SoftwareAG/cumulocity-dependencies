@@ -71,7 +71,7 @@
 		<mysema-codegen.version>0.4.9</mysema-codegen.version>
 		<osgi.mysema-codegen.version>${mysema-codegen.version}-${project.parent.version}</osgi.mysema-codegen.version>
 		<netty.version>4.0.33.Final</netty.version>
-		<mysema-commons.version>0.2.3</mysema-commons.version>
+		<mysema-commons.version>0.2.4</mysema-commons.version>
 		<osgi.mysema-commons.version>${mysema-commons.version}-${project.parent.version}</osgi.mysema-commons.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
