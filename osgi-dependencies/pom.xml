@@ -25,11 +25,6 @@
         <module>commons-configuration</module>
         <module>cometd-java-server</module>
         <module>docker-client</module>
-        <module>antlr</module>
-        <module>stringtemplate</module>
-        <module>antlr-runtime</module>
-        <module>antlr4-runtime</module>
-        <module>treelayout</module>
         <module>cglib-nodep</module>
         <module>svenson</module>
         <module>json-path</module>
