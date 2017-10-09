@@ -87,8 +87,6 @@
 		<osgi.super-csv.version>${super-csv.version}-${project.parent.version}</osgi.super-csv.version>
 		<cometd.version>2.8.0</cometd.version>
 		<osgi.cometd.version>${cometd.version}-${project.parent.version}</osgi.cometd.version>
-		<treelayout.version>1.0.1</treelayout.version>
-		<osgi.treelayout.version>${treelayout.version}-${project.parent.version}</osgi.treelayout.version>
 		<odata.version>2.0.4</odata.version>
 		<osgi.odata.version>${odata.version}-${project.parent.version}</osgi.odata.version>
 		<moquette.version>0.8.1</moquette.version>
