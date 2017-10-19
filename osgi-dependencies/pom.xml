@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>8.14.0</version>
+        <version>8.15.0</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -25,11 +25,6 @@
         <module>commons-configuration</module>
         <module>cometd-java-server</module>
         <module>docker-client</module>
-        <module>antlr</module>
-        <module>stringtemplate</module>
-        <module>antlr-runtime</module>
-        <module>antlr4-runtime</module>
-        <module>treelayout</module>
         <module>cglib-nodep</module>
         <module>svenson</module>
         <module>json-path</module>
