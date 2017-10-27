@@ -91,8 +91,6 @@
 		<osgi.odata.version>${odata.version}-${project.parent.version}</osgi.odata.version>
 		<moquette.version>0.8.1</moquette.version>
 		<osgi.moquette.version>${moquette.version}-${project.parent.version}</osgi.moquette.version>
-		<docker-client.version>8.9.0</docker-client.version>
-		<osgi.docker-client.version>${docker-client.version}-${project.parent.version}</osgi.docker-client.version>
 		<libphonenumber.version>7.6.0</libphonenumber.version>
 		<osgi.libphonenumber.version>${libphonenumber.version}-${project.parent.version}</osgi.libphonenumber.version>
 		<uom.version>0.7.1</uom.version>

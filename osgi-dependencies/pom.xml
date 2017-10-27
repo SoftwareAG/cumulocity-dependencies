@@ -24,7 +24,6 @@
         <module>commons-httpclient</module>
         <module>commons-configuration</module>
         <module>cometd-java-server</module>
-        <module>docker-client</module>
         <module>cglib-nodep</module>
         <module>svenson</module>
         <module>json-path</module>
