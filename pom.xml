@@ -35,8 +35,7 @@
 		<osgi.antlr4-runtime.version>${antlr4-runtime.version}-${project.parent.version}</osgi.antlr4-runtime.version>
 		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
 		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
-		<asm.version>5.0.4</asm.version>
-		<osgi.asm.version>${asm.version}-${project.parent.version}</osgi.asm.version>
+		<aspectj.version>1.7.4</aspectj.version>
 		<osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
@@ -54,25 +53,29 @@
 		<osgi.findbugs.version>${findbugs.version}-${project.parent.version}</osgi.findbugs.version>
 		<guava.version>18.0</guava.version>
 		<osgi.guava.version>${guava.version}-${project.parent.version}</osgi.guava.version>
-		<httpclient.version>4.1.2</httpclient.version>
+		<httpclient.version>4.5</httpclient.version>
 		<osgi.httpclient.version>${httpclient.version}-${project.parent.version}</osgi.httpclient.version>
-		<httpcore.version>4.1.4</httpcore.version>
+		<httpcore.version>4.4.1</httpcore.version>
 		<osgi.httpcore.version>${httpcore.version}-${project.parent.version}</osgi.httpcore.version>
 		<inject.version>1</inject.version>
 		<osgi.inject.version>${inject.version}-${project.parent.version}</osgi.inject.version>
+		<cxf.version>3.1.13</cxf.version>
+		<osgi.cxf.version>${cxf.version}-${project.parent.version}</osgi.cxf.version>
 		<jaxb-api.version>2.1</jaxb-api.version>
 		<osgi.jaxb-api.version>${jaxb-api.version}-${project.parent.version}</osgi.jaxb-api.version>
-		<jersey.version>1.8</jersey.version>
+		<jersey.version>2.25.1</jersey.version>
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
 		<javax.mail.version>1.4.4</javax.mail.version>
 		<osgi.javax.mail.version>${javax.mail.version}-${project.parent.version}</osgi.javax.mail.version>
-		<mimepull.version>1.4</mimepull.version>
+		<mimepull.version>1.9.6</mimepull.version>
 		<osgi.mimepull.version>${mimepull.version}-${project.parent.version}</osgi.mimepull.version>
 		<mysema-codegen.version>0.4.9</mysema-codegen.version>
 		<osgi.mysema-codegen.version>${mysema-codegen.version}-${project.parent.version}</osgi.mysema-codegen.version>
 		<netty.version>4.0.33.Final</netty.version>
 		<mysema-commons.version>0.2.3</mysema-commons.version>
 		<osgi.mysema-commons.version>${mysema-commons.version}-${project.parent.version}</osgi.mysema-commons.version>
+		<eclipselink.version>2.2.1</eclipselink.version>
+		<osgi.eclipselink.version>${eclipselink.version}-${project.parent.version}</osgi.eclipselink.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
 		<querydsl.version>2.7.3</querydsl.version>
@@ -114,13 +117,9 @@
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-lang.version>2.6</commons-lang.version>
         <commons-io.version>2.4</commons-io.version>
-		<cxf.version>3.1.13</cxf.version>
-		<aspectj.version>1.7.4</aspectj.version>
-		<eclipselink.version>2.2.1</eclipselink.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
 		<jetty.version>9.2.19.v20160908</jetty.version>
 		<karaf.version>4.0.9</karaf.version>
-		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
         <lombok.version>1.16.6</lombok.version>
@@ -130,12 +129,6 @@
 		<fest-assert.version>1.4</fest-assert.version>
 		<mockito.version>1.8.5</mockito.version>
 		<powermock.version>1.4.9</powermock.version>
-
-		<!-- KARAF BUNDLES VERSIONS -->
-		<!-- to align with project versions -->
-		<!--<asm.version>5.0.4</asm.version>-->
-		<!--<javax.mail.version>1.4.4</javax.mail.version>-->
-		<!--<jetty.version>9.2.19.v20160908</jetty.version>-->
 
 	</properties>
 

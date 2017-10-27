@@ -61,6 +61,7 @@
                         <!-- Exports are listed on purpose to avoid conflicts with 'httpcore' -->
                         <Export-Package>
                             org.apache.http.client.cache.*,
+                            org.apache.http.impl.execchain.*,
                             org.apache.http.impl.client.cache.*
                         </Export-Package>
                         <Import-Package>

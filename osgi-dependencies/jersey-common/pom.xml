@@ -7,41 +7,33 @@
 		<version>8.12.0-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>jersey-core</artifactId>
+	<artifactId>jersey-common</artifactId>
 	<version>${osgi.jersey.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: Jersey Core</name>
+	<name>Cumulocity Dependencies :: OSGi Dependencies :: Jersey Common</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-core</artifactId>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-common</artifactId>
             <version>${jersey.version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>javax.ws.rs</groupId>
-                    <artifactId>jsr311-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.mail</groupId>
-                    <artifactId>mail</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.xml.bind</groupId>
-                    <artifactId>jaxb-api</artifactId>
+                    <groupId>org.glassfish.hk2.external</groupId>
+                    <artifactId>javax.inject</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.osgi</groupId>
-                    <artifactId>osgi_R4_core</artifactId>
+                    <artifactId>org.osgi.core</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>${inject.version}</version>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
@@ -57,10 +49,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <includeGroupIds>com.sun.jersey</includeGroupIds>
-                    <includeArtifactIds>jersey-core</includeArtifactIds>
-                    <!-- We exlude JAXWS-RS, to use the one from dependencies -->
-                    <excludes>META-INF/MANIFEST.MF,**/javax/**</excludes>
+                    <includeGroupIds>org.glassfish.jersey.core, org.glassfish.hk2, org.glassfish.jersey.bundles.repackaged</includeGroupIds>
+                    <includeArtifactIds>jersey-common, hk2-api, hk2-locator, hk2-utils, osgi-resource-locator, jersey-guava</includeArtifactIds>
                 </configuration>
             </plugin>
             <plugin>
@@ -69,9 +59,14 @@
                 <configuration>
                     <instructions>
                         <Import-Package>
-                            !com.sun.jersey.*,
-                            javax.mail.*;resolution:=optional,
-                        	javax.xml.bind.*;resolution:=optional,
+                            !org.glassfish.jersey.filter.*,
+                            !org.glassfish.jersey.internal.*,
+                            !org.glassfish.jersey.logging.*,
+                            !org.glassfish.jersey.message.*,
+                            !org.glassfish.jersey.model.*,
+                            !org.glassfish.jersey.process.*,
+                            !org.glassfish.jersey.spi.*,
+                            !org.glassfish.jersey.uri.*,
                             *
                         </Import-Package>
                     </instructions>
