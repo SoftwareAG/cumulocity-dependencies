@@ -1214,7 +1214,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
                 if(canCreateNewSession()) {
                     session = newServerSession();
                 } else {
-                    error(reply, "403::Handshake denied");
+                    error(reply, "503::Service overloaded");
                     return;
                 }
             }
