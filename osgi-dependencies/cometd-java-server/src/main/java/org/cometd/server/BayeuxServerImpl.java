@@ -15,39 +15,15 @@
  */
 package org.cometd.server;
 
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.cometd.bayeux.Channel;
 import org.cometd.bayeux.ChannelId;
 import org.cometd.bayeux.MarkedReference;
 import org.cometd.bayeux.Message;
-import org.cometd.bayeux.server.Authorizer;
-import org.cometd.bayeux.server.BayeuxContext;
-import org.cometd.bayeux.server.BayeuxServer;
+import org.cometd.bayeux.server.*;
 import org.cometd.bayeux.server.ConfigurableServerChannel.Initializer;
 import org.cometd.bayeux.server.ConfigurableServerChannel.ServerChannelListener;
-import org.cometd.bayeux.server.LocalSession;
-import org.cometd.bayeux.server.SecurityPolicy;
-import org.cometd.bayeux.server.ServerChannel;
 import org.cometd.bayeux.server.ServerChannel.MessageListener;
-import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.bayeux.server.ServerMessage.Mutable;
-import org.cometd.bayeux.server.ServerSession;
-import org.cometd.bayeux.server.ServerTransport;
 import org.cometd.common.JSONContext;
 import org.cometd.server.transport.JSONPTransport;
 import org.cometd.server.transport.JSONTransport;
@@ -55,6 +31,12 @@ import org.eclipse.jetty.util.component.AbstractLifeCycle;
 import org.eclipse.jetty.util.thread.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.SecureRandom;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Options to configure the server are: <dl>
@@ -1047,6 +1029,10 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
         }
     }
 
+    protected boolean canCreateNewSession(){
+        return true;
+    }
+
     protected List<BayeuxServerListener> getListeners()
     {
         return Collections.unmodifiableList(_listeners);
@@ -1222,14 +1208,21 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
         @Override
         public void onMessage(ServerSessionImpl session, final Mutable message)
         {
-            if (session == null)
-                session = newServerSession();
+
+            ServerMessage.Mutable reply = message.getAssociated();
+            if (session == null) {
+                if(canCreateNewSession()) {
+                    session = newServerSession();
+                } else {
+                    error(reply, "503::Service overloaded");
+                    return;
+                }
+            }
 
             BayeuxContext context = getContext();
             if (context != null)
                 session.setUserAgent(context.getHeader("User-Agent"));
 
-            ServerMessage.Mutable reply = message.getAssociated();
             if (_policy != null && !_policy.canHandshake(BayeuxServerImpl.this, session, message))
             {
                 error(reply, "403::Handshake denied");
