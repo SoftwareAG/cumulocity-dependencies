@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
 		<artifactId>osgi-features</artifactId>
-		<version>8.19.0</version>
+		<version>8.21.0</version>
 	</parent>
 
 	<artifactId>apache-cxf-features</artifactId>
