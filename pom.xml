@@ -62,15 +62,7 @@
 		<osgi.javax.mail.version>${javax.mail.version}-${project.parent.version}</osgi.javax.mail.version>
 		<mimepull.version>1.4</mimepull.version>
 		<osgi.mimepull.version>${mimepull.version}-${project.parent.version}</osgi.mimepull.version>
-		<mysema-codegen.version>0.4.9</mysema-codegen.version>
-		<osgi.mysema-codegen.version>${mysema-codegen.version}-${project.parent.version}</osgi.mysema-codegen.version>
 		<netty.version>4.0.33.Final</netty.version>
-		<mysema-commons.version>0.2.4</mysema-commons.version>
-		<osgi.mysema-commons.version>${mysema-commons.version}-${project.parent.version}</osgi.mysema-commons.version>
-		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
-		<osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
-		<querydsl.version>2.7.3</querydsl.version>
-		<osgi.querydsl.version>${querydsl.version}-${project.parent.version}</osgi.querydsl.version>
 		<spring.dm.version>1.2.1</spring.dm.version>
 		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
 		<spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
@@ -107,11 +99,9 @@
         <commons-compress.version>1.14</commons-compress.version>
 		<cxf.version>2.6.7</cxf.version>
 		<aspectj.version>1.7.4</aspectj.version>
-		<eclipselink.version>2.2.1</eclipselink.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
 		<jetty.version>8.1.19.v20160209</jetty.version>
 		<karaf.version>3.0.8</karaf.version>
-		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
         <lombok.version>1.16.6</lombok.version>
@@ -134,7 +124,6 @@
 		<module>cumulocity-sdk-resource-bundles</module>
 		<module>kpi-logger</module>
 		<module>osgi-dependencies</module>
-		<module>osgi-fragments</module>
 		<module>osgi-features</module>
 		<module>cumulocity-base-karaf</module>
 		<module>maven-plugins</module>

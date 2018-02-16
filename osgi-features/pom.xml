@@ -20,8 +20,6 @@
 		<module>apache-cxf-features</module>
 		<module>aspectj-features</module>
 		<module>jersey-features</module>
-		<module>postgresql-features</module>
-		<module>eclipselink-features</module>
 		<module>kpi-logger-features</module>
 	</modules>
 
@@ -32,8 +30,6 @@
 		<osgi.cxf.version>${cxf.version}-${project.parent.version}</osgi.cxf.version>
 		<jersey.version>1.8</jersey.version>
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-		<osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
-		<osgi.eclipselink.version>${eclipselink.version}-${project.parent.version}</osgi.eclipselink.version>
 	</properties>
 
 	<build>
