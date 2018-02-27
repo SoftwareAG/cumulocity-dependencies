@@ -35,7 +35,7 @@
 		<osgi.antlr4-runtime.version>${antlr4-runtime.version}-${project.parent.version}</osgi.antlr4-runtime.version>
 		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
 		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
-		<asm.version>5.0.3</asm.version>
+		<asm.version>5.0.4</asm.version>
 		<osgi.asm.version>${asm.version}-${project.parent.version}</osgi.asm.version>
 		<osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
@@ -64,7 +64,7 @@
 		<osgi.jaxb-api.version>${jaxb-api.version}-${project.parent.version}</osgi.jaxb-api.version>
 		<jersey.version>1.8</jersey.version>
 		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-		<javax.mail.version>1.4.7</javax.mail.version>
+		<javax.mail.version>1.4.4</javax.mail.version>
 		<osgi.javax.mail.version>${javax.mail.version}-${project.parent.version}</osgi.javax.mail.version>
 		<mimepull.version>1.4</mimepull.version>
 		<osgi.mimepull.version>${mimepull.version}-${project.parent.version}</osgi.mimepull.version>
@@ -118,8 +118,8 @@
 		<aspectj.version>1.7.4</aspectj.version>
 		<eclipselink.version>2.2.1</eclipselink.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
-		<jetty.version>8.1.19.v20160209</jetty.version>
-		<karaf.version>3.0.8</karaf.version>
+		<jetty.version>9.2.19.v20160908</jetty.version>
+		<karaf.version>4.0.9</karaf.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
@@ -133,9 +133,9 @@
 
 		<!-- KARAF BUNDLES VERSIONS -->
 		<!-- to align with project versions -->
-		<!--<asm.version>5.0.3</asm.version>-->
-		<!--<javax.mail.version>1.4.7</javax.mail.version>-->
-		<!--<jetty.version>8.1.19.v20160209</jetty.version>-->
+		<!--<asm.version>5.0.4</asm.version>-->
+		<!--<javax.mail.version>1.4.4</javax.mail.version>-->
+		<!--<jetty.version>9.2.19.v20160908</jetty.version>-->
 
 	</properties>
 
@@ -154,7 +154,7 @@
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
-				<version>3.0.1</version>
+				<version>3.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>joda-time</groupId>

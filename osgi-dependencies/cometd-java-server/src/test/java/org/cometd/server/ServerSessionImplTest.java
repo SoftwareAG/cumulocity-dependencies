@@ -22,6 +22,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
+import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
@@ -351,6 +352,16 @@ public class ServerSessionImplTest {
             if (invalidConnection)
                 return new HttpServletResponseWrapper(response) {
                     ServletOutputStream outputStream = new ServletOutputStream() {
+                        @Override
+                        public boolean isReady() {
+                            return false;
+                        }
+
+                        @Override
+                        public void setWriteListener(WriteListener writeListener) {
+
+                        }
+
                         @Override
                         public void write(int i) throws IOException {
                             throw new IOException("Connection invalid");

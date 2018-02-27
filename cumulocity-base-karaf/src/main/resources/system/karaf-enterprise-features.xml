@@ -18,17 +18,24 @@
     limitations under the License.
 -->
 
-<features name="karaf-enterprise-${karaf.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
+<features name="karaf-enterprise-${karaf.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0">
 
     <!--commented out features we don't need-->
-    <feature name="jpa" description="OSGi Persistence Container" version="2.0.0" resolver="(obr)">
-        <details>JPA implementation provided by Apache Aries JPA ${aries.jpa.version}. NB: this feature doesn't provide the JPA engine, you have to install one by yourself (OpenJPA for instance)</details>
-        <!--<feature version="[1.1,2)">transaction</feature>-->
-        <bundle dependency="true" start-level="30">mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/1.1</bundle>
-        <!--<bundle start-level="30">mvn:org.apache.aries.jpa/org.apache.aries.jpa.api/${aries.jpa.api.version}</bundle>-->
-        <!--<bundle start-level="30">mvn:org.apache.aries.jpa/org.apache.aries.jpa.blueprint.aries/${aries.jpa.blueprint.aries.version}</bundle>-->
-        <!--<bundle start-level="30">mvn:org.apache.aries.jpa/org.apache.aries.jpa.container/${aries.jpa.container.version}</bundle>-->
-        <!--<bundle start-level="30">mvn:org.apache.aries.jpa/org.apache.aries.jpa.container.context/${aries.jpa.container.context.version}</bundle>-->
+    <feature name="jpa" description="OSGi Persistence Container" version="2.6.0">
+        <details>JPA implementation provided by Apache Aries JPA 2.x. NB: this feature doesn't provide the JPA engine, you have to install one by yourself (OpenJPA for instance)</details>
+        <!--<feature version="[1.1,2)">transaction-api</feature>-->
+        <!--<feature dependency="true">openjpa</feature>-->
+        <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/1.1</bundle>
+        <!--<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.coordinator/${felix.coordinator.version}</bundle>-->
+        <!--<bundle dependency="true">mvn:org.osgi/org.osgi.service.jpa/${org.osgi.service.jpa.version}</bundle>-->
+        <!--<bundle dependency="true">mvn:org.osgi/org.osgi.service.jdbc/${org.osgi.service.jdbc.version}</bundle>-->
+        <!--<bundle>mvn:org.apache.aries.jpa/org.apache.aries.jpa.api/${aries.jpa.version}</bundle>-->
+        <!--<bundle>mvn:org.apache.aries.jpa/org.apache.aries.jpa.container/${aries.jpa.version}</bundle>-->
+        <!--<bundle>mvn:org.apache.aries.jpa/org.apache.aries.jpa.support/${aries.jpa.version}</bundle>-->
+        <!--<conditional>-->
+            <!--<condition>aries-blueprint</condition>-->
+            <!--<bundle>mvn:org.apache.aries.jpa/org.apache.aries.jpa.blueprint/${aries.jpa.version}</bundle>-->
+        <!--</conditional>-->
     </feature>
 
 </features>

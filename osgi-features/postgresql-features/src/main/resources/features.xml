@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<features name="jdbc" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
+<features name="jdbc" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0">
     <feature name="postgresql" version="${osgi.postgresql.version}">
         <bundle>mvn:com.nsn.cumulocity.dependencies.osgi/postgresql/${osgi.postgresql.version}</bundle>
         <bundle>mvn:commons-pool/commons-pool/1.5.4</bundle>

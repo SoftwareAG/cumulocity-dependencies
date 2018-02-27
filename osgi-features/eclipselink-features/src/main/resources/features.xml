@@ -1,4 +1,4 @@
-<features name="eclipselink" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
+<features name="eclipselink" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0">
         <feature name="eclipselink" version="${eclipselink.version}">
                 <bundle>mvn:org.eclipse.persistence/org.eclipse.persistence.antlr/${eclipselink.version}</bundle>
                 <bundle>mvn:org.eclipse.persistence/org.eclipse.persistence.asm/${eclipselink.version}</bundle>
