@@ -17,7 +17,6 @@
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
 	<modules>
-		<module>apache-cxf-features</module>
 		<module>aspectj-features</module>
 		<module>jersey-features</module>
 		<module>postgresql-features</module>
