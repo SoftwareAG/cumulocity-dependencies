@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>9.0.0</version>
+        <version>9.1.0</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -41,17 +41,11 @@
         <module>httpclient-cache</module>
         <module>log4j-extras</module>
 	    <module>libphonenumber</module>
-        <module>postgresql-connector</module>
         <module>dozer</module>
         <module>inject</module>
         <module>collections-generic</module>
         <module>findbugs-jsr305</module>
         <module>guava</module>
-        <module>mysema-codegen</module>
-        <module>mysema-commons-lang</module>
-        <module>querydsl-core</module>
-        <module>querydsl-sql</module>
-        <module>querydsl-jpa</module>
         <module>spring-dm</module>
         <module>spring-security-jwt</module>
         <module>odata</module>

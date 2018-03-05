@@ -25,28 +25,12 @@
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-web/3.2.18.RELEASE_1</bundle>
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-webmvc/3.2.18.RELEASE_1</bundle>
     </feature>
-    
-    <feature name="spring-tx" description="Spring Transaction (TX) support" version="${spring.version}" resolver="(obr)">
-        <feature version="${spring.version}">spring</feature>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-tx/3.2.18.RELEASE_1</bundle>
-    </feature>
-    
-    <feature name="spring-jdbc" description="Spring JDBC support" version="${spring.version}" resolver="(obr)">
-        <feature version="${spring.version}">spring-tx</feature>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-jdbc/3.2.18.RELEASE_1</bundle>
-    </feature>
 
     <feature name="spring-jms" description="Spring JMS support" version="${spring.version}" resolver="(obr)">
         <feature version="${spring.version}">spring-web</feature>
-        <feature version="${spring.version}">spring-tx</feature>
         <bundle start-level="10">mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1</bundle>
         <bundle start-level="10">mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1</bundle>
         <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-jms/3.2.18.RELEASE_1</bundle>
-    </feature>
-    
-    <feature name="spring-orm" description="Spring ORM support" version="${spring.version}" resolver="(obr)">
-        <feature version="${spring.version}">spring-jdbc</feature>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-orm/3.2.18.RELEASE_1</bundle>
     </feature>
     
     <feature name="spring-dm" description="Spring DM support" version="1.2.1" resolver="(obr)">
