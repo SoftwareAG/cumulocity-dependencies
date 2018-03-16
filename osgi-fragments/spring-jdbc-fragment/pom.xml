@@ -21,7 +21,7 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<configuration>
 					<instructions>
-						<Fragment-Host>org.springframework.jdbc</Fragment-Host>
+						<Fragment-Host>org.apache.servicemix.bundles.spring-jdbc</Fragment-Host>
 						<DynamicImport-Package>*</DynamicImport-Package>
 					</instructions>
 				</configuration>
