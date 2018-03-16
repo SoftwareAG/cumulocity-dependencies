@@ -111,7 +111,7 @@
 		<osgi.googleauth.version>${googleauth.version}-${project.parent.version}</osgi.googleauth.version>
 
 
-		<joda-time.version>1.6.2</joda-time.version>
+		<joda-time.version>2.9.4</joda-time.version>
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-lang.version>2.6</commons-lang.version>
