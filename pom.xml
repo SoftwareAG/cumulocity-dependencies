@@ -62,12 +62,8 @@
 		<cxf.version>3.1.13</cxf.version>
 		<jaxb-api.version>2.1</jaxb-api.version>
 		<osgi.jaxb-api.version>${jaxb-api.version}-${project.parent.version}</osgi.jaxb-api.version>
-		<jersey.version>2.25.1</jersey.version>
-		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
 		<javax.mail.version>1.4.4</javax.mail.version>
 		<osgi.javax.mail.version>${javax.mail.version}-${project.parent.version}</osgi.javax.mail.version>
-		<mimepull.version>1.9.6</mimepull.version>
-		<osgi.mimepull.version>${mimepull.version}-${project.parent.version}</osgi.mimepull.version>
 		<mysema-codegen.version>0.4.9</mysema-codegen.version>
 		<osgi.mysema-codegen.version>${mysema-codegen.version}-${project.parent.version}</osgi.mysema-codegen.version>
 		<netty.version>4.0.33.Final</netty.version>

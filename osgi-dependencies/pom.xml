@@ -16,7 +16,6 @@
     <modules>
         <module>activation</module>
         <module>mail</module>
-        <module>mimepull</module>
         <module>stax-api</module>
         <module>jaxb-api</module>
         <module>commons-codec</module>
@@ -34,11 +33,6 @@
         <module>json-path</module>
         <module>json-smart</module>
         <module>super-csv</module>
-        <module>jersey-common</module>
-        <module>jersey-server</module>
-        <module>jersey-client</module>
-        <module>jersey-apache-client</module>
-        <module>jersey-multipart</module>
         <module>aspectjrt</module>
         <module>aspectjweaver</module>
         <module>httpcore</module>
