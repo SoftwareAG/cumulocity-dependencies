@@ -44,46 +44,4 @@
         </plugins>
     </build>
 
-	<profiles>
-		<profile>
-			<id>kpi</id>
-
-			<properties>
-				<unpack.target.directory>${project.build.directory}/unwoven-classes</unpack.target.directory>
-			</properties>
-
-			<dependencies>
-				<dependency>
-					<groupId>com.nsn.cumulocity.dependencies.kpi</groupId>
-					<artifactId>kpi-logger</artifactId>
-					<version>${parent.version}</version>
-				</dependency>
-                <dependency>
-		            <groupId>org.aspectj</groupId>
-		            <artifactId>aspectjrt</artifactId>
-		        </dependency>
-			</dependencies>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>aspectj-maven-plugin</artifactId>
-						<configuration>
-                            <aspectLibraries>
-                                <aspectLibrary>
-                                    <groupId>com.nsn.cumulocity.dependencies.kpi</groupId>
-                                    <artifactId>kpi-logger</artifactId>
-                                </aspectLibrary>
-                            </aspectLibraries>
-							<weaveDirectories>
-								<weaveDirectory>${project.build.directory}/unwoven-classes</weaveDirectory>
-							</weaveDirectories>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-	
 </project>
