@@ -16,8 +16,6 @@
     <modules>
         <module>activation</module>
         <module>mail</module>
-        <module>stax-api</module>
-        <module>jaxb-api</module>
         <module>commons-codec</module>
         <module>commons-httpclient</module>
         <module>commons-configuration</module>
