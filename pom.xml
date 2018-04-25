@@ -25,8 +25,6 @@
 		<osgi.service.http.port>8181</osgi.service.http.port>
 		<nexus.port>443</nexus.port>
 
-		<activation.version>1.1</activation.version>
-		<osgi.activation.version>${activation.version}-${project.parent.version}</osgi.activation.version>
 		<antlr.version>2.7.7</antlr.version>
 		<osgi.antlr.version>${antlr.version}-${project.parent.version}</osgi.antlr.version>
 		<antlr-runtime.version>3.2</antlr-runtime.version>
@@ -61,7 +59,6 @@
 		<osgi.inject.version>${inject.version}-${project.parent.version}</osgi.inject.version>
 		<cxf.version>3.1.13</cxf.version>
 		<javax.mail.version>1.4.4</javax.mail.version>
-		<osgi.javax.mail.version>${javax.mail.version}-${project.parent.version}</osgi.javax.mail.version>
 		<mysema-codegen.version>0.4.9</mysema-codegen.version>
 		<osgi.mysema-codegen.version>${mysema-codegen.version}-${project.parent.version}</osgi.mysema-codegen.version>
 		<netty.version>4.0.33.Final</netty.version>

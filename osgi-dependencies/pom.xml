@@ -14,8 +14,6 @@
     <name>Cumulocity Dependencies :: OSGi Dependencies</name>
 
     <modules>
-        <module>activation</module>
-        <module>mail</module>
         <module>commons-codec</module>
         <module>commons-httpclient</module>
         <module>commons-configuration</module>
