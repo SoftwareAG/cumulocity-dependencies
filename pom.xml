@@ -30,7 +30,6 @@
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
 		<commons-codec.version>1.10</commons-codec.version>
-		<osgi.commons-codec.version>${commons-codec.version}-${project.parent.version}</osgi.commons-codec.version>
 		<commons-configuration.version>1.7</commons-configuration.version>
 		<osgi.commons-configuration.version>${commons-configuration.version}-${project.parent.version}</osgi.commons-configuration.version>
 		<commons-httpclient.version>3.1</commons-httpclient.version>

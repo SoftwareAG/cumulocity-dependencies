@@ -45,9 +45,9 @@
             <version>1.6.1</version>
         </dependency>
         <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>${osgi.commons-codec.version}</version>
+            <version>${commons-codec.version}</version>
         </dependency>
     </dependencies>
 	
