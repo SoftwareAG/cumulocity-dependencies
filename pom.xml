@@ -27,8 +27,6 @@
 
 		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
 		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
-		<aspectj.version>1.7.4</aspectj.version>
-		<osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
 		<collections-generic.version>4.01</collections-generic.version>
@@ -135,11 +133,6 @@
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
 				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjrt</artifactId>
-				<version>${aspectj.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.easytesting</groupId>

@@ -24,8 +24,6 @@
         <module>json-path</module>
         <module>json-smart</module>
         <module>super-csv</module>
-        <module>aspectjrt</module>
-        <module>aspectjweaver</module>
         <module>httpcore</module>
         <module>httpclient</module>
         <module>httpclient-cache</module>
