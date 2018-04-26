@@ -20,21 +20,12 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>net.sourceforge.collections</groupId>
-                    <artifactId>collections-generic</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>net.sourceforge.findbugs</groupId>
                     <artifactId>jsr305</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>collections-generic</artifactId>
-            <version>${osgi.collections-generic.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

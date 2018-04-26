@@ -29,8 +29,6 @@
 		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
-		<collections-generic.version>4.01</collections-generic.version>
-		<osgi.collections-generic.version>${collections-generic.version}-${project.parent.version}</osgi.collections-generic.version>
 		<commons-codec.version>1.10</commons-codec.version>
 		<osgi.commons-codec.version>${commons-codec.version}-${project.parent.version}</osgi.commons-codec.version>
 		<commons-configuration.version>1.7</commons-configuration.version>

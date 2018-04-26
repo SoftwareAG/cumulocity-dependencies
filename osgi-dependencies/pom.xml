@@ -32,7 +32,6 @@
         <module>postgresql-connector</module>
         <module>dozer</module>
         <module>inject</module>
-        <module>collections-generic</module>
         <module>findbugs-jsr305</module>
         <module>guava</module>
         <module>mysema-codegen</module>
