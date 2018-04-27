@@ -35,7 +35,6 @@
 		<dozer.version>5.4.0</dozer.version>
 		<osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
 		<guava.version>18.0</guava.version>
-		<osgi.guava.version>${guava.version}-${project.parent.version}</osgi.guava.version>
 		<httpclient.version>4.5</httpclient.version>
 		<osgi.httpclient.version>${httpclient.version}-${project.parent.version}</osgi.httpclient.version>
 		<httpcore.version>4.4.1</httpcore.version>
