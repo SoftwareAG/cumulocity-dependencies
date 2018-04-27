@@ -36,9 +36,7 @@
 		<osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
 		<guava.version>18.0</guava.version>
 		<httpclient.version>4.5</httpclient.version>
-		<osgi.httpclient.version>${httpclient.version}-${project.parent.version}</osgi.httpclient.version>
 		<httpcore.version>4.4.1</httpcore.version>
-		<osgi.httpcore.version>${httpcore.version}-${project.parent.version}</osgi.httpcore.version>
 		<inject.version>1</inject.version>
 		<osgi.inject.version>${inject.version}-${project.parent.version}</osgi.inject.version>
 		<cxf.version>3.1.13</cxf.version>
