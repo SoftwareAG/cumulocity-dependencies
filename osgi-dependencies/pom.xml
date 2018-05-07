@@ -26,7 +26,6 @@
 	    <module>libphonenumber</module>
         <module>postgresql-connector</module>
         <module>dozer</module>
-        <module>inject</module>
         <module>mysema-codegen</module>
         <module>mysema-commons-lang</module>
         <module>querydsl-core</module>
