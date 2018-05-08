@@ -21,7 +21,6 @@
         <module>svenson</module>
         <module>json-path</module>
         <module>json-smart</module>
-        <module>super-csv</module>
         <module>log4j-extras</module>
 	    <module>libphonenumber</module>
         <module>postgresql-connector</module>

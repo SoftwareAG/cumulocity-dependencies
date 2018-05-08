@@ -60,7 +60,6 @@
 		<json-smart.version>2.1.0</json-smart.version>
 		<osgi.json-smart.version>${json-smart.version}-${project.parent.version}</osgi.json-smart.version>
 		<super-csv.version>2.1.0</super-csv.version>
-		<osgi.super-csv.version>${super-csv.version}-${project.parent.version}</osgi.super-csv.version>
 		<cometd.version>3.0.10</cometd.version>
 		<osgi.cometd.version>${cometd.version}-${project.parent.version}</osgi.cometd.version>
 		<odata.version>2.0.4</odata.version>
