@@ -25,8 +25,6 @@
 		<osgi.service.http.port>8181</osgi.service.http.port>
 		<nexus.port>443</nexus.port>
 
-		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
-		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
 		<commons-codec.version>1.10</commons-codec.version>
