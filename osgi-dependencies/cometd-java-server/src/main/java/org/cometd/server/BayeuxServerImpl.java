@@ -15,46 +15,28 @@
  */
 package org.cometd.server;
 
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
-
 import org.cometd.bayeux.Channel;
 import org.cometd.bayeux.ChannelId;
 import org.cometd.bayeux.MarkedReference;
 import org.cometd.bayeux.Message;
-import org.cometd.bayeux.server.Authorizer;
-import org.cometd.bayeux.server.BayeuxContext;
-import org.cometd.bayeux.server.BayeuxServer;
+import org.cometd.bayeux.server.*;
 import org.cometd.bayeux.server.ConfigurableServerChannel.Initializer;
 import org.cometd.bayeux.server.ConfigurableServerChannel.ServerChannelListener;
-import org.cometd.bayeux.server.LocalSession;
-import org.cometd.bayeux.server.SecurityPolicy;
-import org.cometd.bayeux.server.ServerChannel;
 import org.cometd.bayeux.server.ServerChannel.MessageListener;
-import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.bayeux.server.ServerMessage.Mutable;
-import org.cometd.bayeux.server.ServerSession;
-import org.cometd.bayeux.server.ServerTransport;
 import org.cometd.common.JSONContext;
 import org.cometd.server.transport.JSONPTransport;
 import org.cometd.server.transport.JSONTransport;
 import org.eclipse.jetty.util.component.AbstractLifeCycle;
-import org.eclipse.jetty.util.thread.ScheduledExecutorScheduler;
-import org.eclipse.jetty.util.thread.Scheduler;
+import org.eclipse.jetty.util.thread.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.SecureRandom;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Options to configure the server are: <dl>
@@ -83,10 +65,11 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
     private final List<String> _allowedTransports = new CopyOnWriteArrayList<String>();
     private final ThreadLocal<AbstractServerTransport> _currentTransport = new ThreadLocal<AbstractServerTransport>();
     private final Map<String, Object> _options = new TreeMap<String, Object>();
-    private final Scheduler _scheduler = new ScheduledExecutorScheduler("BayeuxServer" + hashCode() + " Scheduler", false);
+    private final Timeout _timeout = new Timeout();
     private SecurityPolicy _policy = new DefaultSecurityPolicy();
     private int _logLevel = OFF_LOG_LEVEL;
     private JSONContext.Server _jsonContext;
+    private Timer _timer;
 
     public BayeuxServerImpl() {
         this(DEFAULT_HEARTBEAT_MINUTES);
@@ -152,22 +135,32 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
                 ((AbstractServerTransport)allowedTransport).init();
         }
 
-        _scheduler.start();
-
-        long defaultSweepPeriod = 997;
-        long sweepPeriodOption = getOption("sweepPeriod", defaultSweepPeriod);
-        if (sweepPeriodOption < 0)
-            sweepPeriodOption = defaultSweepPeriod;
-        final long sweepPeriod = sweepPeriodOption;
-        _scheduler.schedule(new Runnable()
+        _timer = new Timer("BayeuxServer@" + hashCode(), true);
+        long tick_interval = getOption("tickIntervalMs", 97);
+        if (tick_interval > 0)
         {
-            @Override
-            public void run()
+            _timer.schedule(new TimerTask()
             {
-                sweep();
-                _scheduler.schedule(this, sweepPeriod, TimeUnit.MILLISECONDS);
-            }
-        }, sweepPeriod, TimeUnit.MILLISECONDS);
+                @Override
+                public void run()
+                {
+                    _timeout.tick(System.currentTimeMillis());
+                }
+            }, tick_interval, tick_interval);
+        }
+
+        long sweep_interval = getOption("sweepIntervalMs", 997);
+        if (sweep_interval > 0)
+        {
+            _timer.schedule(new TimerTask()
+            {
+                @Override
+                public void run()
+                {
+                    sweep();
+                }
+            }, sweep_interval, sweep_interval);
+        }
     }
 
     @Override
@@ -189,7 +182,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
         _transports.clear();
         _allowedTransports.clear();
         _options.clear();
-        _scheduler.stop();
+        _timer.cancel();
     }
 
     protected void initializeMetaChannels()
@@ -249,9 +242,14 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
         debug("Allowed Transports: {}", _allowedTransports);
     }
 
-    public Scheduler.Task schedule(Runnable task, long delay)
+    public void startTimeout(Timeout.Task task, long interval)
     {
-        return _scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);
+        _timeout.schedule(task, interval);
+    }
+
+    public void cancelTimeout(Timeout.Task task)
+    {
+        task.cancel();
     }
 
     public ChannelId newChannelId(String id)
@@ -1031,6 +1029,10 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
         }
     }
 
+    protected boolean canCreateNewSession(){
+        return true;
+    }
+
     protected List<BayeuxServerListener> getListeners()
     {
         return Collections.unmodifiableList(_listeners);
@@ -1206,14 +1208,21 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer
         @Override
         public void onMessage(ServerSessionImpl session, final Mutable message)
         {
-            if (session == null)
-                session = newServerSession();
+
+            ServerMessage.Mutable reply = message.getAssociated();
+            if (session == null) {
+                if(canCreateNewSession()) {
+                    session = newServerSession();
+                } else {
+                    error(reply, "503::Service overloaded");
+                    return;
+                }
+            }
 
             BayeuxContext context = getContext();
             if (context != null)
                 session.setUserAgent(context.getHeader("User-Agent"));
 
-            ServerMessage.Mutable reply = message.getAssociated();
             if (_policy != null && !_policy.canHandshake(BayeuxServerImpl.this, session, message))
             {
                 error(reply, "403::Handshake denied");
