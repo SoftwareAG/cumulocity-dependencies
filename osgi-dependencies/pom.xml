@@ -16,7 +16,7 @@
     <modules>
         <module>commons-configuration</module>
         <module>cometd-java-server2</module>
-        <module>cometd-java-server3</module>
+        <module>cometd-java-server</module>
         <module>cglib-nodep</module>
         <module>svenson</module>
         <module>json-path</module>
