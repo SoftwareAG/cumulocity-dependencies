@@ -63,6 +63,7 @@
                         org/cometd/server/ServerSessionImpl.*,
                         org/cometd/server/transport/AbstractHttpTransport.*,
                         org/cometd/server/transport/AbstractStreamHttpTransport.*,
+                        org/cometd/server/transport/AsyncJSONTransport.*,
                         org/cometd/server/transport/JSONPTransport.*,
                         org/cometd/server/transport/JSONTransport.*
                     </excludes>
