@@ -23,7 +23,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 
 		<osgi.service.http.port>8181</osgi.service.http.port>
-		<nexus.port>443</nexus.port>
+		<nexus.url>http://localhost:8080</nexus.url>
 
 		<activation.version>1.1</activation.version>
 		<osgi.activation.version>${activation.version}-${project.parent.version}</osgi.activation.version>
@@ -433,11 +433,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>snapshot</id>
-			<url>http://localhost:8080/nexus/content/repositories/snapshots/</url>
+			<url>${nexus.url}/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 		<repository>
 			<id>release</id>
-			<url>http://localhost:8080/nexus/content/repositories/releases/</url>
+			<url>${nexus.url}/nexus/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
 	<profiles>
