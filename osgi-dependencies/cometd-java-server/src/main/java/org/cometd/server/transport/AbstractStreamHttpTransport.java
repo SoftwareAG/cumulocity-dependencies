@@ -36,8 +36,8 @@ import java.util.List;
 public abstract class AbstractStreamHttpTransport extends AbstractHttpTransport {
     private static final String SCHEDULER_ATTRIBUTE = "org.cometd.scheduler";
 
-    protected AbstractStreamHttpTransport(BayeuxServerImpl bayeux, String name) {
-        super(bayeux, name);
+    protected AbstractStreamHttpTransport(BayeuxServerImpl bayeux, String name, Integer heartbeatMinutes) {
+        super(bayeux, name, heartbeatMinutes);
     }
 
     @Override
@@ -68,21 +68,23 @@ public abstract class AbstractStreamHttpTransport extends AbstractHttpTransport 
                 handleJSONParseException(request, response, x.getMessage(), x.getCause());
             }
         } else {
-            resume(request, response, null, scheduler.getServerSession(), scheduler.getMetaConnectReply());
+            resume(request, response, null, scheduler);
         }
     }
 
     @Override
-    protected HttpScheduler suspend(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, ServerMessage.Mutable reply, String browserId, long timeout) {
+    protected HttpScheduler suspend(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, ServerMessage.Mutable reply, long timeout) {
         AsyncContext asyncContext = request.startAsync(request, response);
         asyncContext.setTimeout(0);
-        HttpScheduler scheduler = newHttpScheduler(request, response, asyncContext, session, reply, browserId, timeout);
+        HttpScheduler scheduler = newHttpScheduler(request, response, asyncContext, session, reply, timeout);
         request.setAttribute(SCHEDULER_ATTRIBUTE, scheduler);
         return scheduler;
     }
 
-    protected HttpScheduler newHttpScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, String browserId, long timeout) {
-        return new DispatchingLongPollScheduler(request, response, asyncContext, session, reply, browserId, timeout);
+    protected HttpScheduler newHttpScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, long timeout) {
+        final DispatchingLongPollScheduler longPollScheduler = new DispatchingLongPollScheduler(request, response, asyncContext, session, reply, timeout);
+        getSchedulers().add(longPollScheduler);
+        return longPollScheduler;
     }
 
     protected abstract ServerMessage.Mutable[] parseMessages(HttpServletRequest request) throws IOException, ParseException;
@@ -149,16 +151,25 @@ public abstract class AbstractStreamHttpTransport extends AbstractHttpTransport 
             }
 
             endWrite(response, output);
+            _logger.debug("messages sended {} >>> {}", session.getId(), messages);
         } catch (Exception x) {
+            _logger.debug("message delivery failed rollback {} >>> {} ", session.getId(), messages);
             AsyncContext asyncContext = null;
             if (request.isAsyncStarted()) {
                 asyncContext = request.getAsyncContext();
             }
             error(request, response, asyncContext, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            // Checking if messages send failed and if yes we putting back messages back to delivery queue
+            for (ServerMessage message : messages) {
+                session.addMessage(message);
+            }
         }
     }
 
     protected void writeMessage(HttpServletResponse response, ServletOutputStream output, ServerSessionImpl session, ServerMessage message) throws IOException {
+        if (_logger.isDebugEnabled()) {
+            _logger.debug("sending message {} >>> {}", session.getId(), toJSONBytes(message, response.getCharacterEncoding()));
+        }
         output.write(toJSONBytes(message, response.getCharacterEncoding()));
     }
 
@@ -167,8 +178,8 @@ public abstract class AbstractStreamHttpTransport extends AbstractHttpTransport 
     protected abstract void endWrite(HttpServletResponse response, ServletOutputStream output) throws IOException;
 
     protected class DispatchingLongPollScheduler extends LongPollScheduler {
-        public DispatchingLongPollScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, String browserId, long timeout) {
-            super(request, response, asyncContext, session, reply, browserId, timeout);
+        public DispatchingLongPollScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, long timeout) {
+            super(request, response, asyncContext, session, reply, timeout);
         }
 
         protected void dispatch() {

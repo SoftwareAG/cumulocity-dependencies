@@ -88,6 +88,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
     public static final String TRANSPORTS_OPTION = "transports";
     public static final String VALIDATE_MESSAGE_FIELDS_OPTION = "validateMessageFields";
     public static final String BROADCAST_TO_PUBLISHER_OPTION = "broadcastToPublisher";
+    public static final int DEFAULT_HEARTBEAT_MINUTES = 10;
 
     private final Logger _logger = LoggerFactory.getLogger(getClass().getName() + "." + Integer.toHexString(System.identityHashCode(this)));
     private final SecureRandom _random = new SecureRandom();
@@ -105,6 +106,15 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
     private boolean _validation;
     private boolean _broadcastToPublisher;
     private boolean _detailedDump;
+    private int _heartbeatMinutes;
+
+    public BayeuxServerImpl() {
+        this(DEFAULT_HEARTBEAT_MINUTES);
+    }
+
+    public BayeuxServerImpl(int heartbeatMinutes) {
+        this._heartbeatMinutes = heartbeatMinutes;
+    }
 
     @Override
     protected void doStart() throws Exception {
@@ -194,7 +204,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
                     addTransport(transport);
                 }
                 addTransport(newJSONTransport());
-                addTransport(new JSONPTransport(this));
+                addTransport(new JSONPTransport(this, _heartbeatMinutes));
             } else {
                 for (String className : option.split(",")) {
                     ServerTransport transport = newServerTransport(className.trim());
@@ -261,9 +271,9 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             loader.loadClass("javax.servlet.ReadListener");
-            return new AsyncJSONTransport(this);
+            return new AsyncJSONTransport(this, _heartbeatMinutes);
         } catch (Exception x) {
-            return new JSONTransport(this);
+            return new JSONTransport(this, _heartbeatMinutes);
         }
     }
 
@@ -1062,6 +1072,10 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         }
     }
 
+    protected boolean canCreateNewSession(){
+        return true;
+    }
+
     protected void error(Mutable reply, String error) {
         reply.put(Message.ERROR_FIELD, error);
         reply.setSuccessful(false);
@@ -1224,8 +1238,14 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
     private class HandshakeHandler extends HandlerListener {
         @Override
         public void onMessage(ServerSessionImpl session, final Mutable message) {
+            ServerMessage.Mutable reply = message.getAssociated();
             if (session == null) {
-                session = newServerSession();
+                if(canCreateNewSession()) {
+                    session = newServerSession();
+                } else {
+                    error(reply, "503::Service overloaded");
+                    return;
+                }
             }
 
             BayeuxContext context = getContext();
@@ -1233,7 +1253,6 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
                 session.setUserAgent(context.getHeader("User-Agent"));
             }
 
-            Mutable reply = message.getAssociated();
             if (_policy != null && !_policy.canHandshake(BayeuxServerImpl.this, session, message)) {
                 error(reply, "403::Handshake denied");
                 // The user's SecurityPolicy may have customized the response's advice

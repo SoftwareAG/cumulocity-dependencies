@@ -23,6 +23,9 @@ import org.cometd.bayeux.server.ServerSession;
 import org.cometd.server.AbstractServerTransport;
 import org.cometd.server.BayeuxServerImpl;
 import org.cometd.server.ServerSessionImpl;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.Interval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,11 +38,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.security.Principal;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>HTTP ServerTransport base class, used by ServerTransports that use
@@ -49,64 +49,35 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
     public final static String PREFIX = "long-polling";
     public static final String JSON_DEBUG_OPTION = "jsonDebug";
     public static final String MESSAGE_PARAM = "message";
-    public final static String BROWSER_COOKIE_NAME_OPTION = "browserCookieName";
-    public final static String BROWSER_COOKIE_DOMAIN_OPTION = "browserCookieDomain";
-    public final static String BROWSER_COOKIE_PATH_OPTION = "browserCookiePath";
-    public final static String BROWSER_COOKIE_SECURE_OPTION = "browserCookieSecure";
-    public final static String BROWSER_COOKIE_HTTP_ONLY_OPTION = "browserCookieHttpOnly";
-    public final static String MAX_SESSIONS_PER_BROWSER_OPTION = "maxSessionsPerBrowser";
-    public final static String MULTI_SESSION_INTERVAL_OPTION = "multiSessionInterval";
     public final static String AUTOBATCH_OPTION = "autoBatch";
-    public final static String ALLOW_MULTI_SESSIONS_NO_BROWSER_OPTION = "allowMultiSessionsNoBrowser";
     public final static String TRUST_CLIENT_SESSION = "trustClientSession";
 
     protected final Logger _logger = LoggerFactory.getLogger(getClass());
     private final ThreadLocal<HttpServletRequest> _currentRequest = new ThreadLocal<>();
-    private final Map<String, Collection<ServerSessionImpl>> _sessions = new HashMap<>();
-    private final ConcurrentMap<String, AtomicInteger> _browserMap = new ConcurrentHashMap<>();
-    private final Map<String, AtomicInteger> _browserSweep = new ConcurrentHashMap<>();
-    private String _browserCookieName;
-    private String _browserCookieDomain;
-    private String _browserCookiePath;
-    private boolean _browserCookieSecure;
-    private boolean _browserCookieHttpOnly;
-    private int _maxSessionsPerBrowser;
-    private long _multiSessionInterval;
+    private final Collection<LongPollScheduler> _schedulers = new CopyOnWriteArrayList<>();
     private boolean _autoBatch;
-    private boolean _allowMultiSessionsNoBrowser;
     private boolean _trustClientSession;
-    private long _lastSweep;
+    private Integer _heartbeatMinutes;
 
-    protected AbstractHttpTransport(BayeuxServerImpl bayeux, String name) {
+    protected AbstractHttpTransport(BayeuxServerImpl bayeux, String name, Integer heartbeatMinutes) {
         super(bayeux, name);
         setOptionPrefix(PREFIX);
+        this._heartbeatMinutes = heartbeatMinutes;
     }
 
     @Override
     public void init() {
         super.init();
-        _browserCookieName = getOption(BROWSER_COOKIE_NAME_OPTION, "BAYEUX_BROWSER");
-        _browserCookieDomain = getOption(BROWSER_COOKIE_DOMAIN_OPTION, null);
-        _browserCookiePath = getOption(BROWSER_COOKIE_PATH_OPTION, "/");
-        _browserCookieSecure = getOption(BROWSER_COOKIE_SECURE_OPTION, false);
-        _browserCookieHttpOnly = getOption(BROWSER_COOKIE_HTTP_ONLY_OPTION, true);
-        _maxSessionsPerBrowser = getOption(MAX_SESSIONS_PER_BROWSER_OPTION, 1);
-        _multiSessionInterval = getOption(MULTI_SESSION_INTERVAL_OPTION, 2000);
         _autoBatch = getOption(AUTOBATCH_OPTION, true);
-        _allowMultiSessionsNoBrowser = getOption(ALLOW_MULTI_SESSIONS_NO_BROWSER_OPTION, false);
-        _trustClientSession = getOption(TRUST_CLIENT_SESSION, false);
+        _trustClientSession = getOption(TRUST_CLIENT_SESSION, true);
     }
 
-    protected long getMultiSessionInterval() {
-        return _multiSessionInterval;
+    protected Collection<LongPollScheduler> getSchedulers() {
+        return _schedulers;
     }
 
     protected boolean isAutoBatch() {
         return _autoBatch;
-    }
-
-    protected boolean isAllowMultiSessionsNoBrowser() {
-        return _allowMultiSessionsNoBrowser;
     }
 
     public void setCurrentRequest(HttpServletRequest request) {
@@ -121,12 +92,11 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
 
     public abstract void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 
-    protected abstract HttpScheduler suspend(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, ServerMessage.Mutable reply, String browserId, long timeout);
+    protected abstract HttpScheduler suspend(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, ServerMessage.Mutable reply, long timeout);
 
     protected abstract void write(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, boolean startInterval, List<ServerMessage> messages, ServerMessage.Mutable[] replies);
 
     protected void processMessages(HttpServletRequest request, HttpServletResponse response, ServerMessage.Mutable[] messages) throws IOException {
-        Collection<ServerSessionImpl> sessions = findCurrentSessions(request);
         ServerSessionImpl session = null;
         boolean autoBatch = isAutoBatch();
         boolean batch = false;
@@ -140,18 +110,8 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
                     _logger.debug("Processing {}", message);
                 }
 
-                // Try to find the session.
                 String clientId = message.getClientId();
-                if (sessions != null) {
-                    if (clientId != null) {
-                        for (ServerSessionImpl s : sessions) {
-                            if (s.getId().equals(clientId)) {
-                                session = s;
-                                break;
-                            }
-                        }
-                    }
-                }
+                _logger.debug("recived message from {} >> {}", clientId, message.getJSON());
 
                 if (session == null && _trustClientSession) {
                     session = (ServerSessionImpl)getBayeux().getSession(clientId);
@@ -210,56 +170,8 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
         }
     }
 
-    protected Collection<ServerSessionImpl> findCurrentSessions(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (_browserCookieName.equals(cookie.getName())) {
-                    synchronized (_sessions) {
-                        return _sessions.get(cookie.getValue());
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     protected ServerMessage.Mutable processMetaHandshake(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, ServerMessage.Mutable message) {
         ServerMessage.Mutable reply = bayeuxServerHandle(session, message);
-        if (reply != null) {
-            session = (ServerSessionImpl)getBayeux().getSession(reply.getClientId());
-            if (session != null) {
-                String id = findBrowserId(request);
-                if (id == null) {
-                    id = setBrowserId(request, response);
-                }
-                final String browserId = id;
-
-                synchronized (_sessions) {
-                    Collection<ServerSessionImpl> sessions = _sessions.get(browserId);
-                    if (sessions == null) {
-                        // The list is modified inside sync blocks, but
-                        // iterated outside, so it must be concurrent.
-                        sessions = new CopyOnWriteArrayList<>();
-                        _sessions.put(browserId, sessions);
-                    }
-                    sessions.add(session);
-                }
-
-                session.addListener(new ServerSession.RemoveListener() {
-                    @Override
-                    public void removed(ServerSession session, boolean timeout) {
-                        synchronized (_sessions) {
-                            Collection<ServerSessionImpl> sessions = _sessions.get(browserId);
-                            sessions.remove(session);
-                            if (sessions.isEmpty()) {
-                                _sessions.remove(browserId);
-                            }
-                        }
-                    }
-                });
-            }
-        }
         return reply;
     }
 
@@ -274,53 +186,21 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
         ServerMessage.Mutable reply = bayeuxServerHandle(session, message);
         if (reply != null && session != null) {
             if (!session.hasNonLazyMessages() && reply.isSuccessful()) {
-                // Detect if we have multiple sessions from the same browser.
-                // Note that CORS requests may not send cookies, so we need to
-                // handle them specially: they always have the Origin header.
-                String browserId = findBrowserId(request);
-                boolean allowSuspendConnect;
-                if (browserId != null) {
-                    allowSuspendConnect = incBrowserId(browserId, session);
-                } else {
-                    allowSuspendConnect = isAllowMultiSessionsNoBrowser() || request.getHeader("Origin") != null;
-                }
+                long timeout = session.calculateTimeout(getTimeout());
 
-                if (allowSuspendConnect) {
-                    long timeout = session.calculateTimeout(getTimeout());
+                // Support old clients that do not send advice:{timeout:0} on the first connect
+                if (timeout > 0 && wasConnected && session.isConnected()) {
+                    // Between the last time we checked for messages in the queue
+                    // (which was false, otherwise we would not be in this branch)
+                    // and now, messages may have been added to the queue.
+                    // We will suspend anyway, but setting the scheduler on the
+                    // session will decide atomically if we need to resume or not.
 
-                    // Support old clients that do not send advice:{timeout:0} on the first connect
-                    if (timeout > 0 && wasConnected && session.isConnected()) {
-                        // Between the last time we checked for messages in the queue
-                        // (which was false, otherwise we would not be in this branch)
-                        // and now, messages may have been added to the queue.
-                        // We will suspend anyway, but setting the scheduler on the
-                        // session will decide atomically if we need to resume or not.
-
-                        HttpScheduler scheduler = suspend(request, response, session, reply, browserId, timeout);
-                        metaConnectSuspended(request, response, scheduler.getAsyncContext(), session);
-                        // Setting the scheduler may resume the /meta/connect
-                        session.setScheduler(scheduler);
-                        reply = null;
-                    } else {
-                        decBrowserId(browserId, session);
-                    }
-                } else {
-                    // There are multiple sessions from the same browser
-                    Map<String, Object> advice = reply.getAdvice(true);
-
-                    if (browserId != null) {
-                        advice.put("multiple-clients", true);
-                    }
-
-                    long multiSessionInterval = getMultiSessionInterval();
-                    if (multiSessionInterval > 0) {
-                        advice.put(Message.RECONNECT_FIELD, Message.RECONNECT_RETRY_VALUE);
-                        advice.put(Message.INTERVAL_FIELD, multiSessionInterval);
-                    } else {
-                        advice.put(Message.RECONNECT_FIELD, Message.RECONNECT_NONE_VALUE);
-                        reply.setSuccessful(false);
-                    }
-                    session.reAdvise();
+                    HttpScheduler scheduler = suspend(request, response, session, reply, timeout);
+                    metaConnectSuspended(request, response, scheduler.getAsyncContext(), session);
+                    // Setting the scheduler may resume the /meta/connect
+                    session.setScheduler(scheduler);
+                    reply = null;
                 }
             }
 
@@ -354,8 +234,10 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
         write(request, response, session, startInterval, messages, replies);
     }
 
-    protected void resume(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply) {
+    protected void resume(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, LongPollScheduler scheduler) {
+        ServerSessionImpl session = scheduler.getServerSession();
         metaConnectResumed(request, response, asyncContext, session);
+        ServerMessage.Mutable reply = scheduler.getMetaConnectReply();
         Map<String, Object> advice = session.takeAdvice(this);
         if (advice != null) {
             reply.put(Message.ADVICE_FIELD, advice);
@@ -373,103 +255,6 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
             return new HttpContext(request);
         }
         return null;
-    }
-
-    protected String findBrowserId(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (_browserCookieName.equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-        return null;
-    }
-
-    protected String setBrowserId(HttpServletRequest request, HttpServletResponse response) {
-        StringBuilder builder = new StringBuilder();
-        while (builder.length() < 16) {
-            builder.append(Long.toString(getBayeux().randomLong(), 36));
-        }
-        builder.setLength(16);
-        String browserId = builder.toString();
-        Cookie cookie = new Cookie(_browserCookieName, browserId);
-        if (_browserCookieDomain != null) {
-            cookie.setDomain(_browserCookieDomain);
-        }
-        cookie.setPath(_browserCookiePath);
-        cookie.setSecure(_browserCookieSecure);
-        cookie.setHttpOnly(_browserCookieHttpOnly);
-        cookie.setMaxAge(-1);
-        response.addCookie(cookie);
-        return browserId;
-    }
-
-    /**
-     * Increment the browser ID count.
-     *
-     * @param browserId the browser ID to increment the count for
-     * @param session   the session that cause the browser ID increment
-     * @return true if the browser ID count is below the max sessions per browser value.
-     * If false is returned, the count is not incremented.
-     */
-    protected boolean incBrowserId(String browserId, ServerSession session) {
-        if (_maxSessionsPerBrowser < 0) {
-            return true;
-        }
-        if (_maxSessionsPerBrowser == 0) {
-            return false;
-        }
-
-        AtomicInteger count = _browserMap.get(browserId);
-        if (count == null) {
-            AtomicInteger newCount = new AtomicInteger();
-            count = _browserMap.putIfAbsent(browserId, newCount);
-            if (count == null) {
-                count = newCount;
-            }
-        }
-
-        // Increment
-        int sessions = count.incrementAndGet();
-
-        // If was zero, remove from the sweep
-        if (sessions == 1) {
-            _browserSweep.remove(browserId);
-        }
-
-        boolean result = true;
-        if (sessions > _maxSessionsPerBrowser) {
-            sessions = count.decrementAndGet();
-            result = false;
-        }
-
-        if (_logger.isDebugEnabled()) {
-            _logger.debug("> client {} {} sessions from {}", browserId, sessions, session);
-        }
-
-        return result;
-    }
-
-    protected void decBrowserId(String browserId, ServerSession session) {
-        if (_maxSessionsPerBrowser <= 0 || browserId == null) {
-            return;
-        }
-
-        int sessions = -1;
-        AtomicInteger count = _browserMap.get(browserId);
-        if (count != null) {
-            sessions = count.decrementAndGet();
-        }
-
-        if (sessions == 0) {
-            _browserSweep.put(browserId, new AtomicInteger(0));
-        }
-
-        if (_logger.isDebugEnabled()) {
-            _logger.debug("< client {} {} sessions for {}", browserId, sessions, session);
-        }
     }
 
     protected void handleJSONParseException(HttpServletRequest request, HttpServletResponse response, String json, Throwable exception) throws IOException {
@@ -513,29 +298,9 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
      * Sweeps the transport for old Browser IDs
      */
     protected void sweep() {
-        long now = System.currentTimeMillis();
-        long elapsed = now - _lastSweep;
-        if (_lastSweep > 0 && elapsed > 0) {
-            // Calculate the maximum sweeps that a browser ID can be 0 as the
-            // maximum interval time divided by the sweep period, doubled for safety
-            int maxSweeps = (int)(2 * getMaxInterval() / elapsed);
-
-            for (Map.Entry<String, AtomicInteger> entry : _browserSweep.entrySet()) {
-                AtomicInteger count = entry.getValue();
-                // if the ID has been in the sweep map for 3 sweeps
-                if (count != null && count.incrementAndGet() > maxSweeps) {
-                    String key = entry.getKey();
-                    // remove it from both browser Maps
-                    if (_browserSweep.remove(key) == count && _browserMap.get(key).get() == 0) {
-                        _browserMap.remove(key);
-                        if (_logger.isDebugEnabled()) {
-                            _logger.debug("Swept browserId {}", key);
-                        }
-                    }
-                }
-            }
+        for (LongPollScheduler scheduler : _schedulers) {
+            scheduler.validate();
         }
-        _lastSweep = now;
     }
 
     private static class HttpContext implements BayeuxContext {
@@ -668,26 +433,30 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
         public AsyncContext getAsyncContext();
     }
 
-    protected abstract class LongPollScheduler implements Runnable, HttpScheduler, AsyncListener {
+    protected abstract class LongPollScheduler implements Runnable, HttpScheduler, AsyncListener, ServerSession.RemoveListener {
+        private final Logger log = LoggerFactory.getLogger(getClass());
         private final HttpServletRequest request;
         private final HttpServletResponse response;
         private final AsyncContext asyncContext;
         private final ServerSessionImpl session;
         private final ServerMessage.Mutable reply;
-        private final String browserId;
         private final org.eclipse.jetty.util.thread.Scheduler.Task task;
         private final AtomicBoolean cancel;
+        private Duration validTime;
+        private Interval lastValidation;
 
-        protected LongPollScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, String browserId, long timeout) {
+        protected LongPollScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, long timeout) {
             this.request = request;
             this.response = response;
             this.asyncContext = asyncContext;
             this.session = session;
+            this.session.addListener(this);
             this.reply = reply;
-            this.browserId = browserId;
             asyncContext.addListener(this);
             this.task = getBayeux().schedule(this, timeout);
             this.cancel = new AtomicBoolean();
+            validTime = Duration.standardMinutes(_heartbeatMinutes);
+            this.lastValidation = new Interval(new DateTime(), validTime);
         }
 
         @Override
@@ -713,11 +482,47 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
             return reply;
         }
 
+        public void validate() {
+            if (!lastValidation.containsNow()) {
+                log.debug("validating session {}", session.getId());
+                try {
+                    if (!isValid()) {
+                        log.debug("long poll interrupted session {}", session.getId());
+                        cancel();
+                    }
+                    lastValidation = new Interval(new DateTime(), validTime);
+                } catch (Exception e) {
+                    log.debug("validation error", e);
+                }
+            }
+        }
+
+        private boolean isValid() {
+            log.debug("validating session {}  ", session.getId());
+            final ServletResponse response = asyncContext.getResponse();
+            try {
+                response.getOutputStream().print(" ");
+                response.getOutputStream().flush();
+                return true;
+            } catch (IOException e) {
+                log.debug("session {} validation failed", session.getId());
+                return false;
+            }
+
+        }
+
+        private void cleanup() {
+            session.setScheduler(null);
+            _schedulers.remove(this);
+            session.removeListener(this);
+            session.deactivate();
+        }
+
         @Override
         public void schedule() {
             if (cancelTimeout()) {
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Resuming /meta/connect after schedule");
+                if (log.isDebugEnabled()) {
+                    log.debug("Resuming /meta/connect after schedule");
                 }
                 resume();
             }
@@ -725,11 +530,22 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
 
         @Override
         public void cancel() {
-            if (cancelTimeout()) {
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Duplicate /meta/connect, cancelling {}", reply);
+            log.debug("aborting {} - {}", session.getId(), this);
+            cleanup();
+            if (cancelTimeout() && asyncContext != null) {
+                final HttpServletResponse response = (HttpServletResponse)asyncContext.getResponse();
+                try {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getOutputStream().print("");
+                    response.flushBuffer();
+                } catch (IOException e) {
+                    log.debug("Cancel for {} failed", session.getId());
                 }
-                error(HttpServletResponse.SC_REQUEST_TIMEOUT);
+                try {
+                    asyncContext.complete();
+                } catch (Exception x) {
+                    log.trace("", x);
+                }
             }
         }
 
@@ -746,16 +562,16 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
         public void run() {
             if (cancelTimeout()) {
                 session.setScheduler(null);
-                if (_logger.isDebugEnabled()) {
-                    _logger.debug("Resuming /meta/connect after timeout");
+                if (log.isDebugEnabled()) {
+                    log.debug("Resuming /meta/connect after timeout");
                 }
                 resume();
             }
         }
 
         private void resume() {
-            decBrowserId(browserId, session);
             dispatch();
+            cleanup();
         }
 
         @Override
@@ -764,10 +580,12 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
 
         @Override
         public void onTimeout(AsyncEvent event) throws IOException {
+            session.setScheduler(null);
         }
 
         @Override
         public void onComplete(AsyncEvent asyncEvent) throws IOException {
+            cleanup();
         }
 
         @Override
@@ -775,11 +593,59 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
             error(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
+        @Override
+        public void removed(ServerSession session, boolean timeout) {
+            cleanup();
+        }
+
         protected abstract void dispatch();
 
         protected void error(int code) {
-            decBrowserId(browserId, session);
             AbstractHttpTransport.this.error(getRequest(), getResponse(), getAsyncContext(), code);
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + getOuterType().hashCode();
+            result = prime * result + ((asyncContext == null) ? 0 : asyncContext.hashCode());
+            result = prime * result + ((reply == null) ? 0 : reply.hashCode());
+            result = prime * result + ((session == null) ? 0 : session.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            LongPollScheduler other = (LongPollScheduler) obj;
+            if (!getOuterType().equals(other.getOuterType()))
+                return false;
+            if (asyncContext == null) {
+                if (other.asyncContext != null)
+                    return false;
+            } else if (!asyncContext.equals(other.asyncContext))
+                return false;
+            if (reply == null) {
+                if (other.reply != null)
+                    return false;
+            } else if (!reply.equals(other.reply))
+                return false;
+            if (session == null) {
+                if (other.session != null)
+                    return false;
+            } else if (!session.equals(other.session))
+                return false;
+            return true;
+        }
+
+        private AbstractHttpTransport getOuterType() {
+            return AbstractHttpTransport.this;
         }
     }
 }

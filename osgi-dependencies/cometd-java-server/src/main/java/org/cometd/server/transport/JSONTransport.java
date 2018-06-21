@@ -32,8 +32,8 @@ public class JSONTransport extends AbstractStreamHttpTransport {
     private boolean _jsonDebug = false;
     private String _mimeType = "application/json;charset=UTF-8";
 
-    public JSONTransport(BayeuxServerImpl bayeux) {
-        super(bayeux, NAME);
+    public JSONTransport(BayeuxServerImpl bayeux, Integer heartbeatMinutes) {
+        super(bayeux, NAME, heartbeatMinutes);
         setOptionPrefix(PREFIX);
     }
 

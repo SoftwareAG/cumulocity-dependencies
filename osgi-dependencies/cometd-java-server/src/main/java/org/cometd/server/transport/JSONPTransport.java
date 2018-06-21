@@ -40,8 +40,8 @@ public class JSONPTransport extends AbstractStreamHttpTransport {
     private String _callbackParam = "jsonp";
     private int _callbackMaxLength = 64;
 
-    public JSONPTransport(BayeuxServerImpl bayeux) {
-        super(bayeux, NAME);
+    public JSONPTransport(BayeuxServerImpl bayeux, Integer heartbeatMinutes) {
+        super(bayeux, NAME, heartbeatMinutes);
         setOptionPrefix(PREFIX);
     }
 

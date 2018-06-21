@@ -39,8 +39,8 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
         }
     };
 
-    public AsyncJSONTransport(BayeuxServerImpl bayeux) {
-        super(bayeux, NAME);
+    public AsyncJSONTransport(BayeuxServerImpl bayeux, Integer heartbeatMinutes) {
+        super(bayeux, NAME, heartbeatMinutes);
         setOptionPrefix(PREFIX);
     }
 
@@ -67,13 +67,15 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
         input.setReadListener(reader);
     }
 
-    protected HttpScheduler suspend(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, ServerMessage.Mutable reply, String browserId, long timeout) {
+    protected HttpScheduler suspend(HttpServletRequest request, HttpServletResponse response, ServerSessionImpl session, ServerMessage.Mutable reply, long timeout) {
         AsyncContext asyncContext = request.getAsyncContext();
-        return newHttpScheduler(request, response, asyncContext, session, reply, browserId, timeout);
+        return newHttpScheduler(request, response, asyncContext, session, reply, timeout);
     }
 
-    protected HttpScheduler newHttpScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, String browserId, long timeout) {
-        return new AsyncLongPollScheduler(request, response, asyncContext, session, reply, browserId, timeout);
+    protected HttpScheduler newHttpScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, long timeout) {
+        final AsyncLongPollScheduler longPollScheduler = new AsyncLongPollScheduler(request, response, asyncContext, session, reply, timeout);
+        getSchedulers().add(longPollScheduler);
+        return longPollScheduler;
     }
 
     @Override
@@ -267,6 +269,7 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
             }
 
             asyncContext.complete();
+            _logger.debug("messages sended {} >>> {}", session.getId(), messages);
         }
 
         private boolean writeMessages(ServletOutputStream output) throws IOException {
@@ -288,6 +291,9 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
                                 output.write(',');
                             } else {
                                 ServerMessage message = messages.get(messageIndex);
+                                if (_logger.isDebugEnabled()) {
+                                    _logger.debug("sending message {} >>> {}", session.getId(), toJSONBytes(message, "UTF-8"));
+                                }
                                 output.write(toJSONBytes(message, "UTF-8"));
                                 ++messageIndex;
                                 needsComma = messageIndex < size;
@@ -297,6 +303,11 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
                 }
                 return false;
             } catch (Throwable x) {
+                _logger.debug("message delivery failed rollback {} >>> {} ", session.getId(), messages);
+                // Checking if messages send failed and if yes we putting back messages back to delivery queue
+                for (ServerMessage message : messages) {
+                    session.addMessage(message);
+                }
                 // Start the interval timeout also in case of
                 // exceptions to ensure the session can be swept.
                 startInterval();
@@ -350,15 +361,15 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
     }
 
     private class AsyncLongPollScheduler extends LongPollScheduler {
-        private AsyncLongPollScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, String browserId, long timeout) {
-            super(request, response, asyncContext, session, reply, browserId, timeout);
+        private AsyncLongPollScheduler(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, ServerSessionImpl session, ServerMessage.Mutable reply, long timeout) {
+            super(request, response, asyncContext, session, reply, timeout);
         }
 
         @Override
         protected void dispatch() {
             // Direct call to resume() to write the messages in the queue and the replies.
             // Since the write is async, we will never block here and thus never delay other sessions.
-            resume(getRequest(), getResponse(), getAsyncContext(), getServerSession(), getMetaConnectReply());
+            resume(getRequest(), getResponse(), getAsyncContext(), this);
         }
     }
 }
