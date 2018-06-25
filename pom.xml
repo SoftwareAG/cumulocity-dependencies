@@ -38,8 +38,6 @@
 		<cxf.version>3.1.13</cxf.version>
 		<javax.mail.version>1.4.4</javax.mail.version>
 		<netty.version>4.0.33.Final</netty.version>
-		<eclipselink.version>2.2.1</eclipselink.version>
-		<osgi.eclipselink.version>${eclipselink.version}-${project.parent.version}</osgi.eclipselink.version>
 		<spring.dm.version>1.2.1</spring.dm.version>
 		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
 		<spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
@@ -85,7 +83,6 @@
 	<modules>
         <module>cumulocity-sdk-resource-bundles</module>
 		<module>osgi-dependencies</module>
-		<module>osgi-features</module>
 		<module>cumulocity-base-karaf</module>
 		<module>maven-plugins</module>
 	</modules>
@@ -302,32 +299,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<version>3.0.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>aspectj-maven-plugin</artifactId>
-					<version>1.7</version>
-					<executions>
-						<execution>
-							<id>kpi-weaver</id>
-							<phase>process-sources</phase>
-							<goals>
-								<goal>compile</goal>
-							</goals>
-							<configuration>
-								<complianceLevel>1.7</complianceLevel>
-								<showWeaveInfo>true</showWeaveInfo>
-								<verbose>true</verbose>
-							</configuration>
-						</execution>
-					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>org.aspectj</groupId>
-							<artifactId>aspectjtools</artifactId>
-							<version>${aspectj.version}</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
