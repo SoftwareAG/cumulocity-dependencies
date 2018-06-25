@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>8.12.0-SNAPSHOT</version>
+	<version>9.10.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -23,7 +23,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 
 		<osgi.service.http.port>8181</osgi.service.http.port>
-		<nexus.port>443</nexus.port>
+		<nexus.url>http://localhost:8080</nexus.url>
 
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
@@ -37,17 +37,9 @@
 		<httpcore.version>4.4.1</httpcore.version>
 		<cxf.version>3.1.13</cxf.version>
 		<javax.mail.version>1.4.4</javax.mail.version>
-		<mysema-codegen.version>0.4.9</mysema-codegen.version>
-		<osgi.mysema-codegen.version>${mysema-codegen.version}-${project.parent.version}</osgi.mysema-codegen.version>
 		<netty.version>4.0.33.Final</netty.version>
-		<mysema-commons.version>0.2.3</mysema-commons.version>
-		<osgi.mysema-commons.version>${mysema-commons.version}-${project.parent.version}</osgi.mysema-commons.version>
 		<eclipselink.version>2.2.1</eclipselink.version>
 		<osgi.eclipselink.version>${eclipselink.version}-${project.parent.version}</osgi.eclipselink.version>
-		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
-		<osgi.postgresql.version>${postgresql.version}-${project.parent.version}</osgi.postgresql.version>
-		<querydsl.version>2.7.3</querydsl.version>
-		<osgi.querydsl.version>${querydsl.version}-${project.parent.version}</osgi.querydsl.version>
 		<spring.dm.version>1.2.1</spring.dm.version>
 		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
 		<spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
@@ -74,6 +66,7 @@
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-lang.version>2.6</commons-lang.version>
         <commons-io.version>2.4</commons-io.version>
+        <commons-compress.version>1.14</commons-compress.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
 		<jetty.version>9.2.19.v20160908</jetty.version>
 		<karaf.version>4.0.9</karaf.version>
@@ -92,7 +85,6 @@
 	<modules>
         <module>cumulocity-sdk-resource-bundles</module>
 		<module>osgi-dependencies</module>
-		<module>osgi-fragments</module>
 		<module>osgi-features</module>
 		<module>cumulocity-base-karaf</module>
 		<module>maven-plugins</module>
@@ -397,11 +389,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>snapshot</id>
-			<url>http://localhost:8080/nexus/content/repositories/snapshots/</url>
+			<url>${nexus.url}/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 		<repository>
 			<id>release</id>
-			<url>http://localhost:8080/nexus/content/repositories/releases/</url>
+			<url>${nexus.url}/nexus/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
 	<profiles>

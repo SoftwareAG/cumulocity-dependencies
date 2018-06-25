@@ -57,6 +57,9 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
     @Parameter(defaultValue = "${basedir}/src/main/resources/license/mapper.properties")
     private File mapperProperties;
 
+    @Parameter(defaultValue = "false")
+    private boolean validateLicenses;
+
     @Parameter(defaultValue = "${project}", readonly = true)
     private MavenProject project;
 
@@ -106,7 +109,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         thirdPartyLicenseFilePath.mkdirs();
         // TODO refactor as service and use plexus dependency injection
         Licenses.save(getLog(), thirdPartyFile(), jars, new JarTo3PartyInformation());
-        if (pluginContext.getBooleanProperty("validate", false)) {
+        if (validateLicenses) {
             // TODO refactor as service and use plexus dependency injection
             Validator.validate(getLog(), jars);
         }

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
 		<artifactId>cumulocity-dependencies</artifactId>
-		<version>8.12.0-SNAPSHOT</version>
+		<version>9.10.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -17,8 +17,6 @@
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
 	<modules>
-		<module>postgresql-features</module>
-		<module>eclipselink-features</module>
 	</modules>
 
 	<properties>

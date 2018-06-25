@@ -15,19 +15,24 @@ import com.google.common.base.Function;
 public class JarTo3PartyInformation implements Function<Jar, String> {
     
     private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s, %s";
+    private static final String[] HEADERS = new String[]{"fileName", "groupId", "artifactId",
+            "version", "copyright", "license", "usOrigin"};
     
     @Nullable
     @Override
     public String apply(Jar jar) {
         return String.format(LINE_FORMAT, (Object[]) getPrintableProperties(jar));
     }
-    
-    
-    public static List<MissingJarProperty> getMissingJarProperties(Jar jar) {
+
+    public static String getHeadersLine() {
+        return String.format(LINE_FORMAT, HEADERS);
+    }
+
+    public static List<MissingJarProperty> getMissingRequiredJarProperties(Jar jar) {
         List<MissingJarProperty> missings = new ArrayList<MissingJarProperty>();
-        for (JarProperty property : getPrintableProperties(jar)) {
-            checkProperty(missings, jar.getFileName(), property);            
-        }
+        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getFileName(), HEADERS[0]));
+        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getCopyright(), HEADERS[4]));
+        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getLicense(), HEADERS[5]));
         return missings;
     }
     
@@ -41,17 +46,17 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
     private static  JarProperty[] getPrintableProperties(Jar jar) {
         return  new JarProperty[] {
             // @formatter:off
-            new JarProperty(jar.getFileName(), "fileName"),
-            new JarProperty(jar.getGroupId(), "groupId"),
-            new JarProperty(jar.getArtifactId(), "artifactId"),
-            new JarProperty(jar.getVersion(), "version"),
-            new JarProperty(jar.getCopyright(), "copyright"),
-            new JarProperty(jar.getLicense(), "license"),
-            new JarProperty(jar.getUsOrigin(), "usOrigin")
+            new JarProperty(jar.getFileName(), HEADERS[0]),
+            new JarProperty(jar.getGroupId(), HEADERS[1]),
+            new JarProperty(jar.getArtifactId(), HEADERS[2]),
+            new JarProperty(jar.getVersion(), HEADERS[3]),
+            new JarProperty(jar.getCopyright(), HEADERS[4]),
+            new JarProperty(jar.getLicense(), HEADERS[5]),
+            new JarProperty(jar.getUsOrigin(), HEADERS[6])
             // @formatter:on
         };
     }
-    
+
     static class JarProperty {
         
         private final String value;
@@ -72,7 +77,15 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
 
         @Override
         public String toString() {
-            return value == null ? "" : value.trim();
+            return value == null ? "" : escapeCommas(value.trim());
+        }
+
+        private String escapeCommas(String value) {
+            if (value.contains(",")) {
+                value = value.replace("\"", "");
+                return "\"" + value + "\"";
+            }
+            return value;
         }
     }
     

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>8.12.0-SNAPSHOT</version>
+        <version>9.10.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -21,13 +21,7 @@
         <module>json-path</module>
         <module>json-smart</module>
 	    <module>libphonenumber</module>
-        <module>postgresql-connector</module>
         <module>dozer</module>
-        <module>mysema-codegen</module>
-        <module>mysema-commons-lang</module>
-        <module>querydsl-core</module>
-        <module>querydsl-sql</module>
-        <module>querydsl-jpa</module>
         <module>spring-dm</module>
         <module>odata</module>
         <module>moquette-dependencies</module>
