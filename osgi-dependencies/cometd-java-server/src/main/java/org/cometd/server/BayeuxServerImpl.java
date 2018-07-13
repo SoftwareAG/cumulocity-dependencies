@@ -602,7 +602,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
             channel = getServerChannel(channelName);
             if (channel == null) {
                 if (session == null) {
-                    unknownSession(reply);
+                    unknownSession(message, reply);
                 } else {
                     Authorizer.Result creationResult = isCreationAuthorized(session, message, channelName);
                     if (creationResult instanceof Authorizer.Result.Denied) {
@@ -617,13 +617,13 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
             if (channel != null) {
                 if (channel.isMeta()) {
                     if (session == null && !Channel.META_HANDSHAKE.equals(channelName)) {
-                        unknownSession(reply);
+                        unknownSession(message, reply);
                     } else {
                         doPublish(session, channel, message);
                     }
                 } else {
                     if (session == null) {
-                        unknownSession(reply);
+                        unknownSession(message, reply);
                     } else {
                         Authorizer.Result publishResult = isPublishAuthorized(channel, session, message);
                         if (publishResult instanceof Authorizer.Result.Denied) {
@@ -1063,12 +1063,18 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         return _broadcastToPublisher;
     }
 
-    protected void unknownSession(Mutable reply) {
+    protected void unknownSession(Mutable message, Mutable reply) {
         error(reply, "402::Unknown client");
         if (Channel.META_HANDSHAKE.equals(reply.getChannel()) || Channel.META_CONNECT.equals(reply.getChannel())) {
             Map<String, Object> advice = reply.getAdvice(true);
             advice.put(Message.RECONNECT_FIELD, Message.RECONNECT_HANDSHAKE_VALUE);
             advice.put(Message.INTERVAL_FIELD, 0L);
+        }
+        if (Channel.META_SUBSCRIBE.equals(reply.getChannel()) || Channel.META_UNSUBSCRIBE.equals(reply.getChannel())) {
+            Object subscriptionField = message.get(Message.SUBSCRIPTION_FIELD);
+            if (subscriptionField != null) {
+                reply.put(Message.SUBSCRIPTION_FIELD, subscriptionField);
+            }
         }
     }
 
@@ -1280,7 +1286,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
             Mutable reply = message.getAssociated();
 
             if (isSessionUnknown(session)) {
-                unknownSession(reply);
+                unknownSession(message, reply);
                 return;
             }
 
@@ -1315,7 +1321,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         public void onMessage(final ServerSessionImpl from, final Mutable message) {
             Mutable reply = message.getAssociated();
             if (isSessionUnknown(from)) {
-                unknownSession(reply);
+                unknownSession(message, reply);
                 return;
             }
 
@@ -1373,7 +1379,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
                                 break;
                             }
                         } else {
-                            unknownSession(reply);
+                            unknownSession(message, reply);
                             break;
                         }
                     }
@@ -1386,7 +1392,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         public void onMessage(final ServerSessionImpl from, final Mutable message) {
             Mutable reply = message.getAssociated();
             if (isSessionUnknown(from)) {
-                unknownSession(reply);
+                unknownSession(message, reply);
                 return;
             }
 
@@ -1433,7 +1439,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         public void onMessage(final ServerSessionImpl session, final Mutable message) {
             Mutable reply = message.getAssociated();
             if (isSessionUnknown(session)) {
-                unknownSession(reply);
+                unknownSession(message, reply);
                 return;
             }
 

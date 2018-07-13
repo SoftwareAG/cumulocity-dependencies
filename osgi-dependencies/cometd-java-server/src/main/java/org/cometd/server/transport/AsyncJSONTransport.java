@@ -269,7 +269,7 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
             }
 
             asyncContext.complete();
-            _logger.debug("messages sended {} >>> {}", session.getId(), messages);
+            _logger.debug("messages sended {} >>> {}", (session != null) ? session.getId() : "null", messages);
         }
 
         private boolean writeMessages(ServletOutputStream output) throws IOException {
@@ -292,7 +292,7 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
                             } else {
                                 ServerMessage message = messages.get(messageIndex);
                                 if (_logger.isDebugEnabled()) {
-                                    _logger.debug("sending message {} >>> {}", session.getId(), toJSONBytes(message, "UTF-8"));
+                                    _logger.debug("sending message {} >>> {}", (session != null) ? session.getId() : "null", toJSONBytes(message, "UTF-8"));
                                 }
                                 output.write(toJSONBytes(message, "UTF-8"));
                                 ++messageIndex;
@@ -303,7 +303,7 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
                 }
                 return false;
             } catch (Throwable x) {
-                _logger.debug("message delivery failed rollback {} >>> {} ", session.getId(), messages);
+                _logger.debug("message delivery failed rollback {} >>> {} ", (session != null) ? session.getId() : "null", messages);
                 // Checking if messages send failed and if yes we putting back messages back to delivery queue
                 for (ServerMessage message : messages) {
                     session.addMessage(message);

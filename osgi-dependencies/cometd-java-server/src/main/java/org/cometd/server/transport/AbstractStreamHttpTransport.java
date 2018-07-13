@@ -151,9 +151,9 @@ public abstract class AbstractStreamHttpTransport extends AbstractHttpTransport 
             }
 
             endWrite(response, output);
-            _logger.debug("messages sended {} >>> {}", session.getId(), messages);
+            _logger.debug("messages sended {} >>> {}", (session != null) ? session.getId() : "null", messages);
         } catch (Exception x) {
-            _logger.debug("message delivery failed rollback {} >>> {} ", session.getId(), messages);
+            _logger.debug("message delivery failed rollback {} >>> {} ", (session != null) ? session.getId() : "null", messages);
             AsyncContext asyncContext = null;
             if (request.isAsyncStarted()) {
                 asyncContext = request.getAsyncContext();
@@ -168,7 +168,7 @@ public abstract class AbstractStreamHttpTransport extends AbstractHttpTransport 
 
     protected void writeMessage(HttpServletResponse response, ServletOutputStream output, ServerSessionImpl session, ServerMessage message) throws IOException {
         if (_logger.isDebugEnabled()) {
-            _logger.debug("sending message {} >>> {}", session.getId(), toJSONBytes(message, response.getCharacterEncoding()));
+            _logger.debug("sending message {} >>> {}", (session != null) ? session.getId() : "null", toJSONBytes(message, response.getCharacterEncoding()));
         }
         output.write(toJSONBytes(message, response.getCharacterEncoding()));
     }
