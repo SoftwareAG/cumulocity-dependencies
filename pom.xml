@@ -27,7 +27,7 @@
 
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
-		<commons-codec.version>1.10</commons-codec.version>
+		<commons-codec.version>1.11</commons-codec.version>
 		<commons-configuration.version>1.7</commons-configuration.version>
 		<osgi.commons-configuration.version>${commons-configuration.version}-${project.parent.version}</osgi.commons-configuration.version>
 		<dozer.version>5.4.0</dozer.version>
@@ -66,8 +66,8 @@
         <commons-io.version>2.4</commons-io.version>
         <commons-compress.version>1.14</commons-compress.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
-		<jetty.version>9.2.19.v20160908</jetty.version>
-		<karaf.version>4.0.9</karaf.version>
+		<jetty.version>9.2.21.v20170120</jetty.version>
+		<karaf.version>4.0.10</karaf.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
         <lombok.version>1.16.6</lombok.version>
