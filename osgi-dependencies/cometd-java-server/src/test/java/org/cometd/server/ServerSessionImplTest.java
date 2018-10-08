@@ -5,12 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.io.ByteSource;
 import com.jayway.jsonpath.JsonPath;
 import org.cometd.bayeux.server.LocalSession;
-import org.cometd.common.JSONContext;
-import org.cometd.server.transport.LongPollingTransport;
-import org.eclipse.jetty.continuation.Continuation;
-import org.eclipse.jetty.continuation.ContinuationListener;
-import org.eclipse.jetty.continuation.ContinuationThrowable;
-import org.joda.time.DateTimeUtils;
+import org.cometd.server.transport.AbstractHttpTransport;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.env.MapPropertySource;
@@ -19,20 +14,15 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import static com.google.common.base.Preconditions.checkState;
 import static org.cometd.server.SessionState.*;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeUtils.currentTimeMillis;
@@ -48,11 +38,10 @@ public class ServerSessionImplTest {
         server.start();
     }
 
-
     @Test
     public void shouldHandshakeClientAndAssignClientIdAndSessionShouldBeInitialized() throws IOException, ServletException {
         //Given
-        LongPollingTransport transport = transport();
+        AbstractHttpTransport transport = transport();
         Response response = new Response();
 
         //When
@@ -65,16 +54,10 @@ public class ServerSessionImplTest {
         assertThat(((ServerSessionImpl) server.getSession(clientId)).getState()).isEqualTo(INITIALIZED);
     }
 
-    private LongPollingTransport transport() {
-        LongPollingTransport transport = (LongPollingTransport) server.getTransport("long-polling");
-        server.setCurrentTransport(transport);
-        return transport;
-    }
-
     @Test
     public void shouldSwitchSessionToActiveWhenClientConnects() throws IOException, ServletException {
         //Given
-        LongPollingTransport transport = transport();
+        AbstractHttpTransport transport = transport();
 
         Response handshake = new Response();
 
@@ -91,11 +74,10 @@ public class ServerSessionImplTest {
         assertThat(((ServerSessionImpl) server.getSession(clientId)).getState()).isEqualTo(ACTIVE);
     }
 
-
     @Test
     public void shouldSwitchSessionToInactiveWhenConnectionWasClosed() throws IOException, ServletException {
         //Given
-        LongPollingTransport transport = transport();
+        AbstractHttpTransport transport = transport();
         Response handshake = new Response();
 
         //When
@@ -105,7 +87,7 @@ public class ServerSessionImplTest {
 
         Response connect = new Response();
 
-        transport.handle(request().clientId(clientId).connect().response(connect).build(), connect.invalidConnection().build());
+        transport.handle(request().clientId(clientId).connect().build(), connect.invalidConnection().build());
         setCurrentMillisFixed(currentTimeMillis() + TimeUnit.MINUTES.toMillis(30));
         server.sweep();
         setCurrentMillisFixed(currentTimeMillis() + TimeUnit.MINUTES.toMillis(30));
@@ -115,11 +97,10 @@ public class ServerSessionImplTest {
         assertThat(((ServerSessionImpl) server.getSession(clientId)).getState()).isEqualTo(INACTIVE);
     }
 
-
     @Test
     public void shouldNotSendMessageToInvalidateSession() throws IOException, ServletException {
         //Given
-        LongPollingTransport transport = transport();
+        AbstractHttpTransport transport = transport();
         Response handshake = new Response();
 
         //When
@@ -130,7 +111,7 @@ public class ServerSessionImplTest {
         transport.handle(request().clientId(clientId).subscribe("/some/channel").build(), new Response().build());
 
         Response connect = new Response();
-        transport.handle(request().clientId(clientId).connect().response(connect).build(), connect.invalidConnection().build());
+        transport.handle(request().clientId(clientId).connect().build(), connect.invalidConnection().build());
 
         setCurrentMillisFixed(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30));
         server.sweep();
@@ -144,32 +125,27 @@ public class ServerSessionImplTest {
         assertThat(((ServerSessionImpl) server.getSession(clientId)).getQueue()).isNotEmpty();
     }
 
+    private AbstractHttpTransport transport() {
+        AbstractHttpTransport transport = (AbstractHttpTransport) server.getTransport("long-polling");
+        server.setCurrentTransport(transport);
+        return transport;
+    }
+
     private RequestBuilder request() {
         return new RequestBuilder();
     }
-
 
     class RequestBuilder {
 
         private String content;
         private String clientId;
-        private Response response;
 
         public HttpServletRequest build() {
-            final Continuation continuation = new MockContinuation();
-            MockHttpServletRequest request = new MockHttpServletRequest();
-            request.setAttribute("org.eclipse.jetty.continuation", continuation);
+            MockHttpServletRequestWrapper request = new MockHttpServletRequestWrapper(new MockHttpServletRequest());
             if (content != null) {
                 request.setContent(content.getBytes());
             }
-
             return request;
-
-        }
-
-        public RequestBuilder response(Response response) {
-            this.response = response;
-            return this;
         }
 
         public RequestBuilder handshake() {
@@ -202,95 +178,77 @@ public class ServerSessionImplTest {
             return this;
         }
 
-        private class MockContinuation implements Continuation {
-            private boolean completed = false;
+        private class MockHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-            @Override
-            public void setTimeout(long l) {
+            MockHttpServletRequest request;
+            private byte[] content;
 
+            public MockHttpServletRequestWrapper(MockHttpServletRequest request) {
+                super(request);
+                this.request = request;
+                request.setAsyncSupported(true);
+            }
+
+            public void setContent(byte[] content) {
+                this.request.setContent(content);
+                this.content = content;
             }
 
             @Override
-            public void suspend() {
+            public ServletInputStream getInputStream() throws IOException {
+                return new MockServletInputStream(new ByteArrayInputStream(this.content));
+            }
 
+        }
+
+        private class MockServletInputStream extends ServletInputStream {
+
+            private InputStream sourceStream;
+            private int readCount = 0;
+
+            public MockServletInputStream(InputStream sourceStream) {
+                this.sourceStream = sourceStream;
             }
 
             @Override
-            public void suspend(ServletResponse servletResponse) {
-
+            public boolean isFinished() {
+                return readCount > 0;
             }
 
             @Override
-            public void resume() {
-                checkState(!completed, "Completed continuation can't be resumed");
+            public boolean isReady() {
+                return true;
             }
 
             @Override
-            public void complete() {
-                completed = true;
-            }
-
-            @Override
-            public boolean isSuspended() {
-                return !completed;
-            }
-
-            @Override
-            public boolean isResumed() {
-                return false;
-            }
-
-            @Override
-            public boolean isExpired() {
-                return false;
-            }
-
-            @Override
-            public boolean isInitial() {
-                return false;
-            }
-
-            @Override
-            public boolean isResponseWrapped() {
-                return false;
-            }
-
-            @Override
-            public ServletResponse getServletResponse() {
-                if (response != null) {
-                    return response.build();
+            public void setReadListener(ReadListener readListener) {
+                try {
+                    readListener.onDataAvailable();
+                    readListener.onAllDataRead();
+                } catch (IOException e) {
+                    readListener.onError(e);
                 }
-                throw new IllegalStateException("Response not defined");
             }
 
             @Override
-            public void addContinuationListener(ContinuationListener continuationListener) {
-
+            public int read() throws IOException {
+                readCount++;
+                return this.sourceStream.read();
             }
 
-            @Override
-            public void setAttribute(String s, Object o) {
-
-            }
 
             @Override
-            public Object getAttribute(String s) {
-                return null;
-            }
-
-            @Override
-            public void removeAttribute(String s) {
-
-            }
-
-            @Override
-            public void undispatch() throws ContinuationThrowable {
-
+            public void close() throws IOException {
+                super.close();
+                this.sourceStream.close();
             }
         }
+
+
     }
 
     class Template {
+
         private final ImmutableMap.Builder<String, Object> variables = ImmutableMap.<String, Object>builder();
 
         public Template with(String property, Object value) {
@@ -324,6 +282,7 @@ public class ServerSessionImplTest {
     }
 
     class Response {
+
         MockHttpServletResponse response = new MockHttpServletResponse();
         private boolean invalidConnection = false;
 
@@ -348,38 +307,82 @@ public class ServerSessionImplTest {
         }
 
         public HttpServletResponse build() {
-            if (invalidConnection)
-                return new HttpServletResponseWrapper(response) {
-                    ServletOutputStream outputStream = new ServletOutputStream() {
-                        @Override
-                        public void write(int i) throws IOException {
-                            throw new IOException("Connection invalid");
-                        }
-                    };
-
-                    private PrintWriter writer = new PrintWriter(outputStream);
-
-                    @Override
-                    public ServletOutputStream getOutputStream() throws IOException {
-
-                        return outputStream;
-                    }
-
-                    @Override
-                    public PrintWriter getWriter() throws IOException {
-
-                        return writer;
-                    }
-                };
-            else {
-                return response;
+            try {
+                return new MockHttpServletResponseWrapper(response);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
             }
-
         }
 
         public Response invalidConnection() {
             invalidConnection = true;
             return this;
+        }
+
+        private class MockHttpServletResponseWrapper extends HttpServletResponseWrapper {
+
+            private ServletOutputStream outputStream;
+            private PrintWriter printWriter;
+
+            public MockHttpServletResponseWrapper(HttpServletResponse response) throws IOException {
+                super(response);
+                this.outputStream = new MockServletOutputStream(response.getOutputStream());
+                this.printWriter = new PrintWriter(this.outputStream);
+            }
+
+            @Override
+            public ServletOutputStream getOutputStream() throws IOException {
+                return outputStream;
+            }
+
+            @Override
+            public PrintWriter getWriter() throws IOException {
+                return printWriter;
+            }
+        }
+
+        private class MockServletOutputStream extends ServletOutputStream {
+
+            private OutputStream targetStream;
+
+            public MockServletOutputStream(OutputStream targetStream) {
+                this.targetStream = targetStream;
+            }
+
+            @Override
+            public boolean isReady() {
+                return true;
+            }
+
+            @Override
+            public void setWriteListener(WriteListener writeListener) {
+                try {
+                    writeListener.onWritePossible();
+                } catch (IOException e) {
+                    writeListener.onError(e);
+                }
+            }
+
+            @Override
+            public void write(int b) throws IOException {
+                if (invalidConnection) {
+                    throw new IOException("Connection invalid");
+                }
+                this.targetStream.write(b);
+            }
+
+            @Override
+            public void flush() throws IOException {
+                super.flush();
+                this.targetStream.flush();
+            }
+
+            @Override
+            public void close() throws IOException {
+                super.close();
+                this.targetStream.close();
+            }
         }
     }
 

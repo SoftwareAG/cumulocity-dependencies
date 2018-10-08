@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2008-2014 the original author or authors.
+ * Copyright (c) 2008-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,16 @@
  */
 package org.cometd.server.transport;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.ParseException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.server.BayeuxServerImpl;
-import org.cometd.server.ServerSessionImpl;
 
-public class JSONTransport extends LongPollingTransport
-{
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.ParseException;
+
+public class JSONTransport extends AbstractStreamHttpTransport {
     public final static String PREFIX = "long-polling.json";
     public final static String NAME = "long-polling";
     public final static String MIME_TYPE_OPTION = "mimeType";
@@ -34,68 +32,50 @@ public class JSONTransport extends LongPollingTransport
     private boolean _jsonDebug = false;
     private String _mimeType = "application/json;charset=UTF-8";
 
-    public JSONTransport(BayeuxServerImpl bayeux, Integer heartbeatMinutes)
-    {
+    public JSONTransport(BayeuxServerImpl bayeux, Integer heartbeatMinutes) {
         super(bayeux, NAME, heartbeatMinutes);
         setOptionPrefix(PREFIX);
     }
 
     @Override
-    protected boolean isAlwaysFlushingAfterHandle()
-    {
-        return false;
-    }
-
-    @Override
-    protected void init()
-    {
+    public void init() {
         super.init();
         _jsonDebug = getOption(JSON_DEBUG_OPTION, _jsonDebug);
         _mimeType = getOption(MIME_TYPE_OPTION, _mimeType);
     }
 
     @Override
-    public boolean accept(HttpServletRequest request)
-    {
+    public boolean accept(HttpServletRequest request) {
         return "POST".equals(request.getMethod());
     }
 
     @Override
-    protected ServerMessage.Mutable[] parseMessages(HttpServletRequest request) throws IOException, ParseException
-    {
+    protected ServerMessage.Mutable[] parseMessages(HttpServletRequest request) throws IOException, ParseException {
         String charset = request.getCharacterEncoding();
-        if (charset == null)
+        if (charset == null) {
             request.setCharacterEncoding("UTF-8");
+        }
         String contentType = request.getContentType();
-        if (contentType == null || contentType.startsWith("application/json"))
+        if (contentType == null || contentType.startsWith("application/json")) {
             return parseMessages(request.getReader(), _jsonDebug);
-        else if (contentType.startsWith("application/x-www-form-urlencoded"))
+        } else if (contentType.startsWith("application/x-www-form-urlencoded")) {
             return parseMessages(request.getParameterValues(MESSAGE_PARAM));
-        else
+        } else {
             throw new IOException("Invalid Content-Type " + contentType);
+        }
     }
 
     @Override
-    protected PrintWriter writeMessage(HttpServletRequest request, HttpServletResponse response, PrintWriter writer, ServerSessionImpl session, ServerMessage message) throws IOException
-    {
-        if (writer == null)
-        {
-            response.setContentType(_mimeType);
-            writer = response.getWriter();
-            writer.append('[');
-        }
-        else
-        {
-            writer.append(',');
-        }
-        writer.append(message.getJSON());
-        return writer;
+    protected ServletOutputStream beginWrite(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType(_mimeType);
+        ServletOutputStream output = response.getOutputStream();
+        output.write('[');
+        return output;
     }
 
     @Override
-    protected void finishWrite(PrintWriter writer, ServerSessionImpl session) throws IOException
-    {
-        writer.append("]");
-        writer.close();
+    protected void endWrite(HttpServletResponse response, ServletOutputStream output) throws IOException {
+        output.write(']');
+        output.close();
     }
 }
