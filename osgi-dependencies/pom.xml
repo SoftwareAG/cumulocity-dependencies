@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>9.16.0</version>
+        <version>9.17.0</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
@@ -14,44 +14,18 @@
     <name>Cumulocity Dependencies :: OSGi Dependencies</name>
 
     <modules>
-        <module>activation</module>
-        <module>mail</module>
-        <module>mimepull</module>
-		<module>asm</module>
-        <module>stax-api</module>
-        <module>jaxb-api</module>
-        <module>commons-codec</module>
-        <module>commons-httpclient</module>
         <module>commons-configuration</module>
         <module>cometd-java-server</module>
         <module>cglib-nodep</module>
         <module>svenson</module>
         <module>json-path</module>
         <module>json-smart</module>
-        <module>super-csv</module>
-        <module>jersey-core</module>
-        <module>jersey-server</module>
-        <module>jersey-client</module>
-        <module>jersey-apache-client</module>
-        <module>jersey-multipart</module>
-        <module>aspectjrt</module>
-        <module>aspectjweaver</module>
-        <module>httpcore</module>
-        <module>httpclient</module>
-        <module>httpclient-cache</module>
-        <module>log4j-extras</module>
 	    <module>libphonenumber</module>
         <module>dozer</module>
-        <module>inject</module>
-        <module>collections-generic</module>
-        <module>findbugs-jsr305</module>
-        <module>guava</module>
         <module>spring-dm</module>
-        <module>spring-security-jwt</module>
         <module>odata</module>
         <module>moquette-dependencies</module>
         <module>uom</module>
-        <module>googleauth</module>
     </modules>
 
     <properties>

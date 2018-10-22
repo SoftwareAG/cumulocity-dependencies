@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>9.16.0</version>
+	<version>9.17.0</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -25,50 +25,22 @@
 		<osgi.service.http.port>8181</osgi.service.http.port>
 		<nexus.url>http://localhost:8080</nexus.url>
 
-		<activation.version>1.1</activation.version>
-		<osgi.activation.version>${activation.version}-${project.parent.version}</osgi.activation.version>
-		<apache-log4j-extras.version>1.1</apache-log4j-extras.version>
-		<osgi.apache-log4j-extras.version>${apache-log4j-extras.version}-${project.parent.version}</osgi.apache-log4j-extras.version>
-		<asm.version>5.0.3</asm.version>
-		<osgi.asm.version>${asm.version}-${project.parent.version}</osgi.asm.version>
-		<osgi.aspectj.version>${aspectj.version}-${project.parent.version}</osgi.aspectj.version>
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
-		<collections-generic.version>4.01</collections-generic.version>
-		<osgi.collections-generic.version>${collections-generic.version}-${project.parent.version}</osgi.collections-generic.version>
-		<commons-codec.version>1.10</commons-codec.version>
-		<osgi.commons-codec.version>${commons-codec.version}-${project.parent.version}</osgi.commons-codec.version>
+		<commons-codec.version>1.11</commons-codec.version>
 		<commons-configuration.version>1.7</commons-configuration.version>
 		<osgi.commons-configuration.version>${commons-configuration.version}-${project.parent.version}</osgi.commons-configuration.version>
-		<commons-httpclient.version>3.1</commons-httpclient.version>
-		<osgi.commons-httpclient.version>${commons-httpclient.version}-${project.parent.version}</osgi.commons-httpclient.version>
 		<dozer.version>5.4.0</dozer.version>
 		<osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
-		<findbugs.version>1.3.2</findbugs.version>
-		<osgi.findbugs.version>${findbugs.version}-${project.parent.version}</osgi.findbugs.version>
 		<guava.version>18.0</guava.version>
-		<osgi.guava.version>${guava.version}-${project.parent.version}</osgi.guava.version>
-		<httpclient.version>4.5</httpclient.version>
-		<osgi.httpclient.version>${httpclient.version}-${project.parent.version}</osgi.httpclient.version>
+		<httpclient.version>4.5.3</httpclient.version>
 		<httpcore.version>4.4.1</httpcore.version>
-		<osgi.httpcore.version>${httpcore.version}-${project.parent.version}</osgi.httpcore.version>
-		<inject.version>1</inject.version>
-		<osgi.inject.version>${inject.version}-${project.parent.version}</osgi.inject.version>
-		<jaxb-api.version>2.1</jaxb-api.version>
-		<osgi.jaxb-api.version>${jaxb-api.version}-${project.parent.version}</osgi.jaxb-api.version>
-		<jersey.version>1.8</jersey.version>
-		<osgi.jersey.version>${jersey.version}-${project.parent.version}</osgi.jersey.version>
-		<javax.mail.version>1.4.7</javax.mail.version>
-		<osgi.javax.mail.version>${javax.mail.version}-${project.parent.version}</osgi.javax.mail.version>
-		<mimepull.version>1.4</mimepull.version>
-		<osgi.mimepull.version>${mimepull.version}-${project.parent.version}</osgi.mimepull.version>
+		<cxf.version>3.1.13</cxf.version>
+		<javax.mail.version>1.4.4</javax.mail.version>
 		<netty.version>4.0.33.Final</netty.version>
 		<spring.dm.version>1.2.1</spring.dm.version>
 		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
 		<spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
-		<osgi.spring.security.jwt.version>${spring.security.jwt.version}-${project.parent.version}</osgi.spring.security.jwt.version>
-		<stax-api.version>1.0-2</stax-api.version>
-		<osgi.stax-api.version>${stax-api.version}-${project.parent.version}</osgi.stax-api.version>
 		<svenson.version>1.3.8</svenson.version>
 		<osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
 		<json-path.version>1.2.0</json-path.version>
@@ -76,8 +48,7 @@
 		<json-smart.version>2.1.0</json-smart.version>
 		<osgi.json-smart.version>${json-smart.version}-${project.parent.version}</osgi.json-smart.version>
 		<super-csv.version>2.1.0</super-csv.version>
-		<osgi.super-csv.version>${super-csv.version}-${project.parent.version}</osgi.super-csv.version>
-		<cometd.version>2.8.0</cometd.version>
+		<cometd.version>3.0.10</cometd.version>
 		<osgi.cometd.version>${cometd.version}-${project.parent.version}</osgi.cometd.version>
 		<odata.version>2.0.4</odata.version>
 		<osgi.odata.version>${odata.version}-${project.parent.version}</osgi.odata.version>
@@ -87,21 +58,16 @@
 		<osgi.libphonenumber.version>${libphonenumber.version}-${project.parent.version}</osgi.libphonenumber.version>
 		<uom.version>0.7.1</uom.version>
 		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
-		<googleauth.version>1.1.1</googleauth.version>
-		<osgi.googleauth.version>${googleauth.version}-${project.parent.version}</osgi.googleauth.version>
 
-
-		<joda-time.version>1.6.2</joda-time.version>
+		<joda-time.version>2.9.4</joda-time.version>
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-lang.version>2.6</commons-lang.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-compress.version>1.14</commons-compress.version>
-		<cxf.version>2.6.7</cxf.version>
-		<aspectj.version>1.7.4</aspectj.version>
 		<ehcache.version>2.5.1.1</ehcache.version>
-		<jetty.version>8.1.19.v20160209</jetty.version>
-		<karaf.version>3.0.8</karaf.version>
+		<jetty.version>9.2.21.v20170120</jetty.version>
+		<karaf.version>4.0.10</karaf.version>
 		<slf4j.version>1.7.0</slf4j.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
         <lombok.version>1.16.6</lombok.version>
@@ -112,19 +78,11 @@
 		<mockito.version>1.8.5</mockito.version>
 		<powermock.version>1.4.9</powermock.version>
 
-		<!-- KARAF BUNDLES VERSIONS -->
-		<!-- to align with project versions -->
-		<!--<asm.version>5.0.3</asm.version>-->
-		<!--<javax.mail.version>1.4.7</javax.mail.version>-->
-		<!--<jetty.version>8.1.19.v20160209</jetty.version>-->
-
 	</properties>
 
 	<modules>
-		<module>cumulocity-sdk-resource-bundles</module>
-		<module>kpi-logger</module>
+        <module>cumulocity-sdk-resource-bundles</module>
 		<module>osgi-dependencies</module>
-		<module>osgi-features</module>
 		<module>cumulocity-base-karaf</module>
 		<module>maven-plugins</module>
 	</modules>
@@ -134,7 +92,7 @@
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
-				<version>3.0.1</version>
+				<version>3.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>joda-time</groupId>
@@ -146,11 +104,6 @@
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
 				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjrt</artifactId>
-				<version>${aspectj.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.easytesting</groupId>
@@ -346,32 +299,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
 					<version>3.0.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>aspectj-maven-plugin</artifactId>
-					<version>1.7</version>
-					<executions>
-						<execution>
-							<id>kpi-weaver</id>
-							<phase>process-sources</phase>
-							<goals>
-								<goal>compile</goal>
-							</goals>
-							<configuration>
-								<complianceLevel>1.7</complianceLevel>
-								<showWeaveInfo>true</showWeaveInfo>
-								<verbose>true</verbose>
-							</configuration>
-						</execution>
-					</executions>
-					<dependencies>
-						<dependency>
-							<groupId>org.aspectj</groupId>
-							<artifactId>aspectjtools</artifactId>
-							<version>${aspectj.version}</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>

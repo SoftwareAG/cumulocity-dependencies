@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
 		<artifactId>cumulocity-dependencies</artifactId>
-		<version>9.16.0</version>
+		<version>9.17.0</version>
 	</parent>
 
 	<artifactId>cumulocity-base-karaf</artifactId>
@@ -103,17 +103,8 @@
 								<descriptor>file:${custom-karaf.system.dir}/karaf-spring-features.xml</descriptor>
 							</descriptors>
 							<features>
-								<!-- Karaf infrastructure -->
-								<feature>config</feature>
-								<feature>standard</feature>
-								<feature>region</feature>
-								<feature>ssh</feature>
-								<feature>management</feature>
-
-								<!-- OSGi services -->
+								<!-- non-standard features -->
 								<feature>http</feature>
-
-								<!-- External frameworks -->
 								<feature>spring-dm-web</feature>
 							</features>
 							<repository>${custom-karaf.system.dir}</repository>
