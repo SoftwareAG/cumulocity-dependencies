@@ -65,7 +65,7 @@
 		<netty.version>4.0.33.Final</netty.version>
 		<spring.dm.version>1.2.1</spring.dm.version>
 		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
-		<spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
+		<spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
 		<osgi.spring.security.jwt.version>${spring.security.jwt.version}-${project.parent.version}</osgi.spring.security.jwt.version>
 		<stax-api.version>1.0-2</stax-api.version>
 		<osgi.stax-api.version>${stax-api.version}-${project.parent.version}</osgi.stax-api.version>
