@@ -94,7 +94,8 @@
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
                         org/svenson/reflectasm/,
-                        org/svenson/AbstractDynamicProperties.*
+                        org/svenson/AbstractDynamicProperties.*,
+                        org/svenson/tokenize/JSONTokenizer.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -106,6 +107,7 @@
                        <include>org</include>
                        <include>org/svenson</include>
                        <include>org/svenson/AbstractDynamicProperties.*</include>
+                       <include>org/svenson/tokenize/JSONTokenizer.*</include>
                    </includes>
                    <excludes>
                        <exclude>nothing</exclude>
