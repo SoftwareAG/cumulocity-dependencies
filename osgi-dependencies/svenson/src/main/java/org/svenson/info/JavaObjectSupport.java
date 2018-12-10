@@ -89,6 +89,13 @@ public class JavaObjectSupport extends AbstractObjectSupport
                 continue;
             }
 
+            // patch to skip bridge methods generated for generic classes
+            // e.g. ComplexEvent<T>#getPayload
+            if (m.isBridge())
+            {
+                continue;
+            }
+
             if (m.getAnnotation(PostConstruct.class) != null)
             {
                 if (m.getParameterTypes().length != 0)
