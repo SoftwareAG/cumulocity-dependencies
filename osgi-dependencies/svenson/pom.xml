@@ -95,6 +95,7 @@
                         META-INF/maven/**/*,
                         org/svenson/reflectasm/,
                         org/svenson/AbstractDynamicProperties.*,
+                        org/svenson/info/JavaObjectSupport.*,
                         org/svenson/tokenize/JSONTokenizer.*
                     </excludes>
                 </configuration>
@@ -107,6 +108,7 @@
                        <include>org</include>
                        <include>org/svenson</include>
                        <include>org/svenson/AbstractDynamicProperties.*</include>
+                       <include>org/svenson/info/JavaObjectSupport.*</include>
                        <include>org/svenson/tokenize/JSONTokenizer.*</include>
                    </includes>
                    <excludes>
