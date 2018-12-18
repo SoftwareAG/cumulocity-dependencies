@@ -23,6 +23,10 @@
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.esotericsoftware.reflectasm</groupId>
+                    <artifactId>reflectasm</artifactId>
+                </exclusion>
             </exclusions>
 		</dependency>
 		
@@ -34,12 +38,12 @@
 		<dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>1.4</version>
+            <version>2.4</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
-            <version>1.8.0</version>
+            <version>1.9.3</version>
             <exclusions>
             	<exclusion>
             		<artifactId>commons-logging</artifactId>
@@ -89,8 +93,10 @@
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
+                        org/svenson/reflectasm/,
                         org/svenson/AbstractDynamicProperties.*,
-			org/svenson/JSON.*
+                        org/svenson/info/JavaObjectSupport.*,
+                        org/svenson/tokenize/JSONTokenizer.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -102,7 +108,8 @@
                        <include>org</include>
                        <include>org/svenson</include>
                        <include>org/svenson/AbstractDynamicProperties.*</include>
-		       <include>org/svenson/JSON.*</include>
+                       <include>org/svenson/info/JavaObjectSupport.*</include>
+                       <include>org/svenson/tokenize/JSONTokenizer.*</include>
                    </includes>
                    <excludes>
                        <exclude>nothing</exclude>
