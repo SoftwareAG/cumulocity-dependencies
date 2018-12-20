@@ -10,8 +10,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JavaObjectSupport extends AbstractObjectSupport
-{
+public class JavaObjectSupport extends AbstractObjectSupport {
     private static final String ADDER_PREFIX = "add";
 
     private static final String SETTER_PREFIX = "set";
@@ -21,13 +20,11 @@ public class JavaObjectSupport extends AbstractObjectSupport
     private static final String ISSER_PREFIX = "is";
 
 
-    public JavaObjectSupport()
-    {
+    public JavaObjectSupport() {
     }
-    
 
-    public JSONClassInfo createClassInfo(Class<?> cls)
-    {
+
+    public JSONClassInfo createClassInfo(Class<?> cls) {
         Map<String, JavaObjectPropertyInfo> javaNameToInfo = new HashMap<String, JavaObjectPropertyInfo>();
 
         Constructor<?> ctor = null;
@@ -36,70 +33,54 @@ public class JavaObjectSupport extends AbstractObjectSupport
         int wildCardIndex = -1;
         Method postConstructMethod = null;
 
-        for (Constructor<?> c : cls.getConstructors())
-        {
+        for (Constructor<?> c : cls.getConstructors()) {
             Annotation[][] parameterAnnotations = c.getParameterAnnotations();
 
             for (int i = 0, parameterAnnotationsLength = parameterAnnotations.length; i < parameterAnnotationsLength;
-                 i++)
-            {
+                 i++) {
                 Annotation[] annotations = parameterAnnotations[i];
-                for (Annotation annotation : annotations)
-                {
-                    if (annotation instanceof JSONParameter)
-                    {
+                for (Annotation annotation : annotations) {
+                    if (annotation instanceof JSONParameter) {
                         ctor = c;
-                    }
-                    else if (annotation instanceof JSONParameters)
-                    {
-                        if (!Map.class.isAssignableFrom(c.getParameterTypes()[i]))
-                        {
+                    } else if (annotation instanceof JSONParameters) {
+                        if (!Map.class.isAssignableFrom(c.getParameterTypes()[i])) {
                             throw new IllegalStateException("@JSONParameters annotation must be on a constructor map parameter");
                         }
                         ctor = c;
                         isWildCard = true;
                         wildCardIndex = i;
                     }
-                    if (annotation instanceof JSONTypeHint)
-                    {
+                    if (annotation instanceof JSONTypeHint) {
                         Class<?>[] parameterTypes = c.getParameterTypes();
-                        if (wildCardIndex == i)
-                        {
-                            if (parameterTypes.length != 1)
-                            {
+                        if (wildCardIndex == i) {
+                            if (parameterTypes.length != 1) {
                                 throw new IllegalStateException("@JSONParameters/@JSONTypeHint combination must only have one map parameter");
                             }
-                            if (!Map.class.isAssignableFrom(parameterTypes[0]))
-                            {
+                            if (!Map.class.isAssignableFrom(parameterTypes[0])) {
                                 throw new IllegalStateException("@JSONParameters/@JSONTypeHint combination must be on a constructor map parameter");
                             }
-                            ctorTypeHint = ((JSONTypeHint)annotation).value();
+                            ctorTypeHint = ((JSONTypeHint) annotation).value();
                         }
                     }
                 }
             }
         }
 
-        for (Method m : cls.getMethods())
-        {
+        for (Method m : cls.getMethods()) {
             String name = m.getName();
 
-            if ((m.getModifiers() & Modifier.PUBLIC) == 0 || name.equals("getClass"))
-            {
+            if ((m.getModifiers() & Modifier.PUBLIC) == 0 || name.equals("getClass")) {
                 continue;
             }
 
             // patch to skip bridge methods generated for generic classes
             // e.g. ComplexEvent<T>#getPayload
-            if (m.isBridge())
-            {
+            if (m.isBridge()) {
                 continue;
             }
 
-            if (m.getAnnotation(PostConstruct.class) != null)
-            {
-                if (m.getParameterTypes().length != 0)
-                {
+            if (m.getAnnotation(PostConstruct.class) != null) {
+                if (m.getParameterTypes().length != 0) {
                     throw new IllegalStateException("@PostConstruct methods can't have parameters: " + m);
                 }
 
@@ -107,29 +88,23 @@ public class JavaObjectSupport extends AbstractObjectSupport
             }
 
 
-            if (name.startsWith(SETTER_PREFIX) && m.getParameterTypes().length == 1)
-            {
+            if (name.startsWith(SETTER_PREFIX) && m.getParameterTypes().length == 1) {
                 JSONProperty jsonProperty;
-                if (ctor != null && ((jsonProperty = m.getAnnotation(JSONProperty.class)) == null || !jsonProperty.ignore()) )
-                {
+                if (ctor != null && ((jsonProperty = m.getAnnotation(JSONProperty.class)) == null || !jsonProperty.ignore())) {
                     throw new IllegalStateException("Classes with @JSONParameter constructors can't have setters.");
                 }
 
                 String javaPropertyName = propertyName(name, SETTER_PREFIX.length());
                 JavaObjectPropertyInfo pair = javaNameToInfo.get(javaPropertyName);
-                if (pair != null)
-                {
+                if (pair != null) {
                     Method existing = pair.getSetterMethod();
-                    
-                    if (existing == null || isOveriding(m.getDeclaringClass(), existing.getDeclaringClass()))
-                    {
+
+                    if (existing == null || isOverriding(m, existing) || isBestMatchSetter(pair, m)) {
                         pair.setSetterMethod(m);
                         pair.setAdderMethod(null);
                     }
-                    
-                }
-                else
-                {
+
+                } else {
                     pair = new JavaObjectPropertyInfo(javaPropertyName, null, m);
                     javaNameToInfo.put(javaPropertyName, pair);
                 }
@@ -137,67 +112,47 @@ public class JavaObjectSupport extends AbstractObjectSupport
                 Class<?>[] parameterTypes;
                 Class<?> paramType;
                 if ((parameterTypes = m.getParameterTypes()).length == 1 &&
-                    (paramType = parameterTypes[0]).isArray())
-                {
+                        (paramType = parameterTypes[0]).isArray()) {
                     pair.setTypeHint(paramType.getComponentType());
                 }
 
-            }
-            else if (m.getParameterTypes().length == 0 && !m.getReturnType().equals(void.class))
-            {
-                if (name.startsWith(GETTER_PREFIX))
-                {
+            } else if (m.getParameterTypes().length == 0 && !m.getReturnType().equals(void.class)) {
+                if (name.startsWith(GETTER_PREFIX)) {
                     String javaPropertyName = propertyName(name, GETTER_PREFIX.length());
                     JavaObjectPropertyInfo pair = javaNameToInfo.get(javaPropertyName);
-                    if (pair != null)
-                    {
+                    if (pair != null) {
                         Method existing = pair.getGetterMethod();
-                        
-                        if (existing == null || isOveriding(m.getDeclaringClass(), existing.getDeclaringClass()))
-                        {
+
+                        if (existing == null || isOverriding(m, existing)) {
                             pair.setGetterMethod(m);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         javaNameToInfo.put(javaPropertyName, new JavaObjectPropertyInfo(javaPropertyName,
-                            m, null));
+                                m, null));
                     }
-                }
-                else if (name.startsWith(ISSER_PREFIX))
-                {
+                } else if (name.startsWith(ISSER_PREFIX)) {
                     String javaPropertyName = propertyName(name, ISSER_PREFIX.length());
                     JavaObjectPropertyInfo pair = javaNameToInfo.get(javaPropertyName);
-                    if (pair != null)
-                    {
+                    if (pair != null) {
                         pair.setGetterMethod(m);
-                    }
-                    else
-                    {
+                    } else {
                         javaNameToInfo.put(javaPropertyName, new JavaObjectPropertyInfo(javaPropertyName,
-                            m, null));
+                                m, null));
                     }
                 }
-            }
-            else if (name.startsWith(ADDER_PREFIX) && m.getParameterTypes().length == 1)
-            {
+            } else if (name.startsWith(ADDER_PREFIX) && m.getParameterTypes().length == 1) {
                 JSONProperty jsonProperty;
-                if (ctor != null && ((jsonProperty = m.getAnnotation(JSONProperty.class)) == null || !jsonProperty.ignore()) )
-                {
+                if (ctor != null && ((jsonProperty = m.getAnnotation(JSONProperty.class)) == null || !jsonProperty.ignore())) {
                     throw new IllegalStateException("Classes with @JSONParameter constructors can't have adders.");
                 }
 
                 String javaPropertyName = propertyName(name, ADDER_PREFIX.length());
                 JavaObjectPropertyInfo pair = javaNameToInfo.get(javaPropertyName);
-                if (pair != null)
-                {
-                    if ( pair.getSetterMethod() == null)
-                    {
+                if (pair != null) {
+                    if (pair.getSetterMethod() == null) {
                         pair.setAdderMethod(m);
                     }
-                }
-                else
-                {
+                } else {
                     JavaObjectPropertyInfo newInfo = new JavaObjectPropertyInfo(javaPropertyName, null, null);
                     newInfo.setAdderMethod(m);
                     javaNameToInfo.put(javaPropertyName, newInfo);
@@ -208,8 +163,7 @@ public class JavaObjectSupport extends AbstractObjectSupport
 
         HashMap<String, JavaObjectPropertyInfo> propertyInfos = new HashMap<String, JavaObjectPropertyInfo>(javaNameToInfo.size());
 
-        for (Map.Entry<String, JavaObjectPropertyInfo> e : javaNameToInfo.entrySet())
-        {
+        for (Map.Entry<String, JavaObjectPropertyInfo> e : javaNameToInfo.entrySet()) {
             String jsonPropertyName = e.getKey();
             JavaObjectPropertyInfo propertyInfo = e.getValue();
 
@@ -218,13 +172,11 @@ public class JavaObjectSupport extends AbstractObjectSupport
             Method adderMethod = propertyInfo.getAdderMethod();
 
             JSONProperty jsonProperty = MethodUtil.getAnnotation(JSONProperty.class, getterMethod,
-                setterMethod);
+                    setterMethod);
 
-            if (jsonProperty != null)
-            {
+            if (jsonProperty != null) {
 
-                if (jsonProperty.value().length() > 0)
-                {
+                if (jsonProperty.value().length() > 0) {
                     jsonPropertyName = jsonProperty.value();
                 }
 
@@ -237,23 +189,18 @@ public class JavaObjectSupport extends AbstractObjectSupport
 
             JSONReference refAnno = MethodUtil.getAnnotation(JSONReference.class, getterMethod, setterMethod);
 
-            if (refAnno != null)
-            {
+            if (refAnno != null) {
                 propertyInfo.setLinkIdProperty(refAnno.idProperty());
             }
 
             JSONTypeHint typeHintAnno = MethodUtil.getAnnotation(JSONTypeHint.class, getterMethod,
-                setterMethod);
+                    setterMethod);
             Class<?>[] parameterTypes;
             Class paramType;
-            if (typeHintAnno != null)
-            {
+            if (typeHintAnno != null) {
                 propertyInfo.setTypeHint(typeHintAnno.value());
-            }
-            else
-            {
-                if (adderMethod != null)
-                {
+            } else {
+                if (adderMethod != null) {
                     propertyInfo.setTypeHint(adderMethod.getParameterTypes()[0]);
                 }
             }
@@ -265,30 +212,60 @@ public class JavaObjectSupport extends AbstractObjectSupport
         return new JSONClassInfo(cls, propertyInfos, ctor, ctorTypeHint, postConstructMethod);
     }
 
+    private boolean isBestMatchSetter(JavaObjectPropertyInfo pair, Method m) {
+        if (pair.getGetterMethod() != null) {
+            if (pair.getGetterMethod().getReturnType().equals(m.getParameterTypes()[0])) {
+                return true;
+            }
+        } else {
+            try {
+                final Method getter = m.getDeclaringClass().getMethod(toGetterName(pair.getJavaPropertyName()));
+                if (getter.getReturnType().equals(m.getParameterTypes()[0])) {
+                    return true;
+                }
+            } catch (NoSuchMethodException e) {
+                return true;
+            }
+        }
+
+        return pair.getSetterMethod() == null;
+    }
+
+    private String toGetterName(String javaPropertyName) {
+        StringBuilder methodName = new StringBuilder();
+        methodName.append(GETTER_PREFIX)
+                .append(javaPropertyName);
+        final int firstPropNameLetter = GETTER_PREFIX.length();
+        methodName.setCharAt(firstPropNameLetter, Character.toUpperCase(methodName.charAt(firstPropNameLetter)));
+        return methodName.toString();
+    }
+
     /**
-     * Returns <code>true</code> if class a is a subclass of class b or if b is <code>null</code>. 
+     * Returns <code>true</code> if class a is a subclass of class b or if b is <code>null</code>.
+     *
      * @param a
      * @param b
      * @return
      */
-    static boolean isOveriding(Class<?> a, Class<?> b)
-    {
-        if (b == null)
-        {
+    static boolean isOverriding(Method a, Method b) {
+        if (!a.getParameterTypes().equals(b.getParameterTypes())) {
+            return false;
+        }
+
+
+        if (b.getDeclaringClass() == null) {
             return true;
         }
-        
-        Class<?> cls = a;
+
+        Class<?> cls = a.getDeclaringClass();
         Class<?> superClass;
-        while ( (superClass = cls.getSuperclass()) != null)
-        {
+        while ((superClass = cls.getSuperclass()) != null) {
             cls = superClass;
-            if (cls.equals(b))
-            {
+            if (cls.equals(b)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
