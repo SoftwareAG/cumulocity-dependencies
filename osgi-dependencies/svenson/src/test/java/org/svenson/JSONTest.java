@@ -19,4 +19,22 @@ public class JSONTest {
         assertEquals("{\"self\":\"http://integration.cumulocity.com/inventory/managedObjects/10200/assetParents\"}", parsedTest);
     }
 
+    @Test
+    public void shouldDeserializeObjectWithOverloadedSetterAndOverriddenProperties() {
+        Map<String, Object> test = new HashMap<String, Object>();
+        test.put("value", "ANY");
+        test.put("text","test");
+
+        String serialized = JSON.defaultJSON().forValue(test);
+
+        final TestJsonObject result = JSONParser.defaultJSONParser().parse(TestJsonObject.class, serialized);
+
+        assertEquals(TestJsonObject.Value.ANY, result.getValue());
+        assertEquals("test",result.getText());
+    }
+
+
+
 }
+
+
