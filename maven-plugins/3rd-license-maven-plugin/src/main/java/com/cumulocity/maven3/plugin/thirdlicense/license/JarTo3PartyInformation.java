@@ -14,9 +14,9 @@ import com.google.common.base.Function;
  */
 public class JarTo3PartyInformation implements Function<Jar, String> {
     
-    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s, %s";
+    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s, %s, %s";
     private static final String[] HEADERS = new String[]{"fileName", "groupId", "artifactId",
-            "version", "copyright", "license", "usOrigin"};
+            "version", "copyright", "license", "usOrigin", "cryptography"};
     
     @Nullable
     @Override
@@ -52,7 +52,8 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
             new JarProperty(jar.getVersion(), HEADERS[3]),
             new JarProperty(jar.getCopyright(), HEADERS[4]),
             new JarProperty(jar.getLicense(), HEADERS[5]),
-            new JarProperty(jar.getUsOrigin(), HEADERS[6])
+            new JarProperty(jar.getUsOrigin(), HEADERS[6]),
+            new JarProperty(jar.getCryptography(), HEADERS[7])
             // @formatter:on
         };
     }
