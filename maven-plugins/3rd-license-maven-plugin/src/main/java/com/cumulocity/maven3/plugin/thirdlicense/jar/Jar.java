@@ -20,8 +20,9 @@ public class Jar {
     private final String absolutePath;
     private final String relativePath;
     private final String usOrigin;
+    private final String cryptography;
 
-    private Jar(String separator, String groupId, String artifactId, String version, String copyright, String license, String fileName, String absolutePath, String relativePath, String usOrigin) {
+    private Jar(String separator, String groupId, String artifactId, String version, String copyright, String license, String fileName, String absolutePath, String relativePath, String usOrigin, String cryptography) {
         this.separator = separator;
         this.groupId = groupId;
         this.artifactId = artifactId;
@@ -32,6 +33,7 @@ public class Jar {
         this.absolutePath = absolutePath;
         this.relativePath = relativePath;
         this.usOrigin = usOrigin;
+        this.cryptography = cryptography;
     }
 
     public static Jar of(Path jarPath, Path basedir, PropertyMapper propertyMapper) {
@@ -46,6 +48,7 @@ public class Jar {
                 , Jars.toAbsolutePath(jarPath)
                 , Jars.toRelativePath(jarPath, basedir)
                 , Jars.toUsOrigin(jarPath, propertyMapper)
+                , Jars.toCryptography(jarPath, propertyMapper)
         );
     }
 
@@ -75,6 +78,10 @@ public class Jar {
     
     public String getUsOrigin() {
         return usOrigin;
+    }
+
+    public String getCryptography() {
+        return cryptography;
     }
 
     public boolean isCumulocityJar() {
@@ -110,7 +117,8 @@ public class Jar {
                 fileName.replace(version, strippedVersion),
                 absolutePath,
                 relativePath,
-                usOrigin
+                usOrigin,
+                cryptography
         );
     }
     
