@@ -133,6 +133,10 @@ public class Jars {
         return propertyMapper.mapUsOrigin(toFileName(jarPath), UNKNOWN_VALUE);
     }
 
+    public static String toCryptography(Path jarPath, PropertyMapper propertyMapper) {
+        return propertyMapper.mapCryptography(toFileName(jarPath), UNKNOWN_VALUE);
+    }
+
 
     private static String getPropertyFromPomProperties(Path jarPath, String propertyKey) {
         try {

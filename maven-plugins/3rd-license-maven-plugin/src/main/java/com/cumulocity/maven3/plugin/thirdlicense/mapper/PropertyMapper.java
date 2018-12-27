@@ -78,4 +78,11 @@ public class PropertyMapper {
         return (value == null ? null : getValue(value)) + ".value";
     }
 
+    public String mapCryptography(String jarName, String defaultValue) {
+        return properties.getProperty(cryptographyKey(jarName), defaultValue);
+    }
+
+    private String cryptographyKey(String jarName) {
+        return jarName + ".cryptography";
+    }
 }
