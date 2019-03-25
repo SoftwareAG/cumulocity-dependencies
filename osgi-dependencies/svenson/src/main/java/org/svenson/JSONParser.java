@@ -490,6 +490,7 @@ public class JSONParser
         boolean containerIsCollection = Collection.class.isAssignableFrom(cx.target.getClass());
 
         boolean first = true;
+        tokenizer.startRecording();
         while(true)
         {
             Token valueToken = tokenizer.next();
@@ -565,6 +566,7 @@ public class JSONParser
             }
             else
             {
+                tokenizer.pushBack(valueToken);
                 throw new JSONParseException("Cannot add value "+value+" to "+cx.target+" ( "+cx.target.getClass()+" )");
             }
 
@@ -810,8 +812,12 @@ public class JSONParser
                                 }
                             }
                         }
-
-                        parseArrayInto(cx.push(newTarget,memberType, "."+name,newClassInfo), tokenizer);
+                        try {
+                            parseArrayInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
+                        } catch (JSONParseException e) {
+                            newTarget = createNewTargetInstance(null, null, false);
+                            parseArrayInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
+                        }
                         newTarget = DelayedConstructor.unwrap(newTarget);
 
                         if (newClassInfo != null)
