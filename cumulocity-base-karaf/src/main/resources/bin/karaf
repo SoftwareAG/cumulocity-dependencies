@@ -47,12 +47,14 @@ fi
 # Check/Set up some easily accessible MIN/MAX params for JVM mem usage
 #
 if [ "x${JAVA_MAX_MEM}" = "x" ]; then
-    JAVA_MAX_MEM=1024M
+    memoryLeftForSystem=4096
+    totalMemoryInKb=$(free | awk '/^Mem:/{print $2}')
+    JAVA_MAX_MEM=$(((totalMemoryInKb / 1024) - memoryLeftForSystem))M
     export JAVA_MAX_MEM
 fi
 
 if [ "x${JAVA_MIN_MEM}" = "x" ]; then
-    JAVA_MIN_MEM=$JAVA_MAX_MEM
+    JAVA_MIN_MEM=4096M
     export JAVA_MIN_MEM
 fi
 
