@@ -490,7 +490,10 @@ public class JSONParser
         boolean containerIsCollection = Collection.class.isAssignableFrom(cx.target.getClass());
 
         boolean first = true;
+
+        // Fix to parse as custom fragments in case object does not fit the class specification
         tokenizer.startRecording();
+        // ends here
         while(true)
         {
             Token valueToken = tokenizer.next();
@@ -566,7 +569,9 @@ public class JSONParser
             }
             else
             {
+                // Fix to parse as custom fragments in case object does not fit the class specification
                 tokenizer.pushBack(valueToken);
+                // ends here
                 throw new JSONParseException("Cannot add value "+value+" to "+cx.target+" ( "+cx.target.getClass()+" )");
             }
 
@@ -812,12 +817,14 @@ public class JSONParser
                                 }
                             }
                         }
+                        // Fix to parse as custom fragments in case object does not fit the class specification
                         try {
                             parseArrayInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
                         } catch (JSONParseException e) {
                             newTarget = createNewTargetInstance(null, null, false);
                             parseArrayInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
                         }
+                        // change ends here
                         newTarget = DelayedConstructor.unwrap(newTarget);
 
                         if (newClassInfo != null)
