@@ -762,22 +762,17 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
             return;
         }
 
-        // Exactly at this point, we convert the message to JSON and therefore
-        // any further modification will be lost.
-        // This is an optimization so that if the message is sent to a million
-        // subscribers, we generate the JSON only once.
-        // From now on, user code is passed a ServerMessage reference (and not
-        // ServerMessage.Mutable), and we attempt to return immutable data
-        // structures, even if it is not possible to guard against all cases.
-        // For example, it is impossible to prevent things like
-        // ((CustomObject)serverMessage.getData()).change() or
-        // ((Map)serverMessage.getExt().get("map")).put().
-        freeze(mutable);
+
+        boolean frozen = false;
+
+
 
         // Call the wild subscribers, which can only get broadcast messages.
         // We need a special treatment in case of subscription to /**, otherwise
         // we will deliver meta messages and service messages as if it could be
         // possible to subscribe to meta channels and service channels.
+
+
         Set<String> wildSubscribers = null;
         if (ChannelId.isBroadcast(mutable.getChannel())) {
             for (int i = 0, size = wildChannels.size(); i < size; ++i) {
@@ -792,6 +787,20 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
                             wildSubscribers = new HashSet<>();
                         }
                         if (wildSubscribers.add(session.getId())) {
+                            if(!frozen){
+                                // Exactly at this point, we convert the message to JSON and therefore
+                                // any further modification will be lost.
+                                // This is an optimization so that if the message is sent to a million
+                                // subscribers, we generate the JSON only once.
+                                // From now on, user code is passed a ServerMessage reference (and not
+                                // ServerMessage.Mutable), and we attempt to return immutable data
+                                // structures, even if it is not possible to guard against all cases.
+                                // For example, it is impossible to prevent things like
+                                // ((CustomObject)serverMessage.getData()).change() or
+                                // ((Map)serverMessage.getExt().get("map")).put().
+                                freeze(mutable);
+                                frozen = true;
+                            }
                             ((ServerSessionImpl)session).doDeliver(from, mutable);
                         }
                     }
@@ -804,6 +813,20 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         if (!subscribers.isEmpty()) {
             for (ServerSession session : subscribers) {
                 if (wildSubscribers == null || !wildSubscribers.contains(session.getId())) {
+                    if(!frozen){
+                        // Exactly at this point, we convert the message to JSON and therefore
+                        // any further modification will be lost.
+                        // This is an optimization so that if the message is sent to a million
+                        // subscribers, we generate the JSON only once.
+                        // From now on, user code is passed a ServerMessage reference (and not
+                        // ServerMessage.Mutable), and we attempt to return immutable data
+                        // structures, even if it is not possible to guard against all cases.
+                        // For example, it is impossible to prevent things like
+                        // ((CustomObject)serverMessage.getData()).change() or
+                        // ((Map)serverMessage.getExt().get("map")).put().
+                        freeze(mutable);
+                        frozen = true;
+                    }
                     ((ServerSessionImpl)session).doDeliver(from, mutable);
                 }
             }
