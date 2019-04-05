@@ -419,6 +419,7 @@ public class NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImp
             }
             return false;
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             return false;
         }
     }
