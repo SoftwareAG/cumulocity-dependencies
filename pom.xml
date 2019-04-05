@@ -4,7 +4,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>1004.0.0</version>
+	<version>1004.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -12,10 +12,6 @@
 		<name>Cumulocity GmbH</name>
 		<url>https://cumulocity.com</url>
 	</organization>
-
-	<scm>
-		<connection>scm:hg:ssh://hg@bitbucket.org/m2m/cumulocity-dependencies</connection>
-	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
