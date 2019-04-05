@@ -20,12 +20,13 @@
         <module>svenson</module>
         <module>json-path</module>
         <module>json-smart</module>
-	    <module>libphonenumber</module>
+        <module>libphonenumber</module>
         <module>dozer</module>
         <module>spring-dm</module>
         <module>odata</module>
         <module>moquette-dependencies</module>
         <module>uom</module>
+        <module>kubernetes-client</module>
     </modules>
 
     <properties>
