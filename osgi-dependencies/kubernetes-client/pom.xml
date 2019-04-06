@@ -147,6 +147,7 @@
                         io/fabric8/kubernetes/client/KubernetesClientException.*,
                         io/fabric8/kubernetes/client/dsl/base/HasMetadataOperation.*,
                         io/fabric8/kubernetes/client/dsl/internal/DeploymentOperationsImpl.*,
+                        io/fabric8/kubernetes/client/dsl/internal/ExecWebSocketListener.*,
                         io/fabric8/kubernetes/client/dsl/internal/JobOperationsImpl.*,
                         io/fabric8/kubernetes/client/dsl/internal/NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.*,
                         io/fabric8/kubernetes/client/dsl/internal/RollingUpdater.*,
