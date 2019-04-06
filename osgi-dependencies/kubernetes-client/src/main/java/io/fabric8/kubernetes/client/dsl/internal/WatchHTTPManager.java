@@ -164,13 +164,17 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                final ResponseBody body = response.body();
                 if (!response.isSuccessful()) {
+                    if (body != null) {
+                        body.close();
+                    }
                     throw OperationSupport.requestFailure(request,
                             OperationSupport.createStatus(response.code(), response.message()));
                 }
 
                 try {
-                    BufferedSource source = response.body().source();
+                    BufferedSource source = body.source();
                     while (!source.exhausted()) {
                         String message = source.readUtf8LineStrict();
                         onMessage(message);
@@ -181,8 +185,8 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
                 // if we get here, the source is exhausted, so, we have lost our "watch".
                 // we must reconnect.
-                if (response != null) {
-                    response.body().close();
+                if (body != null) {
+                    body.close();
                 }
                 scheduleReconnect();
             }
@@ -202,7 +206,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
 
         logger.debug("Submitting reconnect task to the executor");
         // Don't submit new tasks after having called shutdown() on executor
-        if(!executor.isShutdown()) {
+        if (!executor.isShutdown()) {
             // make sure that whichever thread calls this method, the tasks are
             // performed serially in the executor.
             executor.submit(new Runnable() {
