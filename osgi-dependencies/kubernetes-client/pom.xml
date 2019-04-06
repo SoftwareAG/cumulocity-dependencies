@@ -151,6 +151,7 @@
                         io/fabric8/kubernetes/client/dsl/internal/NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.*,
                         io/fabric8/kubernetes/client/dsl/internal/RollingUpdater.*,
                         io/fabric8/kubernetes/client/internal/readiness/ReadinessWatcher.*,
+                        io/fabric8/kubernetes/client/utils/BackwardsCompatibilityInterceptor.*,
                     </excludes>
                 </configuration>
             </plugin>
