@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1004.4.0-SNAPSHOT</version>
+		<version>1004.1235.4</version>
 	</parent>
 	
 	<artifactId>json-smart</artifactId>
-	<version>${osgi.json-smart.version}</version>
+	<version>${json-smart.version}-${project.parent.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JsonSmart</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
