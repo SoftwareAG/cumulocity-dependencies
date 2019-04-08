@@ -4,11 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1004.4.0-SNAPSHOT</version>
+		<version>1004.1235.5</version>
 	</parent>
 	
 	<artifactId>cglib-nodep</artifactId>
-	<version>${osgi.cglib-nodep.version}</version>
+	<version>${cglib-nodep.version}-${project.parent.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: CGLib (nodep)</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	

@@ -1,15 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1004.4.0-SNAPSHOT</version>
+		<version>1004.1235.5</version>
     </parent>
 
     <artifactId>cometd-java-server</artifactId>
-    <version>${osgi.cometd.version}</version>
+    <version>${cometd.version}-${project.parent.version}</version>
     <name>Cumulocity Dependencies :: OSGi Dependencies :: CometD :: Java Server </name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
