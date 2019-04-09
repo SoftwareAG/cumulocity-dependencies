@@ -4,11 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1004.0.4-SNAPSHOT</version>
+		<version>1004.0.4</version>
 	</parent>
 	
 	<artifactId>commons-configuration</artifactId>
-	<version>${osgi.commons-configuration.version}</version>
+	<version>${commons-configuration.version}-${project.parent.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Commons Configuration</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
