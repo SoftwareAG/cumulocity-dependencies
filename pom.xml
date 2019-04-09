@@ -52,6 +52,9 @@
 		<osgi.libphonenumber.version>${libphonenumber.version}-${project.parent.version}</osgi.libphonenumber.version>
 		<uom.version>0.7.1</uom.version>
 		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
+		<kubernetes-client.version>4.0.4</kubernetes-client.version>
+		<osgi.kubernetes-client.version>${kubernetes-client.version}-${project.parent.version}</osgi.kubernetes-client.version>
+		<kubernetes.model.version>3.0.2</kubernetes.model.version>
 
 		<joda-time.version>2.9.4</joda-time.version>
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
@@ -63,6 +66,7 @@
 		<jetty.version>9.2.21.v20170120</jetty.version>
 		<karaf.version>4.0.10</karaf.version>
 		<slf4j.version>1.7.0</slf4j.version>
+		<jackson.version>2.9.7</jackson.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
         <lombok.version>1.16.6</lombok.version>
 
