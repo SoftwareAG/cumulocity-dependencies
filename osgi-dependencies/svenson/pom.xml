@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>9.20.11-SNAPSHOT</version>
+		<version>9.20.11</version>
 	</parent>
 	
 	<artifactId>svenson</artifactId>
-	<version>${osgi.svenson.version}</version>
+	<version>${svenson.version}-${project.parent.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Svenson</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

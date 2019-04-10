@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>9.20.11-SNAPSHOT</version>
+		<version>9.20.11</version>
 	</parent>
 	
 	<artifactId>json-path</artifactId>
-	<version>${osgi.json-path.version}</version>
+	<version>${json-path.version}-${project.parent.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: JsonPath</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
