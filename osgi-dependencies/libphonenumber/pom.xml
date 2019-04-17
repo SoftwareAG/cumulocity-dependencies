@@ -4,11 +4,11 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-	<version>1004.3.0-SNAPSHOT</version>
+	<version>1004.4.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>libphonenumber</artifactId>
-	<version>${osgi.libphonenumber.version}</version>
+	<version>${libphonenumber.version}-${project.parent.version}</version>
 	<name>Cumulocity Dependencies :: OSGi Dependencies :: Libphonenumber</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

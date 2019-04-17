@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
 		<artifactId>cumulocity-dependencies</artifactId>
-		<version>1004.3.0-SNAPSHOT</version>
+		<version>1004.4.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cumulocity-base-karaf</artifactId>
@@ -99,7 +99,7 @@
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>mvn:org.apache.karaf.features/standard/${karaf.version}/xml/features</descriptor>
+								<descriptor>file:${custom-karaf.system.dir}/karaf-standard-features.xml</descriptor>
 								<descriptor>file:${custom-karaf.system.dir}/karaf-spring-features.xml</descriptor>
 							</descriptors>
 							<features>
