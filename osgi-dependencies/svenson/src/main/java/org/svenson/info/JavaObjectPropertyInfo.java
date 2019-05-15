@@ -1,7 +1,10 @@
 package org.svenson.info;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.svenson.IgnoreOnInvalidProperties;
 import org.svenson.JSONParseException;
+import org.svenson.JSONParser;
 import org.svenson.SvensonRuntimeException;
 import org.svenson.converter.JSONConverter;
 import org.svenson.converter.TypeConverter;
@@ -19,6 +22,8 @@ import java.lang.reflect.Method;
  */
 public class JavaObjectPropertyInfo implements JSONPropertyInfo
 {
+    private static Logger log = LoggerFactory.getLogger(JSONParser.class);
+
     private Method getterMethod;
 
     private Method setterMethod;
@@ -279,9 +284,15 @@ public class JavaObjectPropertyInfo implements JSONPropertyInfo
 
         try
         {
-            boolean validType = target != null && value != null && target.getClass().isAssignableFrom(value.getClass());
-            if(validType || (target != null && !target.getClass().isAnnotationPresent(IgnoreOnInvalidProperties.class))) {
+            Class<?> setterParameterType = setterMethod.getParameterTypes()[0];
+            boolean validSetter = value != null && setterParameterType.isAssignableFrom(value.getClass());
+            if(validSetter || !(target != null && target.getClass().isAnnotationPresent(IgnoreOnInvalidProperties.class)))
+            {
                 setterMethod.invoke(target, value);
+            }
+            else if(log.isDebugEnabled())
+            {
+                log.debug("Ignored invalid property: {} of type: {}", getJavaPropertyName(), target.getClass());
             }
         }
         catch (Throwable t)
