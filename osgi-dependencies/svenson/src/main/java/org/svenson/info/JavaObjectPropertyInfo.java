@@ -280,7 +280,7 @@ public class JavaObjectPropertyInfo implements JSONPropertyInfo
         try
         {
             boolean validType = target != null && value != null && target.getClass().isAssignableFrom(value.getClass());
-            if(validType || (target != null && target.getClass().isAnnotationPresent(IgnoreOnInvalidProperties.class))) {
+            if(validType || (target != null && !target.getClass().isAnnotationPresent(IgnoreOnInvalidProperties.class))) {
                 setterMethod.invoke(target, value);
             }
         }
