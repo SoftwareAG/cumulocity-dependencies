@@ -1,5 +1,6 @@
 package org.svenson.info;
 
+import org.svenson.IgnoreOnInvalidProperties;
 import org.svenson.JSONParseException;
 import org.svenson.SvensonRuntimeException;
 import org.svenson.converter.JSONConverter;
@@ -278,7 +279,10 @@ public class JavaObjectPropertyInfo implements JSONPropertyInfo
 
         try
         {
-            setterMethod.invoke(target, value);
+            boolean validType = target != null && value != null && target.getClass().isAssignableFrom(value.getClass());
+            if(validType || (target != null && target.getClass().isAnnotationPresent(IgnoreOnInvalidProperties.class))) {
+                setterMethod.invoke(target, value);
+            }
         }
         catch (Throwable t)
         {
