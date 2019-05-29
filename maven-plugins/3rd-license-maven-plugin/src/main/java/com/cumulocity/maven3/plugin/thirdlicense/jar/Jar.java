@@ -1,19 +1,31 @@
 package com.cumulocity.maven3.plugin.thirdlicense.jar;
 
+import com.cumulocity.maven3.plugin.thirdlicense.artifact.Artifacts;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 
 import java.nio.file.Path;
 
+import static com.cumulocity.maven3.plugin.thirdlicense.artifact.Artifacts.isThirdPartyRepackedArtifact;
+import static com.cumulocity.maven3.plugin.thirdlicense.jar.Jars.DISTRIBUTED_USAGE_TYPE;
+import static com.cumulocity.maven3.plugin.thirdlicense.jar.Jars.INTERNAL_USAGE_TYPE;
+
 /**
  * Class is simple DTO object only to transfer data.
  */
+@Getter
+@AllArgsConstructor
 public class Jar {
 
     private final String separator;
     private final String groupId;
     private final String artifactId;
     private final String version;
+    private final String palamidaId;
+    private final String zCode;
+    private final String usageType;
     private final String copyright;
     private final String license;
     private final String fileName;
@@ -22,26 +34,17 @@ public class Jar {
     private final String usOrigin;
     private final String cryptography;
 
-    private Jar(String separator, String groupId, String artifactId, String version, String copyright, String license, String fileName, String absolutePath, String relativePath, String usOrigin, String cryptography) {
-        this.separator = separator;
-        this.groupId = groupId;
-        this.artifactId = artifactId;
-        this.version = version;
-        this.copyright = copyright;
-        this.license = license;
-        this.fileName = fileName;
-        this.absolutePath = absolutePath;
-        this.relativePath = relativePath;
-        this.usOrigin = usOrigin;
-        this.cryptography = cryptography;
-    }
 
     public static Jar of(Path jarPath, Path basedir, PropertyMapper propertyMapper) {
+        String groupId = Jars.toGroupId(jarPath, propertyMapper);
         return new Jar(
                 Jars.toSeparator(jarPath)
-                , Jars.toGroupId(jarPath, propertyMapper)
+                , groupId
                 , Jars.toArtifactId(jarPath, propertyMapper)
                 , Jars.toVersion(jarPath, propertyMapper)
+                , Jars.toPalamidaId(jarPath, propertyMapper)
+                , Jars.toZCode(jarPath, propertyMapper)
+                , resolveUsageType(groupId)
                 , Jars.toCopyright(jarPath, propertyMapper)
                 , Jars.toLicense(jarPath, propertyMapper)
                 , Jars.toFileName(jarPath)
@@ -52,76 +55,39 @@ public class Jar {
         );
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public String getArtifactId() {
-        return artifactId;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public String getCopyright() {
-        return copyright;
-    }
-
-    public String getLicense() {
-        return license;
-    }
-    
-    public String getUsOrigin() {
-        return usOrigin;
-    }
-
-    public String getCryptography() {
-        return cryptography;
-    }
-
     public boolean isCumulocityJar() {
-        return isCumulocityInternalDependency()
-                || isCumulocityAgentInternalDependency();
-    }
-
-    public boolean isCumulocityAgentInternalDependency() {
-        return getGroupId() != null
-                && (getGroupId().startsWith("c8y.agents")
-                || getGroupId().startsWith("c8y-agents"));
-    }
-
-    private boolean isCumulocityInternalDependency() {
-        return getGroupId() != null
-                && getGroupId().startsWith("com.nsn.cumulocity")
-                && !getGroupId().startsWith("com.nsn.cumulocity.dependencies.osgi");
+        return Artifacts.isCumulocityArtifact(getGroupId());
     }
 
     public boolean isThirdPartyRepackedJar() {
-        return getGroupId() != null && getGroupId().startsWith("com.nsn.cumulocity.dependencies.osgi");
+        return isThirdPartyRepackedArtifact(getGroupId());
     }
 
-    public Jar stripCumulocityVersion() {
+    public Jar stripCumulocityVersion(PropertyMapper propertyMapper) {
         final String strippedVersion = StringUtils.substringBefore(version, "-");
+        final String strippedFileName = fileName.replace(version, strippedVersion);
         return new Jar(
                 separator,
                 groupId,
                 artifactId,
                 strippedVersion,
+                Jars.toPalamidaId(strippedFileName, propertyMapper),
+                Jars.toZCode(strippedFileName, propertyMapper),
+                usageType,
                 copyright,
                 license,
-                fileName.replace(version, strippedVersion),
+                strippedFileName,
                 absolutePath,
                 relativePath,
                 usOrigin,
                 cryptography
         );
     }
-    
+
+    private static String resolveUsageType (String groupId) {
+        return Artifacts.isThirdPartyRepackedArtifact(groupId) ? INTERNAL_USAGE_TYPE : DISTRIBUTED_USAGE_TYPE;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -10,6 +10,7 @@ import com.cumulocity.maven3.plugin.thirdlicense.license.Licenses;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapperFactory;
 import com.cumulocity.maven3.plugin.thirdlicense.validation.Validator;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Profile;
 import org.apache.maven.plugin.AbstractMojo;
@@ -97,7 +98,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
                 Jar jar = Jar.of(jarPath, appBasedir.getAbsoluteFile().toPath(), mapper);
                 if (!jar.isCumulocityJar()) {
                     if (stripCumulocityVersion && jar.isThirdPartyRepackedJar()) {
-                        jars.add(jar.stripCumulocityVersion());
+                        jars.add(jar.stripCumulocityVersion(mapper));
                     } else {
                         jars.add(jar);
                     }
@@ -139,7 +140,7 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
         pluginContextImpl.setSession(mavenSession);
         pluginContextImpl.setLog(getLog());
         pluginContextImpl.setProperties(initProperties());
-        getLog().info("Plaugin setup: " + pluginContextImpl);
+        getLog().info("Plugin setup: " + pluginContextImpl);
     }
 
     /**
