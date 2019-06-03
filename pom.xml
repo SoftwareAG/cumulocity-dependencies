@@ -55,6 +55,7 @@
 		<kubernetes-client.version>4.0.4</kubernetes-client.version>
 		<osgi.kubernetes-client.version>${kubernetes-client.version}-${project.parent.version}</osgi.kubernetes-client.version>
 		<kubernetes.model.version>3.0.2</kubernetes.model.version>
+		<okhttp3.version>3.9.1</okhttp3.version>
 
 		<joda-time.version>2.9.4</joda-time.version>
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
@@ -221,6 +222,11 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
+			<dependency>
+				<groupId>com.squareup.okhttp3</groupId>
+				<artifactId>okhttp</artifactId>
+				<version>${okhttp3.version}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
