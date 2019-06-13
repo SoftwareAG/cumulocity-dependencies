@@ -125,6 +125,7 @@
                         META-INF/maven/**/*,
                         org/cometd/server/BayeuxServerImpl.*,
                         org/cometd/server/ServerSessionImpl.*,
+                        org/cometd/server/ServerChannelImpl.*,
                         org/cometd/server/transport/AbstractHttpTransport.*,
                         org/cometd/server/transport/AbstractStreamHttpTransport.*,
                         org/cometd/server/transport/AsyncJSONTransport.*,
