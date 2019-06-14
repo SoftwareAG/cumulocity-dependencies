@@ -286,7 +286,9 @@ public class ServerChannelImpl implements ServerChannel, Dumpable {
 
             // Reset the messageId to avoid clashes with message-based transports such
             // as websocket whose clients may rely on the messageId to match request/responses.
+            /** CUMULOCITY PATCH START **/
             //mutable.setId(null);
+            /** CUMULOCITY PATCH END **/
         }
 
         if (mutable instanceof ServerMessageImpl) {
