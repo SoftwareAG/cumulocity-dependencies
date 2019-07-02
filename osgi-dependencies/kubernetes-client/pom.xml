@@ -4,7 +4,7 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>9.20.17</version>
+        <version>9.20.18-SNAPSHOT</version>
     </parent>
 
     <artifactId>kubernetes-client</artifactId>
