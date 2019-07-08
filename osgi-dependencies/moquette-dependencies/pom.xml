@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1004.6.7-SNAPSHOT</version>
+		<version>1004.6.7</version>
 	</parent>
 	
 	<artifactId>moquette-dependencies</artifactId>
