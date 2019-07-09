@@ -36,6 +36,8 @@ import java.util.regex.Pattern;
 public class Jars {
 
     public static final String UNKNOWN_VALUE = "UNKNOWN";
+    public static final String INTERNAL_USAGE_TYPE = "Internal-Integrated-Unmodified";
+    public static final String DISTRIBUTED_USAGE_TYPE = "Distributed-Integrated-Unmodified";
 
     public static String toGroupId(Path jarPath, PropertyMapper propertyMapper) {
         String groupId = propertyMapper.mapGroupId(toFileName(jarPath), UNKNOWN_VALUE);
@@ -137,6 +139,21 @@ public class Jars {
         return propertyMapper.mapCryptography(toFileName(jarPath), UNKNOWN_VALUE);
     }
 
+    public static String toPalamidaId(Path jarPath, PropertyMapper propertyMapper) {
+        return propertyMapper.mapPalamidaId(toFileName(jarPath), UNKNOWN_VALUE);
+    }
+
+    public static String toZCode(Path jarPath, PropertyMapper propertyMapper) {
+        return propertyMapper.mapZCode(toFileName(jarPath), UNKNOWN_VALUE);
+    }
+
+    public static String toPalamidaId(String fileName, PropertyMapper propertyMapper) {
+        return propertyMapper.mapPalamidaId(fileName, UNKNOWN_VALUE);
+    }
+
+    public static String toZCode(String fileName, PropertyMapper propertyMapper) {
+        return propertyMapper.mapZCode(fileName, UNKNOWN_VALUE);
+    }
 
     private static String getPropertyFromPomProperties(Path jarPath, String propertyKey) {
         try {

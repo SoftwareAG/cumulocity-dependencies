@@ -85,4 +85,20 @@ public class PropertyMapper {
     private String cryptographyKey(String jarName) {
         return jarName + ".cryptography";
     }
+
+    public String mapPalamidaId(String jarName, String defaultValue) {
+        return properties.getProperty(palamidaIdKey(jarName), defaultValue);
+    }
+
+    private String palamidaIdKey(String jarName) {
+        return jarName + ".palamidaId";
+    }
+
+    public String mapZCode(String jarName, String defaultValue) {
+        return properties.getProperty(zCodeKey(jarName), defaultValue);
+    }
+
+    private String zCodeKey(String jarName) {
+        return jarName + ".zCode";
+    }
 }
