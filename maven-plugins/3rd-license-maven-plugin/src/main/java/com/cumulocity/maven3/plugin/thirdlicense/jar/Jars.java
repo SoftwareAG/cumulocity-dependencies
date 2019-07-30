@@ -7,6 +7,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoFailureException;
 
 import javax.annotation.Nullable;
@@ -275,4 +276,8 @@ public class Jars {
         }
     }
 
+    public static final String stripCumulocityVersion (String version) {
+        return StringUtils.substringBefore(version, "-");
+    }
 }
+
