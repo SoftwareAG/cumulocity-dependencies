@@ -64,7 +64,7 @@ public class Jar {
     }
 
     public Jar stripCumulocityVersion(PropertyMapper propertyMapper) {
-        final String strippedVersion = StringUtils.substringBefore(version, "-");
+        final String strippedVersion = Jars.stripCumulocityVersion(version);
         final String strippedFileName = fileName.replace(version, strippedVersion);
         return new Jar(
                 separator,
