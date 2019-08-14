@@ -3,6 +3,7 @@ package com.cumulocity.maven3.plugin.thirdlicense;
 import com.cumulocity.maven3.plugin.thirdlicense.artifact.Artifacts;
 import com.cumulocity.maven3.plugin.thirdlicense.fetcher.Build;
 import com.cumulocity.maven3.plugin.thirdlicense.fetcher.FetcherDependency;
+import com.cumulocity.maven3.plugin.thirdlicense.jar.Jars;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.internal.util.Sets;
 import lombok.SneakyThrows;
@@ -19,6 +20,7 @@ import org.apache.maven.project.MavenProject;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
@@ -42,7 +44,11 @@ public class TppFetcherScanMojo extends AbstractMojo {
     private Boolean tppFetcherScanEnabled;
 
     private ObjectMapper mapper = new ObjectMapper();
-    private OkHttpClient client = new OkHttpClient();
+    private OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.MINUTES) // connect timeout
+                .writeTimeout(2, TimeUnit.MINUTES) // write timeout
+                .readTimeout(2, TimeUnit.MINUTES) // read timeout
+                .build();
 
     @Override
     public void execute() {
@@ -59,7 +65,7 @@ public class TppFetcherScanMojo extends AbstractMojo {
             getLog().debug(artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion());
             FetcherDependency fetcherDependency = new FetcherDependency();
             fetcherDependency.setName(artifact.getGroupId() + ":" + artifact.getArtifactId());
-            fetcherDependency.setVersion(artifact.getVersion());
+            fetcherDependency.setVersion(resolveVersion(artifact));
             dependencies.add(fetcherDependency);
         }
         Build build = new Build();
@@ -68,6 +74,14 @@ public class TppFetcherScanMojo extends AbstractMojo {
         getLog().debug("Build dependencies: " + build.toString());
         callTppFetcher(build);
     }
+
+    private String resolveVersion (Artifact artifact) {
+        if (Artifacts.isThirdPartyRepackedArtifact(artifact.getGroupId())) {
+            return Jars.stripCumulocityVersion(artifact.getVersion());
+        }
+        return artifact.getVersion();
+    }
+
 
     @SneakyThrows
     private void callTppFetcher(Build build) {
