@@ -221,7 +221,6 @@ public class WatchConnectionManager<T extends HasMetadata, L extends KubernetesR
       @Override
       public void onMessage(WebSocket webSocket, String message) {
         try {
-          logger.error("K8s patched client for reconnecting via websockets.");
           WatchEvent event = readWatchEvent(message);
           Object object = event.getObject();
           if (object instanceof HasMetadata) {
