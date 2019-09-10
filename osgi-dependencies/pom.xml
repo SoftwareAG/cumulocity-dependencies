@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>1004.0.18-SNAPSHOT</version>
+        <version>1004.0.18</version>
     </parent>
 
     <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
