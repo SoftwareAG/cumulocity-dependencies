@@ -4,7 +4,7 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>1005.1.0-SNAPSHOT</version>
+        <version>1005.4.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>kubernetes-client</artifactId>
@@ -154,6 +154,7 @@
                         io/fabric8/kubernetes/client/dsl/internal/NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.*,
                         io/fabric8/kubernetes/client/dsl/internal/RollingUpdater.*,
                         io/fabric8/kubernetes/client/dsl/internal/WatchHTTPManager.*,
+                        io/fabric8/kubernetes/client/dsl/internal/WatchConnectionManager*,
                         io/fabric8/kubernetes/client/internal/readiness/ReadinessWatcher.*,
                         io/fabric8/kubernetes/client/utils/BackwardsCompatibilityInterceptor.*,
                     </excludes>
