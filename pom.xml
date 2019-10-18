@@ -58,7 +58,7 @@
 		<okhttp3.version>3.9.1</okhttp3.version>
 
 		<joda-time.version>2.9.4</joda-time.version>
-		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<commons-collections.version>3.2.2</commons-collections.version>
 		<commons-lang.version>2.6</commons-lang.version>
         <commons-io.version>2.4</commons-io.version>
