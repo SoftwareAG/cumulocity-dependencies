@@ -54,7 +54,7 @@ public class EmailSenderImpl implements EmailSender {
         try {
             // @formatter:off
             Message message = aMessage(getSession())
-                    .withFrom("auto-responder@cumulocity.com")
+                    .withFrom("support@cumulocity.com")
                     .withTo(to)
                     .withSubject(prepareSubject(changesDetected))
                     .withBody(prepareBody(changesDetected))
