@@ -29,7 +29,6 @@
 		<httpclient.version>4.5.3</httpclient.version>
 		<httpcore.version>4.4.1</httpcore.version>
 		<javax.mail.version>1.4.4</javax.mail.version>
-		<netty.version>4.0.33.Final</netty.version>
 		<spring.dm.version>1.2.1</spring.dm.version>
 		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
 		<spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
