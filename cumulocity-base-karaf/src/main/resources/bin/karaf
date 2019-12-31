@@ -71,6 +71,10 @@ if [ "x${JAVA_MAX_DIRECT_MEM}" = "x" ]; then
     export JAVA_MAX_DIRECT_MEM
 fi
 
+if [ "x${JAVA_TMP_DIR}" = "x" ]; then
+    JAVA_TMP_DIR=/tmp/cumulocity-core-karaf
+    export JAVA_TMP_DIR
+fi
 
 #
 # Check the mode that initiated the script
@@ -297,7 +301,7 @@ setupDebugOptions() {
     if [ "x${KARAF_DEBUG}" != "x" ]; then
         # Ignore DEBUG in case of stop, client, or status mode
         if [ "x${MODE}" = "xstop" ]; then
-            return  
+            return
         fi
         if [ "x${MODE}" = "xclient" ]; then
             return
@@ -574,7 +578,7 @@ run() {
                     -Dkaraf.data="${KARAF_DATA}" \
                     -Dkaraf.etc="${KARAF_ETC}" \
                     -Dkaraf.restart.jvm.supported=true \
-                    -Djava.io.tmpdir="${KARAF_DATA}/tmp" \
+                    -Djava.io.tmpdir="${JAVA_TMP_DIR}" \
                     -Djava.util.logging.config.file="${KARAF_BASE}/etc/java.util.logging.properties" \
                     ${KARAF_SYSTEM_OPTS} \
                     ${KARAF_OPTS} \
@@ -591,7 +595,7 @@ run() {
                     -Dkaraf.data="${KARAF_DATA}" \
                     -Dkaraf.etc="${KARAF_ETC}" \
                     -Dkaraf.restart.jvm.supported=true \
-                    -Djava.io.tmpdir="${KARAF_DATA}/tmp" \
+                    -Djava.io.tmpdir="${JAVA_TMP_DIR}" \
                     -Djava.util.logging.config.file="${KARAF_BASE}/etc/java.util.logging.properties" \
                     ${KARAF_SYSTEM_OPTS} \
                     ${KARAF_OPTS} \
