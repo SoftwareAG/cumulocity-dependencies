@@ -4,5 +4,5 @@ export JAVA_MAX_MEM=4096M # Maximum memory for the JVM
 export JAVA_PERM_MEM=256M # Minimum perm memory for the JVM
 export JAVA_MAX_PERM_MEM=256M # Maximum memory for the JVM
 export JAVA_MAX_DIRECT_MEM=512M # Maximum memory for the JVM
-export JAVA_TMP_DIR=/tmp/cumulocity-core-karaf # Maximum memory for the JVM
+export JAVA_TMP_DIR=/tmp/cumulocity-core-karaf # Path to temp directory
 export KARAF_REDIRECT=/usr/share/cumulocity-core-karaf/data/log/karaf.log # Enable/set the std/err redirection when using bin/start
