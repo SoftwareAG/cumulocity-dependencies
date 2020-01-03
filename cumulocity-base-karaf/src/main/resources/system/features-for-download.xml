@@ -2,5 +2,6 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="framework-4.0.10">
     <feature name="for-download" description="List of dependencies which should be downloaded by maven plugin">
         <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2/1.10.1</bundle>
+        <bundle>mvn:com.lmax/disruptor/3.4.2</bundle>
     </feature>
 </features>
