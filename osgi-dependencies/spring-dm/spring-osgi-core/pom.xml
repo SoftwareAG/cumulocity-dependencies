@@ -4,7 +4,7 @@
     <parent>
         <artifactId>spring-dm</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>1005.10.0</version>
+        <version>1005.10.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>spring-osgi-core</artifactId>
