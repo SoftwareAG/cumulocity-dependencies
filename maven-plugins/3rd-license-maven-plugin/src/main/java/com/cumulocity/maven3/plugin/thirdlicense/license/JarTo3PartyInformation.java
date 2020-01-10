@@ -14,9 +14,9 @@ import com.google.common.base.Function;
  */
 public class JarTo3PartyInformation implements Function<Jar, String> {
     
-    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s, %s, %s, %s, %s, %s";
+    private static final String LINE_FORMAT = "%s, %s:%s:%s, %s, %s, %s, %s";
     private static final String[] HEADERS = new String[]{"fileName", "groupId", "artifactId",
-            "version", "Palamida ID", "ZCode", "Usage type", "copyright", "license", "usOrigin", "cryptography"};
+            "version", "copyright", "license", "usOrigin", "cryptography"};
     
     @Nullable
     @Override
@@ -31,8 +31,8 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
     public static List<MissingJarProperty> getMissingRequiredJarProperties(Jar jar) {
         List<MissingJarProperty> missings = new ArrayList<MissingJarProperty>();
         checkProperty(missings, jar.getFileName(), new JarProperty(jar.getFileName(), HEADERS[0]));
-        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getCopyright(), HEADERS[7]));
-        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getLicense(), HEADERS[8]));
+        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getCopyright(), HEADERS[4]));
+        checkProperty(missings, jar.getFileName(), new JarProperty(jar.getLicense(), HEADERS[5]));
         return missings;
     }
     
@@ -50,13 +50,10 @@ public class JarTo3PartyInformation implements Function<Jar, String> {
             new JarProperty(jar.getGroupId(), HEADERS[1]),
             new JarProperty(jar.getArtifactId(), HEADERS[2]),
             new JarProperty(jar.getVersion(), HEADERS[3]),
-            new JarProperty(jar.getPalamidaId(), HEADERS[4]),
-            new JarProperty(jar.getZCode(), HEADERS[5]),
-            new JarProperty(jar.getUsageType(), HEADERS[6]),
-            new JarProperty(jar.getCopyright(), HEADERS[7]),
-            new JarProperty(jar.getLicense(), HEADERS[8]),
-            new JarProperty(jar.getUsOrigin(), HEADERS[9]),
-            new JarProperty(jar.getCryptography(), HEADERS[10])
+            new JarProperty(jar.getCopyright(), HEADERS[4]),
+            new JarProperty(jar.getLicense(), HEADERS[5]),
+            new JarProperty(jar.getUsOrigin(), HEADERS[6]),
+            new JarProperty(jar.getCryptography(), HEADERS[7])
             // @formatter:on
         };
     }
