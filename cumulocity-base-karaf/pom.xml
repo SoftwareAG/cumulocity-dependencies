@@ -101,13 +101,13 @@
 							<descriptors>
 								<descriptor>file:${custom-karaf.system.dir}/karaf-standard-features.xml</descriptor>
 								<descriptor>file:${custom-karaf.system.dir}/karaf-spring-features.xml</descriptor>
-								<descriptor>file:${custom-karaf.system.dir}/features-for-download.xml</descriptor>
+								<descriptor>file:${custom-karaf.system.dir}/log4j2-feature.xml</descriptor>
 							</descriptors>
 							<features>
 								<!-- non-standard features -->
 								<feature>http</feature>
 								<feature>spring-dm-web</feature>
-								<feature>for-download</feature>
+								<feature>log4j2</feature>
 							</features>
 							<repository>${custom-karaf.system.dir}</repository>
 						</configuration>
