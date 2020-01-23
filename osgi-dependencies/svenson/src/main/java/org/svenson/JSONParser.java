@@ -639,11 +639,6 @@ public class JSONParser
                     boolean writeable = propertyInfo.isWriteable();
                     isIgnoredOnParse = (!writeable && propertyInfo.isReadOnly());
 
-                    if (propertyInfo.isIgnore()) {
-                        // see JSONProperty.ignore(): "if <code>true</code>, always ignore the property"
-                        isIgnoredOnParse = true;
-                    }
-
                     if (isIgnoredOnParse)
                     {
                         if (valueType == TokenType.BRACE_OPEN)
