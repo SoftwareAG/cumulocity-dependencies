@@ -31,7 +31,7 @@
 		<javax.mail.version>1.4.4</javax.mail.version>
 		<spring.dm.version>1.2.1</spring.dm.version>
 		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
-		<spring.security.jwt.version>1.0.0.M3</spring.security.jwt.version>
+		<spring.security.jwt.version>1.1.0.RELEASE</spring.security.jwt.version>
 		<svenson.version>1.5.8</svenson.version>
 		<osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
 		<json-path.version>1.2.0</json-path.version>
@@ -62,9 +62,9 @@
 		<commons-lang.version>2.6</commons-lang.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-compress.version>1.14</commons-compress.version>
-		<ehcache.version>2.5.1.1</ehcache.version>
-		<jetty.version>9.2.21.v20170120</jetty.version>
-		<karaf.version>4.0.10</karaf.version>
+		<ehcache.version>2.10.6</ehcache.version>
+		<jetty.version>9.4.22.v20191022</jetty.version>
+		<karaf.version>4.2.8</karaf.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.13.0</log4j.version>
 		<jackson.version>2.10.1</jackson.version>

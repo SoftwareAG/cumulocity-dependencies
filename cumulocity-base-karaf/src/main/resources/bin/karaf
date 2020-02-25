@@ -86,21 +86,21 @@ forceNoRoot() {
 
 setupClassPath() {
     # Add the jars in the lib dir
-    for file in "${KARAF_HOME}"/lib/boot/*.jar
+    for jar in "${KARAF_HOME}"/lib/boot/*.jar
     do
         if [ -z "${CLASSPATH}" ]; then
-            CLASSPATH="${file}"
+            CLASSPATH="${jar}"
         else
-            CLASSPATH="${CLASSPATH}:${file}"
+            CLASSPATH="${CLASSPATH}:${jar}"
         fi
     done
     if [ "${VERSION}" -gt "8" ] ; then
-        for file in "${KARAF_HOME}"/lib/jdk9plus/*.jar
+        for jar in "${KARAF_HOME}"/lib/jdk9plus/*.jar
         do
             if [ -z "${CLASSPATH}" ]; then
-                CLASSPATH="${file}"
+                CLASSPATH="${jar}"
             else
-                CLASSPATH="${CLASSPATH}:${file}"
+                CLASSPATH="${CLASSPATH}:${jar}"
             fi
         done
     fi
@@ -225,17 +225,20 @@ run() {
                 MAIN=org.apache.karaf.main.Stop
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 # not needed when stopping
-                JAVA_OPTS=
+                JAVA_OPTS="${JAVA_OPTS} -Xms10m -Xmx512m"
                 KARAF_SYSTEM_OPTS=
                 KARAF_OPTS=
                 nodebug=true
                 shift
                 ;;
             'console')
+                JAVA_OPTS="${JAVA_OPTS} -Xms10m -Xmx512m"
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 shift
                 ;;
             'server')
+                setupJMX
+                JAVA_OPTS="${JAVA_OPTS} ${JMX_OPTS}"
                 OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true"
                 shift
                 ;;
@@ -250,6 +253,7 @@ run() {
                 shift
                 ;;
             'client')
+                JAVA_OPTS="${JAVA_OPTS} -Xms10m -Xmx1g"
                 OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 nodebug=true
@@ -326,7 +330,7 @@ run() {
                     -Dkaraf.etc="${KARAF_ETC}" \
                     -Dkaraf.log="${KARAF_LOG}" \
                     -Dkaraf.restart.jvm.supported=true \
-                    -Djava.io.tmpdir="${KARAF_DATA}/tmp" \
+                    -Djava.io.tmpdir="${JAVA_TMP_DIR}" \
                     -Djava.util.logging.config.file="${KARAF_BASE}/etc/java.util.logging.properties" \
                     ${KARAF_SYSTEM_OPTS} \
                     ${KARAF_OPTS} \
@@ -344,7 +348,7 @@ run() {
                     -Dkaraf.etc="${KARAF_ETC}" \
                     -Dkaraf.log="${KARAF_LOG}" \
                     -Dkaraf.restart.jvm.supported=true \
-                    -Djava.io.tmpdir="${KARAF_DATA}/tmp" \
+                    -Djava.io.tmpdir="${JAVA_TMP_DIR}" \
                     -Djava.util.logging.config.file="${KARAF_BASE}/etc/java.util.logging.properties" \
                     ${KARAF_SYSTEM_OPTS} \
                     ${KARAF_OPTS} \
@@ -378,6 +382,21 @@ main() {
     init
     trap 'nothing' TSTP
     run "$@"
+}
+
+setupJMX() {
+    if [ "x${KARAF_DEBUG}" = "x" ]; then
+        JMX_OPTS="$JMX_OPTS -Djava.rmi.server.hostname=127.0.0.1"
+    fi
+    JMX_OPTS="$JMX_OPTS -Djava.rmi.server.useLocalHostname=true"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.port=8199"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.rmi.port=8199"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.ssl=false"
+    if [ "x${KARAF_DEBUG}" != "x" ]; then
+        JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.local.only=false"
+    fi
 }
 
 main "$@"
