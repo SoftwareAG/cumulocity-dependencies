@@ -19,7 +19,7 @@
 		    <version>${json-path.version}</version>
 		    <scope>provided</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 	
 	<build>
 	    <plugins>
