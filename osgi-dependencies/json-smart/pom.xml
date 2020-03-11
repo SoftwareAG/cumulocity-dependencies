@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1006.0.2</version>
+		<version>1006.0.3-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>json-smart</artifactId>
