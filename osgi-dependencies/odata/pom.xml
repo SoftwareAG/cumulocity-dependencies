@@ -43,6 +43,7 @@
             <groupId>org.apache.olingo</groupId>
             <artifactId>olingo-odata2-api</artifactId>
             <version>${odata.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
