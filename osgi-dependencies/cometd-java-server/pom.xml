@@ -4,7 +4,7 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1006.0.5</version>
+		<version>1006.0.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>cometd-java-server</artifactId>
