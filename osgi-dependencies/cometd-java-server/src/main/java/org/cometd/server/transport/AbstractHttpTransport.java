@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.InetSocketAddress;
 import java.security.Principal;
 import java.util.*;
@@ -260,6 +261,16 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
     protected void handleJSONParseException(HttpServletRequest request, HttpServletResponse response, String json, Throwable exception) throws IOException {
         _logger.warn("Could not parse JSON: " + json, exception);
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    protected void handleIOException(HttpServletResponse response, IOException exc) {
+        _logger.warn("Could not parse message: " + exc.getMessage(), exc.getCause());
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        try (Writer out = response.getWriter()) {
+            out.write(exc.getMessage());
+        } catch (Exception e) {
+            _logger.error("Exception when trying to write Exception message", e);
+        }
     }
 
     protected void error(HttpServletRequest request, HttpServletResponse response, AsyncContext asyncContext, int responseCode) {
