@@ -264,7 +264,7 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
     }
 
     protected void handleIOException(HttpServletResponse response, IOException exc) {
-        _logger.warn("Could not parse message.", exc);
+        _logger.debug("Could not parse message.", exc);
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         try (Writer out = response.getWriter()) {
             out.write(exc.getMessage());
