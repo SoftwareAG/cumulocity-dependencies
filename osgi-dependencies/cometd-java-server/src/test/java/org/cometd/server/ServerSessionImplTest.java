@@ -23,8 +23,8 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.cometd.server.SessionState.*;
-import static org.fest.assertions.Assertions.assertThat;
 import static org.joda.time.DateTimeUtils.currentTimeMillis;
 import static org.joda.time.DateTimeUtils.setCurrentMillisFixed;
 

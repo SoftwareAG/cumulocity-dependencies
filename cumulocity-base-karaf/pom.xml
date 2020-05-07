@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
 		<artifactId>cumulocity-dependencies</artifactId>
-		<version>1005.12.0-SNAPSHOT</version>
+		<version>1006.7.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cumulocity-base-karaf</artifactId>
@@ -101,11 +101,13 @@
 							<descriptors>
 								<descriptor>file:${custom-karaf.system.dir}/karaf-standard-features.xml</descriptor>
 								<descriptor>file:${custom-karaf.system.dir}/karaf-spring-features.xml</descriptor>
+								<descriptor>file:${custom-karaf.system.dir}/log4j2-feature.xml</descriptor>
 							</descriptors>
 							<features>
 								<!-- non-standard features -->
 								<feature>http</feature>
 								<feature>spring-dm-web</feature>
+								<feature>log4j2</feature>
 							</features>
 							<repository>${custom-karaf.system.dir}</repository>
 						</configuration>

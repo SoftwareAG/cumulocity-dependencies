@@ -4,7 +4,7 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>1005.12.0-SNAPSHOT</version>
+        <version>1006.7.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>odata</artifactId>
@@ -43,6 +43,7 @@
             <groupId>org.apache.olingo</groupId>
             <artifactId>olingo-odata2-api</artifactId>
             <version>${odata.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
