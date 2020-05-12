@@ -247,6 +247,7 @@ public class JSONTokenizer
         return token;
     }
 
+    // Fix to parse as custom fragments in case object does not fit the class specification
     /**
      * Pushes back the given Token. This will reset the tokenizer to the index before the
      * token was encountered and the next {@link #next()} call will return the same token again.
@@ -256,7 +257,35 @@ public class JSONTokenizer
     public void pushBack(Token oldToken)
     {
         int index = recordedTokens.indexOf(oldToken);
-        
+
+        if (index < 0)
+        {
+            throw new IllegalStateException("Can't rollback to non-recorded token " + oldToken);
+        }
+
+        pushBackToIndex(index, oldToken);
+    }
+
+    /**
+     * Pushes back the given Token. This will reset the tokenizer to the index of the
+     * token encounter and the next {@link #next()} call will return the next token after.
+     * If token is not recorded then the first recorded token will be returned.
+     *
+     * @param  oldToken     token to push back
+     */
+    public void pushBackAfterOrToFirstRecorded(Token oldToken)
+    {
+        int index = recordedTokens.indexOf(oldToken);
+
+        if (index < 0 && recordedTokens.isEmpty())
+        {
+            throw new IllegalStateException("Can't rollback after non-recorded token " + oldToken);
+        }
+
+        pushBackToIndex(index + 1,  recordedTokens.get(index + 1));
+    }
+
+    private void pushBackToIndex(int index, Token oldToken) {
         if (index < 0)
         {
             throw new IllegalStateException("Can't rollback to non-recorded token " + oldToken);
@@ -269,6 +298,7 @@ public class JSONTokenizer
         recording = false;
         pushBackIndex = 0;
     }
+    // change ends here
 
     /**
      * Parses the current parsing stream position into a token with the type {@link TokenType#INTEGER} or {@link TokenType#DECIMAL}.

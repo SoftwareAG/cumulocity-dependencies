@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -491,9 +492,6 @@ public class JSONParser
 
         boolean first = true;
 
-        // Fix to parse as custom fragments in case object does not fit the class specification
-        tokenizer.startRecording();
-        // ends here
         while(true)
         {
             Token valueToken = tokenizer.next();
@@ -569,9 +567,6 @@ public class JSONParser
             }
             else
             {
-                // Fix to parse as custom fragments in case object does not fit the class specification
-                tokenizer.pushBack(valueToken);
-                // ends here
                 throw new JSONParseException("Cannot add value "+value+" to "+cx.target+" ( "+cx.target.getClass()+" )");
             }
 
@@ -753,7 +748,17 @@ public class JSONParser
                     JSONClassInfo newClassInfo = TypeAnalyzer.getClassInfo(objectSupport, typeHint);
                     newTarget = createNewTargetInstance(typeHint, newClassInfo, true);
 
-                    parseObjectInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
+                    // Fix to parse as custom fragments in case object does not fit the class specification
+                    try {
+                        tokenizer.startRecording();
+                        parseObjectInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
+                    }
+                    catch (JSONParseException | ConversionException e) {
+                        tokenizer.pushBackAfterOrToFirstRecorded(valueToken);
+                        newTarget = createNewTargetInstance(null, null, true);
+                        parseObjectInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
+                    }
+                    // change ends here
                     newTarget = DelayedConstructor.unwrap(newTarget);
 
                     if (newClassInfo != null)
@@ -819,8 +824,10 @@ public class JSONParser
                         }
                         // Fix to parse as custom fragments in case object does not fit the class specification
                         try {
+                            tokenizer.startRecording();
                             parseArrayInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
                         } catch (JSONParseException e) {
+                            tokenizer.pushBackAfterOrToFirstRecorded(valueToken);
                             newTarget = createNewTargetInstance(null, null, false);
                             parseArrayInto(cx.push(newTarget, memberType, "." + name, newClassInfo), tokenizer);
                         }
