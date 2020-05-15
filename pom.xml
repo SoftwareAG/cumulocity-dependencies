@@ -45,8 +45,7 @@
 		<osgi.odata.version>${odata.version}-${project.parent.version}</osgi.odata.version>
 		<moquette.version>0.9</moquette.version>
 		<osgi.moquette.version>${moquette.version}-${project.parent.version}</osgi.moquette.version>
-		<libphonenumber.version>7.6.0</libphonenumber.version>
-		<osgi.libphonenumber.version>${libphonenumber.version}-${project.parent.version}</osgi.libphonenumber.version>
+		<libphonenumber.version>8.12.3</libphonenumber.version>
 		<uom.version>0.7.1</uom.version>
 		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
 		<kubernetes-client.version>4.0.4</kubernetes-client.version>
@@ -283,7 +282,7 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.4</version>
+					<version>4.2.1</version>
 					<configuration>
 						<instructions>
 							<_nouses>true</_nouses>
