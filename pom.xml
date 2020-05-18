@@ -71,10 +71,10 @@
 		<spring.retry.version>1.2.2.RELEASE</spring.retry.version>
         <lombok.version>1.18.10</lombok.version>
 
-		<hamcrest.version>1.1</hamcrest.version>
+		<hamcrest.version>2.2</hamcrest.version>
 		<junit.version>5.6.2</junit.version>
 		<mockito.version>3.3.3</mockito.version>
-		<assertj.version>3.15.0</assertj.version>
+		<assertj.version>3.16.1</assertj.version>
 
 	</properties>
 
@@ -125,7 +125,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>
-				<artifactId>hamcrest-all</artifactId>
+				<artifactId>hamcrest-core</artifactId>
 				<version>${hamcrest.version}</version>
 				<scope>test</scope>
 			</dependency>
