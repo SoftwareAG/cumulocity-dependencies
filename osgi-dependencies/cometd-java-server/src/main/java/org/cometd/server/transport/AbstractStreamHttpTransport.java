@@ -66,6 +66,8 @@ public abstract class AbstractStreamHttpTransport extends AbstractHttpTransport 
                 }
             } catch (ParseException x) {
                 handleJSONParseException(request, response, x.getMessage(), x.getCause());
+            } catch (IOException ioExc) {
+                handleIOException(response, ioExc);
             }
         } else {
             resume(request, response, null, scheduler);

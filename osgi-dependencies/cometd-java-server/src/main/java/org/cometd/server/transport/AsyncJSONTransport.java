@@ -160,6 +160,9 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
             } catch (ParseException x) {
                 handleJSONParseException(request, response, json, x);
                 asyncContext.complete();
+            } catch (IOException ioExc) {
+                handleIOException(response, ioExc);
+                asyncContext.complete();
             } finally {
                 setCurrentRequest(null);
                 getBayeux().setCurrentTransport(null);
