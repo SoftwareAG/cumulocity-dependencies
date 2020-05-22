@@ -6,8 +6,8 @@ import com.google.common.io.ByteSource;
 import com.jayway.jsonpath.JsonPath;
 import org.cometd.bayeux.server.LocalSession;
 import org.cometd.server.transport.AbstractHttpTransport;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -32,7 +32,7 @@ public class ServerSessionImplTest {
 
     BayeuxServerImpl server = new BayeuxServerImpl();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         server.setOption("long-polling.maxInterval", 1000000);
         server.start();
