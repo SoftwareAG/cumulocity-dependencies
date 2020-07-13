@@ -107,6 +107,7 @@
                             org.hibernate.proxy.*;resolution:="optional",
                             org.springframework.beans.factory.*;resolution:="optional",
                             org.springframework.core.io.*;resolution:="optional",
+                            org.apache.xmlbeans;resolution:="optional",
                             *
                         </Import-Package>
                     </instructions>
