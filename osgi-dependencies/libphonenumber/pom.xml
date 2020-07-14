@@ -4,7 +4,7 @@
 	<parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-	<version>1005.7.18</version>
+	<version>1005.7.19-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>libphonenumber</artifactId>
