@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1006.0.12-SNAPSHOT</version>
+		<version>1006.0.12</version>
 	</parent>
 	<packaging>pom</packaging>
 	
