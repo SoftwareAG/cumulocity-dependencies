@@ -291,7 +291,7 @@ setupVendorSpecifics() {
 }
 
 setupDefaults() {
-  
+
 #
 # Check/Set up some easily accessible MIN/MAX params for JVM mem usage
 #
@@ -326,7 +326,6 @@ if [ "x${JAVA_TMP_DIR}" = "x" ]; then
 fi
 
     DEFAULT_JAVA_OPTS="-Xms${JAVA_MIN_MEM} -Xmx${JAVA_MAX_MEM} \
-         -XX:+UseStringCache \
          -XX:MaxDirectMemorySize=${JAVA_MAX_DIRECT_MEM} \
          -XX:MinHeapFreeRatio=25 -XX:MaxHeapFreeRatio=75 \
          -XX:+UseG1GC \
