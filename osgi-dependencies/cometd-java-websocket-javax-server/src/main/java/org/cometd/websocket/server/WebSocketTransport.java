@@ -15,29 +15,7 @@
  */
 package org.cometd.websocket.server;
 
-import java.net.InetSocketAddress;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.Executor;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.websocket.CloseReason;
-import javax.websocket.DeploymentException;
-import javax.websocket.Endpoint;
-import javax.websocket.EndpointConfig;
-import javax.websocket.Extension;
-import javax.websocket.HandshakeResponse;
-import javax.websocket.MessageHandler;
-import javax.websocket.SendHandler;
-import javax.websocket.SendResult;
-import javax.websocket.Session;
-import javax.websocket.server.HandshakeRequest;
-import javax.websocket.server.ServerContainer;
-import javax.websocket.server.ServerEndpointConfig;
-
+import org.cometd.bayeux.server.BayeuxContext;
 import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.bayeux.server.ServerSession;
 import org.cometd.server.AbstractServerTransport;
@@ -46,6 +24,21 @@ import org.cometd.websocket.server.common.AbstractBayeuxContext;
 import org.cometd.websocket.server.common.AbstractWebSocketTransport;
 import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.component.LifeCycle;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.websocket.*;
+import javax.websocket.server.HandshakeRequest;
+import javax.websocket.server.ServerContainer;
+import javax.websocket.server.ServerEndpointConfig;
+import java.net.InetSocketAddress;
+import java.net.SocketTimeoutException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeoutException;
 
 public class WebSocketTransport extends AbstractWebSocketTransport<Session> {
     public WebSocketTransport(BayeuxServerImpl bayeux) {
@@ -119,16 +112,13 @@ public class WebSocketTransport extends AbstractWebSocketTransport<Session> {
         }
 
         // Async write.
-        wsSession.getAsyncRemote().sendText(data, new SendHandler() {
-            @Override
-            public void onResult(SendResult result) {
-                Throwable failure = result.getException();
-                if (failure == null) {
-                    callback.succeeded();
-                } else {
-                    handleException(wsSession, session, failure);
-                    callback.failed(failure);
-                }
+        wsSession.getAsyncRemote().sendText(data, result -> {
+            Throwable failure = result.getException();
+            if (failure == null) {
+                callback.succeeded();
+            } else {
+                handleException(wsSession, session, failure);
+                callback.failed(failure);
             }
         });
     }
@@ -156,6 +146,17 @@ public class WebSocketTransport extends AbstractWebSocketTransport<Session> {
                 @Override
                 protected void schedule(boolean timeout, ServerMessage.Mutable expiredConnectReply) {
                     schedule(_wsSession, timeout, expiredConnectReply);
+                }
+
+                @Override
+                public void onError(Throwable failure) {
+                    if (_logger.isDebugEnabled()) {
+                        String failureType = failure instanceof SocketTimeoutException || failure instanceof TimeoutException ?
+                                "WebSocket Timeout" : "WebSocket Error";
+                        BayeuxContext context = getContext();
+                        InetSocketAddress address = context == null ? null : context.getRemoteAddress();
+                        _logger.debug(failureType + ", Address: " + address, failure);
+                    }
                 }
             };
         }
