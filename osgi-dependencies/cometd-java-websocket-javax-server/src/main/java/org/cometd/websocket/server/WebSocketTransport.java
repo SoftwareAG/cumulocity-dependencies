@@ -24,6 +24,8 @@ import org.cometd.websocket.server.common.AbstractBayeuxContext;
 import org.cometd.websocket.server.common.AbstractWebSocketTransport;
 import org.eclipse.jetty.util.Callback;
 import org.eclipse.jetty.util.component.LifeCycle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -41,6 +43,12 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.TimeoutException;
 
 public class WebSocketTransport extends AbstractWebSocketTransport<Session> {
+
+    /**
+     * The logger package should be not changed, logs for this particular package are forwarded to access.log
+     */
+    private static final Logger accessLogger = LoggerFactory.getLogger("com.cumulocity.websocket.interceptors");
+
     public WebSocketTransport(BayeuxServerImpl bayeux) {
         super(bayeux);
     }
@@ -150,13 +158,19 @@ public class WebSocketTransport extends AbstractWebSocketTransport<Session> {
 
                 @Override
                 public void onError(Throwable failure) {
+                    BayeuxContext context = getContext();
+                    InetSocketAddress address = context == null ? null : context.getRemoteAddress();
                     if (_logger.isDebugEnabled()) {
                         String failureType = failure instanceof SocketTimeoutException || failure instanceof TimeoutException ?
                                 "WebSocket Timeout" : "WebSocket Error";
-                        BayeuxContext context = getContext();
-                        InetSocketAddress address = context == null ? null : context.getRemoteAddress();
                         _logger.debug(failureType + ", Address: " + address, failure);
                     }
+                    accessLogger.info("" +
+                            "WebSocket Error\n----------------------------" +
+                            "\nSession ID: " + (_wsSession != null ? _wsSession.getId() : null) +
+                            "\nAddress: " + address +
+                            "\nError: " + failure.getMessage() +
+                            "\n--------------------------------------");
                 }
             };
         }
@@ -165,11 +179,23 @@ public class WebSocketTransport extends AbstractWebSocketTransport<Session> {
         public void onOpen(Session wsSession, EndpointConfig config) {
             _wsSession = wsSession;
             wsSession.addMessageHandler(this);
+            accessLogger.info("" +
+                    "WebSocket Client connected\n----------------------------" +
+                    "\nSession ID: " + wsSession.getId() +
+                    "\nSession protocol version: " + wsSession.getProtocolVersion() +
+                    "\nSession request URI: " + wsSession.getRequestURI() +
+                    "\nSession user props: " + wsSession.getUserProperties() +
+                    "\n--------------------------------------");
         }
 
         @Override
         public void onClose(Session wsSession, CloseReason closeReason) {
             delegate.onClose(closeReason.getCloseCode().getCode(), closeReason.getReasonPhrase());
+            accessLogger.info("" +
+                    "WebSocket Client disconnected\n----------------------------" +
+                    "\nSession ID: " + wsSession.getId() +
+                    "\nClose reason: " + closeReason +
+                    "\n--------------------------------------");
         }
 
         @Override
