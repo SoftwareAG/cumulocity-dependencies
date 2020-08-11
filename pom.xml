@@ -3,7 +3,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>1007.0.0-SNAPSHOT</version>
+	<version>1007.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -172,6 +172,11 @@
 			<dependency>
 				<groupId>org.cometd.java</groupId>
 				<artifactId>cometd-java-server</artifactId>
+				<version>${cometd.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cometd.java</groupId>
+				<artifactId>cometd-java-websocket-javax-server</artifactId>
 				<version>${cometd.version}</version>
 			</dependency>
 			<dependency>

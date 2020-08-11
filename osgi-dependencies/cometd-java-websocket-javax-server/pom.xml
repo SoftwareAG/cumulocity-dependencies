@@ -7,48 +7,29 @@
         <version>1007.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>dozer</artifactId>
-    <version>${dozer.version}-${project.parent.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Dozer</name>
+    <artifactId>cometd-java-websocket-javax-server</artifactId>
+    <version>${cometd.version}-${project.parent.version}</version>
+    <name>Cumulocity Dependencies :: OSGi Dependencies :: CometD :: Java WebSocket Server </name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
+
+    <properties>
+        <spring.version>4.1.4.RELEASE</spring.version>
+    </properties>
 
     <dependencies>
         <dependency>
-            <groupId>net.sf.dozer</groupId>
-            <artifactId>dozer</artifactId>
-            <version>${dozer.version}</version>
+            <groupId>org.cometd.java</groupId>
+            <artifactId>cometd-java-websocket-javax-server</artifactId>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.8.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
@@ -76,12 +57,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <includeGroupIds>net.sf.dozer</includeGroupIds>
-                    <includeArtifactIds>dozer</includeArtifactIds>
+                    <includeGroupIds>org.cometd.java</includeGroupIds>
+                    <includeArtifactIds>cometd-java-websocket-javax-server</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
-                        org/dozer/MappingProcessor*
+                        org/cometd/websocket/server/WebSocketTransport.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -89,9 +70,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <includes>
-                        <include>org/dozer/MappingProcessor*</include>
-                    </includes>
                     <excludes>
                         <exclude>nothing</exclude>
                     </excludes>
@@ -102,14 +80,13 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
                     <instructions>
+                        <Export-Package>
+                            org.cometd.websocket.server.*,
+                        </Export-Package>
                         <Import-Package>
-                            !org.dozer.*,
-                            org.hibernate.proxy.*;resolution:="optional",
-                            org.springframework.beans.factory.*;resolution:="optional",
-                            org.springframework.core.io.*;resolution:="optional",
-                            org.apache.xmlbeans;resolution:="optional",
                             *
                         </Import-Package>
+                        <Require-Capability>osgi.serviceloader;filter:="(osgi.serviceloader=javax.websocket.server.ServerEndpointConfig$Configurator)";cardinality:=multiple,osgi.extender;filter:="(osgi.extender=osgi.serviceloader.processor)"</Require-Capability>
                     </instructions>
                 </configuration>
             </plugin>
