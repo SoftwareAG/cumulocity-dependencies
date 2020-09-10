@@ -71,6 +71,8 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
     private boolean _nonLazyMessages;
     private boolean _broadcastToPublisher;
     private long _inactiveInterval = -1;
+    public static final String ZIP_MESSAGE_SIZE_THRESHOLD_OPTION = "zipMessageSizeThreshold";
+    private long _zipMessageSizeThreshold;
 
     protected ServerSessionImpl(BayeuxServerImpl bayeux) {
         this(bayeux, null, null);
@@ -244,7 +246,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
 
                 }
             }
-            addMessage(message);
+            addMessage(new WeakMessage(message, _zipMessageSizeThreshold));
             if (!_listeners.isEmpty()) {
                 for (ServerSessionListener listener : _listeners) {
                     if (listener instanceof QueueListener) {
@@ -299,6 +301,8 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         _logger.debug("changing session {} state {} -> {}", getId(), _sessionState.get(), INITIALIZED);
         _sessionState.set(INITIALIZED);
         AbstractServerTransport transport = (AbstractServerTransport)_bayeux.getCurrentTransport();
+        _zipMessageSizeThreshold =  _bayeux.getOption(ZIP_MESSAGE_SIZE_THRESHOLD_OPTION, 50000);
+
         if (transport != null) {
             _maxQueue = transport.getOption(AbstractServerTransport.MAX_QUEUE_OPTION, -1);
             _maxInterval = transport.getMaxInterval();
@@ -391,6 +395,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
 
     public List<ServerMessage> takeQueue() {
         List<ServerMessage> copy = Collections.emptyList();
+
         synchronized (getLock()) {
             // Always call listeners, even if the queue is
             // empty since they may add messages to the queue.
@@ -471,7 +476,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         // do local delivery
         if (_localSession != null && hasNonLazyMessages()) {
             for (ServerMessage msg : takeQueue()) {
-                _localSession.receive(new HashMapMessage(msg));
+                _localSession.receive(new WeakMessage(msg, _zipMessageSizeThreshold));
             }
         }
     }
