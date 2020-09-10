@@ -246,7 +246,9 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
 
                 }
             }
-            addMessage(new WeakMessage(message, _zipMessageSizeThreshold));
+            WeakMessage weakMessage = new WeakMessage(message, _zipMessageSizeThreshold);
+            weakMessage.freeze(message.getJSON());
+            addMessage(weakMessage);
             if (!_listeners.isEmpty()) {
                 for (ServerSessionListener listener : _listeners) {
                     if (listener instanceof QueueListener) {
@@ -476,7 +478,9 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         // do local delivery
         if (_localSession != null && hasNonLazyMessages()) {
             for (ServerMessage msg : takeQueue()) {
-                _localSession.receive(new WeakMessage(msg, _zipMessageSizeThreshold));
+                WeakMessage weakMessage = new WeakMessage(msg, _zipMessageSizeThreshold);
+                weakMessage.freeze(msg.getJSON());
+                _localSession.receive(weakMessage);
             }
         }
     }

@@ -3,7 +3,6 @@ package org.cometd.server;
 import org.apache.commons.io.IOUtils;
 import org.cometd.bayeux.Message;
 import org.cometd.bayeux.server.ServerMessage;
-import org.cometd.common.JSONContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,10 +38,6 @@ public class WeakMessage extends ServerMessageImpl {
         if (message.getExt() != null) {
             this.getExt(true).putAll(message.getExt());
         }
-
-        if(!isFrozen()) {
-            this.freeze(message.getJSON());
-        }
     }
 
     public boolean isLocal() {
@@ -56,7 +51,7 @@ public class WeakMessage extends ServerMessageImpl {
 
     protected void freeze(String json) {
         assert _json == null;
-        if(super.get(DATA_FIELD) instanceof WeakReference) {
+        if (super.get(DATA_FIELD) instanceof WeakReference) {
             put(DATA_FIELD, super.get(DATA_FIELD));
         } else {
             put(DATA_FIELD, new WeakReference(super.get(DATA_FIELD)));
@@ -65,8 +60,8 @@ public class WeakMessage extends ServerMessageImpl {
     }
 
     private void setMessageFormat(String json) {
-        if(json.getBytes().length > _zipMessageSizeThreshold) {
-            _jsonBytes =  zipData(json);
+        if (json.getBytes().length > _zipMessageSizeThreshold) {
+            _jsonBytes = zipData(json);
             messageFormat = new ZipFormat();
         } else {
             _json = json;
@@ -77,7 +72,7 @@ public class WeakMessage extends ServerMessageImpl {
 
     @Override
     protected boolean isFrozen() {
-        return _json != null || _jsonBytes != null ;
+        return _json != null || _jsonBytes != null;
     }
 
     @Override
@@ -94,17 +89,17 @@ public class WeakMessage extends ServerMessageImpl {
     public Object getData() {
         Object data = get(DATA_FIELD);
         if (isFrozen() && data instanceof Map) {
-            return Collections.unmodifiableMap((Map<String, Object>)data);
+            return Collections.unmodifiableMap((Map<String, Object>) data);
         }
         return data;
     }
 
     @Override
     public Object get(Object key) {
-        if(isFrozen() && DATA_FIELD.equals(key) ) {
+        if (isFrozen() && DATA_FIELD.equals(key)) {
             Object data = super.get(DATA_FIELD);
             data = getDataFromWeakReference(data);
-            if(data != null) {
+            if (data != null) {
                 return data;
             } else {
                 try {
@@ -135,7 +130,7 @@ public class WeakMessage extends ServerMessageImpl {
     }
 
     static Map parseJsonToMap(String json) throws ParseException {
-        return _jsonContext.getParser().parse(new StringReader(json), Map.class);
+        return new JettyJSONContextServer().getParser().parse(new StringReader(json), Map.class);
     }
 
     public ServerMessage.Mutable getAssociated() {
@@ -208,8 +203,6 @@ public class WeakMessage extends ServerMessageImpl {
         }
     }
 
-    private static JSONContext.Server _jsonContext = new JettyJSONContextServer();
-
     interface MessageFormat {
         String getJSON();
 
@@ -220,7 +213,7 @@ public class WeakMessage extends ServerMessageImpl {
         @Override
         public String getJSON() {
             try {
-                return  IOUtils.toString(new GZIPInputStream(new ByteArrayInputStream(_jsonBytes)));
+                return IOUtils.toString(new GZIPInputStream(new ByteArrayInputStream(_jsonBytes)));
             } catch (IOException e) {
                 _logger.error("Unable to unzip json data", e);
                 throw new RuntimeException(e);
@@ -230,7 +223,7 @@ public class WeakMessage extends ServerMessageImpl {
         @Override
         public byte[] getJSONBytes() {
             try {
-                return  IOUtils.toByteArray(new GZIPInputStream(new ByteArrayInputStream(_jsonBytes)));
+                return IOUtils.toByteArray(new GZIPInputStream(new ByteArrayInputStream(_jsonBytes)));
             } catch (IOException e) {
                 _logger.error("Unable to unzip json data", e);
                 throw new RuntimeException(e);
