@@ -19,13 +19,13 @@
         </osgi.import>
         <osgi.export>
             io.fabric8.kubernetes.client*;-noimport:=true,
-            io.fabric8.kubernetes.internal;-noimport:=true
+            io.fabric8.kubernetes.internal;-noimport:=true,
+            io.fabric8.kubernetes.client.dsl.internal*
         </osgi.export>
         <osgi.private>
             io.fabric8.kubernetes.client.internal,
             io.fabric8.kubernetes.client.handlers,
             io.fabric8.kubernetes.client.dsl.base,
-            io.fabric8.kubernetes.client.dsl.internal
         </osgi.private>
     </properties>
 
@@ -42,19 +42,21 @@
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-model</artifactId>
-            <version>${kubernetes.model.version}</version>
+            <version>${kubernetes-model.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>3.9.1</version>
+            <version>${okhttp3.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>logging-interceptor</artifactId>
-            <version>3.9.1</version>
+            <version>${okhttp3.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -70,11 +72,19 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -88,16 +98,58 @@
         </dependency>
 
         <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-ext-jdk15on</artifactId>
+            <version>1.65</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk15on</artifactId>
+            <version>1.65</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.14</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.20</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.mifmif</groupId>
             <artifactId>generex</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </dependency>
 
         <!-- Compile Only Dependencies -->
         <dependency>
             <groupId>io.sundr</groupId>
             <artifactId>builder-annotations</artifactId>
-            <version>0.3.12</version>
+            <version>0.21.0</version>
+            <scope>compile</scope>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun</groupId>
+                    <artifactId>tools</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>io.sundr</groupId>
+            <artifactId>transform-annotations</artifactId>
+            <version>0.21.0</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
@@ -105,11 +157,16 @@
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.scr.annotations</artifactId>
-            <version>1.9.12</version>
+            <version>1.12.0</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 	
     <build>
@@ -143,20 +200,9 @@
                         META-INF/MANIFEST.MF,
                         META-INF/maven,
                         META-INF/maven/**/*,
-                        io/fabric8/kubernetes/client/KubernetesClientException.*,
-                        io/fabric8/kubernetes/client/dsl/base/HasMetadataOperation.*,
                         io/fabric8/kubernetes/client/dsl/base/OperationSupport.*,
                         io/fabric8/kubernetes/client/dsl/internal/ClusterOperationsImpl.*,
-                        io/fabric8/kubernetes/client/dsl/internal/DeploymentOperationsImpl.*,
-                        io/fabric8/kubernetes/client/dsl/internal/ExecWebSocketListener.*,
-                        io/fabric8/kubernetes/client/dsl/internal/JobOperationsImpl.*,
-                        io/fabric8/kubernetes/client/dsl/internal/LogWatchCallback.*,
-                        io/fabric8/kubernetes/client/dsl/internal/NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.*,
-                        io/fabric8/kubernetes/client/dsl/internal/RollingUpdater.*,
-                        io/fabric8/kubernetes/client/dsl/internal/WatchHTTPManager.*,
-                        io/fabric8/kubernetes/client/dsl/internal/WatchConnectionManager*,
-                        io/fabric8/kubernetes/client/internal/readiness/ReadinessWatcher.*,
-                        io/fabric8/kubernetes/client/utils/BackwardsCompatibilityInterceptor.*,
+                        io/fabric8/kubernetes/client/dsl/internal/LogWatchCallback.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -164,23 +210,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <!--<includes>-->
-                        <!--<include>io</include>-->
-                        <!--<include>io/fabric8</include>-->
-                        <!--<include>io/fabric8/kubernetes</include>-->
-                        <!--<include>io/fabric8/kubernetes/client</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/dsl</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/dsl/base</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/dsl/base/HasMetadataOperation.*</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/dsl/internal</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/dsl/internal/DeploymentOperationsImpl.*</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/dsl/internal/NamespaceVisitFromServerGetWatchDeleteRecreateWaitApplicableListImpl.*</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/dsl/internal/RollingUpdater.*</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/internal</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/internal/readiness</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/internal/readiness/ReadinessWatcher.*</include>-->
-                        <!--<include>io/fabric8/kubernetes/client/KubernetesClientException.*</include>-->
-                    <!--</includes>-->
                     <excludes>
                         <exclude>nothing</exclude>
                     </excludes>
@@ -195,6 +224,7 @@
                         <Export-Package>${osgi.export}</Export-Package>
                         <Import-Package>${osgi.import}</Import-Package>
                         <Private-Package>${osgi.private}</Private-Package>
+                        <Include-Resource>/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler</Include-Resource>
                     </instructions>
                 </configuration>
             </plugin>

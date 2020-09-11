@@ -24,7 +24,6 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,13 +34,11 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -59,40 +56,39 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
-    private final ExecutorService executorService = Executors.newFixedThreadPool(2);
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
     private InputStreamPumper pumper;
-    private Future<?> pumperTask;
 
     @Deprecated
     public LogWatchCallback(OutputStream out) {
         this(new Config(), out);
     }
 
-    public LogWatchCallback(Config config, OutputStream out) {
-        this.config = config;
-        if (out == null) {
-            this.out = new PipedOutputStream();
-            this.output = new PipedInputStream();
-            toClose.add(this.out);
-            toClose.add(this.output);
-        } else {
-            this.out = out;
-            this.output = null;
-        }
-
-        //We need to connect the pipe here, because onResponse might not be called in time (if log is empty)
-        //This will cause a `Pipe not connected` exception for everyone that tries to read. By always opening
-        //the pipe the user will get a ready to use inputstream, which will block until there is actually something to read.
-        if (this.out instanceof PipedOutputStream && this.output != null) {
-            try {
-                this.output.connect((PipedOutputStream) this.out);
-            } catch (IOException e) {
-                throw KubernetesClientException.launderThrowable(e);
-            }
-        }
+  public LogWatchCallback(Config config, OutputStream out) {
+    this.config = config;
+    if (out == null) {
+      this.out = new PipedOutputStream();
+      this.output = new PipedInputStream();
+      toClose.add(this.out);
+      toClose.add(this.output);
+    } else {
+      this.out = out;
+      this.output = null;
     }
+
+    //We need to connect the pipe here, because onResponse might not be called in time (if log is empty)
+    //This will cause a `Pipe not connected` exception for everyone that tries to read. By always opening
+    //the pipe the user will get a ready to use inputstream, which will block until there is actually something to read.
+    if (this.out instanceof PipedOutputStream && this.output != null) {
+      try {
+        this.output.connect((PipedOutputStream) this.out);
+      } catch (IOException e) {
+        throw KubernetesClientException.launderThrowable(e);
+      }
+    }
+  }
 
     @Override
     public void close() {
@@ -108,28 +104,24 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
      * if the stream it uses closes before the pumper it self.
      */
     private void cleanUp() {
-        try {
-            if (!closed.compareAndSet(false, true)) {
-                return;
-            }
-
-            closeQuietly(pumper);
-            if (pumperTask != null) {
-                pumperTask.cancel(true);
-                pumperTask = null;
-            }
-            shutdownExecutorService(executorService);
-        } finally {
-            closeQuietly(toClose);
+      try {
+        if (!closed.compareAndSet(false, true)) {
+          return;
         }
+
+        closeQuietly(pumper);
+        shutdownExecutorService(executorService);
+      } finally {
+        closeQuietly(toClose);
+      }
     }
 
     public void waitUntilReady() {
-        if (!Utils.waitUntilReady(queue, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.warn("Log watch request has not been opened within: " + config.getRequestTimeout() + " millis.");
-            }
+      if (!Utils.waitUntilReady(queue, config.getRequestTimeout(), TimeUnit.MILLISECONDS)) {
+        if (LOGGER.isDebugEnabled()) {
+          LOGGER.warn("Log watch request has not been opened within: " + config.getRequestTimeout() + " millis.");
         }
+      }
     }
 
     public InputStream getOutput() {
@@ -139,11 +131,12 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
     @Override
     public void onFailure(Call call, IOException ioe) {
         //If we have closed the watch ignore everything
-        if (closed.get()) {
+        if (closed.get())  {
             return;
         }
 
         LOGGER.error("Log Callback Failure.", ioe);
+        cleanUp();
         //We only need to queue startup failures.
         if (!started.get()) {
             queue.add(ioe);
@@ -152,44 +145,17 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
     @Override
     public void onResponse(Call call, final Response response) throws IOException {
-        final ResponseBody body = response.body();
-        pumper = new BlockingInputStreamPumper(body.byteStream(), new io.fabric8.kubernetes.client.Callback<byte[]>() {
-            @Override
-            public void call(byte[] input) {
-                try {
-                    out.write(input);
-                } catch (IOException e) {
-                    if (body != null) {
-                        body.close();
-                    }
-                    throw KubernetesClientException.launderThrowable(e);
-                }
-            }
-        }, new Runnable() {
-            @Override
-            public void run() {
-                response.close();
-            }
-        });
-        pumperTask = executorService.submit(pumper);
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    pumperTask.get(); // will block forever unless there's an error or we're closing
-                } catch (final InterruptedException interruptedException) {
-                    Thread.currentThread().interrupt();
-                } catch (final CancellationException cancellationException) {
-                    // OK; the task we're monitoring was already cancelled
-                } catch (final ExecutionException executionException) {
-                    LOGGER.error("Error while pumping stream.", executionException);
-                } finally {
-                    if (body != null) {
-                        body.close();
-                    }
-                }
-            }
-        });
+       pumper = new BlockingInputStreamPumper(response.body().byteStream(), input -> {
+           try {
+               out.write(input);
+           } catch (IOException e) {
+               throw KubernetesClientException.launderThrowable(e);
+           }
+       }, () -> {
+         cleanUp();
+         response.close();
+       });
+        executorService.submit(pumper);
         started.set(true);
         queue.add(true);
 
