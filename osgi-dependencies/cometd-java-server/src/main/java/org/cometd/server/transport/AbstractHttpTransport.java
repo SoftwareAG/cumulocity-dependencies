@@ -134,29 +134,36 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
                     }
                 }
 
-                switch (message.getChannel()) {
-                    case Channel.META_HANDSHAKE: {
-                        if (messages.length > 1) {
-                            throw new IOException();
+                String channel = message.getChannel();
+
+                if (channel == null) {
+                    response.sendError(400, "Channel not specified.");
+                    error(request, response, null, response.getStatus());
+                } else {
+                    switch (channel) {
+                        case Channel.META_HANDSHAKE: {
+                            if (messages.length > 1) {
+                                throw new IOException();
+                            }
+                            ServerMessage.Mutable reply = processMetaHandshake(request, response, session, message);
+                            if (reply != null) {
+                                session = (ServerSessionImpl) getBayeux().getSession(reply.getClientId());
+                            }
+                            messages[i] = processReply(session, reply);
+                            sendQueue = false;
+                            break;
                         }
-                        ServerMessage.Mutable reply = processMetaHandshake(request, response, session, message);
-                        if (reply != null) {
-                            session = (ServerSessionImpl)getBayeux().getSession(reply.getClientId());
+                        case Channel.META_CONNECT: {
+                            ServerMessage.Mutable reply = processMetaConnect(request, response, session, message);
+                            messages[i] = processReply(session, reply);
+                            startInterval = sendQueue = sendReplies = reply != null;
+                            break;
                         }
-                        messages[i] = processReply(session, reply);
-                        sendQueue = false;
-                        break;
-                    }
-                    case Channel.META_CONNECT: {
-                        ServerMessage.Mutable reply = processMetaConnect(request, response, session, message);
-                        messages[i] = processReply(session, reply);
-                        startInterval = sendQueue = sendReplies = reply != null;
-                        break;
-                    }
-                    default: {
-                        ServerMessage.Mutable reply = bayeuxServerHandle(session, message);
-                        messages[i] = processReply(session, reply);
-                        break;
+                        default: {
+                            ServerMessage.Mutable reply = bayeuxServerHandle(session, message);
+                            messages[i] = processReply(session, reply);
+                            break;
+                        }
                     }
                 }
             }
