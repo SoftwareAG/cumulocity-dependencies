@@ -1,23 +1,24 @@
 package org.cometd.server;
 
+import org.apache.commons.io.IOUtils;
 import org.cometd.bayeux.server.ServerMessage;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.json.JSONException;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 
 public class WeakMessageTest {
 
@@ -118,33 +119,28 @@ public class WeakMessageTest {
     }
 
     @Test
-    public void shouldZipJsonData_WhenZipMessageThresholdReached() throws ParseException {
+    public void shouldZipJsonData_WhenZipMessageThresholdReached() throws IOException {
         //Given
-        WeakMessage weakMessage =  Mockito.spy(new WeakMessage(0));
-        weakMessage.freeze("{\"data\":\"JsonData\"}");
-        doReturn(null).when(weakMessage).getDataFromWeakReference(any());
+        WeakMessage weakMessage = new WeakMessage(0);
 
         //When
-        weakMessage.get("data");
+        weakMessage.freeze("{\"data\":\"JsonData\"}");
 
         //Then
-        Mockito.verify(weakMessage, Mockito.times(1)).getDataFromJson();
-        Mockito.verify(weakMessage, Mockito.times(1)).zipData(any());
+        String unzipData = IOUtils.toString(new GZIPInputStream(new ByteArrayInputStream(weakMessage.getRawData())));
+        assertThat(unzipData).isEqualTo("{\"data\":\"JsonData\"}");
     }
 
     @Test
-    public void shouldNotZipJsonData_WhenZipMessageNotReachedThreshold() throws ParseException {
+    public void shouldNotZipJsonData_WhenZipMessageNotReachedThreshold() {
         //Given
-        WeakMessage weakMessage =  Mockito.spy(new WeakMessage(50000));
-        weakMessage.freeze("{\"data\":\"JsonData\"}");
-        doReturn(null).when(weakMessage).getDataFromWeakReference(any());
+        WeakMessage weakMessage =  new WeakMessage(50000);
 
         //When
-        weakMessage.get("data");
+        weakMessage.freeze("{\"data\":\"JsonData\"}");
 
         //Then
-        Mockito.verify(weakMessage, Mockito.times(1)).getDataFromJson();
-        Mockito.verify(weakMessage, Mockito.times(0)).zipData(any());
+        assertThat(new String(weakMessage.getRawData())).isEqualTo("{\"data\":\"JsonData\"}");
     }
 
     @Test

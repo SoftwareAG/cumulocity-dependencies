@@ -31,10 +31,7 @@ public class WeakMessage extends ServerMessageImpl {
 
     public WeakMessage(Message message, long zipMessageSizeThreshold) {
         this._zipMessageSizeThreshold = zipMessageSizeThreshold;
-        this.setChannel(message.getChannel());
-        this.setId(message.getId());
-        this.setClientId(message.getClientId());
-        this.setData(message.getData());
+        this.putAll(message);
         if (message.getExt() != null) {
             this.getExt(true).putAll(message.getExt());
         }
@@ -57,6 +54,14 @@ public class WeakMessage extends ServerMessageImpl {
             put(DATA_FIELD, new WeakReference(super.get(DATA_FIELD)));
         }
         setMessageFormat(json);
+    }
+
+    public WeakMessage copy() {
+        WeakMessage weakMessage = new WeakMessage(this, this._zipMessageSizeThreshold);
+        weakMessage._jsonBytes = this._jsonBytes;
+        weakMessage._json = this._json;
+        weakMessage.messageFormat = this.messageFormat;
+        return weakMessage;
     }
 
     private void setMessageFormat(String json) {
@@ -83,6 +88,10 @@ public class WeakMessage extends ServerMessageImpl {
     @Override
     public byte[] getJSONBytes() {
         return messageFormat.getJSONBytes();
+    }
+
+    public byte[] getRawData() {
+        return _jsonBytes;
     }
 
     @Override
