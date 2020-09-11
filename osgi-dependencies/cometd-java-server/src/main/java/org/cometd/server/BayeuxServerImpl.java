@@ -1364,7 +1364,8 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
                 for (int i = 0; i < subscriptions.size(); ++i) {
                     String subscription = subscriptions.get(i);
                     if (!validate(subscription)) {
-                        throw new IllegalArgumentException("Invalid message subscription: " + subscription);
+                        error(reply, "403::subscription_invalid_character (" + subscription + ")");
+                        return;
                     }
                 }
             }
@@ -1435,7 +1436,8 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
                 for (int i = 0; i < subscriptions.size(); ++i) {
                     String subscription = subscriptions.get(i);
                     if (!validate(subscription)) {
-                        throw new IllegalArgumentException("Invalid message subscription: " + subscription);
+                        error(reply, "403::subscription_invalid_character (" + subscription + ")");
+                        return;
                     }
                 }
             }
