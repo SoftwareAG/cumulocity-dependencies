@@ -144,6 +144,25 @@ public class WeakMessageTest {
     }
 
     @Test
+    public void shouldCreateShallowMessageCopy() throws ParseException {
+        String jsonData = "{\"realtimeAction\":\"UPDATE\",\"data\":{\"additionParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/additionParents\",\"references\":[]},\"owner\":\"admin\",\"childDevices\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childDevices\",\"references\":[]},\"childAssets\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAssets\",\"references\":[{\"managedObject\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3200\",\"id\":\"3200\"},\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAssets/3200\"}]},\"creationTime\":\"2020-08-28T09:20:30.186Z\",\"lastUpdated\":\"2020-08-28T09:20:30.186Z\",\"childAdditions\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAdditions\",\"references\":[]},\"name\":\"testGroup1\",\"assetParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/assetParents\",\"references\":[]},\"deviceParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/deviceParents\",\"references\":[]},\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201\",\"id\":\"3201\",\"c8y_IsDeviceGroup\":{}}}";
+        Map data = WeakMessage.parseJsonToMap(jsonData);
+        WeakMessage weakMessage = new WeakMessage(50000);
+        weakMessage.setData(data);
+        weakMessage.setChannel("/some/setChannel/*");
+        weakMessage.setId("123");
+        weakMessage.setClientId("321");
+
+        //When
+        WeakMessage copyOfWeakMessage = weakMessage.copy();
+
+        //then
+        assertThat(copyOfWeakMessage.get("data")).isEqualTo(weakMessage.get("data"));
+        assertThat(copyOfWeakMessage.get("channel")).isEqualTo(weakMessage.get("channel"));
+        assertThat(copyOfWeakMessage.get("id")).isEqualTo(weakMessage.get("id"));
+    }
+
+    @Test
     @Disabled(value = "Static check of time needed to zip and unzip real-time messages")
     public void zippingPerformanceTest() throws ParseException {
         Map data = generateData(500);
