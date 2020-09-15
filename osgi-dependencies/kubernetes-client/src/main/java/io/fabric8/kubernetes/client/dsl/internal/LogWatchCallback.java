@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +38,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -56,10 +60,11 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
     private final AtomicBoolean started = new AtomicBoolean(false);
     private final ArrayBlockingQueue<Object> queue = new ArrayBlockingQueue<>(1);
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(2);
     private final AtomicBoolean closed = new AtomicBoolean(false);
 
     private InputStreamPumper pumper;
+    private volatile Future<?> pumperTask;
 
     @Deprecated
     public LogWatchCallback(OutputStream out) {
@@ -110,6 +115,10 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
         }
 
         closeQuietly(pumper);
+        if (pumperTask != null) {
+          pumperTask.cancel(true);
+          pumperTask = null;
+        }
         shutdownExecutorService(executorService);
       } finally {
         closeQuietly(toClose);
@@ -145,19 +154,40 @@ public class LogWatchCallback implements LogWatch, Callback, AutoCloseable {
 
     @Override
     public void onResponse(Call call, final Response response) throws IOException {
-       pumper = new BlockingInputStreamPumper(response.body().byteStream(), input -> {
-           try {
-               out.write(input);
-           } catch (IOException e) {
-               throw KubernetesClientException.launderThrowable(e);
-           }
-       }, () -> {
-         cleanUp();
-         response.close();
-       });
-        executorService.submit(pumper);
-        started.set(true);
-        queue.add(true);
-
+      final ResponseBody body = response.body();
+      pumper = new BlockingInputStreamPumper(body.byteStream(), input -> {
+          try {
+              out.write(input);
+          } catch (IOException e) {
+              if (body != null) {
+                body.close();
+              }
+              throw KubernetesClientException.launderThrowable(e);
+          }
+      }, () -> {
+        cleanUp();
+        response.close();
+      });
+      pumperTask = executorService.submit(pumper);
+      executorService.execute(new Runnable() {
+          @Override
+          public void run() {
+              try {
+                  pumperTask.get(); // will block forever unless there's an error or we're closing
+              } catch (final InterruptedException interruptedException) {
+                  Thread.currentThread().interrupt();
+              } catch (final CancellationException cancellationException) {
+                  // OK; the task we're monitoring was already cancelled
+              } catch (final ExecutionException executionException) {
+                  LOGGER.error("Error while pumping stream.", executionException);
+              } finally {
+                  if (body != null) {
+                    body.close();
+                  }
+              }
+          }
+      });
+      started.set(true);
+      queue.add(true);
     }
 }
