@@ -28,6 +28,7 @@ import io.fabric8.openshift.api.model.ClusterVersionList;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -48,18 +49,24 @@ public class ClusterOperationsImpl extends OperationSupport {
   }
 
   public VersionInfo fetchVersion() {
+    ResponseBody body = null;
     try {
       Response response = handleVersionGet(versionEndpoint);
+      body = response.body();
       // Handle Openshift 4 version case
       if (HttpURLConnection.HTTP_NOT_FOUND == response.code() && versionEndpoint.equals(OPENSHIFT_VERSION_ENDPOINT)) {
         response.close();
         return fetchOpenshift4Version();
       }
 
-      Map<String, String> myMap = objectMapper.readValue(response.body().string(), HashMap.class);
+      Map<String, String> myMap = objectMapper.readValue(body.string(), HashMap.class);
       return fetchVersionInfoFromResponse(myMap);
     } catch(Exception e) {
       KubernetesClientException.launderThrowable(e);
+    } finally {
+      if (body != null) {
+        body.close();
+      }
     }
     return null;
   }
