@@ -35,7 +35,6 @@
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-client</artifactId>
             <version>${kubernetes-client.version}</version>
-            <classifier>bundle</classifier>
             <scope>provided</scope>
         </dependency>
 
@@ -195,7 +194,6 @@
                 <configuration>
                     <includeGroupIds>io.fabric8</includeGroupIds>
                     <includeArtifactIds>kubernetes-client</includeArtifactIds>
-                    <classifier>bundle</classifier>
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven,
@@ -224,7 +222,11 @@
                         <Export-Package>${osgi.export}</Export-Package>
                         <Import-Package>${osgi.import}</Import-Package>
                         <Private-Package>${osgi.private}</Private-Package>
-                        <Include-Resource>/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler</Include-Resource>
+                        <Include-Resource>
+                            /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler,
+                            /META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider=target/classes/META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider,
+                            /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
+                        </Include-Resource>
                     </instructions>
                 </configuration>
             </plugin>
