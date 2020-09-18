@@ -508,7 +508,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
     }
 
     public Mutable newMessage() {
-        WeakMessage result = new WeakMessage(getOption(ZIP_MESSAGE_SIZE_THRESHOLD_OPTION, 50000));
+        WeakMessage result = new WeakMessage(getOption(ZIP_MESSAGE_SIZE_THRESHOLD_OPTION, 50000), _jsonContext);
         result.setLocal(true);
         return result;
     }

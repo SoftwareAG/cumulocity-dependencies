@@ -71,8 +71,6 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
     private boolean _nonLazyMessages;
     private boolean _broadcastToPublisher;
     private long _inactiveInterval = -1;
-    public static final String ZIP_MESSAGE_SIZE_THRESHOLD_OPTION = "zipMessageSizeThreshold";
-    private long _zipMessageSizeThreshold;
 
     protected ServerSessionImpl(BayeuxServerImpl bayeux) {
         this(bayeux, null, null);
@@ -301,7 +299,6 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         _logger.debug("changing session {} state {} -> {}", getId(), _sessionState.get(), INITIALIZED);
         _sessionState.set(INITIALIZED);
         AbstractServerTransport transport = (AbstractServerTransport)_bayeux.getCurrentTransport();
-        _zipMessageSizeThreshold =  _bayeux.getOption(ZIP_MESSAGE_SIZE_THRESHOLD_OPTION, 50000);
 
         if (transport != null) {
             _maxQueue = transport.getOption(AbstractServerTransport.MAX_QUEUE_OPTION, -1);

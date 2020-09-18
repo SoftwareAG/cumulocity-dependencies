@@ -3,6 +3,7 @@ package org.cometd.server;
 import org.apache.commons.io.IOUtils;
 import org.cometd.bayeux.Message;
 import org.cometd.bayeux.server.ServerMessage;
+import org.cometd.common.JSONContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,14 +25,17 @@ public class WeakMessage extends ServerMessageImpl {
     private transient boolean _local;
     private MessageFormat messageFormat;
     private final long _zipMessageSizeThreshold;
+    private JSONContext.Server jsonContext;
 
-    public WeakMessage(long zipMessageSizeThreshold) {
+    public WeakMessage(long zipMessageSizeThreshold, JSONContext.Server jsonContext) {
         this._zipMessageSizeThreshold = zipMessageSizeThreshold;
+        this.jsonContext = jsonContext;
     }
 
-    public WeakMessage(Message message, long zipMessageSizeThreshold) {
+    public WeakMessage(Message message, long zipMessageSizeThreshold, JSONContext.Server jsonContext) {
         this._zipMessageSizeThreshold = zipMessageSizeThreshold;
         this.putAll(message);
+        this.jsonContext = jsonContext;
         if (message.getExt() != null) {
             this.getExt(true).putAll(message.getExt());
         }
@@ -57,7 +61,7 @@ public class WeakMessage extends ServerMessageImpl {
     }
 
     public WeakMessage copy() {
-        WeakMessage weakMessage = new WeakMessage(this, this._zipMessageSizeThreshold);
+        WeakMessage weakMessage = new WeakMessage(this, this._zipMessageSizeThreshold, this.jsonContext);
         weakMessage._jsonBytes = this._jsonBytes;
         weakMessage._json = this._json;
         weakMessage.messageFormat = this.messageFormat;
@@ -135,10 +139,13 @@ public class WeakMessage extends ServerMessageImpl {
     }
 
     Object getDataFromJson() throws ParseException {
-        return parseJsonToMap(this.getJSON()).get(DATA_FIELD);
+        return parseJsonToMap(this.getJSON(), this.jsonContext).get(DATA_FIELD);
     }
 
-    static Map parseJsonToMap(String json) throws ParseException {
+    static Map parseJsonToMap(String json, JSONContext.Server jsonContext) throws ParseException {
+        if (jsonContext != null) {
+            return jsonContext.getParser().parse(new StringReader(json), Map.class);
+        }
         return new JettyJSONContextServer().getParser().parse(new StringReader(json), Map.class);
     }
 
