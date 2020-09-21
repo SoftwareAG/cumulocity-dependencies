@@ -299,6 +299,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         _logger.debug("changing session {} state {} -> {}", getId(), _sessionState.get(), INITIALIZED);
         _sessionState.set(INITIALIZED);
         AbstractServerTransport transport = (AbstractServerTransport)_bayeux.getCurrentTransport();
+
         if (transport != null) {
             _maxQueue = transport.getOption(AbstractServerTransport.MAX_QUEUE_OPTION, -1);
             _maxInterval = transport.getMaxInterval();
@@ -391,6 +392,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
 
     public List<ServerMessage> takeQueue() {
         List<ServerMessage> copy = Collections.emptyList();
+
         synchronized (getLock()) {
             // Always call listeners, even if the queue is
             // empty since they may add messages to the queue.
@@ -471,7 +473,11 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         // do local delivery
         if (_localSession != null && hasNonLazyMessages()) {
             for (ServerMessage msg : takeQueue()) {
-                _localSession.receive(new HashMapMessage(msg));
+                if(msg instanceof WeakMessage) {
+                    _localSession.receive( ((WeakMessage) msg).copy());
+                } else {
+                    _localSession.receive(new HashMapMessage(msg));
+                }
             }
         }
     }

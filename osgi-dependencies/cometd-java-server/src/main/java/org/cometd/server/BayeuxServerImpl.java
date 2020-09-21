@@ -41,8 +41,10 @@ import org.eclipse.jetty.util.thread.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.security.SecureRandom;
 import java.util.*;
@@ -89,6 +91,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
     public static final String VALIDATE_MESSAGE_FIELDS_OPTION = "validateMessageFields";
     public static final String BROADCAST_TO_PUBLISHER_OPTION = "broadcastToPublisher";
     public static final int DEFAULT_HEARTBEAT_MINUTES = 10;
+    public static final String ZIP_MESSAGE_SIZE_THRESHOLD_OPTION = "zipMessageSizeThreshold";
 
     private final Logger _logger = LoggerFactory.getLogger(getClass().getName() + "." + Integer.toHexString(System.identityHashCode(this)));
     private final SecureRandom _random = new SecureRandom();
@@ -505,7 +508,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
     }
 
     public Mutable newMessage() {
-        ServerMessageImpl result = new ServerMessageImpl();
+        WeakMessage result = new WeakMessage(getOption(ZIP_MESSAGE_SIZE_THRESHOLD_OPTION, 50000), _jsonContext);
         result.setLocal(true);
         return result;
     }
