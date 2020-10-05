@@ -27,7 +27,6 @@
         <module>moquette-dependencies</module>
         <module>uom</module>
         <module>kubernetes-client</module>
-        <module>servicemix-bundles</module>
     </modules>
 
     <properties>
