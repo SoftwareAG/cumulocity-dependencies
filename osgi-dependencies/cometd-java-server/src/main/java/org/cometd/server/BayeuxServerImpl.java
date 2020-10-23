@@ -572,7 +572,12 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         }
 
         if (_validation) {
-            validateMessage(message);
+            final Optional<String> errorMessage = validateMessage(message);
+            if (errorMessage.isPresent()) {
+                Mutable reply = createReply(message);
+                error(reply, errorMessage.get());
+                return reply;
+            }
         }
 
         Mutable reply = createReply(message);
@@ -639,15 +644,16 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         }
     }
 
-    protected void validateMessage(Mutable message) {
+    protected Optional<String> validateMessage(Mutable message) {
         String channel = message.getChannel();
         if (!validate(channel)) {
-            throw new IllegalArgumentException("Invalid message channel: " + channel);
+            return Optional.of("Invalid message channel: " + channel);
         }
         String id = message.getId();
         if (id != null && !validate(id)) {
-            throw new IllegalArgumentException("Invalid message id: " + id);
+            return Optional.of("Invalid message id: " + id);
         }
+        return Optional.empty();
     }
 
     private boolean validate(String value) {
