@@ -1108,10 +1108,6 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         return true;
     }
 
-    protected ServerSession getActiveSessionForCurrentUser(){
-        return null;
-    }
-
     protected void error(Mutable reply, String error) {
         reply.put(Message.ERROR_FIELD, error);
         reply.setSuccessful(false);
@@ -1276,13 +1272,6 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         public void onMessage(ServerSessionImpl session, final Mutable message) {
             ServerMessage.Mutable reply = message.getAssociated();
             if (session == null) {
-
-                session = (ServerSessionImpl) getActiveSessionForCurrentUser();
-                if( session != null ){
-                    createReply(session, reply);
-                    return;
-                }
-
                 if(canCreateNewSession()) {
                     session = newServerSession();
                 } else {
