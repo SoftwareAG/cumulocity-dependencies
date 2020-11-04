@@ -1302,6 +1302,10 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
             session.handshake();
             addServerSession(session, message);
 
+            createReply(session, reply);
+        }
+
+        void createReply(ServerSessionImpl session, Mutable reply) {
             reply.setSuccessful(true);
             reply.put(Message.CLIENT_ID_FIELD, session.getId());
             reply.put(Message.VERSION_FIELD, "1.0");

@@ -71,6 +71,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
     private boolean _nonLazyMessages;
     private boolean _broadcastToPublisher;
     private long _inactiveInterval = -1;
+    private final long _creationTime;
 
     protected ServerSessionImpl(BayeuxServerImpl bayeux) {
         this(bayeux, null, null);
@@ -79,8 +80,9 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
     protected ServerSessionImpl(BayeuxServerImpl bayeux, LocalSessionImpl localSession, String idHint) {
         _bayeux = bayeux;
         _localSession = localSession;
-
+        _creationTime = System.currentTimeMillis();
         StringBuilder id = new StringBuilder(30);
+
         int len = 20;
         if (idHint != null) {
             len += idHint.length() + 1;
@@ -104,6 +106,10 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         }
 
         _broadcastToPublisher = _bayeux.isBroadcastToPublisher();
+    }
+
+    public long getCreationTime() {
+        return _creationTime;
     }
 
     /**
