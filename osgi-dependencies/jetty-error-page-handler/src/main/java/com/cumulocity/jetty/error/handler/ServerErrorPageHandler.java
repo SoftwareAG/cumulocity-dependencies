@@ -25,7 +25,7 @@ public class ServerErrorPageHandler extends ErrorPageErrorHandler {
     private static final String COMPONENT_NAME = "System";
 
     public ServerErrorPageHandler() {
-        LOG.info("Initializing custom jetty error handler.");
+        LOG.info("Initializing custom jetty error page handler.");
     }
 
     @Override
