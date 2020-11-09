@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1007.4.0-SNAPSHOT</version>
+		<version>1007.5.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>json-smart</artifactId>
@@ -19,6 +19,11 @@
 		    <version>${json-smart.version}</version>
 		    <scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>9.0</version>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -28,10 +33,11 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
                     <includeGroupIds>net.minidev</includeGroupIds>
-                    <includeArtifactIds>json-smart, asm</includeArtifactIds>
+                    <includeArtifactIds>json-smart,asm</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,
+                        org/objectweb/asm/*
                     </excludes>
                 </configuration>
             </plugin>
