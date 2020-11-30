@@ -108,6 +108,8 @@
 								<feature>http</feature>
 								<feature>spring-dm-web</feature>
 								<feature>log4j2</feature>
+								<!--standard feature, but force to include jar into repository -->
+								<feature>aries-proxy</feature>
 							</features>
 							<repository>${custom-karaf.system.dir}</repository>
 						</configuration>
