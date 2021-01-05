@@ -3,7 +3,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>1007.4.0-SNAPSHOT</version>
+	<version>1007.12.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -17,6 +17,7 @@
 		<java.version>1.8</java.version>
 		<osgi.service.http.port>8181</osgi.service.http.port>
 		<nexus.url>http://localhost:8080</nexus.url>
+		<nexus.basePath>/nexus/content/repositories</nexus.basePath>
 
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
@@ -62,14 +63,14 @@
         <commons-io.version>2.6</commons-io.version>
         <commons-compress.version>1.14</commons-compress.version>
 		<ehcache.version>2.10.6</ehcache.version>
-		<jetty.version>9.4.22.v20191022</jetty.version>
-		<karaf.version>4.2.8</karaf.version>
+		<jetty.version>9.4.34.v20201102</jetty.version>
+		<karaf.version>4.2.10</karaf.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.13.0</log4j.version>
 		<jackson.version>2.10.3</jackson.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
 		<spring.retry.version>1.2.2.RELEASE</spring.retry.version>
-        <lombok.version>1.18.12</lombok.version>
+        <lombok.version>1.18.16</lombok.version>
 
 		<hamcrest.version>2.2</hamcrest.version>
 		<junit.version>5.6.2</junit.version>
@@ -305,7 +306,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M4</version>
+					<version>3.0.0-M5</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -406,11 +407,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>snapshot</id>
-			<url>${nexus.url}/nexus/content/repositories/snapshots/</url>
+			<url>${nexus.url}${nexus.basePath}/snapshots/</url>
 		</snapshotRepository>
 		<repository>
 			<id>release</id>
-			<url>${nexus.url}/nexus/content/repositories/releases/</url>
+			<url>${nexus.url}${nexus.basePath}/releases/</url>
 		</repository>
 	</distributionManagement>
 	<profiles>

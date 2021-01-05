@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>cumulocity-dependencies</artifactId>
+        <groupId>com.nsn.cumulocity.dependencies</groupId>
+        <version>1007.12.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.nsn.cumulocity.webserver</groupId>
+    <artifactId>jetty-error-page-handler</artifactId>
+    <packaging>bundle</packaging>
+
+    <name>Cumulocity Dependencies :: OSGi Dependencies :: Core Server Error Page Handler</name>
+
+    <properties>
+        <bundle.symbolicName>com.cumulocity.jetty.error.page.handler</bundle.symbolicName>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
+                        <Fragment-Host>org.ops4j.pax.web.pax-web-jetty</Fragment-Host>
+                        <Export-Package>
+                            com.cumulocity.jetty.error.handler.*
+                        </Export-Package>
+                        <Import-Package>
+                            !com.cumulocity.jetty.error.handler.*,
+                            com.sun.nio.file;resolution:="optional",
+                            javax.imageio,
+                            javax.naming,javax.naming.ldap,
+                            javax.net.ssl,
+                            javax.security.auth,
+                            javax.security.auth.callback,
+                            javax.security.auth.login,
+                            javax.security.auth.x500,
+                            javax.sql;resolution:="optional",
+                            javax.xml.parsers,
+                            org.eclipse.jetty.jmx,
+                            org.ietf.jgss,
+                            org.slf4j,
+                            org.slf4j.helpers,
+                            org.slf4j.spi,
+                            sun.misc
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

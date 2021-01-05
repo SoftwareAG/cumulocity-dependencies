@@ -41,10 +41,8 @@ import org.eclipse.jetty.util.thread.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.security.SecureRandom;
 import java.util.*;
@@ -575,7 +573,12 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         }
 
         if (_validation) {
-            validateMessage(message);
+            final Optional<String> errorMessage = validateMessage(message);
+            if (errorMessage.isPresent()) {
+                Mutable reply = createReply(message);
+                error(reply, errorMessage.get());
+                return reply;
+            }
         }
 
         Mutable reply = createReply(message);
@@ -642,15 +645,16 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         }
     }
 
-    protected void validateMessage(Mutable message) {
+    protected Optional<String> validateMessage(Mutable message) {
         String channel = message.getChannel();
         if (!validate(channel)) {
-            throw new IllegalArgumentException("Invalid message channel: " + channel);
+            return Optional.of("Invalid message channel: " + channel);
         }
         String id = message.getId();
         if (id != null && !validate(id)) {
-            throw new IllegalArgumentException("Invalid message id: " + id);
+            return Optional.of("Invalid message id: " + id);
         }
+        return Optional.empty();
     }
 
     private boolean validate(String value) {
@@ -1298,6 +1302,10 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
             session.handshake();
             addServerSession(session, message);
 
+            createReply(session, reply);
+        }
+
+        void createReply(ServerSessionImpl session, Mutable reply) {
             reply.setSuccessful(true);
             reply.put(Message.CLIENT_ID_FIELD, session.getId());
             reply.put(Message.VERSION_FIELD, "1.0");
