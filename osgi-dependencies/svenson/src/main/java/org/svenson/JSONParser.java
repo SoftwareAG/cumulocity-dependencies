@@ -1,30 +1,12 @@
 package org.svenson;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.svenson.converter.DefaultTypeConverterRepository;
 import org.svenson.converter.TypeConverter;
-import org.svenson.info.ConstructorInfo;
-import org.svenson.info.JSONClassInfo;
-import org.svenson.info.JSONPropertyInfo;
-import org.svenson.info.JavaObjectSupport;
-import org.svenson.info.ObjectSupport;
-import org.svenson.info.ParameterInfo;
+import org.svenson.info.*;
 import org.svenson.matcher.EqualsPathMatcher;
 import org.svenson.matcher.PathMatcher;
 import org.svenson.tokenize.JSONCharacterSource;
@@ -33,6 +15,11 @@ import org.svenson.tokenize.Token;
 import org.svenson.tokenize.TokenType;
 import org.svenson.util.ExceptionWrapper;
 import org.svenson.util.TokenUtil;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Converts JSON strings into graphs of java objects. It offers
@@ -626,6 +613,18 @@ public class JSONParser
                 if (propertyInfo != null)
                 {
                     name = propertyInfo.getJavaPropertyName();
+                }
+                if (propertyInfo == null && !containerIsDynAttrs) {
+                    log.debug("Property '{}' will be ignored as it was not found in {}", jsonName, cx.target.getClass());
+                    if (valueType == TokenType.BRACE_OPEN) {
+                        TokenUtil.skipObjectValue(tokenizer);
+                        continue;
+                    } else if (valueType == TokenType.BRACKET_OPEN) {
+                        TokenUtil.skipArrayValue(tokenizer);
+                        continue;
+                    } else {
+                        continue;
+                    }
                 }
                 isProperty = false;
                 isIgnoredOnParse = false;
