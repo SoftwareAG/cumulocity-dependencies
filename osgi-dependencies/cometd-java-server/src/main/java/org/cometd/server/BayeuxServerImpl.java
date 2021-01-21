@@ -610,7 +610,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
                 if (session == null) {
                     unknownSession(message, reply);
                 } else {
-                    Authorizer.Result creationResult = isCreationAuthorized(session, message, channelName);
+                    Authorizer.Result creationResAbstractAuditAspectult = isCreationAuthorized(session, message, channelName);
                     if (creationResult instanceof Authorizer.Result.Denied) {
                         String denyReason = ((Authorizer.Result.Denied)creationResult).getReason();
                         error(reply, "403:" + denyReason + ":create denied");
