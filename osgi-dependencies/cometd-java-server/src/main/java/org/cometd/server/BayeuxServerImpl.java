@@ -602,7 +602,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
         String channelName = message.getChannel();
 
         ServerChannelImpl channel;
-        if (channelName == null) {
+        if (channelName == null || channelName.isEmpty()) {
             error(reply, "400::channel missing");
         } else {
             channel = getServerChannel(channelName);
@@ -610,7 +610,13 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
                 if (session == null) {
                     unknownSession(message, reply);
                 } else {
-                    Authorizer.Result creationResAbstractAuditAspectult = isCreationAuthorized(session, message, channelName);
+                    Authorizer.Result creationResult;
+                    try {
+                        creationResult = isCreationAuthorized(session, message, channelName);
+                    } catch (RuntimeException e) {
+                        error(reply, "422:" + e.getMessage() + ":cannot create channel");
+                        return;
+                    }
                     if (creationResult instanceof Authorizer.Result.Denied) {
                         String denyReason = ((Authorizer.Result.Denied)creationResult).getReason();
                         error(reply, "403:" + denyReason + ":create denied");
