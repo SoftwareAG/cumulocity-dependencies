@@ -615,7 +615,7 @@ public class JSONParser
                     name = propertyInfo.getJavaPropertyName();
                 }
                 if (propertyInfo == null && !containerIsDynAttrs) {
-                    log.debug("Property '{}' will be ignored as it was not found in {}", jsonName, cx.target.getClass());
+                    log.warn("Property '{}' will be ignored as it was not found in {}", jsonName, cx.target.getClass());
                     if (valueType == TokenType.BRACE_OPEN) {
                         TokenUtil.skipObjectValue(tokenizer);
                         continue;
