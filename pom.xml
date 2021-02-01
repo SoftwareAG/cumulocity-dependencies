@@ -3,7 +3,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>1007.14.0-SNAPSHOT</version>
+	<version>1007.16.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
@@ -63,7 +63,7 @@
         <commons-io.version>2.6</commons-io.version>
         <commons-compress.version>1.14</commons-compress.version>
 		<ehcache.version>2.10.6</ehcache.version>
-		<jetty.version>9.4.34.v20201102</jetty.version>
+		<jetty.version>9.4.36.v20210114</jetty.version>
 		<karaf.version>4.2.10</karaf.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.13.0</log4j.version>
