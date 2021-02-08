@@ -237,8 +237,6 @@ run() {
                 shift
                 ;;
             'server')
-                setupJMX
-                JAVA_OPTS="${JAVA_OPTS} ${JMX_OPTS}"
                 OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false"
                 shift
                 ;;
@@ -385,21 +383,6 @@ main() {
     init
     trap 'nothing' TSTP
     run "$@"
-}
-
-setupJMX() {
-    if [ "x${KARAF_DEBUG}" = "x" ]; then
-        JMX_OPTS="$JMX_OPTS -Djava.rmi.server.hostname=127.0.0.1"
-    fi
-    JMX_OPTS="$JMX_OPTS -Djava.rmi.server.useLocalHostname=true"
-    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote"
-    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.port=8199"
-    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.rmi.port=8199"
-    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
-    JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.ssl=false"
-    if [ "x${KARAF_DEBUG}" != "x" ]; then
-        JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.local.only=false"
-    fi
 }
 
 main "$@"
