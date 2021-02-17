@@ -178,7 +178,7 @@ init() {
 }
 
 run() {
-    OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=true"
+    OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
     MAIN=org.apache.karaf.main.Main
     if [ "x$CHECK_ROOT_INSTANCE_RUNNING" = "x" ]; then
         CHECK_ROOT_INSTANCE_RUNNING=true
@@ -239,22 +239,22 @@ run() {
             'server')
                 setupJMX
                 JAVA_OPTS="${JAVA_OPTS} ${JMX_OPTS}"
-                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true"
+                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false"
                 shift
                 ;;
             'run')
-                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true -Dkaraf.log.console=ALL"
+                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false -Dkaraf.log.console=ALL"
                 shift
                 ;;
             'daemon')
-                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true"
+                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false"
                 KARAF_DAEMON="true"
                 KARAF_EXEC="exec"
                 shift
                 ;;
             'client')
                 JAVA_OPTS="${JAVA_OPTS} -Xms10m -Xmx1g"
-                OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=true"
+                OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 nodebug=true
                 shift
