@@ -161,7 +161,7 @@ public class AsyncJSONTransport extends AbstractHttpTransport {
                 handleJSONParseException(request, response, json, x);
                 asyncContext.complete();
             } catch (IOException ioExc) {
-                handleIOException(response, ioExc);
+                handleInvalidMessage(response, ioExc);
                 asyncContext.complete();
             } finally {
                 setCurrentRequest(null);
