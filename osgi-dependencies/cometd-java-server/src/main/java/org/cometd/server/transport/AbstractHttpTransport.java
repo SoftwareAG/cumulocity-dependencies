@@ -111,11 +111,14 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
                     _logger.debug("Processing {}", message);
                 }
 
-                String clientId = message.getClientId();
+                Object clientId = message.get("clientId");
                 _logger.debug("recived message from {} >> {}", clientId, message.getJSON());
+                if (clientId != null && !(clientId instanceof String)) {
+                    throw new IllegalArgumentException("clientId must be a String value");
+                }
 
                 if (session == null && _trustClientSession) {
-                    session = (ServerSessionImpl)getBayeux().getSession(clientId);
+                    session = (ServerSessionImpl)getBayeux().getSession(message.getClientId());
                 }
 
                 if (session != null) {
@@ -134,12 +137,13 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
                     }
                 }
 
-                String channel = message.getChannel();
+                Object channelValue = message.get("channel");
 
-                if (channel == null) {
+                if (!(channelValue instanceof String)) {
                     response.sendError(400, "Channel not specified.");
                     error(request, response, null, response.getStatus());
                 } else {
+                    String channel = (String) channelValue;
                     switch (channel) {
                         case Channel.META_HANDSHAKE: {
                             if (messages.length > 1) {
@@ -270,7 +274,7 @@ public abstract class AbstractHttpTransport extends AbstractServerTransport {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
-    protected void handleIOException(HttpServletResponse response, IOException exc) {
+    protected void handleInvalidMessage(HttpServletResponse response, Exception exc) {
         _logger.debug("Could not parse message.", exc);
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         try (Writer out = response.getWriter()) {
