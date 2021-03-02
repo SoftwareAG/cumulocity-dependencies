@@ -78,6 +78,8 @@
 		<mockito.version>3.3.3</mockito.version>
 		<assertj.version>3.15.0</assertj.version>
 
+		<exclude.test.groups>PerformanceTest</exclude.test.groups>
+
 	</properties>
 
 	<modules>
@@ -308,6 +310,9 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.0.0-M5</version>
+					<configuration>
+						<excludedGroups>${exclude.test.groups}</excludedGroups>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -428,6 +433,23 @@
 					<url>scpexe://resources.cumulocity.com/cumulocity/maven/repository</url>
 				</repository>
 			</distributionManagement>
+		</profile>
+		<profile>
+			<id>performance-tests</id>
+			<properties>
+				<exclude.test.groups />
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<groups>PerformanceTest</groups>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 

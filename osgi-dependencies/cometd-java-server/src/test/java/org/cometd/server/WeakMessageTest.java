@@ -5,7 +5,7 @@ import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.common.JSONContext;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.json.JSONException;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
@@ -165,7 +165,7 @@ public class WeakMessageTest {
     }
 
     @Test
-    @Disabled(value = "Static check of time needed to zip and unzip real-time messages")
+    @Tag("PerformanceTest")
     public void zippingPerformanceTest() throws ParseException {
         Map data = generateData(500);
         List<ServerMessage.Mutable> oldQueue = new ArrayList<>();
