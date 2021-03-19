@@ -22,7 +22,7 @@ import static org.openjdk.jmh.annotations.Mode.AverageTime;
 @Warmup(iterations = 0)
 @org.openjdk.jmh.annotations.Measurement(iterations = 5)
 @State(Scope.Benchmark)
-public class ZippingBenchmark {
+public class MessageReadingBenchmark {
 
     private JSONContext.Server jsonContext = null;
 
@@ -45,17 +45,17 @@ public class ZippingBenchmark {
     }
 
     @Test
-    public void zippingBenchmark() throws RunnerException {
+    public void messageReadingBenchmark() throws RunnerException {
         Options opt = new OptionsBuilder()
-                .result("target/" + ZippingBenchmark.class.getSimpleName() + "-jmh.json")
+                .result("target/" + MessageReadingBenchmark.class.getSimpleName() + "-jmh.json")
                 .resultFormat(ResultFormatType.JSON)
-                .include(ZippingBenchmark.class.getSimpleName())
+                .include(MessageReadingBenchmark.class.getSimpleName())
                 .build();
         new Runner(opt).run();
     }
 
     @Benchmark
-    public void messageZippingBenchmark() {
+    public void readingBenchmark() {
         for(int i=0; i<oldQueue.size(); i++) {
             WeakMessage weakMessage = new WeakMessage(oldQueue.get(i),0, jsonContext);
             weakMessage.getData();
