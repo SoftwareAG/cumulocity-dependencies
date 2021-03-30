@@ -21,7 +21,7 @@ import static org.openjdk.jmh.annotations.Mode.Throughput;
 @BenchmarkMode(Throughput)
 @Fork(1)
 @Warmup(iterations = 1)
-@org.openjdk.jmh.annotations.Measurement(iterations = 5)
+@org.openjdk.jmh.annotations.Measurement(iterations = 3)
 public class WeakMessageBenchmark {
 
     @Test
