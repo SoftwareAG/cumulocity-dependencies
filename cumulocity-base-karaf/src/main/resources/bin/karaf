@@ -225,14 +225,13 @@ run() {
                 MAIN=org.apache.karaf.main.Stop
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 # not needed when stopping
-                JAVA_OPTS="${JAVA_OPTS} -Xms10m -Xmx512m"
+                JAVA_OPTS=
                 KARAF_SYSTEM_OPTS=
                 KARAF_OPTS=
                 nodebug=true
                 shift
                 ;;
             'console')
-                JAVA_OPTS="${JAVA_OPTS} -Xms10m -Xmx512m"
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 shift
                 ;;
@@ -251,7 +250,6 @@ run() {
                 shift
                 ;;
             'client')
-                JAVA_OPTS="${JAVA_OPTS} -Xms10m -Xmx1g"
                 OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 nodebug=true
@@ -279,6 +277,8 @@ run() {
             fi
         fi
         JAVA_OPTS="${JAVA_DEBUG_OPTS} ${JAVA_OPTS}"
+    else
+        JAVA_OPTS="${JAVA_NON_DEBUG_OPTS} ${JAVA_OPTS}"
     fi
 
     while true; do
@@ -324,6 +324,7 @@ run() {
                     --add-exports=java.base/sun.net.www.content.text=ALL-UNNAMED \
                     --add-exports=jdk.xml.dom/org.w3c.dom.html=ALL-UNNAMED \
                     --add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED \
+                    --add-exports java.security.sasl/com.sun.security.sasl=ALL-UNNAMED \
                     -Dkaraf.instances="${KARAF_HOME}/instances" \
                     -Dkaraf.home="${KARAF_HOME}" \
                     -Dkaraf.base="${KARAF_BASE}" \
