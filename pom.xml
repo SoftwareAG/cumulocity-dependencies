@@ -21,7 +21,7 @@
 
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
-		<commons-codec.version>1.11</commons-codec.version>
+		<commons-codec.version>1.15</commons-codec.version>
 		<commons-configuration.version>1.7</commons-configuration.version>
 		<osgi.commons-configuration.version>${commons-configuration.version}-${project.parent.version}</osgi.commons-configuration.version>
 		<dozer.version>5.4.0</dozer.version>
@@ -64,11 +64,11 @@
         <commons-io.version>2.6</commons-io.version>
         <commons-compress.version>1.14</commons-compress.version>
 		<ehcache.version>2.10.6</ehcache.version>
-		<jetty.version>9.4.36.v20210114</jetty.version>
-		<karaf.version>4.2.10</karaf.version>
+		<jetty.version>9.4.38.v20210224</jetty.version>
+		<karaf.version>4.2.11</karaf.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.13.0</log4j.version>
-		<jackson.version>2.10.3</jackson.version>
+		<jackson.version>2.12.3</jackson.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
 		<spring.retry.version>1.2.2.RELEASE</spring.retry.version>
         <lombok.version>1.18.16</lombok.version>
@@ -249,7 +249,7 @@
 				<groupId>javax.annotation</groupId>
 				<artifactId>javax.annotation-api</artifactId>
 				<scope>provided</scope>
-				<version>1.3.1</version>
+				<version>1.3.2</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.xml.bind</groupId>
