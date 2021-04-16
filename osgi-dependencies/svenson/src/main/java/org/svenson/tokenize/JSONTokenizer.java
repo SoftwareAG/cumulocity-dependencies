@@ -330,7 +330,7 @@ public class JSONTokenizer
 
         if (isDecimal)
         {
-            return parseDouble(number);
+            return parseDecimal(number);
         }
         else
         {
@@ -367,25 +367,7 @@ public class JSONTokenizer
         }
         catch(NumberFormatException nfe)
         {
-            throw new JSONParseException("Error parsing decimal " + number);
-        }
-    }
-
-    /**
-     * Parses the given string into a token with the type {@link TokenType#DECIMAL}.
-     * @param number number to parse as decimal
-     * @return  DECIMAL token with Double value
-     */
-    private Token parseDouble(String number)
-    {
-        try
-        {
-            Double d =  new BigDecimal(number).doubleValue();
-            return Token.getToken(TokenType.DECIMAL, d);
-        }
-        catch(NumberFormatException nfe)
-        {
-            throw new JSONParseException("Error parsing double " + number);
+            throw new JSONParseException("Error parsing double "+number);
         }
     }
 
