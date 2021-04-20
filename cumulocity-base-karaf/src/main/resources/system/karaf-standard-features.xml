@@ -32,12 +32,12 @@
 
     <feature name="aries-proxy" description="Aries Proxy" version="4.2.8">
         <!-- false to avoid restarts of proxy which cascades badly -->
-        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm/9.0</bundle>
-        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm-util/9.0</bundle>
-        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm-tree/9.0</bundle>
-        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm-analysis/9.0</bundle>
-        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm-commons/9.0</bundle>
-        <bundle start-level="20">mvn:org.apache.aries.proxy/org.apache.aries.proxy/1.1.8</bundle>
+        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm/7.2</bundle>
+        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm-util/7.2</bundle>
+        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm-tree/7.2</bundle>
+        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm-analysis/7.2</bundle>
+        <bundle dependency="false" start-level="20">mvn:org.ow2.asm/asm-commons/7.2</bundle>
+        <bundle start-level="20">mvn:org.apache.aries.proxy/org.apache.aries.proxy/1.1.6</bundle>
     </feature>
 
     <feature name="aries-blueprint" description="Aries Blueprint" version="4.2.8">
