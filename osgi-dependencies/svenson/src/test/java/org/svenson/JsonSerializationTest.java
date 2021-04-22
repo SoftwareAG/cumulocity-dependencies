@@ -48,7 +48,7 @@ public class JsonSerializationTest {
         JSONParser jsonParser = JSONParser.defaultJSONParser();
         List<ExpectedMapping> jsonMappings = asList(
                 new ExpectedMapping("-432432432432", Long.class).expectedValue(-432432432432L),
-                new ExpectedMapping("-432432432432.0", Double.class),
+                new ExpectedMapping("-432432432432.0", BigDecimal.class).expectedValue(new BigDecimal("-432432432432.0")),
                 new ExpectedMapping("-4324324324324324324343", BigDecimal.class).expectedValue(new BigDecimal("-4324324324324324324343")),
                 new ExpectedMapping("43e27", Double.class),
                 new ExpectedMapping("-1.5e-75", Double.class),
@@ -56,9 +56,9 @@ public class JsonSerializationTest {
                 new ExpectedMapping("1e0", Double.class),
                 new ExpectedMapping("-0", Long.class).expectedValue(0L),
                 new ExpectedMapping("-9223372036854775808", Long.class).expectedValue(-9223372036854775808L),
-                new ExpectedMapping("-9223372036854775809", BigDecimal.class),
+                new ExpectedMapping("-9223372036854775809", BigDecimal.class).expectedValue(new BigDecimal("-9223372036854775809")),
                 new ExpectedMapping("9223372036854775807", Long.class).expectedValue(9223372036854775807L),
-                new ExpectedMapping("9223372036854775808", BigDecimal.class),
+                new ExpectedMapping("9223372036854775808", BigDecimal.class).expectedValue(new BigDecimal("9223372036854775808")),
                 new ExpectedMapping("1.7976931348623157e308", Double.class),
                 new ExpectedMapping("1.7976931348623159e308", Double.class).expectedValue(Double.POSITIVE_INFINITY),
                 new ExpectedMapping("-1.7976931348623157e308", Double.class),
@@ -70,7 +70,7 @@ public class JsonSerializationTest {
             Object parsed = jsonParser.parse(mapping.json);
             //then
             assertEquals(parsed.getClass(), mapping.expectedClass);
-                //only for some scenarios, not good to check exact equality for Doubles
+            //only for some scenarios, not good to check exact equality for Doubles
             if (mapping.expectedValue != null) {
                 assertEquals(parsed, mapping.expectedValue);
             }
