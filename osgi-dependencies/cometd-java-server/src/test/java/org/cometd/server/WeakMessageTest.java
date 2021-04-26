@@ -1,21 +1,15 @@
 package org.cometd.server;
 
 import org.apache.commons.io.IOUtils;
-import org.cometd.bayeux.server.ServerMessage;
 import org.cometd.common.JSONContext;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.json.JSONException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -162,40 +156,5 @@ public class WeakMessageTest {
         assertThat(copyOfWeakMessage.get("data")).isEqualTo(weakMessage.get("data"));
         assertThat(copyOfWeakMessage.get("channel")).isEqualTo(weakMessage.get("channel"));
         assertThat(copyOfWeakMessage.get("id")).isEqualTo(weakMessage.get("id"));
-    }
-
-    @Test
-    @Disabled(value = "Static check of time needed to zip and unzip real-time messages")
-    public void zippingPerformanceTest() throws ParseException {
-        Map data = generateData(500);
-        List<ServerMessage.Mutable> oldQueue = new ArrayList<>();
-        for(int i=0; i<1; i++) {
-            ServerMessageImpl serverMessage = new ServerMessageImpl();
-            serverMessage.setData(data);
-            serverMessage.setChannel("/some/setChannel/*");
-            serverMessage.setId("123");
-            serverMessage.setClientId("321");
-            oldQueue.add(serverMessage);
-            serverMessage.getData();
-        }
-
-        Instant start = Instant.now();
-        for(int i=0; i<oldQueue.size(); i++) {
-            WeakMessage weakMessage = new WeakMessage(oldQueue.get(i),0, jsonContext);
-            weakMessage.getData();
-        }
-
-        Instant end = Instant.now();
-        System.out.println("Message zip and unzip time = " + Duration.between(start, end).toMillis() );
-    }
-
-    private Map generateData(int numberOfChildDeviceReferences) throws ParseException {
-        StringBuilder childDeviceReferencesBuilder = new StringBuilder();
-        for(int i=0; i <numberOfChildDeviceReferences; i++) {
-            childDeviceReferencesBuilder.append("{ \"managedObject\": { \"self\": \"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/"+i+"\", \"id\": \""+i+"\" }, \"self\": \"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/10107/childAssets/"+i+"\" },");
-        }
-        String jsonData = "{\"realtimeAction\":\"UPDATE\",\"data\":{\"additionParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/additionParents\",\"references\":[]},\"owner\":\"admin\",\"childDevices\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childDevices\",\"references\":[]},\"childAssets\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAssets\",\"references\":[ "+childDeviceReferencesBuilder+" {\"managedObject\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3200\",\"id\":\"3200\"},\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAssets/3200\"}]},\"creationTime\":\"2020-08-28T09:20:30.186Z\",\"lastUpdated\":\"2020-08-28T09:20:30.186Z\",\"childAdditions\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAdditions\",\"references\":[]},\"name\":\"testGroup1\",\"assetParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/assetParents\",\"references\":[]},\"deviceParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/deviceParents\",\"references\":[]},\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201\",\"id\":\"3201\",\"c8y_IsDeviceGroup\":{}}}";
-        System.out.println("size = " + jsonData.getBytes().length);
-        return WeakMessage.parseJsonToMap(jsonData, jsonContext);
     }
 }

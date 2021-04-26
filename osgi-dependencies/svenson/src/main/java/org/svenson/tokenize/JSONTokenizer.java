@@ -363,11 +363,17 @@ public class JSONTokenizer
         try
         {
             BigDecimal d =  new BigDecimal(number);
+            // fix MTM-38052 to distinguish between numbers going here as scientific notation doubles and very long integers
+            // so that database parser could reject too big integers like 11234567890123456789 but correctly store 1.1234567890123456789e19 (MTM-38052)
+            if (number.contains("e") || number.contains("E")) {
+                return Token.getToken(TokenType.DECIMAL, d.doubleValue());
+            }
+            // End of fix MTM-38052
             return Token.getToken(TokenType.DECIMAL, d);
         }
         catch(NumberFormatException nfe)
         {
-            throw new JSONParseException("Error parsing double "+number);
+            throw new JSONParseException("Error parsing decimal " + number);
         }
     }
 
