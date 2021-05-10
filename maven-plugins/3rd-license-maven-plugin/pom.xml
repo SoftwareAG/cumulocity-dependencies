@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>maven-plugins</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
-		<version>1009.11.0-SNAPSHOT</version>
+		<version>1009.13.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>3rd-license-maven-plugin</artifactId>
@@ -54,11 +54,16 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>${javax.mail.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>${javax.mail.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>${javax.mail.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
