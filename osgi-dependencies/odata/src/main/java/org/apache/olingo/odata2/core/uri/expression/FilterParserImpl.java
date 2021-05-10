@@ -973,8 +973,13 @@ public class FilterParserImpl implements FilterParser {
 
     // has
     combination = new ParameterSetCombination.PSCflex();
+    combination.add(new ParameterSet(boolean_, string));
+    lAvailableMethods.put(MethodOperator.HAS.toUriLiteral(), new InfoMethod(MethodOperator.HAS, combination));
+
+    // hasany
+    combination = new ParameterSetCombination.PSCflex();
     combination.add(new ParameterSet(boolean_, string).setFurtherType(string));
-    lAvailableMethods.put(MethodOperator.HAS.toUriLiteral(), new InfoMethod(MethodOperator.HAS, 1, -1, combination));
+    lAvailableMethods.put(MethodOperator.HASANY.toUriLiteral(), new InfoMethod(MethodOperator.HASANY, 1, -1, combination));
 
     // bygroupid
     combination = new ParameterSetCombination.PSCflex();
