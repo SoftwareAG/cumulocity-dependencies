@@ -44,6 +44,7 @@ public enum MethodOperator {
   FLOOR("floor"),
   CEILING("ceiling"),
   HAS("has"),
+  HASANY("hasany"),
   BY_GROUPID("bygroupid");
 
   private String syntax;
