@@ -4,7 +4,7 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>1009.0.14-SNAPSHOT</version>
+        <version>1009.0.14</version>
     </parent>
 
     <artifactId>dozer</artifactId>
