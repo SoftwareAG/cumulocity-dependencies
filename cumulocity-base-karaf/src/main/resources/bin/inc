@@ -245,7 +245,7 @@ checkJvmVersion() {
 
     # java must be at least version 8
     if [ "${VERSION}" -lt "8" ]; then
-        die "JVM must be greater than 1.8"
+        die "JVM must be version 1.8 or greater"
     fi
 }
 
@@ -257,28 +257,17 @@ setupDebugOptions() {
         if [ "x${JAVA_DEBUG_OPTS}" = "x" ]; then
             JAVA_DEBUG_OPTS="${DEFAULT_JAVA_DEBUG_OPTS}"
         fi
-        if [ "x${JAVA_GC_DEBUG}" != "x" ]; then
-            JAVA_DEBUG_OPTS="$JAVA_DEBUG_OPTS -XX:NativeMemoryTracking=detail -XX:+PrintGCDetails -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:+PrintAdaptiveSizePolicy -XX:+PrintTenuringDistribution"
-        fi
+
         JAVA_OPTS="${JAVA_DEBUG_OPTS} ${JAVA_OPTS}"
         warn "Enabling Java debug options: ${JAVA_DEBUG_OPTS}"
     fi
 }
 
-setupVendorSpecifics() {
+setupVendorSepcifics() {
     #Set the JVM_VENDOR specific JVM flags
     if [ "${JVM_VENDOR}" = "SUN" ]; then
-        if [ "x${KARAF_OOM_HEAP_DUMP_PATH}" != "x" ]; then
-         JAVA_VENDOR_OPTS="$JAVA_VENDOR_OPTS -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${KARAF_OOM_HEAP_DUMP_PATH}"
-        fi
-        if [ "x${JAVA_PERM_MEM}" != "x" ]; then
-                JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:MetaspaceSize=${JAVA_PERM_MEM}"
-            fi
-            if [ "x${JAVA_MAX_PERM_MEM}" != "x" ]; then
-                JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:MaxMetaspaceSize=${JAVA_MAX_PERM_MEM}"
-            fi
-            JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:+UseStringDeduplication"
-        JAVA_VENDOR_OPTS="-Dcom.sun.management.jmxremote"
+        #JAVA_VENDOR_OPTS="-Dcom.sun.management.jmxremote"
+        JAVA_VENDOR_OPTS=""
     elif [ "${JVM_VENDOR}" = "IBM" ]; then
         if ${os400}; then
             JAVA_VENDOR_OPTS=
@@ -292,46 +281,9 @@ setupVendorSpecifics() {
 
 setupDefaults() {
 
-#
-# Check/Set up some easily accessible MIN/MAX params for JVM mem usage
-#
-if [ "x${JAVA_MAX_MEM}" = "x" ]; then
-    JAVA_MAX_MEM=4096M
-    export JAVA_MAX_MEM
-fi
+    DEFAULT_JAVA_OPTS="-XX:+UnlockDiagnosticVMOptions "
 
-if [ "x${JAVA_MIN_MEM}" = "x" ]; then
-    JAVA_MIN_MEM=1024M
-    export JAVA_MIN_MEM
-fi
-
-if [ "x${JAVA_MAX_PERM_MEM}" = "x" ]; then
-    JAVA_MAX_PERM_MEM=256M
-    export JAVA_MAX_PERM_MEM
-fi
-
-if [ "x${JAVA_PERM_MEM}" = "x" ]; then
-    JAVA_PERM_MEM=$JAVA_MAX_PERM_MEM
-    export JAVA_PERM_MEM
-fi
-
-if [ "x${JAVA_MAX_DIRECT_MEM}" = "x" ]; then
-    JAVA_MAX_DIRECT_MEM=512M
-    export JAVA_MAX_DIRECT_MEM
-fi
-
-if [ "x${JAVA_TMP_DIR}" = "x" ]; then
-    JAVA_TMP_DIR=/tmp/cumulocity-core-karaf
-    export JAVA_TMP_DIR
-fi
-
-    DEFAULT_JAVA_OPTS="-Xms${JAVA_MIN_MEM} -Xmx${JAVA_MAX_MEM} \
-         -XX:MaxDirectMemorySize=${JAVA_MAX_DIRECT_MEM} \
-         -XX:MinHeapFreeRatio=25 -XX:MaxHeapFreeRatio=75 \
-         -XX:+UseG1GC \
-         -Djava.awt.headless=true"
-
-    setupVendorSpecifics
+    setupVendorSepcifics
 
     DEFAULT_JAVA_OPTS="${DEFAULT_JAVA_OPTS} ${JAVA_VENDOR_OPTS}"
 
@@ -339,8 +291,8 @@ fi
     if [ "x${JAVA_DEBUG_PORT}" = "x" ]; then
         JAVA_DEBUG_PORT="${DEFAULT_JAVA_DEBUG_PORT}"
     fi
-    DEFAULT_JAVA_DEBUG_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=${JAVA_DEBUG_PORT}"
-    DEFAULT_JAVA_DEBUGS_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=${JAVA_DEBUG_PORT}"
+    DEFAULT_JAVA_DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${JAVA_DEBUG_PORT}"
+    DEFAULT_JAVA_DEBUGS_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=${JAVA_DEBUG_PORT}"
 
     if [ "x${JAVA_OPTS}" = "x" ]; then
         JAVA_OPTS="${DEFAULT_JAVA_OPTS}"
@@ -349,8 +301,8 @@ fi
     if [ "x${EXTRA_JAVA_OPTS}" != "x" ]; then
         JAVA_OPTS="${JAVA_OPTS} ${EXTRA_JAVA_OPTS}"
     fi
-
     export JAVA_OPTS
+
 
     ##
     ## TODO: Move to conf/profiler/yourkit.{sh|cmd}
