@@ -99,6 +99,7 @@
 						</goals>
 						<configuration>
 							<descriptors>
+								<descriptor>file:${custom-karaf.system.dir}/karaf-pax-web-features.xml</descriptor>
 								<descriptor>file:${custom-karaf.system.dir}/karaf-standard-features.xml</descriptor>
 								<descriptor>file:${custom-karaf.system.dir}/karaf-spring-features.xml</descriptor>
 								<descriptor>file:${custom-karaf.system.dir}/log4j2-feature.xml</descriptor>
