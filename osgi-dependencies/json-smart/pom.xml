@@ -28,7 +28,7 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
                     <includeGroupIds>net.minidev</includeGroupIds>
-                    <includeArtifactIds>json-smart, asm</includeArtifactIds>
+                    <includeArtifactIds>json-smart, accessors-smart</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven/**/*,

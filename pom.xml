@@ -36,7 +36,7 @@
 		<osgi.svenson.version>${svenson.version}-${project.parent.version}</osgi.svenson.version>
 		<json-path.version>1.2.0</json-path.version>
 		<osgi.json-path.version>${json-path.version}-${project.parent.version}</osgi.json-path.version>
-		<json-smart.version>2.1.0</json-smart.version>
+		<json-smart.version>2.3</json-smart.version>
 		<osgi.json-smart.version>${json-smart.version}-${project.parent.version}</osgi.json-smart.version>
 		<super-csv.version>2.1.0</super-csv.version>
 		<cometd.version>3.0.10</cometd.version>
