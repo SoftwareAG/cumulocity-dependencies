@@ -67,9 +67,12 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
     @Parameter(defaultValue = "${session}", readonly = true)
     private MavenSession mavenSession;
 
+    @Parameter(property = "third.party.license.enabled", defaultValue = "true")
+    private Boolean tppLicenseScanEnabled;
+
     @Component
     private BuildPluginManager pluginManager;
-    
+
     @Component
     private LicensePluginContext pluginContext;
 
@@ -79,11 +82,11 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         initContext();
-        if (!pluginContext.getBooleanProperty("enabled", false)) {
+        if (!tppLicenseScanEnabled) {
             return;
         }
         getLog().info("Generate 3rd part libraries");
-        
+
 
         checkNotNull(appBasedir, "Cannot work on undefined: app.basedir");
         getLog().info("Reading libraries from " + appBasedir.getAbsolutePath());
@@ -161,6 +164,8 @@ public class Generate3rdLicenseMojo extends AbstractMojo {
                 }
             }
         }
+        // check profiles, project poms and command line
+        properties.setProperty("enabled", tppLicenseScanEnabled.toString());
         return properties;
     }
 }
