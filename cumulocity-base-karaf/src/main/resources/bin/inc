@@ -295,6 +295,13 @@ setupDefaults() {
 #
 # Check/Set up some easily accessible MIN/MAX params for JVM mem usage
 #
+
+if [ "x${KARAF_SHELL}" = "x" ]; then
+  echo "shell $KARAF_SHELL setting to false"
+    KARAF_SHELL=true
+    export KARAF_SHELL
+fi
+
 if [ "x${JAVA_MAX_MEM}" = "x" ]; then
     JAVA_MAX_MEM=4096M
     export JAVA_MAX_MEM

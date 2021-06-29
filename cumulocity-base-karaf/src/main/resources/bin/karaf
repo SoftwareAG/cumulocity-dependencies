@@ -178,7 +178,7 @@ init() {
 }
 
 run() {
-    OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
+    OPTS="-Dkaraf.startLocalConsole=$KARAF_SHELL -Dkaraf.startRemoteShell=$KARAF_SHELL"
     MAIN=org.apache.karaf.main.Main
     if [ "x$CHECK_ROOT_INSTANCE_RUNNING" = "x" ]; then
         CHECK_ROOT_INSTANCE_RUNNING=true
@@ -237,15 +237,15 @@ run() {
                 shift
                 ;;
             'server')
-                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false"
+                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=${KARAF_SHELL}"
                 shift
                 ;;
             'run')
-                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false -Dkaraf.log.console=ALL"
+                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=${KARAF_SHELL} -Dkaraf.log.console=ALL"
                 shift
                 ;;
             'daemon')
-                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false"
+                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=${KARAF_SHELL}"
                 KARAF_DAEMON="true"
                 KARAF_EXEC="exec"
                 shift
