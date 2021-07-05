@@ -894,8 +894,12 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
             if (!message.isLocal() && !ChannelId.isBroadcast(message.getChannel())) {
                 return;
             }
-            String json = _jsonContext.generate(message);
-            message.freeze(json);
+            if (message instanceof WeakMessage) {
+                ((WeakMessage) message).freeze();
+            } else {
+                String json = _jsonContext.generate(message);
+                message.freeze(json);
+            }
         }
     }
 

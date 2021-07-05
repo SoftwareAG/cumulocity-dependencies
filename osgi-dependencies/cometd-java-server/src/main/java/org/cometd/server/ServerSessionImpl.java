@@ -389,7 +389,9 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
     }
 
     public void addMessage(ServerMessage message) {
-        _logger.debug("enqueue message {} - {}", getId(), message.getJSON());
+        if (_logger.isDebugEnabled()) { // additional check, because `WeakMessage.getJSON() is lazy`
+            _logger.debug("enqueue message {} - {}", getId(), message.getJSON());
+        }
         synchronized (getLock()) {
             _queue.add(message);
             _nonLazyMessages |= !message.isLazy();

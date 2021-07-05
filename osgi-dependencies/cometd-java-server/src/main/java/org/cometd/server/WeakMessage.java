@@ -7,11 +7,16 @@ import org.cometd.common.JSONContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -19,13 +24,14 @@ public class WeakMessage extends ServerMessageImpl {
 
     private static final Logger _logger = LoggerFactory.getLogger(WeakMessage.class);
     private transient ServerMessage.Mutable _associated;
+    private transient ServerMessage.Mutable frozen;
     private boolean _lazy = false;
     private String _json;
     private transient byte[] _jsonBytes;
     private transient boolean _local;
     private MessageFormat messageFormat;
     private final long _zipMessageSizeThreshold;
-    private JSONContext.Server jsonContext;
+    private final JSONContext.Server jsonContext;
 
     public WeakMessage(long zipMessageSizeThreshold, JSONContext.Server jsonContext) {
         this._zipMessageSizeThreshold = zipMessageSizeThreshold;
@@ -50,14 +56,24 @@ public class WeakMessage extends ServerMessageImpl {
         _local = local;
     }
 
-    protected void freeze(String json) {
-        assert _json == null;
-        if (super.get(DATA_FIELD) instanceof WeakReference) {
-            put(DATA_FIELD, super.get(DATA_FIELD));
+    @SuppressWarnings("unchecked")
+    protected void freeze() {
+        Object data = super.get(DATA_FIELD);
+        setWeakReference(this, data);
+        frozen = new ServerMessageImpl();
+        frozen.setAssociated(super.getAssociated());
+        frozen.setLazy(super.isLazy());
+        frozen.putAll(this);
+        if (data instanceof Map) {
+            Map<String, Object> newData = new HashMap<>((Map<String, Object>) data);
+            frozen.put(DATA_FIELD, newData);
         } else {
-            put(DATA_FIELD, new WeakReference(super.get(DATA_FIELD)));
+            frozen.put(DATA_FIELD, data);
         }
-        setMessageFormat(json);
+    }
+
+    protected void freeze(String json) {
+        throw new UnsupportedOperationException();
     }
 
     public WeakMessage copy() {
@@ -65,6 +81,7 @@ public class WeakMessage extends ServerMessageImpl {
         weakMessage._jsonBytes = this._jsonBytes;
         weakMessage._json = this._json;
         weakMessage.messageFormat = this.messageFormat;
+        weakMessage.frozen = this.frozen;
         return weakMessage;
     }
 
@@ -81,21 +98,43 @@ public class WeakMessage extends ServerMessageImpl {
 
     @Override
     protected boolean isFrozen() {
-        return _json != null || _jsonBytes != null;
+        return frozen != null;
     }
 
+    private boolean isJsonGenerated() {
+        return _json != null || _jsonBytes != null;
+    }
     @Override
     public String getJSON() {
+        serializeIfNeeded();
         return messageFormat.getJSON();
     }
 
     @Override
     public byte[] getJSONBytes() {
+        serializeIfNeeded();
         return messageFormat.getJSONBytes();
     }
 
     public byte[] getRawData() {
+        serializeIfNeeded();
         return _jsonBytes;
+    }
+
+    private void serializeIfNeeded() {
+        if (!isJsonGenerated()) {
+            _json = jsonContext.generate(frozen);
+            setWeakReference(frozen, frozen.get(DATA_FIELD));
+            setMessageFormat(_json);
+        }
+    }
+
+    private void setWeakReference(ServerMessage.Mutable message, Object data) {
+        if (data instanceof WeakReference) {
+            message.put(DATA_FIELD, data);
+        } else if (data != null) {
+            message.put(DATA_FIELD, new WeakReference(data));
+        }
     }
 
     @Override
@@ -110,16 +149,17 @@ public class WeakMessage extends ServerMessageImpl {
     @Override
     public Object get(Object key) {
         if (isFrozen() && DATA_FIELD.equals(key)) {
-            Object data = super.get(DATA_FIELD);
+            Object data = frozen.get(DATA_FIELD);
             data = getDataFromWeakReference(data);
             if (data != null) {
                 return data;
-            } else {
-                try {
-                    return getDataFromJson();
-                } catch (ParseException e) {
-                    _logger.error("Error while parsing json data from WeakMessage", e);
-                }
+            }
+        }
+        if (isJsonGenerated() && DATA_FIELD.equals(key)) {
+            try {
+                return getDataFromJson();
+            } catch (ParseException e) {
+                _logger.error("Error while parsing json data from WeakMessage", e);
             }
             return null;
         }
