@@ -16,7 +16,6 @@
 			<excludes>
 				<!-- feature files are overwritten so we don't need original one -->
 				<exclude>**/standard-${karaf.version}-features.xml</exclude>
-				<exclude>**/pax-web-features-7.2.19-features.xml</exclude>
 			</excludes>
 		</fileSet>
 	</fileSets>
