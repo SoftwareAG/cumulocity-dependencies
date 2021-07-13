@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>cumulocity-dependencies</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
-		<version>1007.0.44-SNAPSHOT</version>
+		<version>1007.0.44</version>
 	</parent>
 
 	<artifactId>cumulocity-sdk-resource-bundles</artifactId>
