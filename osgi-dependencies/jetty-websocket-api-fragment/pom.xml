@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>osgi-dependencies</artifactId>
+        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+        <version>1009.0.19-SNAPSHOT</version>
+    </parent>
+    
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>jetty-websocket-api-fragment</artifactId>
+    <version>${jetty.version}-${project.parent.version}</version>
+    <packaging>bundle</packaging>
+    
+    <name>Cumulocity Dependencies :: OSGi Dependencies :: Jetty WebSocket API Fragment</name>
+
+    <properties>
+        <bundle.symbolicName>com.cumulocity.jetty.websocket.api.fragment</bundle.symbolicName>
+    </properties>
+
+    <!-- 
+        Fragment bundle to overcome the classloading issue in `org.eclipse.jetty.websocket.api` bundle. See IOT-10990/MTM-39235
+     -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Fragment-Host>org.eclipse.jetty.websocket.api</Fragment-Host>
+                        <Import-Package>
+                            org.apache.aries.spifly;version="1.2.0"
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+
+</project>
