@@ -28,6 +28,7 @@
         <module>uom</module>
         <module>kubernetes-client</module>
         <module>jetty-error-page-handler</module>
+        <module>jetty-websocket-api-fragment</module>
     </modules>
 
     <properties>
