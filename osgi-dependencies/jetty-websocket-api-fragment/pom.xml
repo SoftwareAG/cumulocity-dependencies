@@ -3,14 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>osgi-dependencies</artifactId>
-        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>1009.0.19-SNAPSHOT</version>
+        <artifactId>cumulocity-dependencies</artifactId>
+        <groupId>com.nsn.cumulocity.dependencies</groupId>
+        <version>1010.0.12-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>jetty-websocket-api-fragment</artifactId>
-    <version>${jetty.version}-${project.parent.version}</version>
+    <version>${project.parent.version}</version>
     <packaging>bundle</packaging>
     
     <name>Cumulocity Dependencies :: OSGi Dependencies :: Jetty WebSocket API Fragment</name>
@@ -30,6 +31,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
+                        <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
                         <Fragment-Host>org.eclipse.jetty.websocket.api</Fragment-Host>
                         <Import-Package>
                             org.apache.aries.spifly;version="1.2.0"
