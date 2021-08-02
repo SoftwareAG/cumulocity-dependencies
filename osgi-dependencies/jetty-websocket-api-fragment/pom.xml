@@ -11,7 +11,7 @@
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>jetty-websocket-api-fragment</artifactId>
-    <version>${revision}${changelist}</version>
+    <version>${project.parent.version}</version>
     <packaging>bundle</packaging>
     
     <name>Cumulocity Dependencies :: OSGi Dependencies :: Jetty WebSocket API Fragment</name>
@@ -66,6 +66,4 @@
             </plugin>
         </plugins>
     </build>
-    
-
 </project>
