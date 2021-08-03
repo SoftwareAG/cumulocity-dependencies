@@ -3,11 +3,11 @@
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
         <version>${revision}${changelist}</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     
     <modelVersion>4.0.0</modelVersion>
     <artifactId>jetty-websocket-api-fragment</artifactId>
-    <version>${jetty-websocket-api-fragment.version}-${project.parent.version}</version>
     <packaging>bundle</packaging>
     
     <name>Cumulocity Dependencies :: OSGi Dependencies :: Jetty WebSocket API Fragment</name>
