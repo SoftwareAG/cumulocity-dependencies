@@ -27,8 +27,8 @@
 		<dozer.version>5.4.0</dozer.version>
 		<osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
 		<guava.version>25.0-jre</guava.version>
-		<httpclient.version>4.5.3</httpclient.version>
-		<httpcore.version>4.4.1</httpcore.version>
+		<httpclient.version>4.5.13</httpclient.version>
+		<httpcore.version>4.4.14</httpcore.version>
 		<javax.mail.version>1.6.2</javax.mail.version>
 		<spring.dm.version>1.2.1</spring.dm.version>
 		<osgi.spring.dm.version>${spring.dm.version}-${project.parent.version}</osgi.spring.dm.version>
@@ -100,6 +100,16 @@
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>${joda-time.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpcore</artifactId>
+				<version>${httpcore.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit</groupId>
