@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>maven-plugins</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
-		<version>1010.0.12</version>
+		<version>1010.0.13-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>3rd-license-maven-plugin</artifactId>
