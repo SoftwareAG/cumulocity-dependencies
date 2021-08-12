@@ -17,7 +17,6 @@
 				<!-- feature files are overwritten so we don't need original one -->
 				<exclude>**/standard-${karaf.version}-features.xml</exclude>
 				<exclude>**/bouncycastle/**/1.66/*</exclude>
-				<exclude>**/pax-web-features-7.2.19-features.xml</exclude>
 			</excludes>
 		</fileSet>
 	</fileSets>
