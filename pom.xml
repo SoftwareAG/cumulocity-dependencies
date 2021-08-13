@@ -3,7 +3,7 @@
 
 	<groupId>com.nsn.cumulocity.dependencies</groupId>
 	<artifactId>cumulocity-dependencies</artifactId>
-	<version>1010.14.0-SNAPSHOT</version>
+	<version>1004.98.0-GH</version>
 	<packaging>pom</packaging>
 	<name>Cumulocity Dependencies</name>
 
