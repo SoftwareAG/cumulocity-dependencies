@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1004.99.0-GH-SNAPSHOT</version>
+		<version>1010.14.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>svenson</artifactId>
