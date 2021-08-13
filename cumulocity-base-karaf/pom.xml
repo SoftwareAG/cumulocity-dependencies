@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
 		<artifactId>cumulocity-dependencies</artifactId>
-		<version>1004.98.0-GH</version>
+		<version>1004.99.0-GH-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cumulocity-base-karaf</artifactId>
