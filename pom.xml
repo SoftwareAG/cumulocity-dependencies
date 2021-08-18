@@ -49,6 +49,7 @@
 		<libphonenumber.version>8.12.3</libphonenumber.version>
 		<uom.version>0.7.1</uom.version>
 		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
+		<bouncycastle.version>1.67</bouncycastle.version>
 		<kubernetes-client.version>4.9.2</kubernetes-client.version>
 		<osgi.kubernetes-client.version>${kubernetes-client.version}-${project.parent.version}</osgi.kubernetes-client.version>
 		<kubernetes-model.version>4.9.2</kubernetes-model.version>
