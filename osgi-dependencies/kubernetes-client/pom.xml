@@ -94,14 +94,14 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-ext-jdk15on</artifactId>
-            <version>1.66</version>
+            <version>${bouncycastle.version}</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk15on</artifactId>
-            <version>1.66</version>
+            <version>${bouncycastle.version}</version>
             <optional>true</optional>
         </dependency>
 
