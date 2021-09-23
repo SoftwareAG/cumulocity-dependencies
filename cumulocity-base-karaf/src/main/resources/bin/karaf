@@ -279,6 +279,8 @@ run() {
             fi
         fi
         JAVA_OPTS="${JAVA_DEBUG_OPTS} ${JAVA_OPTS}"
+    else
+        JAVA_OPTS="${JAVA_NON_DEBUG_OPTS} ${JAVA_OPTS}"
     fi
 
     while true; do
@@ -308,8 +310,8 @@ run() {
                 ${KARAF_EXEC} "${JAVA}" ${JAVA_OPTS} \
                     --add-reads=java.xml=java.logging \
                     --add-exports=java.base/org.apache.karaf.specs.locator=java.xml,ALL-UNNAMED \
-                    --patch-module java.base=lib/endorsed/org.apache.karaf.specs.locator-${karaf.version}.jar \
-                    --patch-module java.xml=lib/endorsed/org.apache.karaf.specs.java.xml-${karaf.version}.jar \
+                    --patch-module java.base=${KARAF_HOME}/lib/endorsed/org.apache.karaf.specs.locator-${karaf.version}.jar \
+                    --patch-module java.xml=${KARAF_HOME}/lib/endorsed/org.apache.karaf.specs.java.xml-${karaf.version}.jar \
                     --add-opens java.base/java.security=ALL-UNNAMED \
                     --add-opens java.base/java.net=ALL-UNNAMED \
                     --add-opens java.base/java.lang=ALL-UNNAMED \
@@ -324,6 +326,7 @@ run() {
                     --add-exports=java.base/sun.net.www.content.text=ALL-UNNAMED \
                     --add-exports=jdk.xml.dom/org.w3c.dom.html=ALL-UNNAMED \
                     --add-exports=jdk.naming.rmi/com.sun.jndi.url.rmi=ALL-UNNAMED \
+                    --add-exports java.security.sasl/com.sun.security.sasl=ALL-UNNAMED \
                     -Dkaraf.instances="${KARAF_HOME}/instances" \
                     -Dkaraf.home="${KARAF_HOME}" \
                     -Dkaraf.base="${KARAF_BASE}" \
