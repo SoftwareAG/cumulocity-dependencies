@@ -447,10 +447,10 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
             _scheduler = newScheduler;
             if (hasNonLazyMessages() && _batch == 0) {
                 if (newScheduler instanceof AbstractHttpTransport.HttpScheduler) {
-                    _logger.debug("schedule interupted sending pending messages");
+                    _logger.debug("schedule interrupted sending pending messages");
                     _scheduler = null;
-                    newScheduler.schedule();
                 }
+                newScheduler.schedule();
             }
             if (newScheduler != null) {
                 activate();
