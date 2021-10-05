@@ -4,7 +4,7 @@
     <parent>
         <artifactId>cumulocity-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies</groupId>
-        <version>1010.0.16</version>
+        <version>1010.0.17-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
