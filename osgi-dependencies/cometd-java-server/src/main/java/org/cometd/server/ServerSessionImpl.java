@@ -174,13 +174,13 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
     public void deliver(Session sender, ServerMessage.Mutable message) {
         ServerSession session = null;
         if (sender instanceof ServerSession) {
-            session = (ServerSession)sender;
+            session = (ServerSession) sender;
         } else if (sender instanceof LocalSession) {
-            session = ((LocalSession)sender).getServerSession();
+            session = ((LocalSession) sender).getServerSession();
         }
 
         if (message instanceof ServerMessageImpl) {
-            ((ServerMessageImpl)message).setLocal(true);
+            ((ServerMessageImpl) message).setLocal(true);
         }
 
         if (!_bayeux.extendSend(session, this, message)) {
@@ -214,7 +214,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         if (!_listeners.isEmpty()) {
             for (ServerSessionListener listener : _listeners) {
                 if (listener instanceof MessageListener) {
-                    if (!notifyOnMessage((MessageListener)listener, sender, message)) {
+                    if (!notifyOnMessage((MessageListener) listener, sender, message)) {
                         return;
                     }
                 }
@@ -242,7 +242,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
                     if (listener instanceof MaxQueueListener) {
                         final int maxQueueSize = _maxQueue;
                         if (maxQueueSize > 0 && _queue.size() > maxQueueSize) {
-                            if (!notifyQueueMaxed((MaxQueueListener)listener, this, _queue, sender, message)) {
+                            if (!notifyQueueMaxed((MaxQueueListener) listener, this, _queue, sender, message)) {
                                 return null;
                             }
                         }
@@ -254,7 +254,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
             if (!_listeners.isEmpty()) {
                 for (ServerSessionListener listener : _listeners) {
                     if (listener instanceof QueueListener) {
-                        notifyQueued((QueueListener)listener, sender, message);
+                        notifyQueued((QueueListener) listener, sender, message);
                     }
                 }
             }
@@ -304,7 +304,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
     protected void handshake() {
         _logger.debug("changing session {} state {} -> {}", getId(), _sessionState.get(), INITIALIZED);
         _sessionState.set(INITIALIZED);
-        AbstractServerTransport transport = (AbstractServerTransport)_bayeux.getCurrentTransport();
+        AbstractServerTransport transport = (AbstractServerTransport) _bayeux.getCurrentTransport();
 
         if (transport != null) {
             _maxQueue = transport.getOption(AbstractServerTransport.MAX_QUEUE_OPTION, -1);
@@ -407,7 +407,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
             if (!_listeners.isEmpty()) {
                 for (ServerSessionListener listener : _listeners) {
                     if (listener instanceof DeQueueListener) {
-                        notifyDeQueue((DeQueueListener)listener, this, _queue);
+                        notifyDeQueue((DeQueueListener) listener, this, _queue);
                     }
                 }
             }
@@ -450,7 +450,9 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
                     _logger.debug("schedule interrupted sending pending messages");
                     _scheduler = null;
                 }
-                newScheduler.schedule();
+                if (newScheduler != null) {
+                    newScheduler.schedule();
+                }
             }
             if (newScheduler != null) {
                 activate();
@@ -481,8 +483,8 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         // do local delivery
         if (_localSession != null && hasNonLazyMessages()) {
             for (ServerMessage msg : takeQueue()) {
-                if(msg instanceof WeakMessage) {
-                    _localSession.receive( ((WeakMessage) msg).copy());
+                if (msg instanceof WeakMessage) {
+                    _localSession.receive(((WeakMessage) msg).copy());
                 } else {
                     _localSession.receive(new HashMapMessage(msg));
                 }
@@ -665,7 +667,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
         try {
             ServerMessage result = extension.send(this, message);
             if (result instanceof ServerMessage.Mutable) {
-                return (ServerMessage.Mutable)result;
+                return (ServerMessage.Mutable) result;
             } else {
                 return result == null ? null : _bayeux.newMessage(result);
             }
@@ -742,7 +744,7 @@ public class ServerSessionImpl implements ServerSession, Dumpable {
 
             for (ServerSessionListener listener : _listeners) {
                 if (listener instanceof RemoveListener) {
-                    notifyRemoved((RemoveListener)listener, this, timedOut);
+                    notifyRemoved((RemoveListener) listener, this, timedOut);
                 }
             }
             cancelSchedule();
