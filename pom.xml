@@ -1,23 +1,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.nsn.cumulocity.dependencies</groupId>
-	<artifactId>cumulocity-dependencies</artifactId>
-	<version>1011.4.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>Cumulocity Dependencies</name>
+  <groupId>com.nsn.cumulocity.dependencies</groupId>
+  <artifactId>cumulocity-dependencies</artifactId>
+  <version>${revision}${changelist}</version>
+  <packaging>pom</packaging>
+  <name>Cumulocity Dependencies</name>
 
-	<organization>
-		<name>Cumulocity GmbH</name>
-		<url>https://cumulocity.com</url>
-	</organization>
+  <organization>
+    <name>Cumulocity GmbH</name>
+    <url>https://cumulocity.com</url>
+  </organization>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
-		<osgi.service.http.port>8181</osgi.service.http.port>
-		<nexus.url>http://localhost:8080</nexus.url>
-		<nexus.basePath>/nexus/content/repositories</nexus.basePath>
+  <properties>
+    <revision>1.133.0</revision>
+    <changelist>-SNAPSHOT</changelist>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <osgi.service.http.port>8181</osgi.service.http.port>
+    <nexus.url>http://localhost:8080</nexus.url>
+    <nexus.basePath>/nexus/content/repositories</nexus.basePath>
 
 		<cglib-nodep.version>2.2</cglib-nodep.version>
 		<osgi.cglib-nodep.version>${cglib-nodep.version}-${project.parent.version}</osgi.cglib-nodep.version>
@@ -67,6 +69,7 @@
         <commons-compress.version>1.14</commons-compress.version>
 		<ehcache.version>2.10.6</ehcache.version>
 		<jetty.version>9.4.40.v20210413</jetty.version>
+
 		<karaf.version>4.3.2</karaf.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.13.0</log4j.version>
@@ -75,20 +78,20 @@
 		<spring.retry.version>1.2.2.RELEASE</spring.retry.version>
         <lombok.version>1.18.16</lombok.version>
 
-		<hamcrest.version>2.2</hamcrest.version>
-		<junit.version>5.6.2</junit.version>
-		<mockito.version>3.3.3</mockito.version>
-		<assertj.version>3.15.0</assertj.version>
-		<jmh.version>1.22</jmh.version>
+    <hamcrest.version>2.2</hamcrest.version>
+    <junit.version>5.6.2</junit.version>
+    <mockito.version>3.3.3</mockito.version>
+    <assertj.version>3.15.0</assertj.version>
+    <jmh.version>1.22</jmh.version>
 
-	</properties>
+  </properties>
 
-	<modules>
+  <modules>
         <module>cumulocity-sdk-resource-bundles</module>
-		<module>osgi-dependencies</module>
-		<module>cumulocity-base-karaf</module>
-		<module>maven-plugins</module>
-	</modules>
+    <module>osgi-dependencies</module>
+    <module>cumulocity-base-karaf</module>
+    <module>maven-plugins</module>
+  </modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -286,201 +289,226 @@
 				<scope>test</scope>
 			</dependency>
 
-			<!-- Benchmark -->
-			<dependency>
-				<groupId>org.openjdk.jmh</groupId>
-				<artifactId>jmh-core</artifactId>
-				<version>${jmh.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.openjdk.jmh</groupId>
-				<artifactId>jmh-generator-annprocess</artifactId>
-				<version>${jmh.version}</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+      <!-- Benchmark -->
+      <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-core</artifactId>
+        <version>${jmh.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-generator-annprocess</artifactId>
+        <version>${jmh.version}</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-	<build>
-		<extensions>
-			<!-- Enabling the use of sftp -->
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh-external</artifactId>
-				<version>1.0-beta-6</version>
-			</extension>
-		</extensions>
+  <build>
+    <extensions>
+      <!-- Enabling the use of sftp -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-beta-6</version>
+      </extension>
+    </extensions>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-			</plugin>
-		</plugins>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.1.0</version>
+        <configuration>
+            <updatePomFile>true</updatePomFile>
+            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+        </configuration>
+        <executions>
+            <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+                <goal>flatten</goal>
+            </goals>
+            </execution>
+            <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+                <goal>clean</goal>
+            </goals>
+            </execution>
+        </executions>
+    </plugin>
+    </plugins>
 
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.felix</groupId>
-					<artifactId>maven-bundle-plugin</artifactId>
-					<version>4.2.1</version>
-					<configuration>
-						<instructions>
-							<_nouses>true</_nouses>
-						</instructions>
-					</configuration>
-					<executions>
-						<execution>
-							<id>bundle-manifest</id>
-							<phase>process-classes</phase>
-							<goals>
-								<goal>manifest</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.0.0-M5</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-dependency-plugin</artifactId>
-					<version>3.1.1</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.1.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.8.1</version>
-					<configuration>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.1.2</version>
-					<configuration>
-						<archive>
-							<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>3.1.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>3.1.0</version>
-				</plugin>
-				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.7</version>
-				</plugin>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-dependency-plugin
-										</artifactId>
-										<versionRange>
-											[2.2,)
-										</versionRange>
-										<goals>
-											<goal>copy</goal>
-											<goal>copy-dependencies</goal>
-											<goal>unpack</goal>
-											<goal>unpack-dependencies</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>4.2.1</version>
+          <configuration>
+            <instructions>
+              <_nouses>true</_nouses>
+            </instructions>
+          </configuration>
+          <executions>
+            <execution>
+              <id>bundle-manifest</id>
+              <phase>process-classes</phase>
+              <goals>
+                <goal>manifest</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>3.0.0-M5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>3.1.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.1.2</version>
+          <configuration>
+            <archive>
+              <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+            </archive>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>3.1.0</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>1.7</version>
+        </plugin>
+        <!--This plugin's configuration is used to store Eclipse m2e settings
+          only. It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>
+                      org.apache.maven.plugins
+                    </groupId>
+                    <artifactId>
+                      maven-dependency-plugin
+                    </artifactId>
+                    <versionRange>
+                      [2.2,)
+                    </versionRange>
+                    <goals>
+                      <goal>copy</goal>
+                      <goal>copy-dependencies</goal>
+                      <goal>unpack</goal>
+                      <goal>unpack-dependencies</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
-	<repositories>
-	 	 <repository>
-		    <id>bintray</id>
-		    <url>http://dl.bintray.com/andsel/maven/</url>
-		    <releases>
-		      <enabled>true</enabled>
-		    </releases>
-		    <snapshots>
-		      <enabled>false</enabled>
-		    </snapshots>
-	  	</repository>
-	</repositories>
+  <repositories>
+      <repository>
+        <id>bintray</id>
+        <url>http://dl.bintray.com/andsel/maven/</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+      </repository>
+  </repositories>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>snapshot</id>
-			<url>${nexus.url}${nexus.basePath}/snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>release</id>
-			<url>${nexus.url}${nexus.basePath}/releases/</url>
-		</repository>
-	</distributionManagement>
-	<profiles>
-		<profile>
-			<id>publicDeployment</id>
-			<distributionManagement>
-				<snapshotRepository>
-					<id>resources-snapshot</id>
-					<url>scpexe://resources.cumulocity.com/cumulocity/maven/repository-snapshots</url>
-				</snapshotRepository>
-				<repository>
-					<id>resources-release</id>
-					<url>scpexe://resources.cumulocity.com/cumulocity/maven/repository</url>
-				</repository>
-			</distributionManagement>
-		</profile>
-		<profile>
-			<id>benchmark</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<configuration>
-							<includes>
-								<include>**/*Benchmark.java</include>
-							</includes>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>snapshot</id>
+      <url>${nexus.url}${nexus.basePath}/snapshots/</url>
+    </snapshotRepository>
+    <repository>
+      <id>release</id>
+      <url>${nexus.url}${nexus.basePath}/releases/</url>
+    </repository>
+  </distributionManagement>
+  <profiles>
+    <profile>
+      <id>publicDeployment</id>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>resources-snapshot</id>
+          <url>scpexe://resources.cumulocity.com/cumulocity/maven/repository-snapshots</url>
+        </snapshotRepository>
+        <repository>
+          <id>resources-release</id>
+          <url>scpexe://resources.cumulocity.com/cumulocity/maven/repository</url>
+        </repository>
+      </distributionManagement>
+    </profile>
+    <profile>
+      <id>benchmark</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*Benchmark.java</include>
+              </includes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
