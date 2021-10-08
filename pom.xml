@@ -13,7 +13,7 @@
   </organization>
 
   <properties>
-    <revision>2.1.0</revision>
+    <revision>0001.150.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
