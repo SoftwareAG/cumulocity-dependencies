@@ -657,6 +657,8 @@ public class OperationSupport {
       return status;
     } catch (IOException e) {
       return createStatus(statusCode, statusMessage);
+    } catch (Exception e) {
+      return createStatus(500, "Unknown error");
     }
   }
 
