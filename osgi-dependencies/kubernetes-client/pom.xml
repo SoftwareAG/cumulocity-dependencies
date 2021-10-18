@@ -192,9 +192,7 @@
                         META-INF/MANIFEST.MF,
                         META-INF/maven,
                         META-INF/maven/**/*,
-                        io/fabric8/kubernetes/client/dsl/base/OperationSupport.*,
-                        io/fabric8/kubernetes/client/dsl/internal/ClusterOperationsImpl.*,
-                        io/fabric8/kubernetes/client/dsl/internal/LogWatchCallback.*
+                        io/fabric8/kubernetes/client/dsl/base/OperationSupport.*
                     </excludes>
                 </configuration>
             </plugin>
