@@ -2,6 +2,8 @@
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="log4j-additional-features">
     <feature name="log4j2" description="List of dependencies which should be downloaded by maven plugin">
         <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2-extra/2.0.9</bundle>
+        <bundle start-level="2">mvn:com.google.guava/guava/25.0-jre</bundle>
+        <bundle start-level="3">mvn:com.nsn.cumulocity.logger/log4j-log-limiter/${project.version}</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.10.4</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.10.4</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.10.4</bundle>

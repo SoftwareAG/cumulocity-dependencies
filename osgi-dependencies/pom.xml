@@ -29,6 +29,7 @@
         <module>kubernetes-client</module>
         <module>jetty-error-page-handler</module>
         <module>jetty-websocket-api-fragment</module>
+        <module>log4j-log-limiter</module>
     </modules>
 
     <properties>
