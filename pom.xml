@@ -52,10 +52,10 @@
 		<uom.version>0.7.1</uom.version>
 		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
 		<bouncycastle.version>1.67</bouncycastle.version>
-		<kubernetes-client.version>4.9.2</kubernetes-client.version>
+		<kubernetes-client.version>5.9.0</kubernetes-client.version>
 		<osgi.kubernetes-client.version>${kubernetes-client.version}-${project.parent.version}</osgi.kubernetes-client.version>
-		<kubernetes-model.version>4.9.2</kubernetes-model.version>
-		<okhttp3.version>3.12.6</okhttp3.version>
+		<kubernetes-model.version>5.9.0</kubernetes-model.version>
+		<okhttp3.version>3.12.12</okhttp3.version>
 		<micrometer.version>1.3.2</micrometer.version>
 		<prometheus.client.version>0.7.0</prometheus.client.version>
 
@@ -73,7 +73,7 @@
 		<karaf.version>4.3.2</karaf.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.13.0</log4j.version>
-		<jackson.version>2.10.4</jackson.version>
+		<jackson.version>2.13.0</jackson.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
 		<spring.retry.version>1.2.2.RELEASE</spring.retry.version>
         <lombok.version>1.18.16</lombok.version>

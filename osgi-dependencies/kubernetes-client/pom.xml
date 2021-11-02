@@ -13,13 +13,17 @@
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <properties>
+        <osgi.require-capability>
+            osgi.extender;
+            filter:="(osgi.extender=osgi.serviceloader.processor)",
+        </osgi.require-capability>
         <osgi.import>
             !android.util*,
-            *
+            *,
+            io.fabric8.openshift.client.handlers;resolution:=optional
         </osgi.import>
         <osgi.export>
             io.fabric8.kubernetes.client*;-noimport:=true,
-            io.fabric8.kubernetes.internal;-noimport:=true
         </osgi.export>
         <osgi.private>
             io.fabric8.kubernetes.client.internal,
@@ -41,6 +45,114 @@
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-model</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-core</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-rbac</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-admissionregistration</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-autoscaling</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-apiextensions</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-batch</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-certificates</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-coordination</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-discovery</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-events</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-extensions</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-flowcontrol</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-networking</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-metrics</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-policy</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-scheduling</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-storageclass</artifactId>
+            <version>${kubernetes-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-model-node</artifactId>
             <version>${kubernetes-model.version}</version>
         </dependency>
 
@@ -128,7 +240,7 @@
         <dependency>
             <groupId>io.sundr</groupId>
             <artifactId>builder-annotations</artifactId>
-            <version>0.21.0</version>
+            <version>0.50.1</version>
             <scope>compile</scope>
             <optional>true</optional>
             <exclusions>
@@ -142,7 +254,7 @@
         <dependency>
             <groupId>io.sundr</groupId>
             <artifactId>transform-annotations</artifactId>
-            <version>0.21.0</version>
+            <version>0.50.1</version>
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
@@ -192,9 +304,7 @@
                         META-INF/MANIFEST.MF,
                         META-INF/maven,
                         META-INF/maven/**/*,
-                        io/fabric8/kubernetes/client/dsl/base/OperationSupport.*,
-                        io/fabric8/kubernetes/client/dsl/internal/ClusterOperationsImpl.*,
-                        io/fabric8/kubernetes/client/dsl/internal/LogWatchCallback.*
+                        io/fabric8/kubernetes/client/dsl/base/OperationSupport.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -213,11 +323,18 @@
                 <extensions>false</extensions>
                 <configuration>
                     <instructions>
+                        <Bundle-Name>${project.name}</Bundle-Name>
+                        <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Export-Package>${osgi.export}</Export-Package>
                         <Import-Package>${osgi.import}</Import-Package>
+                        <DynamicImport-Package>${osgi.dynamic.import}</DynamicImport-Package>
+                        <Require-Capability>${osgi.require-capability}</Require-Capability>
+                        <Provide-Capability>${osgi.provide-capability}</Provide-Capability>
                         <Private-Package>${osgi.private}</Private-Package>
+                        <Require-Bundle>${osgi.bundles}</Require-Bundle>
+                        <Bundle-Activator>${osgi.activator}</Bundle-Activator>
+                        <Export-Service>${osgi.export.service}</Export-Service>
                         <Include-Resource>
-                            /META-INF/services/io.fabric8.kubernetes.client.ResourceHandler=target/classes/META-INF/services/io.fabric8.kubernetes.client.ResourceHandler,
                             /META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider=target/classes/META-INF/services/io.fabric8.kubernetes.client.ServiceToURLProvider,
                             /META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter=target/classes/META-INF/services/io.fabric8.kubernetes.client.ExtensionAdapter
                         </Include-Resource>

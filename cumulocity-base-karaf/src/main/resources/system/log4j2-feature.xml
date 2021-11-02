@@ -4,9 +4,9 @@
         <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2-extra/2.0.9</bundle>
         <bundle start-level="2">mvn:com.google.guava/guava/25.0-jre</bundle>
         <bundle start-level="3">mvn:com.nsn.cumulocity.logger/log4j-log-limiter/${project.version}</bundle>
-        <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.10.4</bundle>
-        <bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.10.4</bundle>
-        <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.10.4</bundle>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.13.0</bundle>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.13.0</bundle>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.13.0</bundle>
         <bundle>mvn:com.lmax/disruptor/3.4.3</bundle>
     </feature>
 </features>
