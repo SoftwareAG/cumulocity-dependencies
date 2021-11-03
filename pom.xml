@@ -26,8 +26,6 @@
 		<commons-codec.version>1.15</commons-codec.version>
 		<commons-configuration.version>1.7</commons-configuration.version>
 		<osgi.commons-configuration.version>${commons-configuration.version}-${project.parent.version}</osgi.commons-configuration.version>
-		<dozer.version>5.4.0</dozer.version>
-		<osgi.dozer.version>${dozer.version}-${project.parent.version}</osgi.dozer.version>
 		<guava.version>25.0-jre</guava.version>
 		<httpclient.version>4.5.13</httpclient.version>
 		<httpcore.version>4.4.14</httpcore.version>
