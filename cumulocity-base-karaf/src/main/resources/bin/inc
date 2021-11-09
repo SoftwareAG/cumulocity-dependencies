@@ -267,18 +267,24 @@ setupDebugOptions() {
 
 setupVendorSpecifics() {
     #Set the JVM_VENDOR specific JVM flags
+    #OpenJDK is recognized as a SUN
     if [ "${JVM_VENDOR}" = "SUN" ]; then
         if [ "x${KARAF_OOM_HEAP_DUMP_PATH}" != "x" ]; then
          JAVA_VENDOR_OPTS="$JAVA_VENDOR_OPTS -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${KARAF_OOM_HEAP_DUMP_PATH}"
         fi
         if [ "x${JAVA_PERM_MEM}" != "x" ]; then
-                JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:MetaspaceSize=${JAVA_PERM_MEM}"
-            fi
-            if [ "x${JAVA_MAX_PERM_MEM}" != "x" ]; then
-                JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:MaxMetaspaceSize=${JAVA_MAX_PERM_MEM}"
-            fi
-            JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:+UseStringDeduplication"
-        JAVA_VENDOR_OPTS="-Dcom.sun.management.jmxremote"
+            JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:MetaspaceSize=${JAVA_PERM_MEM}"
+        else
+            JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:MetaspaceSize=256M"
+        fi
+        if [ "x${JAVA_MAX_PERM_MEM}" != "x" ]; then
+            JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:MaxMetaspaceSize=${JAVA_MAX_PERM_MEM}"
+        else
+            JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:MaxMetaspaceSize=512M"
+        fi
+        #MTM-41343 -- string deduplication causing old-generation exceeding limits
+        #JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -XX:+UseStringDeduplication"
+        JAVA_VENDOR_OPTS="${JAVA_VENDOR_OPTS} -Dcom.sun.management.jmxremote"
     elif [ "${JVM_VENDOR}" = "IBM" ]; then
         if ${os400}; then
             JAVA_VENDOR_OPTS=
