@@ -69,7 +69,7 @@
 		<jetty.version>9.4.36.v20210114</jetty.version>
 		<karaf.version>4.2.10</karaf.version>
 		<slf4j.version>1.7.30</slf4j.version>
-		<log4j.version>2.13.0</log4j.version>
+		<log4j.version>2.15.0</log4j.version>
 		<jackson.version>2.10.4</jackson.version>
 		<spring.version>3.2.18.RELEASE</spring.version>
 		<spring.retry.version>1.2.2.RELEASE</spring.retry.version>
