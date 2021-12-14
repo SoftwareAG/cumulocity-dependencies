@@ -57,6 +57,13 @@
 									<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
 								</artifactItem>
 							</artifactItems>
+							<!-- 
+							We're skipping pax-logging from default karaf distribution because of Log4shell, 
+							safe pax-logging versions starts from 1.11.10 (for karaf 4.2.x) and 2.0.11 (for karaf 4.3.x). 
+							Correct pax-logging versions are defined in log4j2-feature.xml.
+							FIXME can be removed when upgrading karaf to 4.3.4+ (which should come with pax-logging 2.0.11+ 
+							-->
+							<excludes>**/pax-logging-*.jar</excludes>
 						</configuration>
 					</execution>
 				</executions>
