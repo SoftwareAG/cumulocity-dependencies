@@ -177,6 +177,25 @@ init() {
 
 }
 
+failedStartRetry(){
+  result=1
+  curl --connect-timeout 5 -f -s http://localhost:8181/tenant/health
+  while [[ ($result -gt 0) && ($iter -lt 150)  ]] ; do
+    sleep 1;
+    curl --connect-timeout 5 -f -s http://localhost:8181/tenant/health;
+    result=$?;
+    iter=$((iter+1));
+  done
+
+  if [ $result -gt 0 ]; then
+    echo "$(date) Failed to start. Restarting...."
+    export KARAF_DEBUG=
+    $0 stop
+    sleep 15
+    $0 "$@"
+  fi
+}
+
 run() {
     OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
     MAIN=org.apache.karaf.main.Main
@@ -200,6 +219,7 @@ run() {
     debug=false
     debugs=false
     nodebug=false
+    restart=false
     while [ "${1}" != "" ]; do
         case "${1}" in
             'clean')
@@ -225,6 +245,7 @@ run() {
                 MAIN=org.apache.karaf.main.Stop
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 # not needed when stopping
+                JAVA_OPTS=${JAVA_OPTS/"-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005"/}
                 JAVA_OPTS="${JAVA_OPTS} -Xms10m -Xmx512m"
                 KARAF_SYSTEM_OPTS=
                 KARAF_OPTS=
@@ -238,16 +259,20 @@ run() {
                 ;;
             'server')
                 OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false"
+                restart=true
+                nodebug=true
                 shift
                 ;;
             'run')
                 OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false -Dkaraf.log.console=ALL"
+                restart=true
                 shift
                 ;;
             'daemon')
                 OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=false"
                 KARAF_DAEMON="true"
                 KARAF_EXEC="exec"
+                restart=true
                 shift
                 ;;
             'client')
@@ -255,6 +280,7 @@ run() {
                 OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
                 CHECK_ROOT_INSTANCE_RUNNING=false
                 nodebug=true
+                restart=true
                 shift
                 ;;
             'classpath')
@@ -306,7 +332,11 @@ run() {
         fi
 
         if [ "${ROOT_INSTANCE_RUNNING}" = "false" ] || [ "${CHECK_ROOT_INSTANCE_RUNNING}" = "false" ] ; then
+            if ${restart}; then
+                failedStartRetry "$@" >> ${KARAF_LOG}/restart.log &
+            fi
             if [ "${VERSION}" -gt "8" ]; then
+
                 ${KARAF_EXEC} "${JAVA}" ${JAVA_OPTS} \
                     --add-reads=java.xml=java.logging \
                     --add-exports=java.base/org.apache.karaf.specs.locator=java.xml,ALL-UNNAMED \
