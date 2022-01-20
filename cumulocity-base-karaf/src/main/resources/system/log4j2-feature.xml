@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.4.0" name="log4j-additional-features">
     <feature name="log4j2" description="List of dependencies which should be downloaded by maven plugin">
-        <bundle>mvn:org.ops4j.pax.logging/pax-logging-api/1.11.11</bundle>
-        <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2/1.11.11</bundle>
-        <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2-extra/1.11.11</bundle>
-        <bundle>mvn:org.ops4j.pax.logging/pax-logging-logback/1.11.11</bundle>
+        <bundle>mvn:org.ops4j.pax.logging/pax-logging-api/1.11.13</bundle>
+        <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2/1.11.13</bundle>
+        <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2-extra/1.11.13</bundle>
+        <bundle>mvn:org.ops4j.pax.logging/pax-logging-logback/1.11.13</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.10.4</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.10.4</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.10.4</bundle>
