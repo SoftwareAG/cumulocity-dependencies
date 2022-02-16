@@ -47,6 +47,7 @@
 		<moquette.version>0.9</moquette.version>
 		<osgi.moquette.version>${moquette.version}-${project.parent.version}</osgi.moquette.version>
 		<libphonenumber.version>8.12.3</libphonenumber.version>
+		<logbook.version>2.14.0</logbook.version>
 		<uom.version>0.7.1</uom.version>
 		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
 		<sslcontext.version>7.3.0</sslcontext.version>
@@ -104,6 +105,13 @@
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>${joda-time.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zalando</groupId>
+				<artifactId>logbook-bom</artifactId>
+				<version>${logbook.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>

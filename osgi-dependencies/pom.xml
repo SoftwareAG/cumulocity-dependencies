@@ -30,6 +30,7 @@
         <module>jetty-error-page-handler</module>
         <module>jetty-websocket-api-fragment</module>
         <module>log4j-log-limiter</module>
+        <module>logbook</module>
     </modules>
 
     <properties>
