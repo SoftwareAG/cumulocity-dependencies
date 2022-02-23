@@ -25,6 +25,7 @@
         <module>odata</module>
         <module>moquette-dependencies</module>
         <module>uom</module>
+        <module>sslcontext</module>
         <module>kubernetes-client</module>
         <module>jetty-error-page-handler</module>
         <module>jetty-websocket-api-fragment</module>
