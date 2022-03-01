@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>1011.0.18-SNAPSHOT</version>
+		<version>1011.0.18</version>
 	</parent>
 	
 	<artifactId>json-path</artifactId>
