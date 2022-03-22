@@ -24,6 +24,10 @@
             <groupId>org.zalando</groupId>
             <artifactId>logbook-jaxrs</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>logbook-netty</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -88,6 +92,9 @@
                             javax.ws.rs.client,
                             javax.ws.rs.ext,
                             javax.ws.rs.container,
+                            io.netty.buffer,
+                            io.netty.channel,
+                            io.netty.handler.codec.http,
                             org.slf4j,
                         </Import-Package>
                     </instructions>
