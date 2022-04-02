@@ -1,4 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -7,64 +10,37 @@
         <version>${revision}${changelist}</version>
     </parent>
 
-    <artifactId>spring-osgi-core</artifactId>
+    <artifactId>spring-osgi-extender</artifactId>
     <version>${osgi.spring.dm.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Spring DM Core</name>
+    <name>Cumulocity Dependencies :: OSGi Dependencies :: Spring DM Extender</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <properties>
+        <!-- careful what you export -->
         <spring.osgi.export>
-            org.springframework.core.enums*;version=${spring.version},
             !org.springframework.osgi.io*,
-            !org.springframework.osgi.*internal*;
-            org.springframework.osgi*
+            !org.springframework.osgi.extender.*internal*;
+            org.springframework.osgi.extender*
         </spring.osgi.export>
 
         <spring.osgi.import.pkg>
-            !org.springframework.core.enums*,
-            !org.springframework.osgi,
-            !org.springframework.osgi.bundle*,
-            !org.springframework.osgi.compendium*,
-            !org.springframework.osgi.config*,
-            !org.springframework.osgi.context*,
-            !org.springframework.osgi.service*,
-            !org.springframework.osgi.util*,
-            org.aopalliance*;version="0.0.0",
-            org.springframework.aop;version=${spring.version.range},
-            org.springframework.beans.propertyeditors;version=${spring.version.range},
-            org.osgi.service.cm;version=1.2;resolution:=optional,
-            org.osgi.service.startlevel;version=1.0;resolution:=optional,
+            !org.springframework.osgi.extender*;
+            org.osgi.service.packageadmin;version=1.2,
+            org.springframework.core.io;version=${spring.version.range},
+            org.springframework.osgi.extensions.annotation;version=${spring.osgi.version.range};resolution:=optional
         </spring.osgi.import.pkg>
 
-        <spring.osgi.symbolic.name>${symName.prefix}.core</spring.osgi.symbolic.name>
+        <spring.osgi.symbolic.name>${symName.prefix}.extender</spring.osgi.symbolic.name>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-            <artifactId>spring-osgi-io</artifactId>
+            <artifactId>spring-osgi-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>osgi_R4_compendium</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
-	
+
     <build>
         <plugins>
             <plugin>
@@ -78,14 +54,25 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <artifact>org.springframework.osgi:spring-osgi-core:${spring.dm.version}:jar:sources</artifact>
+                            <artifact>org.springframework.osgi:spring-osgi-extender:${spring.dm.version}:jar:sources</artifact>
                             <excludes>
                                 META-INF/MANIFEST.MF,
                                 META-INF/maven/**/*,
-                                org/springframework/osgi/config/internal/util/MethodUtils*,
-                                org/springframework/osgi/service/importer/support/internal/aop/ServiceDynamicInterceptor*,
-                                org/springframework/osgi/util/internal/ClassUtils*
+                                org/springframework/osgi/extender/internal/support/ExtenderConfiguration*
                             </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-io-internal-sources</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifact>org.springframework.osgi:spring-osgi-io:${spring.dm.version}:jar:sources</artifact>
+                            <includes>
+                                org/springframework/osgi/io/internal/**/*
+                            </includes>
                         </configuration>
                     </execution>
                 </executions>
@@ -105,8 +92,6 @@
                             <target>
                                 <replace dir="${unpack.source.directory}">
                                     <include name="**/*.java"/>
-                                    <replacefilter token="org.springframework.core.ConcurrentMap"
-                                                   value="java.util.concurrent.ConcurrentMap" />
                                     <replacefilter token="org.springframework.core.CollectionFactory"
                                                    value="java.util.concurrent.ConcurrentHashMap" />
                                     <replacefilter token="CollectionFactory.createConcurrentMap"
@@ -124,6 +109,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
+                        <Bundle-Activator>org.springframework.osgi.extender.internal.activator.ContextLoaderListener</Bundle-Activator>
                         <Unversioned-Imports>*</Unversioned-Imports>
                     </instructions>
                 </configuration>

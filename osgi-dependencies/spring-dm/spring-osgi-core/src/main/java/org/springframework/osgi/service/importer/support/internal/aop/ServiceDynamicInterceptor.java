@@ -563,7 +563,7 @@ public class ServiceDynamicInterceptor extends ServiceInvoker implements Initial
         return hashCode;
     }
 
-    interface RefreshableSupplier<T> extends Supplier<T> {
+    protected interface RefreshableSupplier<T> extends Supplier<T> {
         void refresh();
     }
 
