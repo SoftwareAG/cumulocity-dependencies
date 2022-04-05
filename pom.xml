@@ -16,7 +16,7 @@
     <revision>1013.136.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <osgi.service.http.port>8181</osgi.service.http.port>
     <nexus.url>http://localhost:8080</nexus.url>
     <nexus.basePath>/nexus/content/repositories</nexus.basePath>
