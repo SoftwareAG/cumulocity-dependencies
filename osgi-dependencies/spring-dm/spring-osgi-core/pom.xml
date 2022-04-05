@@ -14,6 +14,7 @@
 
     <properties>
         <spring.osgi.export>
+            !org.springframework.beans*,
             org.springframework.core.enums*;version=${spring.version},
             !org.springframework.osgi.io*,
             !org.springframework.osgi.*internal*;
@@ -111,6 +112,8 @@
                                                    value="java.util.concurrent.ConcurrentHashMap" />
                                     <replacefilter token="CollectionFactory.createConcurrentMap"
                                                    value="new ConcurrentHashMap" />
+                                    <replacefilter token="import org.springframework.beans.factory.config.BeanReferenceFactoryBean;"
+                                                   value="" />
                                 </replace>
                             </target>
                         </configuration>
