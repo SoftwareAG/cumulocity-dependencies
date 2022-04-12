@@ -49,6 +49,8 @@
 		<libphonenumber.version>8.12.3</libphonenumber.version>
 		<uom.version>0.7.1</uom.version>
 		<osgi.uom.version>${uom.version}-${project.parent.version}</osgi.uom.version>
+		<sslcontext.version>7.3.0</sslcontext.version>
+		<osgi.sslcontext.version>${sslcontext.version}-${project.parent.version}</osgi.sslcontext.version>
 		<bouncycastle.version>1.67</bouncycastle.version>
 		<kubernetes-client.version>5.9.0</kubernetes-client.version>
 		<osgi.kubernetes-client.version>${kubernetes-client.version}-${project.parent.version}</osgi.kubernetes-client.version>
