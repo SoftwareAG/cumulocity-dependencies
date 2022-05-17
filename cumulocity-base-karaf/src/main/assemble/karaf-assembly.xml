@@ -19,9 +19,6 @@
 				<!-- unsafe version of library, comes with karaf tarball
 				FIXME remove when newer karaf with safe version of library is used-->
 				<exclude>**/bouncycastle/**/1.66/*</exclude>
-				<!-- unsafe version of library, comes with CXF feature
-                 FIXME remove when newer CXF with safe version of library is used-->
-				<exclude>**/ehcache/**/2.10.6/*</exclude>
 			</excludes>
 		</fileSet>
 	</fileSets>
