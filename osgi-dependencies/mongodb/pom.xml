@@ -16,18 +16,22 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-legacy</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-core</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>bson</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -38,6 +42,7 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
                     <includeGroupIds>org.mongodb</includeGroupIds>
+                    <!-- add bson-record-decoder during upgrade to Java 17 -->
                     <includeArtifactIds>mongodb-driver-legacy, mongodb-driver-core, mongodb-driver-sync, bson</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
@@ -62,18 +67,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>org/mongodb/*</include>
-                    </includes>
-                    <excludes>
-                        <exclude>nothing</exclude>
-                    </excludes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
