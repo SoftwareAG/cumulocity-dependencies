@@ -9,7 +9,7 @@
 
     <artifactId>odata</artifactId>
     <version>${odata.version}-${project.parent.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: OData2 - Apache Olingo</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: OData2 - Apache Olingo</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
@@ -17,32 +17,17 @@
         <dependency>
             <groupId>org.apache.olingo</groupId>
             <artifactId>olingo-odata2-core</artifactId>
-            <version>${odata.version}</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>javax.servlet-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.ws.rs</groupId>
-                    <artifactId>javax.ws.rs-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>commons-codec</groupId>
-                    <artifactId>commons-codec</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-
         <dependency>
             <groupId>org.apache.olingo</groupId>
             <artifactId>olingo-odata2-api</artifactId>
-            <version>${odata.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -101,9 +86,7 @@
                         <include>org/apache/olingo/odata2/core/uri/expression/Tokenizer.*</include>
                         <include>org/apache/olingo/odata2/core/uri/expression/FilterParserImpl.*</include>
                     </includes>
-                    <excludes>
-                        <exclude>nothing</exclude>
-                    </excludes>
+                    <skipMain>false</skipMain>
                 </configuration>
             </plugin>
             <plugin>

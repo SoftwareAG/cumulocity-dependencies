@@ -12,7 +12,7 @@
     <artifactId>log4j-log-limiter</artifactId>
     <packaging>bundle</packaging>
 
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Core Logger Custom Components</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: Core Logger Custom Components</name>
 
     <properties>
         <bundle.symbolicName>com.cumulocity.log4j.custom.components</bundle.symbolicName>
@@ -21,7 +21,6 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>${log4j.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -37,7 +36,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -83,6 +81,7 @@
                         </goals>
                         <phase>process-classes</phase>
                         <configuration>
+                            <skipMain>false</skipMain>
                             <proc>only</proc>
                             <annotationProcessors>
                                 <annotationProcessor>

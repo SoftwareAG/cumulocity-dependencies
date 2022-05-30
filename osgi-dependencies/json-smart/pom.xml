@@ -9,14 +9,13 @@
 
 	<artifactId>json-smart</artifactId>
 	<version>${json-smart.version}-${project.parent.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: JsonSmart</name>
+	<name>Cumulocity :: Dependencies :: OSGi :: JsonSmart</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
 	<dependencies>
 		<dependency>
 		    <groupId>net.minidev</groupId>
 		    <artifactId>json-smart</artifactId>
-		    <version>${json-smart.version}</version>
 		    <scope>provided</scope>
 		</dependency>
 		<dependency>

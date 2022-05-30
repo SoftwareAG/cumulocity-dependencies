@@ -9,7 +9,7 @@
 
     <artifactId>logbook</artifactId>
     <version>${logbook.version}-${project.parent.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Logbook</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: Logbook</name>
 
     <dependencies>
         <dependency>
@@ -70,9 +70,7 @@
                     <includes>
                         <include>org/zalando/logbook/LogbookFactory.*</include>
                     </includes>
-                    <excludes>
-                        <exclude>nothing</exclude>
-                    </excludes>
+                    <skipMain>false</skipMain>
                 </configuration>
             </plugin>
             <plugin>

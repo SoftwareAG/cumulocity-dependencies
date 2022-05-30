@@ -10,7 +10,7 @@
 
   <artifactId>3rd-license-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <name>Cumulocity Dependencies :: Maven Plugins :: 3rd Licence Maven Plugin</name>
+  <name>Cumulocity :: Dependencies :: Maven Plugins :: 3rd Licence Maven Plugin</name>
 
   <dependencies>
     <dependency>

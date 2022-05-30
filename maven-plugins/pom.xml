@@ -9,7 +9,7 @@
 
   <artifactId>maven-plugins</artifactId>
   <packaging>pom</packaging>
-  <name>Cumulocity Dependencies :: Maven Plugins</name>
+  <name>Cumulocity :: Dependencies :: Maven Plugins</name>
   <url>http://maven.apache.org</url>
 
 	<modules>

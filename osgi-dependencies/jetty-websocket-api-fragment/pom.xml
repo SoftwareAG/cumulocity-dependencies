@@ -11,7 +11,7 @@
     <artifactId>jetty-websocket-api-fragment</artifactId>
     <packaging>bundle</packaging>
     
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Jetty WebSocket API Fragment</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: Jetty WebSocket API Fragment</name>
 
     <properties>
         <bundle.symbolicName>com.cumulocity.jetty.websocket.api.fragment</bundle.symbolicName>

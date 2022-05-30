@@ -8,8 +8,8 @@
     </parent>
 
     <artifactId>mongodb</artifactId>
-    <version>${mongodb.driver.version}-${project.parent.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: MongoDB</name>
+    <version>${mongodb-driver.version}-${project.parent.version}</version>
+    <name>Cumulocity :: Dependencies :: OSGi :: MongoDB</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
@@ -80,9 +80,7 @@
                         <include>org/bson/util/*</include>
                         <include>org/bson/BSONLegacy.*</include>
                     </includes>
-                    <excludes>
-                        <exclude>nothing</exclude>
-                    </excludes>
+                    <skipMain>false</skipMain>
                 </configuration>
             </plugin>
             <plugin>

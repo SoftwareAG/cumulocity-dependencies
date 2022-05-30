@@ -9,7 +9,7 @@
 	<packaging>pom</packaging>
 	
     <artifactId>spring-dm</artifactId>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Spring DM</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: Spring DM</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	<description>Spring Dynamic Modules for Spring 4.x</description>
 
@@ -58,68 +58,6 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.osgi</groupId>
-				<artifactId>spring-osgi-io</artifactId>
-				<version>${spring.dm.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.osgi</groupId>
-				<artifactId>spring-osgi-core</artifactId>
-				<version>${spring.dm.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>org.springframework.aop</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>org.springframework.beans</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>org.springframework.context</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>org.springframework.core</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.osgi</groupId>
-				<artifactId>spring-osgi-extender</artifactId>
-				<version>${spring.dm.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.osgi</groupId>
-				<artifactId>spring-osgi-web</artifactId>
-				<version>${spring.dm.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>javax.servlet</groupId>
-						<artifactId>com.springsource.javax.servlet</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.aopalliance</groupId>
-						<artifactId>com.springsource.org.aopalliance</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.springframework</groupId>
-						<artifactId>org.springframework.core</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.osgi</groupId>
-				<artifactId>spring-osgi-annotation</artifactId>
-				<version>${spring.dm.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<build>
 		<resources>
@@ -207,9 +145,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<excludes>
-						<exclude>nothing</exclude>
-					</excludes>
+					<skipMain>false</skipMain>
 				</configuration>
 			</plugin>
 		</plugins>

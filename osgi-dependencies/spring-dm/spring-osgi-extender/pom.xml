@@ -12,7 +12,7 @@
 
     <artifactId>spring-osgi-extender</artifactId>
     <version>${osgi.spring.dm.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Spring DM Extender</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: Spring DM Extender</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <properties>

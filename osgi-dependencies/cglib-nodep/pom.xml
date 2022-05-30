@@ -9,14 +9,13 @@
 	
 	<artifactId>cglib-nodep</artifactId>
 	<version>${cglib-nodep.version}-${project.parent.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: CGLib (nodep)</name>
+	<name>Cumulocity :: Dependencies :: OSGi :: CGLib (nodep)</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	
     <dependencies>
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
-            <version>${cglib-nodep.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
