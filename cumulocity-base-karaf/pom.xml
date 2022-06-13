@@ -33,6 +33,29 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.logger</groupId>
+			<artifactId>log4j-log-limiter</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.dependencies</groupId>
+			<artifactId>jetty-websocket-api-fragment</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>${osgi.cglib-nodep.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+			<artifactId>spring-osgi-extender</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+			<artifactId>spring-osgi-web</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

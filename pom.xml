@@ -25,17 +25,4 @@
     <module>maven-plugins</module>
   </modules>
 
-  <repositories> <!-- why directly and not proxied??? -->
-      <repository>
-        <id>bintray</id>
-        <url>http://dl.bintray.com/andsel/maven/</url>
-        <releases>
-          <enabled>true</enabled>
-        </releases>
-        <snapshots>
-          <enabled>false</enabled>
-        </snapshots>
-      </repository>
-  </repositories>
-
 </project>

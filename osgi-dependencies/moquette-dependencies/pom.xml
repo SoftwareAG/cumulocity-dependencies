@@ -13,19 +13,6 @@
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	<packaging>jar</packaging>
 
-	<repositories>
-	 	 <repository>
-		    <id>bintray</id>
-		    <url>http://dl.bintray.com/andsel/maven/</url>
-		    <releases>
-		      <enabled>true</enabled>
-		    </releases>
-		    <snapshots>
-		      <enabled>false</enabled>
-		    </snapshots>
-	  	</repository>
-	</repositories>
-
 	<dependencies>
         <dependency>
             <groupId>commons-codec</groupId>
