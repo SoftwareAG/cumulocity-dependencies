@@ -9,26 +9,24 @@
 
     <artifactId>uom</artifactId>
     <version>${uom.version}-${project.parent.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Units of Measurement</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: Units of Measurement</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <dependencies>
         <dependency>
             <groupId>systems.uom</groupId>
             <artifactId>systems-common</artifactId>
-            <version>${uom.version}</version>
+            <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>systems.uom</groupId>
             <artifactId>systems-unicode</artifactId>
-            <version>${uom.version}</version>
+            <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>systems.uom</groupId>
             <artifactId>systems-quantity</artifactId>
-            <version>${uom.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

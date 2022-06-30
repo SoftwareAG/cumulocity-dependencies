@@ -9,12 +9,8 @@
 
     <artifactId>cometd-java-websocket-javax-server</artifactId>
     <version>${cometd.version}-${project.parent.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: CometD :: Java WebSocket Server </name>
+    <name>Cumulocity :: Dependencies :: OSGi :: CometD :: Java WebSocket Server </name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
-
-    <properties>
-        <spring.version>4.1.4.RELEASE</spring.version>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -70,9 +66,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <excludes>
-                        <exclude>nothing</exclude>
-                    </excludes>
+                    <skipMain>false</skipMain>
                 </configuration>
             </plugin>
             <plugin>

@@ -12,7 +12,7 @@
 
     <artifactId>spring-osgi-web</artifactId>
     <version>${osgi.spring.dm.version}</version>
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Spring DM Web</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: Spring DM Web</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
     <properties>

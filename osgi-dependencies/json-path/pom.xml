@@ -1,28 +1,49 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	
-	<parent>
-		<artifactId>osgi-dependencies</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>${revision}${changelist}</version>
-	</parent>
-	
-	<artifactId>json-path</artifactId>
-	<version>${json-path.version}-${project.parent.version}</version>
-	<name>Cumulocity Dependencies :: OSGi Dependencies :: JsonPath</name>
+        <version>${revision}${changelist}</version>
+    </parent>
+
+    <artifactId>json-path</artifactId>
+    <version>${json-path.version}-${project.parent.version}</version>
+    <name>Cumulocity :: Dependencies :: OSGi :: JsonPath</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
-	<dependencies>
-		<dependency>
-		    <groupId>com.jayway.jsonpath</groupId>
-		    <artifactId>json-path</artifactId>
-		    <version>${json-path.version}</version>
-		    <scope>provided</scope>
-		</dependency>
-	</dependencies>
-	
-	<build>
-	    <plugins>
+    <dependencies>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+            <artifactId>json-smart</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -50,7 +71,7 @@
                     </instructions>
                 </configuration>
             </plugin>
-	    </plugins>
-	</build>
-	
+        </plugins>
+    </build>
+
 </project>

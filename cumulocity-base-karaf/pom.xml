@@ -12,7 +12,7 @@
 	<artifactId>cumulocity-base-karaf</artifactId>
 	<packaging>pom</packaging>
 
-	<name>Cumulocity :: Dependencies :: Core Karaf</name>
+	<name>Cumulocity :: Dependencies :: Base Karaf</name>
 	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
 	<properties>

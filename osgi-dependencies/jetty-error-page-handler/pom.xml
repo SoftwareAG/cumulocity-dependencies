@@ -13,7 +13,7 @@
     <artifactId>jetty-error-page-handler</artifactId>
     <packaging>bundle</packaging>
 
-    <name>Cumulocity Dependencies :: OSGi Dependencies :: Core Server Error Page Handler</name>
+    <name>Cumulocity :: Dependencies :: OSGi :: Core Server Error Page Handler</name>
 
     <properties>
         <bundle.symbolicName>com.cumulocity.jetty.error.page.handler</bundle.symbolicName>
@@ -23,7 +23,6 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
-            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
