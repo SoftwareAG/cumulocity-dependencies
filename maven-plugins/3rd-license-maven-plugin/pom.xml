@@ -56,14 +56,14 @@
       <version>${guava.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>javax.mail-api</artifactId>
-      <version>${javax.mail.version}</version>
+      <groupId>jakarta.mail</groupId>
+      <artifactId>jakarta.mail-api</artifactId>
+      <version>${jakarta.mail.version}</version>
     </dependency>
     <dependency>
       <groupId>com.sun.mail</groupId>
-      <artifactId>javax.mail</artifactId>
-      <version>${javax.mail.version}</version>
+      <artifactId>jakarta.mail</artifactId>
+      <version>${jakarta.mail.version}</version>
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
