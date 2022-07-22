@@ -33,6 +33,53 @@
             <artifactId>bson</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- below dependencies are required to make module compile in IDE -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-crypt</artifactId>
+            <scope>provided</scope>
+            <version>1.5.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.jnr</groupId>
+            <artifactId>jnr-unixsocket</artifactId>
+            <scope>provided</scope>
+            <version>0.38.17</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-buffer</artifactId>
+            <scope>provided</scope>
+            <version>${netty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-handler</artifactId>
+            <scope>provided</scope>
+            <version>${netty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial.snappy</groupId>
+            <artifactId>snappy-java</artifactId>
+            <scope>provided</scope>
+            <version>1.1.8.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.luben</groupId>
+            <artifactId>zstd-jni</artifactId>
+            <scope>provided</scope>
+            <version>1.5.2-3</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.findbugs</groupId>
+            <scope>provided</scope>
+            <artifactId>jsr305</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -42,11 +89,12 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
                     <includeGroupIds>org.mongodb</includeGroupIds>
-                    <!-- add bson-record-decoder during upgrade to Java 17 -->
+                    <!-- add bson-record-codec during upgrade to Java 17 -->
                     <includeArtifactIds>mongodb-driver-legacy, mongodb-driver-core, mongodb-driver-sync, bson</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
-                        META-INF/maven/**/*
+                        META-INF/maven/**/*,
+                        com/mongodb/Jep395RecordCodecProvider.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -76,6 +124,7 @@
                         <include>org/mongodb/*</include>
                         <include>com/mongodb/util/*</include>
                         <include>com/mongodb/Bytes.*</include>
+                        <include>com/mongodb/Jep395RecordCodecProvider.*</include>
                         <include>org/bson/internal/Base64.*</include>
                         <include>org/bson/util/*</include>
                         <include>org/bson/BSONLegacy.*</include>
