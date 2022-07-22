@@ -13,6 +13,11 @@
     <name>Cumulocity :: Dependencies :: OSGi :: JsonPath</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
+    <properties>
+        <!-- Java 8 still required for Java SDK. Remove when separated model is introduced for Java SDK -->
+        <java.version>1.8</java.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
