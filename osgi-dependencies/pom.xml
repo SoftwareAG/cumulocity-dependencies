@@ -32,6 +32,8 @@
         <module>log4j-log-limiter</module>
         <module>logbook</module>
         <module>mongodb</module>
+        <module>pulsar-client</module>
+        <module>jackson-module-jsonSchema</module>
     </modules>
 
     <properties>
