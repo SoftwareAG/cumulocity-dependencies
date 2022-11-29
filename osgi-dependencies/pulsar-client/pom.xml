@@ -49,6 +49,11 @@
             <artifactId>pulsar-client-original</artifactId>
             <version>${pulsar-client.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.31</version>
+        </dependency>
     </dependencies>
 
     <build>
