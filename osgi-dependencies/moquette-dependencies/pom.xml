@@ -19,11 +19,6 @@
             <artifactId>commons-codec</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.mapdb</groupId>
-            <artifactId>mapdb</artifactId>
-            <version>1.0.8</version>
-        </dependency>
-        <dependency>
             <groupId>org.hdrhistogram</groupId>
             <artifactId>HdrHistogram</artifactId>
             <version>2.1.4</version>
@@ -61,14 +56,12 @@
                 <configuration>
                     <includeGroupIds>
                     	io.moquette,
-                        org.mapdb,
                         org.hdrhistogram,
                         commons-codec
                     </includeGroupIds>
                     <includeArtifactIds>
                     	moquette-netty-parser,
                     	moquette-parser-commons,
-                    	mapdb,
                     	HdrHistogram,
                     	commons-codec
                    	</includeArtifactIds>
@@ -95,7 +88,6 @@
                             io.moquette.proto.*,
                             io.moquette.spi.*,
                             io.moquette.commons.*,
-                            org.mapdb.*,
                             org.HdrHistogram.*
                         </Export-Package>
                         <Import-Package>
