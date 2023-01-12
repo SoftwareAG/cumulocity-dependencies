@@ -14,9 +14,10 @@
 
     <properties>
         <spring.osgi.export>
+            !org.springframework.beans*,
             org.springframework.core.enums*;version=${spring.version},
             !org.springframework.osgi.io*,
-            !org.springframework.osgi.*internal*;
+            !org.springframework.osgi.*internal*,
             org.springframework.osgi*
         </spring.osgi.export>
 
@@ -31,9 +32,10 @@
             !org.springframework.osgi.util*,
             org.aopalliance*;version="0.0.0",
             org.springframework.aop;version=${spring.version.range},
+            org.springframework.beans.factory.config;version=${spring.version.range},
             org.springframework.beans.propertyeditors;version=${spring.version.range},
             org.osgi.service.cm;version=1.2;resolution:=optional,
-            org.osgi.service.startlevel;version=1.0;resolution:=optional,
+            org.osgi.service.startlevel;version=1.0;resolution:=optional
         </spring.osgi.import.pkg>
 
         <spring.osgi.symbolic.name>${symName.prefix}.core</spring.osgi.symbolic.name>
@@ -82,8 +84,11 @@
                             <excludes>
                                 META-INF/MANIFEST.MF,
                                 META-INF/maven/**/*,
+                                org/springframework/osgi/compendium/internal/cm/ManagedServiceInstanceTrackerPostProcessor*,
                                 org/springframework/osgi/config/internal/util/MethodUtils*,
+                                org/springframework/osgi/config/internal/util/StandardAttributeCallback*,
                                 org/springframework/osgi/context/support/OsgiBundleXmlApplicationContext*,
+                                org/springframework/osgi/service/dependency/internal/MandatoryDependencyBeanPostProcessor*,
                                 org/springframework/osgi/service/importer/support/internal/aop/ServiceDynamicInterceptor*,
                                 org/springframework/osgi/util/internal/ClassUtils*
                             </excludes>
