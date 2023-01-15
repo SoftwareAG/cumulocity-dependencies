@@ -10,7 +10,6 @@ import com.cumulocity.maven3.plugin.thirdlicense.license.Licenses;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapper;
 import com.cumulocity.maven3.plugin.thirdlicense.mapper.PropertyMapperFactory;
 import com.cumulocity.maven3.plugin.thirdlicense.validation.Validator;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Profile;
 import org.apache.maven.plugin.AbstractMojo;
