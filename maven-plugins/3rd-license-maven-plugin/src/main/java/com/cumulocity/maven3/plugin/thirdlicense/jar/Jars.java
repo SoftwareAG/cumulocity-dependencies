@@ -258,7 +258,7 @@ public class Jars {
         }
     }
 
-    public static final String stripCumulocityVersion (String version) {
+    public static String stripCumulocityVersion (String version) {
         return StringUtils.substringBefore(version, "-");
     }
 }
