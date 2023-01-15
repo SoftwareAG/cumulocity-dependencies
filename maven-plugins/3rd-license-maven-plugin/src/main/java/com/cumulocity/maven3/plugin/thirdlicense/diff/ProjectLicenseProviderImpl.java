@@ -75,8 +75,8 @@ public class ProjectLicenseProviderImpl implements ProjectLicenseProvider {
 
     private static Plugin dependencyPlugin() {
         return plugin(groupId("org.apache.maven.plugins"), artifactId("maven-dependency-plugin"), version("2.10"));
-    };
-    
+    }
+
     private static File findFile(Path base, final String fileName) {
         final List<File> files = new ArrayList<File>();
         try {

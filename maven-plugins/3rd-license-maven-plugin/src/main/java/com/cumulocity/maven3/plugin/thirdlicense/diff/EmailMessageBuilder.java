@@ -28,7 +28,7 @@ public class EmailMessageBuilder {
 
     public static EmailMessageBuilder aMessage(Session session) {
         return new EmailMessageBuilder(session);
-    };
+    }
 
     public EmailMessageBuilder(Session session) {
         this.session = session;
