@@ -43,7 +43,7 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-crypt</artifactId>
             <scope>provided</scope>
-            <version>1.5.1.1</version>
+            <version>1.6.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.jnr</groupId>
@@ -73,7 +73,7 @@
             <groupId>com.github.luben</groupId>
             <artifactId>zstd-jni</artifactId>
             <scope>provided</scope>
-            <version>1.5.2-3</version>
+            <version>1.5.2-5</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.findbugs</groupId>
