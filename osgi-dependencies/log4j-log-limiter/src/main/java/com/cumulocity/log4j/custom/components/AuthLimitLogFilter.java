@@ -1,8 +1,7 @@
 package com.cumulocity.log4j.custom.components;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -38,16 +37,10 @@ public class AuthLimitLogFilter extends AbstractFilter {
     private AuthLimitLogFilter(final Result onMatch, final Result onMismatch, final long limitLogNumberPerTenant, final long cacheExpirationInSeconds) {
         super(onMatch, onMismatch);
         this.limitLogNumberPerTenant = limitLogNumberPerTenant;
-        limitLogCache = CacheBuilder.newBuilder()
+        limitLogCache = Caffeine.newBuilder()
                 .expireAfterWrite(cacheExpirationInSeconds, TimeUnit.SECONDS)
                 .maximumSize(5000)
-                .concurrencyLevel(Runtime.getRuntime().availableProcessors() * 2)
-                .build(new CacheLoader<SourceKey, AtomicInteger>() {
-                    @Override
-                    public AtomicInteger load(SourceKey key) throws Exception {
-                        return new AtomicInteger();
-                    }
-                });
+                .build(key -> new AtomicInteger());
     }
 
     @Override
@@ -68,7 +61,7 @@ public class AuthLimitLogFilter extends AbstractFilter {
     }
 
     private Result updateCounter(SourceKey sourceKey) {
-        final AtomicInteger logCounter = limitLogCache.getUnchecked(sourceKey);
+        final AtomicInteger logCounter = limitLogCache.get(sourceKey);
         if (logCounter.incrementAndGet() > limitLogNumberPerTenant) {
             return onMismatch;
         } else {

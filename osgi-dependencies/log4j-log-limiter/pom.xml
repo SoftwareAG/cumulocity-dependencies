@@ -38,6 +38,10 @@
             <artifactId>guava</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
@@ -64,7 +68,7 @@
                             com.cumulocity.log4j.custom.components.*
                         </Export-Package>
                         <Import-Package>
-                            com.google.common.cache
+                            com.github.benmanes.caffeine.cache
                         </Import-Package>
                         <Include-Resource>META-INF=${project.build.directory}/classes/META-INF</Include-Resource>
                     </instructions>
