@@ -6,17 +6,27 @@ import lombok.experimental.UtilityClass;
 public class Artifacts {
 
     public static boolean isCumulocityArtifact(String groupId) {
-        return isCumulocityInternalDependency(groupId)
-                || isCumulocityAgentInternalDependency(groupId);
+        return isCumulocityCoreInternalDependency(groupId)
+                || isCumulocityAgentInternalDependency(groupId)
+                || isCumulocityInternalDependency(groupId)
+                || isSoftwareAGInternalDependency(groupId);
     }
 
-    public static boolean isCumulocityAgentInternalDependency(String groupId) {
+    private static boolean isCumulocityAgentInternalDependency(String groupId) {
         return groupId != null
                 && (groupId.startsWith("c8y.agents")
                 || groupId.startsWith("c8y-agents"));
     }
 
-    public static boolean isCumulocityInternalDependency(String groupId) {
+    private static boolean isCumulocityInternalDependency(String groupId) {
+        return groupId != null && groupId.startsWith("com.cumulocity");
+    }
+
+    private static boolean isSoftwareAGInternalDependency(String groupId) {
+        return groupId != null && groupId.startsWith("com.softwareag");
+    }
+
+    private static boolean isCumulocityCoreInternalDependency(String groupId) {
         return groupId != null
                 && groupId.startsWith("com.nsn.cumulocity")
                 && !groupId.startsWith("com.nsn.cumulocity.dependencies.osgi");
