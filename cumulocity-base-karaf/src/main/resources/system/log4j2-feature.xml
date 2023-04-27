@@ -5,7 +5,7 @@
         <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2/2.0.14</bundle>
         <bundle>mvn:org.ops4j.pax.logging/pax-logging-log4j2-extra/2.0.14</bundle>
         <bundle>mvn:org.ops4j.pax.logging/pax-logging-logback/2.0.14</bundle>
-        <bundle start-level="2">mvn:com.google.guava/guava/25.0-jre</bundle>
+        <bundle start-level="2">mvn:com.github.ben-manes.caffeine/caffeine/${caffeine.version}</bundle>
         <bundle start-level="3">mvn:com.nsn.cumulocity.logger/log4j-log-limiter/${project.version}</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson.version}</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-core/${jackson.version}</bundle>

@@ -17,6 +17,8 @@
     <properties>
         <bundle.symbolicName>com.cumulocity.log4j.custom.components</bundle.symbolicName>
     </properties>
+    <!--While adding new dependencies, make sure it will be downloaded before plugin is created.-->
+    <!--cumulocity-dependencies/cumulocity-base-karaf/src/main/resources/system/log4j2-feature.xml-->
     <dependencies>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -32,10 +34,6 @@
             <groupId>org.ops4j.pax.logging</groupId>
             <artifactId>pax-logging-log4j2</artifactId>
             <version>2.0.14</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
