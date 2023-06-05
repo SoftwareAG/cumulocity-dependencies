@@ -94,8 +94,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <includes>
-                        <include>org/apache/pulsar/client/impl/CustomClientBuilder.*</include>
-                        <include>org/apache/pulsar/client/impl/CustomProducerBuilder.*</include>
+                        <include>org/apache/pulsar/client/impl/NoReconnectClientBuilder.*</include>
+                        <include>org/apache/pulsar/client/impl/NoReconnectClientImpl.*</include>
+                        <include>org/apache/pulsar/client/impl/NoReconnectProducerImpl.*</include>
                     </includes>
                     <skipMain>false</skipMain>
                 </configuration>
