@@ -58,7 +58,8 @@
                             <excludes>
                                 META-INF/MANIFEST.MF,
                                 META-INF/maven/**/*,
-                                org/springframework/osgi/extender/internal/support/ExtenderConfiguration*
+                                org/springframework/osgi/extender/internal/support/ExtenderConfiguration*,
+                                org/springframework/osgi/extender/internal/support/NamespaceManager*
                             </excludes>
                         </configuration>
                     </execution>
