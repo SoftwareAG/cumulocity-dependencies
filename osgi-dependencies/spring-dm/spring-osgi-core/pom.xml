@@ -84,6 +84,7 @@
                             <excludes>
                                 META-INF/MANIFEST.MF,
                                 META-INF/maven/**/*,
+                                org/springframework/osgi/compendium/internal/cm/ConfigurationAdminManager*,
                                 org/springframework/osgi/compendium/internal/cm/ManagedServiceInstanceTrackerPostProcessor*,
                                 org/springframework/osgi/config/internal/util/MethodUtils*,
                                 org/springframework/osgi/config/internal/util/StandardAttributeCallback*,
