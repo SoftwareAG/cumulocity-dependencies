@@ -10,43 +10,43 @@
 
     <feature name="spring" description="Spring support" version="${spring.version}">
         <bundle dependency="true" start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.aopalliance/1.0_6</bundle>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-core/4.3.30.RELEASE_1</bundle>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-expression/4.3.30.RELEASE_1</bundle>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-beans/4.3.30.RELEASE_1</bundle>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-aop/4.3.30.RELEASE_1</bundle>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context/4.3.30.RELEASE_1</bundle>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context-support/4.3.30.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-core/${spring.version}_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-expression/${spring.version}_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-beans/${spring.version}_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-aop/${spring.version}_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context/${spring.version}_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-context-support/${spring.version}_1</bundle>
     </feature>
 
     <feature name="spring-web" description="Spring Web support" version="${spring.version}">
         <feature version="${spring.version}">spring</feature>
         <feature>http</feature>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-web/4.3.30.RELEASE_1</bundle>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-webmvc/4.3.30.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-web/${spring.version}_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-webmvc/${spring.version}_1</bundle>
     </feature>
 
     <feature name="spring-jms" description="Spring JMS support" version="${spring.version}">
         <feature version="${spring.version}">spring-web</feature>
         <bundle start-level="10">mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/1.1.1</bundle>
         <bundle start-level="10">mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1</bundle>
-        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-jms/4.3.30.RELEASE_1</bundle>
+        <bundle start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-jms/${spring.version}_1</bundle>
     </feature>
     
-    <feature name="spring-dm" description="Spring DM support" version="1.2.1">
+    <feature name="spring-dm" description="Spring DM support" version="${spring-dm.version}">
         <feature version="[4.0,5)">spring</feature>
         <bundle dependency="true" start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/cglib-nodep/${osgi.cglib-nodep.version}</bundle>
-        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-io/${osgi.spring.dm.version}</bundle>
-        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-core/${osgi.spring.dm.version}</bundle>
-        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-extender/${osgi.spring.dm.version}</bundle>
-        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-annotation/${osgi.spring.dm.version}</bundle>
+        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-io/${osgi.spring-dm.version}</bundle>
+        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-core/${osgi.spring-dm.version}</bundle>
+        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-extender/${osgi.spring-dm.version}</bundle>
+        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-annotation/${osgi.spring-dm.version}</bundle>
         <!--<bundle start-level="30">mvn:org.apache.karaf.deployer/org.apache.karaf.deployer.spring/${karaf.version}</bundle>-->
     </feature>
 
-    <feature name="spring-dm-web" description="Spring DM Web Support" version="1.2.1">
-        <feature version="1.2.1">spring-dm</feature>
+    <feature name="spring-dm-web" description="Spring DM Web Support" version="${spring-dm.version}">
+        <feature version="${spring-dm.version}">spring-dm</feature>
         <feature version="[4.0,5)">spring-web</feature>
         <feature>http</feature>
-        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-web/${osgi.spring.dm.version}</bundle>
+        <bundle start-level="30">mvn:com.nsn.cumulocity.dependencies.osgi/spring-osgi-web/${osgi.spring-dm.version}</bundle>
     </feature>
 
 </features>

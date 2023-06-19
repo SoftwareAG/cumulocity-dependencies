@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>spring-osgi-core</artifactId>
-    <version>${osgi.spring.dm.version}</version>
+    <version>${osgi.spring-dm.version}</version>
     <name>Cumulocity :: Dependencies :: OSGi :: Spring DM Core</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
@@ -80,7 +80,7 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <artifact>org.springframework.osgi:spring-osgi-core:${spring.dm.version}:jar:sources</artifact>
+                            <artifact>org.springframework.osgi:spring-osgi-core:${spring-dm.version}:jar:sources</artifact>
                             <excludes>
                                 META-INF/MANIFEST.MF,
                                 META-INF/maven/**/*,
