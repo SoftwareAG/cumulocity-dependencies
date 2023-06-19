@@ -22,9 +22,9 @@
 	</modules>
 
 	<properties>
-		<spring.osgi.import.version>${spring.dm.version}</spring.osgi.import.version>
-		<spring.osgi.export.version>${spring.dm.version}</spring.osgi.export.version>
-		<spring.osgi.bundle.version>${spring.dm.version}</spring.osgi.bundle.version>
+		<spring.osgi.import.version>${spring-dm.version}</spring.osgi.import.version>
+		<spring.osgi.export.version>${spring-dm.version}</spring.osgi.export.version>
+		<spring.osgi.bundle.version>${spring-dm.version}</spring.osgi.bundle.version>
 
 		<spring.osgi.import.pkg>*</spring.osgi.import.pkg>
 		<spring.osgi.export>${spring.osgi.export.pkg}*;version=${spring.osgi.export.version}</spring.osgi.export>
