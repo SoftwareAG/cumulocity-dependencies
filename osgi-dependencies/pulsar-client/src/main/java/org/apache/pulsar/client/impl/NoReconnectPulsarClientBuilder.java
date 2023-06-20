@@ -4,27 +4,30 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.pulsar.client.api.*;
 import org.apache.pulsar.client.impl.conf.ClientConfigurationData;
 
-public class NoReconnectClientBuilder extends ClientBuilderImpl {
+public class NoReconnectPulsarClientBuilder extends ClientBuilderImpl {
 
-    public NoReconnectClientBuilder() {
+    public NoReconnectPulsarClientBuilder() {
         this(new ClientConfigurationData());
     }
 
-    public NoReconnectClientBuilder(ClientConfigurationData conf) {
+    public NoReconnectPulsarClientBuilder(ClientConfigurationData conf) {
         this.conf = conf;
     }
 
-    public static NoReconnectClientBuilder noReconnectClientBuilder() {
-        return new NoReconnectClientBuilder();
+    public static NoReconnectPulsarClientBuilder noReconnectPulsarClientBuilder() {
+        return new NoReconnectPulsarClientBuilder();
     }
 
     @Override
     public PulsarClient build() throws PulsarClientException {
+        // NOTE: the method's implementation is the same as in superclass,
+        // except client object that is being built is of class NoReconnectPulsarClientImpl
+
         if (StringUtils.isBlank(conf.getServiceUrl()) && conf.getServiceUrlProvider() == null) {
             throw new IllegalArgumentException("service URL or service URL provider needs to be specified on the ClientBuilder object.");
         }
         if (StringUtils.isNotBlank(conf.getServiceUrl()) && conf.getServiceUrlProvider() != null) {
-            throw new IllegalArgumentException("Can only chose one way service URL or service URL provider.");
+            throw new IllegalArgumentException("Can only choose one way service URL or service URL provider.");
         }
         if (conf.getServiceUrlProvider() != null) {
             if (StringUtils.isBlank(conf.getServiceUrlProvider().getServiceUrl())) {
@@ -33,7 +36,7 @@ public class NoReconnectClientBuilder extends ClientBuilderImpl {
                 conf.setServiceUrl(conf.getServiceUrlProvider().getServiceUrl());
             }
         }
-        PulsarClient client = new NoReconnectClientImpl(conf);
+        PulsarClient client = new NoReconnectPulsarClientImpl(conf);
         if (conf.getServiceUrlProvider() != null) {
             conf.getServiceUrlProvider().initialize(client);
         }
