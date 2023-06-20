@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
-public class NoReconnectProducerImpl<T> extends ProducerImpl<T> {
+public class NoReconnectPulsarProducerImpl<T> extends ProducerImpl<T> {
 
     private static final Method closeProducerTasksMethod;
 
@@ -25,12 +25,12 @@ public class NoReconnectProducerImpl<T> extends ProducerImpl<T> {
         closeProducerTasksMethod.setAccessible(true);
     }
 
-    public NoReconnectProducerImpl(PulsarClientImpl client,
-                                   String topic,
-                                   ProducerConfigurationData conf,
-                                   CompletableFuture<Producer<T>> producerCreatedFuture,
-                                   int partitionIndex, Schema<T> schema,
-                                   ProducerInterceptors interceptors) {
+    public NoReconnectPulsarProducerImpl(PulsarClientImpl client,
+                                         String topic,
+                                         ProducerConfigurationData conf,
+                                         CompletableFuture<Producer<T>> producerCreatedFuture,
+                                         int partitionIndex, Schema<T> schema,
+                                         ProducerInterceptors interceptors) {
         super(client, topic, conf, producerCreatedFuture, partitionIndex, schema, interceptors);
     }
 
