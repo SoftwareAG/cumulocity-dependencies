@@ -8,9 +8,9 @@ import org.apache.pulsar.client.impl.conf.ProducerConfigurationData;
 
 import java.util.concurrent.CompletableFuture;
 
-public class NoReconnectClientImpl extends PulsarClientImpl {
+public class NoReconnectPulsarClientImpl extends PulsarClientImpl {
 
-    public NoReconnectClientImpl(ClientConfigurationData conf) throws PulsarClientException {
+    public NoReconnectPulsarClientImpl(ClientConfigurationData conf) throws PulsarClientException {
         super(conf);
     }
 
@@ -19,7 +19,7 @@ public class NoReconnectClientImpl extends PulsarClientImpl {
                                                   Schema<T> schema,
                                                   ProducerInterceptors interceptors,
                                                   CompletableFuture<Producer<T>> producerCreatedFuture) {
-        return new NoReconnectProducerImpl<>(NoReconnectClientImpl.this,
+        return new NoReconnectPulsarProducerImpl<>(NoReconnectPulsarClientImpl.this,
                 topic,
                 conf,
                 producerCreatedFuture,
