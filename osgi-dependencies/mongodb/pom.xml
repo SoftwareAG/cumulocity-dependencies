@@ -105,8 +105,7 @@
                     <includeArtifactIds>mongodb-driver-legacy, mongodb-driver-core, mongodb-driver-sync, bson</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
-                        META-INF/maven/**/*,
-                        com/mongodb/Jep395RecordCodecProvider.*
+                        META-INF/maven/**/*
                     </excludes>
                 </configuration>
             </plugin>
@@ -128,22 +127,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>org/mongodb/*</include>
-                        <include>com/mongodb/util/*</include>
-                        <include>com/mongodb/Bytes.*</include>
-                        <include>com/mongodb/Jep395RecordCodecProvider.*</include>
-                        <include>org/bson/internal/Base64.*</include>
-                        <include>org/bson/util/*</include>
-                        <include>org/bson/BSONLegacy.*</include>
-                    </includes>
-                    <skipMain>false</skipMain>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
