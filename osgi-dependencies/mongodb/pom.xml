@@ -33,6 +33,19 @@
             <artifactId>bson</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>bson-kotlin</artifactId>
+            <version>${mongodb-driver.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>bson-kotlinx</artifactId>
+            <version>${mongodb-driver.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- below dependencies are required to make module compile in IDE -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -43,13 +56,13 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-crypt</artifactId>
             <scope>provided</scope>
-            <version>1.6.1</version>
+            <version>1.8.0</version>
         </dependency>
         <dependency>
             <groupId>com.github.jnr</groupId>
             <artifactId>jnr-unixsocket</artifactId>
             <scope>provided</scope>
-            <version>0.38.17</version>
+            <version>0.38.20</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -67,13 +80,13 @@
             <groupId>org.xerial.snappy</groupId>
             <artifactId>snappy-java</artifactId>
             <scope>provided</scope>
-            <version>1.1.8.4</version>
+            <version>1.1.10.3</version>
         </dependency>
         <dependency>
             <groupId>com.github.luben</groupId>
             <artifactId>zstd-jni</artifactId>
             <scope>provided</scope>
-            <version>1.5.2-5</version>
+            <version>1.5.5-5</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.findbugs</groupId>
@@ -83,13 +96,13 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>auth</artifactId>
-            <version>2.20.2</version>
+            <version>2.20.125</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-core</artifactId>
-            <version>1.12.405</version>
+            <version>1.12.528</version>
             <optional>true</optional>
         </dependency>
     </dependencies>
