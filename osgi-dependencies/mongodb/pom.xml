@@ -118,7 +118,8 @@
                     <includeArtifactIds>mongodb-driver-legacy, mongodb-driver-core, mongodb-driver-sync, bson</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
-                        META-INF/maven/**/*
+                        META-INF/maven/**/*,
+                        com/mongodb/Jep395RecordCodecProvider.*
                     </excludes>
                 </configuration>
             </plugin>
@@ -139,6 +140,16 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>com/mongodb/Jep395RecordCodecProvider.*</include>
+                    </includes>
+                    <skipMain>false</skipMain>
+                </configuration>
             </plugin>
 
             <plugin>
