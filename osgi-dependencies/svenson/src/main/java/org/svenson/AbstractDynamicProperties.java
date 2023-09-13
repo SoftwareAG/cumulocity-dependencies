@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.bson.codecs.pojo.annotations.BsonExtraElements;
 
 /**
  * Abstract base class for bean that want to use dynamic properties.
@@ -14,7 +13,6 @@ public abstract class AbstractDynamicProperties implements DynamicProperties, Se
 
     private static final long serialVersionUID = 2702169523343647512L;
 
-    @BsonExtraElements
     private Map<String, Object> attrs = new HashMap<String, Object>();
 
     public Object getProperty(String name) {
