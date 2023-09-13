@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
 
 public class WeakMessageTest {
 
@@ -36,11 +37,30 @@ public class WeakMessageTest {
         serverMessage.setClientId("321");
 
         // when
-        WeakMessage weakMessage = new WeakMessage(serverMessage,50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(serverMessage, 50000, jsonContext);
         weakMessage.freeze();
 
         // then
         JSONAssert.assertEquals(serverMessage.getJSON(), weakMessage.getJSON(), false);
+    }
+
+    @Test
+    public void shouldGenerateSameJSONWhenDataNull() throws JSONException {
+        // given
+        ServerMessageImpl serverMessage = new ServerMessageImpl();
+        serverMessage.setData(null);
+        serverMessage.setChannel("/some/setChannel/*");
+        serverMessage.setId("123");
+        serverMessage.setClientId("321");
+
+        // when
+        WeakMessage weakMessage = new WeakMessage(serverMessage, 50000, jsonContext);
+        weakMessage.freeze();
+
+        // then
+        assertThat(weakMessage.getJSON()).doesNotContain("data");
+        assertThat(weakMessage.getJSON()).doesNotContain("null");
+        JSONAssert.assertEquals(serverMessage.getJSON(), weakMessage.getJSON(), NON_EXTENSIBLE);
     }
 
     @Test
@@ -91,7 +111,7 @@ public class WeakMessageTest {
     @Test
     public void shouldGetDataFromWeakReference_NotFromJsonWhenNoGC() {
         // given
-        WeakMessage weakMessage = new WeakMessage( 50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(50000, jsonContext);
         String weakData = new String("WeakReferenceData");
         weakMessage.setData(weakData);
 
@@ -145,7 +165,7 @@ public class WeakMessageTest {
     @Test
     public void shouldNotZipJsonData_WhenZipMessageNotReachedThreshold() throws JSONException {
         // given
-        WeakMessage weakMessage =  new WeakMessage(givenMessage(), 50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(givenMessage(), 50000, jsonContext);
 
         // when
         weakMessage.freeze();

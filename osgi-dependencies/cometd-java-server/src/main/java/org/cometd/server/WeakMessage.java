@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import static java.util.Objects.isNull;
+
 public class WeakMessage extends ServerMessageImpl {
 
     private static final Logger _logger = LoggerFactory.getLogger(WeakMessage.class);
@@ -67,7 +69,7 @@ public class WeakMessage extends ServerMessageImpl {
         if (data instanceof Map) {
             Map<String, Object> newData = new HashMap<>((Map<String, Object>) data);
             frozen.put(DATA_FIELD, newData);
-        } else {
+        } else if (!isNull(data)) {
             frozen.put(DATA_FIELD, data);
         }
     }
@@ -104,6 +106,7 @@ public class WeakMessage extends ServerMessageImpl {
     private boolean isJsonGenerated() {
         return _json != null || _jsonBytes != null;
     }
+
     @Override
     public String getJSON() {
         serializeIfNeeded();
