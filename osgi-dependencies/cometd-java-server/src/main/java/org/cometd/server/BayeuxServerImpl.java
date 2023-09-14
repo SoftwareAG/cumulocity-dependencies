@@ -90,6 +90,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
     public static final String BROADCAST_TO_PUBLISHER_OPTION = "broadcastToPublisher";
     public static final int DEFAULT_HEARTBEAT_MINUTES = 10;
     public static final String ZIP_MESSAGE_SIZE_THRESHOLD_OPTION = "zipMessageSizeThreshold";
+    public static final String IGNORE_NULL_DATA_FIELD = "ignoreNullDataField";
 
     private final Logger _logger = LoggerFactory.getLogger(getClass().getName() + "." + Integer.toHexString(System.identityHashCode(this)));
     private final SecureRandom _random = new SecureRandom();
@@ -506,7 +507,7 @@ public class BayeuxServerImpl extends AbstractLifeCycle implements BayeuxServer,
     }
 
     public Mutable newMessage() {
-        WeakMessage result = new WeakMessage(getOption(ZIP_MESSAGE_SIZE_THRESHOLD_OPTION, 50000), _jsonContext);
+        WeakMessage result = new WeakMessage(getOption(ZIP_MESSAGE_SIZE_THRESHOLD_OPTION, 50000), _jsonContext, getOption(IGNORE_NULL_DATA_FIELD, true));
         result.setLocal(true);
         return result;
     }
