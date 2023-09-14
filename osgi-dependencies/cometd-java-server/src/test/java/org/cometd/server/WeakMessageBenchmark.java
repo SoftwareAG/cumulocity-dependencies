@@ -37,7 +37,7 @@ public class WeakMessageBenchmark {
     @Benchmark
     public void zippingBenchmark(ExecutionPlan plan, Blackhole blackhole) {
         for(int i=0; i<plan.getOldQueue().size(); i++) {
-            WeakMessage weakMessage = new WeakMessage(plan.getOldQueue().get(i),0, plan.getJsonContext());
+            WeakMessage weakMessage = new WeakMessage(plan.getOldQueue().get(i),0, plan.getJsonContext(), true);
             blackhole.consume(weakMessage.getData());
         }
     }
