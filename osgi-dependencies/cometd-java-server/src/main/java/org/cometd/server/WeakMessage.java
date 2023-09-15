@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import static java.util.Objects.isNull;
+
 public class WeakMessage extends ServerMessageImpl {
 
     private static final Logger _logger = LoggerFactory.getLogger(WeakMessage.class);
@@ -32,16 +34,19 @@ public class WeakMessage extends ServerMessageImpl {
     private MessageFormat messageFormat;
     private final long _zipMessageSizeThreshold;
     private final JSONContext.Server jsonContext;
+    private final boolean ignoreNullDataField;
 
-    public WeakMessage(long zipMessageSizeThreshold, JSONContext.Server jsonContext) {
+    public WeakMessage(long zipMessageSizeThreshold, JSONContext.Server jsonContext, boolean ignoreNullDataField) {
         this._zipMessageSizeThreshold = zipMessageSizeThreshold;
         this.jsonContext = jsonContext;
+        this.ignoreNullDataField = ignoreNullDataField;
     }
 
-    public WeakMessage(Message message, long zipMessageSizeThreshold, JSONContext.Server jsonContext) {
+    public WeakMessage(Message message, long zipMessageSizeThreshold, JSONContext.Server jsonContext, boolean ignoreNullDataField) {
         this._zipMessageSizeThreshold = zipMessageSizeThreshold;
         this.putAll(message);
         this.jsonContext = jsonContext;
+        this.ignoreNullDataField = ignoreNullDataField;
         if (message.getExt() != null) {
             this.getExt(true).putAll(message.getExt());
         }
@@ -68,7 +73,13 @@ public class WeakMessage extends ServerMessageImpl {
             Map<String, Object> newData = new HashMap<>((Map<String, Object>) data);
             frozen.put(DATA_FIELD, newData);
         } else {
-            frozen.put(DATA_FIELD, data);
+            if (ignoreNullDataField) {
+                if (!isNull(data)) {
+                    frozen.put(DATA_FIELD, data);
+                }
+            } else {
+                frozen.put(DATA_FIELD, data);
+            }
         }
     }
 
@@ -77,7 +88,7 @@ public class WeakMessage extends ServerMessageImpl {
     }
 
     public WeakMessage copy() {
-        WeakMessage weakMessage = new WeakMessage(this, this._zipMessageSizeThreshold, this.jsonContext);
+        WeakMessage weakMessage = new WeakMessage(this, this._zipMessageSizeThreshold, this.jsonContext, this.ignoreNullDataField);
         weakMessage._jsonBytes = this._jsonBytes;
         weakMessage._json = this._json;
         weakMessage.messageFormat = this.messageFormat;
@@ -104,6 +115,7 @@ public class WeakMessage extends ServerMessageImpl {
     private boolean isJsonGenerated() {
         return _json != null || _jsonBytes != null;
     }
+
     @Override
     public String getJSON() {
         serializeIfNeeded();
