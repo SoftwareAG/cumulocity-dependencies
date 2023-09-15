@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.skyscreamer.jsonassert.JSONCompareMode.NON_EXTENSIBLE;
 
 public class WeakMessageTest {
 
@@ -36,11 +37,47 @@ public class WeakMessageTest {
         serverMessage.setClientId("321");
 
         // when
-        WeakMessage weakMessage = new WeakMessage(serverMessage,50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(serverMessage, 50000, jsonContext, true);
         weakMessage.freeze();
 
         // then
         JSONAssert.assertEquals(serverMessage.getJSON(), weakMessage.getJSON(), false);
+    }
+
+    @Test
+    public void shouldGenerateSameJSONWhenDataNull() throws JSONException {
+        // given
+        ServerMessageImpl serverMessage = new ServerMessageImpl();
+        serverMessage.setData(null);
+        serverMessage.setChannel("/some/setChannel/*");
+        serverMessage.setId("123");
+        serverMessage.setClientId("321");
+
+        // when
+        WeakMessage weakMessage = new WeakMessage(serverMessage, 50000, jsonContext, true);
+        weakMessage.freeze();
+
+        // then
+        assertThat(weakMessage.getJSON()).doesNotContain("data");
+        assertThat(weakMessage.getJSON()).doesNotContain("null");
+        JSONAssert.assertEquals(serverMessage.getJSON(), weakMessage.getJSON(), NON_EXTENSIBLE);
+    }
+
+    @Test
+    public void shouldLeaveNullDataFieldIfFeatureFlagConfigured() {
+        // given
+        ServerMessageImpl serverMessage = new ServerMessageImpl();
+        serverMessage.setData(null);
+        serverMessage.setChannel("/some/setChannel/*");
+        serverMessage.setId("123");
+        serverMessage.setClientId("321");
+
+        // when
+        WeakMessage weakMessage = new WeakMessage(serverMessage, 50000, jsonContext, false);
+        weakMessage.freeze();
+
+        // then
+        assertThat(weakMessage.getJSON()).contains("\"data\":null");
     }
 
     @Test
@@ -55,7 +92,7 @@ public class WeakMessageTest {
         serverMessage.setId("123");
         serverMessage.setClientId("321");
 
-        WeakMessage weakMessage = new WeakMessage(serverMessage, 50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(serverMessage, 50000, jsonContext, true);
         weakMessage.freeze();
         String copyOfServerMessageJsonData = generator.toJSON(serverMessage.getData());
 
@@ -72,7 +109,7 @@ public class WeakMessageTest {
     @Test
     public void shouldGetDataFromJson() {
         // given
-        WeakMessage weakMessage = new WeakMessage(50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(50000, jsonContext, true);
         String weakData = new String("WeakReferenceData");
         weakMessage.setData(weakData);
         weakMessage.freeze();
@@ -91,7 +128,7 @@ public class WeakMessageTest {
     @Test
     public void shouldGetDataFromWeakReference_NotFromJsonWhenNoGC() {
         // given
-        WeakMessage weakMessage = new WeakMessage( 50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(50000, jsonContext, true);
         String weakData = new String("WeakReferenceData");
         weakMessage.setData(weakData);
 
@@ -110,7 +147,7 @@ public class WeakMessageTest {
     @Test
     public void shouldGCWeakReferenceFromWeakMessageAndGetDataFromJson() throws ParseException {
         // given
-        WeakMessage weakMessage = new WeakMessage(50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(50000, jsonContext, true);
         String weakData = new String("WeakReferenceData");
         weakMessage.setData(weakData);
 
@@ -131,7 +168,7 @@ public class WeakMessageTest {
     @Test
     public void shouldZipJsonData_WhenZipMessageThresholdReached() throws IOException {
         // given
-        WeakMessage weakMessage = new WeakMessage(0, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(0, jsonContext, true);
         weakMessage.setData(DATA);
 
         // when
@@ -145,7 +182,7 @@ public class WeakMessageTest {
     @Test
     public void shouldNotZipJsonData_WhenZipMessageNotReachedThreshold() throws JSONException {
         // given
-        WeakMessage weakMessage =  new WeakMessage(givenMessage(), 50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(givenMessage(), 50000, jsonContext, true);
 
         // when
         weakMessage.freeze();
@@ -160,7 +197,7 @@ public class WeakMessageTest {
         // given
         String jsonData = "{\"realtimeAction\":\"UPDATE\",\"data\":{\"additionParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/additionParents\",\"references\":[]},\"owner\":\"admin\",\"childDevices\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childDevices\",\"references\":[]},\"childAssets\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAssets\",\"references\":[{\"managedObject\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3200\",\"id\":\"3200\"},\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAssets/3200\"}]},\"creationTime\":\"2020-08-28T09:20:30.186Z\",\"lastUpdated\":\"2020-08-28T09:20:30.186Z\",\"childAdditions\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/childAdditions\",\"references\":[]},\"name\":\"testGroup1\",\"assetParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/assetParents\",\"references\":[]},\"deviceParents\":{\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201/deviceParents\",\"references\":[]},\"self\":\"http://cumulocity.default.svc.cluster.local/inventory/managedObjects/3201\",\"id\":\"3201\",\"c8y_IsDeviceGroup\":{}}}";
         Map data = WeakMessage.parseJsonToMap(jsonData, jsonContext);
-        WeakMessage weakMessage = new WeakMessage(50000, jsonContext);
+        WeakMessage weakMessage = new WeakMessage(50000, jsonContext, true);
         weakMessage.setData(data);
         weakMessage.setChannel("/some/setChannel/*");
         weakMessage.setId("123");
