@@ -19,8 +19,6 @@
         <module>cometd-java-websocket-javax-server</module>
         <module>cglib-nodep</module>
         <module>svenson</module>
-        <module>json-path</module>
-        <module>json-smart</module>
         <module>spring-dm</module>
         <module>odata</module>
         <module>moquette-dependencies</module>
