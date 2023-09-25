@@ -17,19 +17,28 @@
         <osgi.export>${osgi.export.pkg}*;version=${pulsar-client.version};-split-package:=merge-first</osgi.export>
         <osgi.export.pkg>
             org.apache.pulsar.client,
-            org.apache.pulsar.client.*
+            org.apache.pulsar.client.*,
+            org.apache.pulsar.common,
+            org.apache.pulsar.common.*
         </osgi.export.pkg>
         <osgi.import.pkg>
             com.fasterxml.jackson.annotation;version="[2.14,3)",
             com.fasterxml.jackson.core;version="[2.14,3)",
             com.fasterxml.jackson.core.type;version="[2.14,3)",
+            com.fasterxml.jackson.core.util;version="[2.14,3)",
             com.fasterxml.jackson.databind;version="[2.14,3)",
             com.fasterxml.jackson.databind.annotation;version="[2.14,3)",
+            com.fasterxml.jackson.databind.cfg;version="[2.14,3)",
             com.fasterxml.jackson.databind.introspect;version="[2.14,3)",
+            com.fasterxml.jackson.databind.jsonFormatVisitors;version="[2.14,3)",
             com.fasterxml.jackson.databind.module;version="[2.14,3)",
             com.fasterxml.jackson.databind.node;version="[2.14,3)",
+            com.fasterxml.jackson.databind.ser;version="[2.14,3)",
+            com.fasterxml.jackson.databind.ser.impl;version="[2.14,3)",
+            com.fasterxml.jackson.databind.type;version="[2.14,3)",
             com.fasterxml.jackson.databind.util;version="[2.14,3)",
             com.fasterxml.jackson.dataformat.yaml;version="[2.14,3)",
+            com.fasterxml.jackson.module.jaxb;version="[2.14,3)",
             com.fasterxml.jackson.module.jsonSchema;version="[2.14,3)",
             com.google.common.base;version="[25.0,31)",
             com.google.common.cache;version="[25.0,31)",
@@ -63,6 +72,13 @@
             io.netty.util.concurrent;version="[4.1,5)",
             io.netty.util.internal;version="[4.1,5)",
             io.swagger.annotations;version="[1.6,2)",
+            javax.activation;version="[1.2,2)",
+            javax.annotation;version="[1.3,2)",
+            javax.annotation.security;version="[1.3,2)",
+            javax.imageio,
+            javax.imageio.spi,
+            javax.imageio.stream,
+            javax.inject;version="[1.0,2)",
             javax.management,
             javax.naming,
             javax.naming.directory,
@@ -74,7 +90,20 @@
             javax.security.auth.login,
             javax.security.auth.x500,
             javax.ws.rs;version="[2.0,3)",
+            javax.ws.rs.client;version="[2.0,3)",
+            javax.ws.rs.container;version="[2.0,3)",
             javax.ws.rs.core;version="[2.0,3)",
+            javax.ws.rs.ext;version="[2.0,3)",
+            javax.ws.rs.sse;version="[2.1,3)",
+            javax.xml.bind;version="[2.3,3)",
+            javax.xml.bind.annotation;version="[2.3,3)",
+            javax.xml.bind.annotation.adapters;version="[2.3,3)",
+            javax.xml.namespace,
+            javax.xml.parsers,
+            javax.xml.transform,
+            javax.xml.transform.dom,
+            javax.xml.transform.sax,
+            javax.xml.transform.stream,
             net.jcip.annotations,
             org.apache.avro;version="[1.10,2)",
             org.apache.avro.data;version="[1.10,2)",
@@ -92,16 +121,20 @@
             org.apache.commons.lang3;version="[3.11,4)",
             org.apache.commons.lang3.exception;version="[3.11,4)",
             org.apache.commons.lang3.tuple;version="[3.11,4)",
-            org.apache.pulsar.client.admin.utils;version="[2.8,3)",
-            org.apache.pulsar.client.api.url;version="[2.8,3)",
-            org.apache.pulsar.client.impl.conf;version="[2.8,3)",
-            org.apache.pulsar.client.impl.crypto,
-            org.apache.pulsar.client.impl.schema.writer;version="[2.8,3)",
             org.asynchttpclient;version="[2.12,3)",
             org.asynchttpclient.channel;version="[2.12,3)",
             org.asynchttpclient.netty.ssl;version="[2.12,3)",
-            org.bouncycastle.jce.provider;version="[1.67,2)",
-            org.joda.time,org.slf4j;version="[1.7,2)"
+            org.asynchttpclient.request.body.multipart;version="[2.12,3)",
+            org.bouncycastle.jce.provider;version="[1.70,2)",
+            org.glassfish.hk2.osgiresourcelocator;version="[1.0,2)",
+            org.joda.time,
+            org.jvnet.mimepull;version="[1.9,2)",
+            org.osgi.framework,
+            org.slf4j;version="[1.7,2)",
+            org.slf4j.bridge;version="[1.7,2)",
+            org.w3c.dom,
+            org.xml.sax,
+            sun.misc
         </osgi.import.pkg>
         <legal.version>1.0</legal.version>
         <osgi.private>
@@ -128,6 +161,16 @@
             <groupId>org.apache.pulsar</groupId>
             <artifactId>pulsar-client-original</artifactId>
             <version>${pulsar-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-client-admin-original</artifactId>
+            <version>${pulsar-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -160,12 +203,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <includeGroupIds>org.apache.pulsar</includeGroupIds>
-                    <includeArtifactIds>pulsar-client-original</includeArtifactIds>
+                    <includeGroupIds>org.apache.pulsar,org.glassfish.jersey.core,org.glassfish.jersey.media,org.glassfish.jersey.ext</includeGroupIds>
+                    <includeArtifactIds>pulsar-client-original,pulsar-client-admin-original,jersey-client,jersey-common,jersey-server,jersey-media-json-jackson,jersey-media-multipart,jersey-entity-filtering</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven,
-                        META-INF/maven/**/*
+                        META-INF/maven/**/*,
+                        META-INF/services/javax.ws.rs.ext.RuntimeDelegate
                     </excludes>
                 </configuration>
             </plugin>
