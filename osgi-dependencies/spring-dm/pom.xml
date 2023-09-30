@@ -45,7 +45,7 @@
 			src/main/resources
 		</spring.osgi.include.res>
 
-		<spring.version.range>"[4.0,5)"</spring.version.range>
+		<spring.version.range>"[5.0,6)"</spring.version.range>
 		<spring.osgi.version.range>"[1.2,1.3)"</spring.osgi.version.range>
 		<logging.version.range>"[1.0,2.0)"</logging.version.range>
 	</properties>

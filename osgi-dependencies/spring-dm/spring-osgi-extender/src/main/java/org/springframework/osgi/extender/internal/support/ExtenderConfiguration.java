@@ -17,7 +17,6 @@ import org.osgi.framework.BundleContext;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.event.SimpleApplicationEventMulticaster;
-import org.springframework.core.JdkVersion;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.task.support.TaskExecutorAdapter;
