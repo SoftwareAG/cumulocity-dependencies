@@ -25,29 +25,22 @@
             com.fasterxml.jackson.annotation;version="[2.14,3)",
             com.fasterxml.jackson.core;version="[2.14,3)",
             com.fasterxml.jackson.core.type;version="[2.14,3)",
-            com.fasterxml.jackson.core.util;version="[2.14,3)",
             com.fasterxml.jackson.databind;version="[2.14,3)",
             com.fasterxml.jackson.databind.annotation;version="[2.14,3)",
-            com.fasterxml.jackson.databind.cfg;version="[2.14,3)",
             com.fasterxml.jackson.databind.introspect;version="[2.14,3)",
-            com.fasterxml.jackson.databind.jsonFormatVisitors;version="[2.14,3)",
             com.fasterxml.jackson.databind.module;version="[2.14,3)",
             com.fasterxml.jackson.databind.node;version="[2.14,3)",
-            com.fasterxml.jackson.databind.ser;version="[2.14,3)",
-            com.fasterxml.jackson.databind.ser.impl;version="[2.14,3)",
-            com.fasterxml.jackson.databind.type;version="[2.14,3)",
             com.fasterxml.jackson.databind.util;version="[2.14,3)",
             com.fasterxml.jackson.dataformat.yaml;version="[2.14,3)",
-            com.fasterxml.jackson.module.jaxb;version="[2.14,3)",
             com.fasterxml.jackson.module.jsonSchema;version="[2.14,3)",
-            com.google.common.base;version="[25.0,31)",
-            com.google.common.cache;version="[25.0,31)",
-            com.google.common.collect;version="[25.0,31)",
-            com.google.common.hash;version="[25.0,31)",
-            com.google.common.primitives;version="[25.0,31)",
-            com.google.common.util.concurrent;version="[25.0,31)",
+            com.google.common.base;version="[25.0,26)",
+            com.google.common.cache;version="[25.0,26)",
+            com.google.common.collect;version="[25.0,26)",
+            com.google.common.hash;version="[25.0,26)",
+            com.google.common.primitives;version="[25.0,26)",
+            com.google.common.util.concurrent;version="[25.0,26)",
             com.google.gson;version="[2.8,3)",
-            com.google.protobuf,
+            com.google.protobuf;version="[3.19,4)",
             com.scurrilous.circe.checksum,
             com.yahoo.sketches.quantiles,
             io.airlift.compress.lz4,
@@ -72,13 +65,8 @@
             io.netty.util.concurrent;version="[4.1,5)",
             io.netty.util.internal;version="[4.1,5)",
             io.swagger.annotations;version="[1.6,2)",
-            javax.activation;version="[1.2,2)",
-            javax.annotation;version="[1.3,2)",
-            javax.annotation.security;version="[1.3,2)",
-            javax.imageio,
-            javax.imageio.spi,
-            javax.imageio.stream,
-            javax.inject;version="[1.0,2)",
+            javax.crypto,
+            javax.crypto.spec,
             javax.management,
             javax.naming,
             javax.naming.directory,
@@ -91,19 +79,8 @@
             javax.security.auth.x500,
             javax.ws.rs;version="[2.0,3)",
             javax.ws.rs.client;version="[2.0,3)",
-            javax.ws.rs.container;version="[2.0,3)",
             javax.ws.rs.core;version="[2.0,3)",
             javax.ws.rs.ext;version="[2.0,3)",
-            javax.ws.rs.sse;version="[2.1,3)",
-            javax.xml.bind;version="[2.3,3)",
-            javax.xml.bind.annotation;version="[2.3,3)",
-            javax.xml.bind.annotation.adapters;version="[2.3,3)",
-            javax.xml.namespace,
-            javax.xml.parsers,
-            javax.xml.transform,
-            javax.xml.transform.dom,
-            javax.xml.transform.sax,
-            javax.xml.transform.stream,
             net.jcip.annotations,
             org.apache.avro;version="[1.10,2)",
             org.apache.avro.data;version="[1.10,2)",
@@ -118,23 +95,33 @@
             org.apache.commons.codec.digest;version="[1.15,2)",
             org.apache.commons.io;version="[1.4,2)",
             org.apache.commons.lang;version="[2.6,3)",
-            org.apache.commons.lang3;version="[3.11,4)",
-            org.apache.commons.lang3.exception;version="[3.11,4)",
-            org.apache.commons.lang3.tuple;version="[3.11,4)",
+            org.apache.commons.lang3;version="[3.12,4)",
+            org.apache.commons.lang3.exception;version="[3.12,4)",
+            org.apache.commons.lang3.tuple;version="[3.12,4)",
             org.asynchttpclient;version="[2.12,3)",
             org.asynchttpclient.channel;version="[2.12,3)",
             org.asynchttpclient.netty.ssl;version="[2.12,3)",
             org.asynchttpclient.request.body.multipart;version="[2.12,3)",
+            org.bouncycastle.asn1;version="[1.70,2)",
+            org.bouncycastle.asn1.pkcs;version="[1.70,2)",
+            org.bouncycastle.asn1.x509;version="[1.70,2)",
+            org.bouncycastle.asn1.x9;version="[1.70,2)",
+            org.bouncycastle.cert;version="[1.70,2)",
+            org.bouncycastle.jcajce.provider.asymmetric.ec;version="[1.70,2)",
             org.bouncycastle.jce.provider;version="[1.70,2)",
-            org.glassfish.hk2.osgiresourcelocator;version="[1.0,2)",
-            org.joda.time,
-            org.jvnet.mimepull;version="[1.9,2)",
-            org.osgi.framework,
+            org.bouncycastle.jce.spec;version="[1.70,2)",
+            org.bouncycastle.math.ec;version="[1.70,2)",
+            org.bouncycastle.openssl;version="[1.70,2)",
+            org.bouncycastle.openssl.jcajce;version="[1.70,2)",
+            org.glassfish.jersey.client;version="[2.34,3)",
+            org.glassfish.jersey.client.spi;version="[2.34,3)",
+            org.glassfish.jersey.jackson;version="[2.34,3)",
+            org.glassfish.jersey.media.multipart;version="[2.34,3)",
+            org.glassfish.jersey.media.multipart.file;version="[2.34,3)",
+            org.glassfish.jersey.message.internal;version="[2.34,3)",
+            org.joda.time;version="[2.10,3)",
             org.slf4j;version="[1.7,2)",
-            org.slf4j.bridge;version="[1.7,2)",
-            org.w3c.dom,
-            org.xml.sax,
-            sun.misc
+            org.slf4j.bridge;version="[1.7,2)"
         </osgi.import.pkg>
         <legal.version>1.0</legal.version>
         <osgi.private>
@@ -144,16 +131,16 @@
             org.apache.pulsar,
             org.apache.pulsar.*
         </osgi.private.pkg>
-        <osgi.dynamicimport.pkg />
+        <osgi.dynamicimport.pkg/>
         <osgi.failok>false</osgi.failok>
-        <osgi.embed.dependency />
-        <osgi.fragment.host />
-        <osgi.native />
-        <osgi.activator />
-        <osgi.provide.capability />
-        <osgi.require.capability />
-        <spi.provider />
-        <spi.consumer />
+        <osgi.embed.dependency/>
+        <osgi.fragment.host/>
+        <osgi.native/>
+        <osgi.activator/>
+        <osgi.provide.capability/>
+        <osgi.require.capability/>
+        <spi.provider/>
+        <spi.consumer/>
     </properties>
 
     <dependencies>
@@ -161,17 +148,220 @@
             <groupId>org.apache.pulsar</groupId>
             <artifactId>pulsar-client-original</artifactId>
             <version>${pulsar-client.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.pulsar</groupId>
             <artifactId>pulsar-client-admin-original</artifactId>
             <version>${pulsar-client.version}</version>
+            <scope>provided</scope>
         </dependency>
+
+        <!-- pulsar-client-original direct dependencies -->
+
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-client-api</artifactId>
+            <version>${pulsar-client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-common</artifactId>
+            <version>${pulsar-client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-transaction-common</artifactId>
+            <version>${pulsar-client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>bouncy-castle-bc</artifactId>
+            <version>${pulsar-client.version}</version>
+            <classifier>pkg</classifier>
+        </dependency>
+
+        <dependency>
+            <!-- this module only need by the real client, client inside broker no need this module -->
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-client-messagecrypto-bc</artifactId>
+            <version>${pulsar-client.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec-http</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.asynchttpclient</groupId>
+            <artifactId>async-http-client</artifactId>
+            <version>2.12.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yahoo.datasketches</groupId>
+            <artifactId>sketches-core</artifactId>
+            <version>0.8.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>1.10.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-protobuf</artifactId>
+            <version>1.10.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.protobuf</groupId>
+                    <artifactId>protobuf-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.19.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jsonSchema</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.jcip</groupId>
+            <artifactId>jcip-annotations</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!-- pulsar-admin-client-original direct dependencies -->
+
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-client-admin-api</artifactId>
+            <version>${pulsar-client.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
-            <artifactId>jersey-server</artifactId>
+            <artifactId>jersey-client</artifactId>
             <version>${jersey.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.activation</groupId>
+                    <artifactId>javax.activation-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>javax.activation</artifactId>
+            <version>1.2.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pulsar</groupId>
+            <artifactId>pulsar-package-core</artifactId>
+            <version>${pulsar-client.version}</version>
+        </dependency>
+
+        <!-- other -->
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -203,13 +393,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <configuration>
-                    <includeGroupIds>org.apache.pulsar,org.glassfish.jersey.core,org.glassfish.jersey.media,org.glassfish.jersey.ext</includeGroupIds>
-                    <includeArtifactIds>pulsar-client-original,pulsar-client-admin-original,jersey-client,jersey-common,jersey-server,jersey-media-json-jackson,jersey-media-multipart,jersey-entity-filtering</includeArtifactIds>
+                    <includeGroupIds>org.apache.pulsar</includeGroupIds>
+                    <includeArtifactIds>pulsar-client-original,pulsar-client-admin-original</includeArtifactIds>
                     <excludes>
                         META-INF/MANIFEST.MF,
                         META-INF/maven,
-                        META-INF/maven/**/*,
-                        META-INF/services/javax.ws.rs.ext.RuntimeDelegate
+                        META-INF/maven/**/*
                     </excludes>
                 </configuration>
             </plugin>
