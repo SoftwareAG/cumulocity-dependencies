@@ -57,7 +57,8 @@
                             <artifact>org.springframework.osgi:spring-osgi-io:${spring-dm.version}:jar:sources</artifact>
                             <excludes>
                                 META-INF/MANIFEST.MF,
-                                META-INF/maven/**/*
+                                META-INF/maven/**/*,
+                                org/springframework/osgi/io/OsgiBundleResourcePatternResolver*
                             </excludes>
                         </configuration>
                     </execution>

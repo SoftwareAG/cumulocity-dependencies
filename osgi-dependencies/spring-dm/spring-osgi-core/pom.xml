@@ -94,6 +94,7 @@
                                 org/springframework/osgi/service/importer/support/internal/aop/ServiceDynamicInterceptor*,
                                 org/springframework/osgi/service/importer/support/internal/aop/StaticServiceReferenceProxy*,
                                 org/springframework/osgi/service/importer/support/internal/aop/SwappingServiceReferenceProxy*,
+                                org/springframework/osgi/util/OsgiStringUtils*,
                                 org/springframework/osgi/util/internal/ClassUtils*
                             </excludes>
                         </configuration>
