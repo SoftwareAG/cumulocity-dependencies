@@ -14,5 +14,6 @@
 
 	<modules>
 		<module>3rd-license-maven-plugin</module>
+        <module>cumulocity-sdk-resource-bundles</module>
 	</modules>
 </project>
