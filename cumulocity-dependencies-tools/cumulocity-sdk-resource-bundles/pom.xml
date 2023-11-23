@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>maven-plugins</artifactId>
+		<artifactId>cumulocity-dependencies-tools</artifactId>
 		<groupId>com.nsn.cumulocity.dependencies</groupId>
 		<version>${revision}${changelist}</version>
 	</parent>
 
 	<artifactId>cumulocity-sdk-resource-bundles</artifactId>
-	<name>Cumulocity :: Dependencies :: SDK Resource Bundles</name>
+	<name>Cumulocity :: Dependencies :: Tools :: SDK Resource Bundles</name>
 	<description>
 		This project contains templates for generating Cumulocity license file
 		for SDK resources. It my contain also additional template (right now

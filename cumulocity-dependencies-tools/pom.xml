@@ -7,13 +7,13 @@
     <version>${revision}${changelist}</version>
   </parent>
 
-  <artifactId>maven-plugins</artifactId>
+  <artifactId>cumulocity-dependencies-tools</artifactId>
   <packaging>pom</packaging>
-  <name>Cumulocity :: Dependencies :: Maven Plugins</name>
+  <name>Cumulocity :: Dependencies :: Tools</name>
   <url>http://maven.apache.org</url>
 
 	<modules>
 		<module>3rd-license-maven-plugin</module>
-        <module>cumulocity-sdk-resource-bundles</module>
+		<module>cumulocity-sdk-resource-bundles</module>
 	</modules>
 </project>
