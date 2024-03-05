@@ -9,6 +9,6 @@
         <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson.version}</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-core/${jackson.version}</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson.version}</bundle>
-        <bundle>mvn:com.lmax/disruptor/3.4.3</bundle>
+        <bundle>mvn:com.lmax/disruptor/${lmax-disruptor.version}</bundle>
     </feature>
 </features>
