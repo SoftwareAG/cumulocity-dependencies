@@ -56,6 +56,13 @@
 			<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
 			<artifactId>spring-osgi-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.karaf</groupId>
+			<artifactId>apache-karaf</artifactId>
+			<type>tar.gz</type>
+			<scope>runtime</scope>
+			<version>${karaf.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -69,24 +76,15 @@
 						<id>unpack-karaf</id>
 						<phase>generate-resources</phase>
 						<goals>
-							<goal>unpack</goal>
+							<goal>unpack-dependencies</goal>
 						</goals>
 						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.apache.karaf</groupId>
-									<artifactId>apache-karaf</artifactId>
-									<type>tar.gz</type>
-									<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
-								</artifactItem>
-							</artifactItems>
-							<!-- 
-							We're skipping pax-logging from default karaf distribution because of Log4shell, 
-							safe pax-logging versions starts from 1.11.10 (for karaf 4.2.x) and 2.0.11 (for karaf 4.3.x). 
-							Correct pax-logging versions are defined in log4j2-feature.xml.
-							FIXME can be removed when upgrading karaf to 4.3.4+ (which should come with pax-logging 2.0.11+ 
-							-->
-							<excludes>apache-karaf-*\/examples\/**,**\/pax-logging-*.jar</excludes>
+							<includeGroupIds>org.apache.karaf</includeGroupIds>
+							<includeArtifactIds>apache-karaf</includeArtifactIds>
+							<includeTypes>tar.gz</includeTypes>
+							<includeScope>runtime</includeScope>
+							<excludes>apache-karaf-*\/examples\/**</excludes>
+							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

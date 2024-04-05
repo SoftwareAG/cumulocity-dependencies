@@ -18,7 +18,7 @@
 -->
 <features name="standard-${karaf.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.3.0 http://karaf.apache.org/xmlns/features/v1.3.0">
 
-	<repository>mvn:org.ops4j.pax.web/pax-web-features/7.3.28/xml/features</repository>
+	<repository>mvn:org.ops4j.pax.web/pax-web-features/${pax-web.version}/xml/features</repository>
 
     <feature version="${karaf.version}" description="OSGi Security for Karaf" name="framework-security">
         <bundle start="false" start-level="1">mvn:org.apache.felix/org.apache.felix.framework.security/2.6.1</bundle>
@@ -865,7 +865,7 @@
         </conditional>
     </feature>
 
-    <feature name="pax-web-http" description="Pax Web OSGi HTTP Service" version="7.3.28">
+    <feature name="pax-web-http" description="Pax Web OSGi HTTP Service" version="${pax-web.version}">
         <feature>pax-http</feature>
         <bundle start-level="30">mvn:org.apache.karaf.http/org.apache.karaf.http.core/${karaf.version}</bundle>
         <capability>http-service;provider:=pax-http</capability>
@@ -874,15 +874,15 @@
             <bundle start-level="30">mvn:org.apache.karaf.webconsole/org.apache.karaf.webconsole.http/${karaf.version}</bundle>
         </conditional>
     </feature>
-    <feature name="http" description="Transition feature for backward compatibility" version="7.3.28">
+    <feature name="http" description="Transition feature for backward compatibility" version="${pax-web.version}">
         <feature>pax-web-http</feature>
     </feature>
 
-    <feature name="pax-web-http-whiteboard" description="Pax Web OSGi HTTP Whiteboard support" version="7.3.28">
+    <feature name="pax-web-http-whiteboard" description="Pax Web OSGi HTTP Whiteboard support" version="${pax-web.version}">
         <feature>pax-web-http</feature>
         <feature>pax-http-whiteboard</feature>
     </feature>
-    <feature name="http-whiteboard" description="Transition feature for backward compatibility" version="7.3.28">
+    <feature name="http-whiteboard" description="Transition feature for backward compatibility" version="${pax-web.version}">
         <feature>pax-web-http-whiteboard</feature>
     </feature>
 
@@ -897,7 +897,7 @@
 
 
     <feature name="jetty" description="Transition feature for backward compatibility" version="${jetty.version}">
-        <!-- <feature>pax-jetty</feature> replaced with inlined version copied from "pax-web-features-7.3.28-features" because of javax mail changes -->
+        <!-- <feature>pax-jetty</feature> replaced with inlined version copied from "pax-web-features-${pax-web.version}-features" because of javax mail changes -->
         <feature>pax-web-core</feature>
         <bundle dependency="true" start-level="30">mvn:javax.servlet/javax.servlet-api/3.1.0</bundle>
         <bundle dependency="true" start-level="30">mvn:com.sun.mail/jakarta.mail/${jakarta.mail.version}</bundle>
@@ -1586,7 +1586,7 @@
     <feature name="maven" description="Commands for Maven configuration of services from pax-url-aether" version="${karaf.version}">
         <feature>shell</feature>
         <bundle start-level="30">mvn:org.apache.karaf.maven/org.apache.karaf.maven.core/${karaf.version}</bundle>
-        <bundle dependency="true">mvn:org.apache.commons/commons-lang3/3.12.0</bundle>
+        <bundle dependency="true">mvn:org.apache.commons/commons-lang3/${commons-lang3.version}</bundle>
         <config name="org.apache.karaf.command.acl.maven">
             ################################################################################
             #
