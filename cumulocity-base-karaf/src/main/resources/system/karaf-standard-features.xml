@@ -1026,9 +1026,9 @@
         <bundle start-level="30">mvn:org.apache.sshd/sshd-osgi/2.9.2</bundle>
         <bundle start-level="30">mvn:org.apache.sshd/sshd-scp/2.9.2</bundle>
         <bundle start-level="30">mvn:org.apache.sshd/sshd-sftp/2.9.2</bundle>
-        <bundle start-level="30">mvn:org.bouncycastle/bcutil-jdk15on/${bouncycastle.version}</bundle>
-        <bundle start-level="30">mvn:org.bouncycastle/bcprov-jdk15on/${bouncycastle.version}</bundle>
-        <bundle start-level="30">mvn:org.bouncycastle/bcpkix-jdk15on/${bouncycastle.version}</bundle>
+        <bundle start-level="30">mvn:org.bouncycastle/bcutil-jdk18on/${bouncycastle.version}</bundle>
+        <bundle start-level="30">mvn:org.bouncycastle/bcprov-jdk18on/${bouncycastle.version}</bundle>
+        <bundle start-level="30">mvn:org.bouncycastle/bcpkix-jdk18on/${bouncycastle.version}</bundle>
         <bundle start-level="30">mvn:org.apache.karaf.shell/org.apache.karaf.shell.ssh/${karaf.version}</bundle>
     </feature>
 
@@ -1478,7 +1478,7 @@
 
     <feature name="spring-security-crypto-encryption" description="Advanced encryption support for Karaf security" version="${karaf.version}">
         <feature>jaas</feature>
-        <bundle dependency="true" start-level="30">mvn:org.bouncycastle/bcprov-jdk15on/${bouncycastle.version}</bundle>
+        <bundle dependency="true" start-level="30">mvn:org.bouncycastle/bcprov-jdk18on/${bouncycastle.version}</bundle>
         <bundle dependency="true" start-level="30">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.spring-security-crypto/5.3.3.RELEASE_2</bundle>
         <bundle start-level="30">mvn:org.apache.karaf.jaas/org.apache.karaf.jaas.spring-security-crypto/${karaf.version}</bundle>
     </feature>

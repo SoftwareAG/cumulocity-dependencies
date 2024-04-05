@@ -32,7 +32,10 @@
             com.fasterxml.jackson.databind.node,
             com.fasterxml.jackson.databind.util,
             com.fasterxml.jackson.dataformat.yaml,
+            com.fasterxml.jackson.datatype.jdk8,
+            com.fasterxml.jackson.datatype.jsr310,
             com.fasterxml.jackson.module.jsonSchema,
+            com.fasterxml.jackson.module.paramnames,
             com.google.common.base,
             com.google.common.cache,
             com.google.common.collect,
@@ -138,7 +141,9 @@
         <osgi.native/>
         <osgi.activator/>
         <osgi.provide.capability/>
-        <osgi.require.capability/>
+        <osgi.require.capability>
+            osgi.ee;filter:="(&amp;(osgi.ee=JavaSE)(version=11))"
+        </osgi.require.capability>
         <spi.provider/>
         <spi.consumer/>
     </properties>
@@ -202,6 +207,23 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-resolver-dns</artifactId>
             <version>${netty.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty.incubator</groupId>
+            <artifactId>netty-incubator-transport-classes-io_uring</artifactId>
+            <version>${netty-iouring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty.incubator</groupId>
+            <artifactId>netty-incubator-transport-native-io_uring</artifactId>
+            <version>${netty-iouring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty.incubator</groupId>
+            <artifactId>netty-incubator-transport-native-io_uring</artifactId>
+            <version>${netty-iouring.version}</version>
+            <classifier>linux-x86_64</classifier>
         </dependency>
 
         <dependency>
@@ -274,6 +296,21 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jsonSchema</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 

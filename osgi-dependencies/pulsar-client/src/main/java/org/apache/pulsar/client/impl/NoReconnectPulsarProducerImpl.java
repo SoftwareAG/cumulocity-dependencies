@@ -7,6 +7,7 @@ import org.apache.pulsar.client.impl.conf.ProducerConfigurationData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -29,21 +30,26 @@ public class NoReconnectPulsarProducerImpl<T> extends ProducerImpl<T> {
                                          String topic,
                                          ProducerConfigurationData conf,
                                          CompletableFuture<Producer<T>> producerCreatedFuture,
-                                         int partitionIndex, Schema<T> schema,
-                                         ProducerInterceptors interceptors) {
-        super(client, topic, conf, producerCreatedFuture, partitionIndex, schema, interceptors);
+                                         int partitionIndex,
+                                         Schema<T> schema,
+                                         ProducerInterceptors interceptors,
+                                         Optional<String> overrideProducerName) {
+        super(client, topic, conf, producerCreatedFuture, partitionIndex, schema, interceptors, overrideProducerName);
     }
 
     @Override
-    void reconnectLater(Throwable exception) {
-        if (exception != null) {
+    public CompletableFuture<Void> connectionOpened(final ClientCnx cnx) {
+        final CompletableFuture<Void> future = super.connectionOpened(cnx);
+        final NoReconnectPulsarProducerImpl<T> self = this;
+        future.exceptionally(exception -> {
             log.error("Could not connect producer to the broker: {}", exception.getMessage());
             producerCreatedFuture.completeExceptionally(exception);
             invokeCloseProducerTaskMethod();
             setState(State.Failed);
-            getClient().cleanupProducer(this);
-        }
-        super.reconnectLater(exception);
+            getClient().cleanupProducer(self);
+            return null;
+        });
+        return future;
     }
 
     private void invokeCloseProducerTaskMethod() {

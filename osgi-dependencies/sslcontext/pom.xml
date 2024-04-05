@@ -49,13 +49,13 @@
                             !nl.altindag.ssl.*,
                             javax.net.ssl,
                             javax.security.auth.x500,
-                            org.bouncycastle.pkcs;version="[1.65.0,2.0.0)",
-                            org.bouncycastle.cert;version="[1.65.0,2.0.0)",
-                            org.bouncycastle.openssl;version="[1.65.0,2.0.0)",
-                            org.bouncycastle.operator;version="[1.65.0,2.0.0)",
-                            org.bouncycastle.jce.provider;version="[1.65.0,2.0.0)",
-                            org.bouncycastle.cert.jcajce;version="[1.65.0,2.0.0)",
-                            org.bouncycastle.openssl.jcajce;version="[1.65.0,2.0.0)",
+                            org.bouncycastle.pkcs;version="[1.75.0,2.0.0)",
+                            org.bouncycastle.cert;version="[1.75.0,2.0.0)",
+                            org.bouncycastle.openssl;version="[1.75.0,2.0.0)",
+                            org.bouncycastle.operator;version="[1.75.0,2.0.0)",
+                            org.bouncycastle.jce.provider;version="[1.75.0,2.0.0)",
+                            org.bouncycastle.cert.jcajce;version="[1.75.0,2.0.0)",
+                            org.bouncycastle.openssl.jcajce;version="[1.75.0,2.0.0)",
                             org.slf4j
                         </Import-Package>
                     </instructions>
