@@ -18,7 +18,7 @@
         <bundle.symbolicName>com.cumulocity.log4j.custom.components</bundle.symbolicName>
     </properties>
     <!--While adding new dependencies, make sure it will be downloaded before plugin is created.-->
-    <!--cumulocity-dependencies/cumulocity-base-karaf/src/main/resources/system/log4j2-feature.xml-->
+    <!--cumulocity-applications/cumulocity-base-karaf/src/main/resources/system/log4j2-feature.xml-->
     <dependencies>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
