@@ -20,7 +20,6 @@
 
   <modules>
     <module>osgi-dependencies</module>
-    <module>cumulocity-base-karaf</module>
   </modules>
 
 </project>
