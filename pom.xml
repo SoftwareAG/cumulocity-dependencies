@@ -1,25 +1,132 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.nsn.cumulocity.root</groupId>
-    <artifactId>root</artifactId>
-    <version>${revision}${changelist}</version>
-    <relativePath>../cumulocity-root</relativePath>
-  </parent>
+    <parent>
+        <groupId>com.nsn.cumulocity.root</groupId>
+        <artifactId>root</artifactId>
+        <version>${revision}${changelist}</version>
+        <relativePath>../cumulocity-root</relativePath>
+    </parent>
 
-  <groupId>com.nsn.cumulocity.dependencies</groupId>
-  <artifactId>cumulocity-dependencies</artifactId>
-  <packaging>pom</packaging>
-  <name>Cumulocity :: Dependencies</name>
+    <groupId>com.nsn.cumulocity.dependencies</groupId>
+    <artifactId>cumulocity-dependencies</artifactId>
+    <packaging>pom</packaging>
+    <name>Cumulocity :: 3rd Party Dependencies</name>
 
-  <organization>
-    <name>Cumulocity GmbH</name>
-    <url>https://cumulocity.com</url>
-  </organization>
+    <organization>
+        <name>Cumulocity GmbH</name>
+        <url>https://cumulocity.com</url>
+    </organization>
 
-  <modules>
-    <module>osgi-dependencies</module>
-  </modules>
+    <modules>
+        <module>commons-configuration</module>
+        <module>cometd-java-server</module>
+        <module>cometd-java-websocket-javax-server</module>
+        <module>cglib-nodep</module>
+        <module>svenson</module>
+        <module>json-path</module>
+        <module>json-smart</module>
+        <module>spring-dm</module>
+        <module>odata</module>
+        <module>moquette-dependencies</module>
+        <module>uom</module>
+        <module>sslcontext</module>
+        <module>kubernetes-client</module>
+        <module>logbook</module>
+        <module>mongodb</module>
+        <module>pulsar-client</module>
+        <module>jackson-module-jsonSchema</module>
+    </modules>
 
+    <properties>
+        <unpack.source.directory>${project.build.directory}/sources</unpack.source.directory>
+        <unpack.target.directory>${project.build.outputDirectory}</unpack.target.directory>
+        <unpack.excludes>
+            META-INF/MANIFEST.MF,
+            META-INF/maven/**/*
+        </unpack.excludes>
+    </properties>
+
+    <build>
+        <sourceDirectory>${unpack.source.directory}</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <configuration>
+                    <excludes>${unpack.excludes}</excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>unpack-dependencies</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${unpack.target.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-dependencies-sources</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>sources</classifier>
+                            <failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
+                            <outputDirectory>${unpack.source.directory}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <skipMain>true</skipMain>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
