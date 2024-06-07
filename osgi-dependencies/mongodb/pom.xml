@@ -4,11 +4,11 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>${revision}${changelist}</version>
+        <version>${cumulocity-dependencies.version}</version>
     </parent>
 
     <artifactId>mongodb</artifactId>
-    <version>${mongodb-driver.version}-${project.parent.version}</version>
+    <version>${osgi.mongodb-driver.version}</version>
     <name>Cumulocity :: Dependencies :: OSGi :: MongoDB</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

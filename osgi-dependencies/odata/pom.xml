@@ -4,11 +4,11 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>${revision}${changelist}</version>
+        <version>${cumulocity-dependencies.version}</version>
     </parent>
 
     <artifactId>odata</artifactId>
-    <version>${odata.version}-${project.parent.version}</version>
+    <version>${osgi.odata.version}</version>
     <name>Cumulocity :: Dependencies :: OSGi :: OData2 - Apache Olingo</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

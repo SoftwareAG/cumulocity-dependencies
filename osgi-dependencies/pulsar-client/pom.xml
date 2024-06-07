@@ -5,11 +5,11 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>${revision}${changelist}</version>
+        <version>${cumulocity-dependencies.version}</version>
     </parent>
 
     <artifactId>pulsar-client</artifactId>
-    <version>${pulsar-client.version}-${project.parent.version}</version>
+    <version>${osgi.pulsar-client.version}</version>
     <name>Cumulocity :: Dependencies :: OSGi :: Pulsar :: Java Client</name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 

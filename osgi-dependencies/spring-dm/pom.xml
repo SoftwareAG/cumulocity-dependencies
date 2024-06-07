@@ -3,14 +3,15 @@
 	
 	<parent>
 		<artifactId>osgi-dependencies</artifactId>
-        <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-		<version>${revision}${changelist}</version>
+		<groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
+		<version>${cumulocity-dependencies.version}</version>
 	</parent>
-	<packaging>pom</packaging>
 	
-    <artifactId>spring-dm</artifactId>
-    <name>Cumulocity :: Dependencies :: OSGi :: Spring DM</name>
-    <url>http://startups.jira.com/wiki/display/MTM/Home</url>
+	<artifactId>spring-dm</artifactId>
+	<version>${osgi.spring-dm.version}</version>
+	<packaging>pom</packaging>
+	<name>Cumulocity :: Dependencies :: OSGi :: Spring DM</name>
+	<url>http://startups.jira.com/wiki/display/MTM/Home</url>
 	<description>Spring Dynamic Modules for Spring 4.x</description>
 
 	<modules>

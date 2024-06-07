@@ -4,11 +4,11 @@
     <parent>
         <artifactId>osgi-dependencies</artifactId>
         <groupId>com.nsn.cumulocity.dependencies.osgi</groupId>
-        <version>${revision}${changelist}</version>
+        <version>${cumulocity-dependencies.version}</version>
     </parent>
 
     <artifactId>cometd-java-websocket-javax-server</artifactId>
-    <version>${cometd.version}-${project.parent.version}</version>
+    <version>${osgi.cometd.version}</version>
     <name>Cumulocity :: Dependencies :: OSGi :: CometD :: Java WebSocket Server </name>
     <url>http://startups.jira.com/wiki/display/MTM/Home</url>
 
