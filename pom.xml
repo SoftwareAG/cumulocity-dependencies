@@ -18,8 +18,8 @@
     </modules>
 
     <properties>
-        <revision>1020.421.0</revision>
-        <changelist>-SNAPSHOT</changelist>
+        <revision>1020.422.0</revision>
+        <changelist></changelist>
         <cumulocity-dependencies.version>${revision}${changelist}</cumulocity-dependencies.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
