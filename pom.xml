@@ -36,7 +36,7 @@
     <properties>
         <!-- https://maven.apache.org/maven-ci-friendly.html -->
         <revision>1020.429.0</revision>
-        <changelist>-SNAPSHOT</changelist>
+        <changelist></changelist>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
