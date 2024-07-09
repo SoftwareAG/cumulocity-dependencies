@@ -31,7 +31,7 @@
     <properties>
         <!-- https://maven.apache.org/maven-ci-friendly.html -->
         <revision>1020.437.0</revision>
-        <changelist></changelist>
+        <changelist>-SNAPSHOT</changelist>
         <cumulocity-dependencies.version>${revision}${changelist}</cumulocity-dependencies.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
